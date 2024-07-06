@@ -9,3 +9,8 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 });
+
+Route::get('/Owner/dashboard', function () {
+    return view('Owner.dashboard');
+});
+
