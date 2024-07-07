@@ -8,8 +8,8 @@
 <div class="container" style="max-width:100%; padding:0%;">
     <div class="row">
       <!-- Sidebar -->
-        <div class="col-md-3 side">      
-            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" >
+        <div class="col-md-3 ">      
+            <div class="side p-3 text-white bg-dark " >
                 <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                   <img src="" alt="logo">
                   <span class="fs-4">
@@ -37,7 +37,7 @@
                   <li>
                     <a href="/Owner/ManageTower" class="nav-link text-white">
                       <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                      Manage Tower
+                      Towers
                     </a>
                   </li>
                   <li>
@@ -53,20 +53,20 @@
         
         <div class="col-md-9">
             <div class="bg-info">
-              <div class="dashboard-header">
+              <div class="dashboard-header mb-2">
                 <div
-                  class="row justify-content-start align-items-center">
+                  class="row">
                   <div class="col">
                     <h1>Dashboard</h1>
                   </div>
-                  <div class="col">                
+                  <div class="col text-end">                
                     <p> Wed | May 16, 2024</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="card mb-3" style="max-width: 540px;" >
-                
+
+            <div class="card">
               <div class="row solution-status">
                 <div class="col-md-3">
                     <div class="card">
@@ -101,7 +101,12 @@
                     </div>
                 </div>
             </div>
-        
+            </div>
+            
+
+            <div class="card mb-3" >
+                
+  
             <div class="row tower">
                 <div class="col-md-12">
                     <div class="card">
@@ -132,14 +137,9 @@
                 </div>
             </div>
           </div>
-
-              <div class="row add-tower-btn">
-                <div class="col-md-12">
-                    <button class="btn btn-primary">ADD TOWER</button>
-                </div>
-              </div>
-          </div>
+        </div>
     </div>
+  </div>
 
   </div>
 

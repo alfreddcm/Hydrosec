@@ -1,3 +1,6 @@
+.side{
+    height: 100vh;
+}
 .dashboard-container {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -41,3 +44,4 @@
 .footer-buttons button:focus {
     outline: none;
 }
+

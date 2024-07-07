@@ -18,3 +18,7 @@ Route::get('/Owner/ManageTower', function () {
     return view('Owner.ManageTower');
 });
 
+Route::get('/Owner/WorkerAccounts', function () {
+    return view('Owner.WorkerAccounts');
+});
+
