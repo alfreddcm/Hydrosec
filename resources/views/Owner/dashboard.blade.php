@@ -1,101 +1,147 @@
+
 @extends('Owner/header')
+<link href="{{ asset('css/owner/dashboard.css') }}" rel="stylesheet">
 @section('title', 'Hydrosec')
 @section('Owner.content')
 
+
 <div class="container" style="max-width:100%; padding:0%;">
     <div class="row">
-        <div class="col-md-3 side">
-            <!-- Sidebar -->
-     
-            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+      <!-- Sidebar -->
+        <div class="col-md-3 side">      
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
                 <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                   <img src="" alt="logo">
-                  <span class="fs-4">Sidebar</span>
+                  <span class="fs-4">
+                    <div class="dropdown">
+                      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                        <strong>Andre</strong>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">Manage Account</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                      </ul>
+                    </div>
+                      </span>
                 </a>
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                   <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
+                    <a href="/Owner/dashboard" class="nav-link active" aria-current="page">
                       <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                      Home
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="nav-link text-white">
-                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
                       Dashboard
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link text-white">
+                    <a href="/Owner/ManageTower" class="nav-link text-white">
+                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                      Manage Tower
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/Owner/WorkerAccounts" class="nav-link text-white">
                       <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                      Orders
+                      Worker Accounts
                     </a>
                   </li>
-                  <li>
-                    <a href="#" class="nav-link text-white">
-                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                      Products
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="nav-link text-white">
-                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                      Customers
-                    </a>
-                  </li>
+                 
                 </ul>
-                <hr>
-                <div class="dropdown">
-                  <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong>mdo</strong>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                  </ul>
+              </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="bg-info">
+              <div class="dashboard-header">
+                <div
+                  class="row justify-content-start align-items-center">
+                  <div class="col">
+                    <h1>Dashboard</h1>
+                  </div>
+                  <div class="col">                
+                    <p> Wed | May 16, 2024</p>
+                  </div>
                 </div>
               </div>
-
-        </div>
-        <div class="col-md-9">
-            <div class="bg-info p-3">
-header
             </div>
             <div class="card mb-3" style="max-width: 540px;" >
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img
-                            src="Image Source"
-                            class="img-fluid rounded-start"
-                            alt="Card title"
-                        />
-                    </div>
-                    <div class="col-md-8">
+                
+              <div class="row solution-status">
+                <div class="col-md-3">
+                    <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">
-                                This is a wider card with supporting text below as a
-                                natural lead-in to additional content. This content is a
-                                little bit longer.
-                            </p>
-                            <p class="card-text">
-                                <small class="text-muted"
-                                    >Last updated 3 mins ago</small
-                                >
-                            </p>
+                            <p class="card-title">A</p>
+                            <p class="card-text">76%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">B</p>
+                            <p class="card-text">89%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">pH +</p>
+                            <p class="card-text">80%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">pH -</p>
+                            <p class="card-text">76%</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
-        </div>
+        
+            <div class="row tower">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">TOWER 1</h2>
+                            <p class="card-text">Juan Mentiz</p>
+                            <p class="card-text">
+                              <div
+                                class="row justify-content-center align-items-center g-2">
+                                <div class="col">
+                                  Nutrient Level: 76%
+                                </div>
+                                <div class="col">
+                                  pH: 6.1
+                                </div>
+                                <div class="col">
+                                  Temperature: 27°C
+                                </div>
+                              </div>
+                            </p>
+                            <p class="card-text">
+                              <a name="" id="" class="btn btn-primary" href="#" role="button">START CYCLE </a>
+                             </p>
+                            <p class="card-text">Start Date: Sun, May 12, 2024</p>
+                            <p class="card-text">Expected Harvest Date: June 26, 2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+              <div class="row add-tower-btn">
+                <div class="col-md-12">
+                    <button class="btn btn-primary">ADD TOWER</button>
+                </div>
+              </div>
+          </div>
     </div>
-</div>
+
+  </div>
 
 
 @endsection

@@ -1,0 +1,13 @@
+.dashboard-header {
+    margin-bottom: 20px;
+}
+.solution-status .card {
+    margin-bottom: 10px;
+}
+.tower .card-body {
+    text-align: center;
+}
+.add-tower-btn {
+    margin-top: 20px;
+    text-align: center;
+}

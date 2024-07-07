@@ -14,3 +14,7 @@ Route::get('/Owner/dashboard', function () {
     return view('Owner.dashboard');
 });
 
+Route::get('/Owner/ManageTower', function () {
+    return view('Owner.ManageTower');
+});
+
