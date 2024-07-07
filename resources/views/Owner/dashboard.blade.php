@@ -9,7 +9,7 @@
     <div class="row">
       <!-- Sidebar -->
         <div class="col-md-3 side">      
-            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" >
                 <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                   <img src="" alt="logo">
                   <span class="fs-4">
