@@ -45,3 +45,6 @@
     outline: none;
 }
 
+.col-sm-3 a{
+    text-decoration: none;
+}

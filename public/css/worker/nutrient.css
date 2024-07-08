@@ -1,0 +1,28 @@
+.side{
+    height: 100vh;
+}
+
+.circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+.circle-text {
+    text-align: center;
+}
+.status-container {
+    display: flex;
+    justify-content: space-around;
+}
+.concentration-container {
+    margin-top: 20px;
+}
+.table {
+    margin: auto;
+    width: auto;
+}

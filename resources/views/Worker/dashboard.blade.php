@@ -1,6 +1,6 @@
 
 @extends('Owner/header')
-<link href="{{ asset('css/owner/managetower.css') }}" rel="stylesheet">
+<link href="{{ asset('css/worker/dashboard.css') }}" rel="stylesheet">
 @section('title', 'Hydrosec')
 @section('Owner.content')
 
@@ -9,7 +9,7 @@
     <div class="row">
       <!-- Sidebar -->
         <div class="col-md-3 ">      
-            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark side">
+            <div class="side p-3 text-white bg-dark " >
                 <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                   <img src="" alt="logo">
                   <span class="fs-4">
@@ -29,86 +29,76 @@
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                   <li class="nav-item">
-                    <a href="/Owner/dashboard" class="nav-link text-white" aria-current="page">
+                    <a href="/Worker/dashboard" class="nav-link active" aria-current="page">
                       <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
                       Dashboard
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link active ">
+                    <a href="/Worker/Nutrient" class="nav-link text-white">
                       <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                      Towers
+                      Nutrient 
                     </a>
                   </li>
-                  <li>
-                    <a href="/Owner/WorkerAccounts" class="nav-link text-white">
-                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                      Worker Accounts
-                    </a>
-                  </li>
-                 
+                                   
                 </ul>
               </div>
         </div>
         
         <div class="col-md-9">
-            <div class="bg-info"> 
+            <div class="bg-info">
               <div class="dashboard-header mb-2">
-                <div class="row">
+                <div
+                  class="row">
                   <div class="col">
-                    <h1>Tower Info</h1>
+                    <h1>Dashboard</h1>
                   </div>
                   <div class="col text-end">                
-                    <p>Wed | May 16, 2024</p>
+                    <p> Wed | May 16, 2024</p>
                   </div>
                 </div>
               </div>
             </div>
 
-           
-            <div class="row">
-              <h4>Tower List:</h4>
 
-              <div class="col-sm-3">
-                <a href="##">
-                  <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Tower 1</h5>
-                    <p class="card-text">
-                      Nutrient Level:
-                    </p>
-                    <p>
-                      pH Level: 
-                    </p>
-                  </div>
+            <div class="card mb-3" >
+                
+  
+            <div class="row tower">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">TOWER 1</h2>
+                            <p class="card-text">Juan Mentiz</p>
+                            <p class="card-text">
+                              <div
+                                class="row justify-content-center align-items-center g-2">
+                                <div class="col">
+                                  Nutrient Level: 76%
+                                </div>
+                                <div class="col">
+                                  pH: 6.1
+                                </div>
+                                <div class="col">
+                                  Temperature: 27°C
+                                </div>
+                              </div>
+                            </p>
+                            <p class="card-text">
+                              <a name="" id="" class="btn btn-primary" href="#" role="button">START CYCLE </a>
+                             </p>
+                            <p class="card-text">Start Date: Sun, May 12, 2024</p>
+                            <p class="card-text">Expected Harvest Date: June 26, 2024</p>
+                        </div>
+                    </div>
                 </div>
-                </a>
-                
-              </div>
-              <div class="col-sm-3">
-                <a href="">
-                  <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Tower 1</h5>
-                    <p class="card-text">
-                      Nutrient Level:
-                    </p>
-                    <p>
-                      pH Level: 
-                    </p>
-                  </div>
-                </div>
-                
-                </a>
-                
-              </div>
             </div>
-            
-        </div> 
+          </div>
+        </div>
     </div>
+  </div>
 
-              
-</div>
+  </div>
 
 
 @endsection
