@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'Hydrosec')
+@section('title', 'Login')
 @section('content')
 
 <div class="container">

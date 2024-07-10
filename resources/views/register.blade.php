@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up Form</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 <body>
     <div class="container">
@@ -16,6 +18,11 @@
                     </div>
                     <div class="card-body">
                         <form>
+                            
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" value="{{ request('email') }}" class="form-control" id="email" placeholder="Email">
+                            </div>
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control" id="username" placeholder="Username">
@@ -28,10 +35,7 @@
                                 <label for="lastName">Last Name</label>
                                 <input type="text" class="form-control" id="lastName" placeholder="Last Name">
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Email">
-                            </div>
+                            
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Password">

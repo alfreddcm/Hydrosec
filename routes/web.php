@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('index');
@@ -42,3 +44,20 @@ Route::get('/Admin/profile', function () {
     return view('Admin.profile');
 });
 
+
+
+//
+
+Route::post('/check-email', function (Request $request) {
+    $email = $request->input('email');
+    $emailExists = DB::table('tbl_account')->where('email', $email)->exists();
+
+    // dd('Email check result for ' . $email . ': ' . ($emailExists ? 'exists' : 'does not exist'));
+
+    if ($emailExists) {
+        return Redirect::back()->with('error', 'Email already in use');
+
+    } else {
+        return Redirect::to('/register?email=' . $email);
+    }
+})->name('checkEmail');
