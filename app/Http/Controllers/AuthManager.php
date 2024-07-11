@@ -49,24 +49,31 @@ class AuthManager extends Controller
 
     function registerPost(Request $request){
         $request->validate([
-            'email'=>'required|email|unique:tbl_useraccount',
-            'username'=>'required',
-            'fullname'=>'required',
-            'password'=>'required'
-
+            'email' => 'required|email|unique:tbl_useraccount',
+            'username' => 'required',
+            'fullname' => 'required',
+            'password' => 'required|min:8|confirmed', // 'password_confirmation' field must be present
         ]);
 
-        $data['email']=$request->email;
-        $data['username']=$request->username;
-        $data['fullname']=$request->fullname;
-        $data['password']=$request->password;
-
-        $user=User::create($data);
-        if(!$user){
-            return redirect(route('/register'))->with('error','Registration failed. Try again');
-
+        // Additional password complexity check
+        $password = $request->password;
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $password)) {
+            return redirect(route('/register'))->with('error', 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
         }
-        return redirect(route('/login'))->with('success','Registration succesfull');
+
+        $data = [
+            'email' => $request->email,
+            'username' => $request->username,
+            'fullname' => $request->fullname,
+            'password' => $request->$password // Hash the password before storing
+        ];
+
+        $user = User::create($data);
+        if (!$user) {
+            return redirect(route('/register'))->with('error', 'Registration failed. Try again');
+        }
+
+        return redirect(route('/login'))->with('success', 'Registration successful');
     }
 
     function logout(){

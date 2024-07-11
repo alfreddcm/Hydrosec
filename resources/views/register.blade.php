@@ -28,7 +28,7 @@
                                 <input type="text" name="username" class="form-control" id="username" placeholder="Username">
                             </div>
                             <div class="form-group">
-                                <label for="firstName">Full Name</label>
+                                <label for="fullName">Full Name</label>
                                 <input type="text" name="fullName" class="form-control" id="fullName" placeholder="Full Name">
                             </div>
 
