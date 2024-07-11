@@ -49,7 +49,7 @@ class AuthManager extends Controller
 
     function registerPost(Request $request){
         $request->validate([
-            'email'=>'required|email|unique:tbl_accounts',
+            'email'=>'required|email|unique:tbl_useraccount',
             'username'=>'required',
             'fullname'=>'required',
             'password'=>'required'

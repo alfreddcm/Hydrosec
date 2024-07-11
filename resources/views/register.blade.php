@@ -13,6 +13,11 @@
 
                         <form action="{{ route('register.post') }}" method="POST">
                             @csrf
+                            @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
                             <div class="form-group">
                                 <label for="email">Email</label>
