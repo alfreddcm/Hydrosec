@@ -10,39 +10,40 @@
                         <h4>SIGN UP</h4>
                     </div>
                     <div class="card-body">
-                        <form>
+
+                        <form action="{{ route('register.post') }}" method="POST">
+                            @csrf
 
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" value="{{ request('email') }}" class="form-control" id="email" placeholder="Email" readonly>
+                                <input type="email" name="email" value="{{ request('email') }}" class="form-control" id="email" placeholder="Email" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" class="form-control" id="username" placeholder="Username">
+                                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
                             </div>
                             <div class="form-group">
-                                <label for="firstName">First Name</label>
-                                <input type="text" class="form-control" id="firstName" placeholder="First Name">
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+                                <label for="firstName">Full Name</label>
+                                <input type="text" name="fullName" class="form-control" id="fullName" placeholder="Full Name">
                             </div>
 
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Password">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
                             </div>
                             <div class="form-group">
                                 <label for="confirmPassword">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                                <input type="password" name="password_confirmation" class="form-control" id="confirmPassword" placeholder="Confirm Password">
                             </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="recaptcha">
-                                <label class="form-check-label" for="recaptcha">reCaptcha</label>
+                                <div class="g-recaptcha" data-sitekey="6LebogwqAAAAAJ47BvpYsyGSY5z2szywzZzJ6rMA"></div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">SIGN UP</button>
-                            <button type="button" class="btn btn-secondary btn-block">CLOSE</button>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-block">SIGN UP</button>
+
+                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{ url('/') }}'">RETURN</button>
+                            </div>
+
                         </form>
                     </div>
                 </div>

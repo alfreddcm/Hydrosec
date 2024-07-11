@@ -23,35 +23,33 @@
                   <p class="text-center small">Enter your username & password to login</p>
                 </div>
 
-                <form class="row g-3 needs-validation" >
+                <form action="{{route('login.post')}}" method="POST" class="row g-3        needs-validation" >
+                @csrf
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
 
                   <div class="col-12">
                     <label for="yourUsername" class="form-label">Username</label>
                     <div class="input-group has-validation">
                       <span class="input-group-text" id="inputGroupPrepend">@</span>
-                      <input type="text" name="username" class="form-control" id="yourUsername" required>
-                      <div class="invalid-feedback">Please enter your username.</div>
-                    </div>
+
+                      <input type="text" name="username" class="form-control" id="yourUsername">
+
                   </div>
 
                   <div class="col-12">
                     <label for="yourPassword" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="yourPassword" required>
-                    <div class="invalid-feedback">Please enter your password!</div>
+                    <input type="password" name="password" class="form-control" id="yourPassword">
                   </div>
 
                   <div class="col-12">
                     <div class="form-group form-check">
-                        <div class="g-recaptcha" data-sitekey="6LebogwqAAAAAJ47BvpYsyGSY5z2szywzZzJ6rMA"></div>
-                        @if ($errors->has('g-recaptcha-response'))
-                                    <span class="invalid-feedback" style="display:block;">
-                                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                                    </span>
-                                @endif
-                    </div>
-                    <div class="form-group form-check">
-                        <div>{{ env('RECAPTCHA_SITE_KEY') }}</div>
-                        <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+                        <div class="g-recaptcha" name="g-recaptcha-response" data-sitekey="6LebogwqAAAAAJ47BvpYsyGSY5z2szywzZzJ6rMA"></div>
+
                     </div>
 
                   </div>

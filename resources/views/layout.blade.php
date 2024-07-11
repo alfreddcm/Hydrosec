@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>@yield('Title','Hydrosec')</title>
+        <title>@yield('title')</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta
@@ -10,12 +10,7 @@
         />
 
         <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"/>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 
@@ -32,9 +27,9 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
         <!-- Bootstrap JavaScript Libraries -->
-
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/popper.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/sweetalert.js') }}"></script>
     </body>
 </html>

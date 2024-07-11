@@ -44,7 +44,7 @@
                 </a>
                 <a href="/Admin/profile">
                     | <strong>MANAGE ACCOUNT</strong>
-                </a> 
+                </a>
             </div>
             <div>
                 <a href="#">LOG OUT</a>
@@ -97,6 +97,6 @@
             </form>
         </div>
     </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
 </html>

@@ -11,6 +11,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table='tbl_useraccount';
+
     /**
      * The attributes that are mass assignable.
      *

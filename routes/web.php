@@ -3,10 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AuthManager;
 
 Route::get('/', function () { return view('index');});
-Route::get('/login', function () { return view('login');});
-Route::get('/register', function () { return view('register');});
+
+
+Route::get('/login', [AuthManager::class, 'login'])->name('login');
+Route::post('/login', [AuthManager::class, 'loginPost'])->name('login.post');
+
+Route::get('/register', [AuthManager::class, 'register'])-> name('register');
+Route::post('/register', [AuthManager::class, 'registerPost'])->name('register.post');
+
+Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
+
+
 
 Route::get('/Owner/dashboard', function () { return view('Owner.dashboard');});
 Route::get('/Owner/ManageTower', function () {return view('Owner.ManageTower');});
@@ -19,10 +29,10 @@ Route::get('/Admin/dashboard', function () {return view('Admin.dashboard');});
 Route::get('/Admin/profile', function () {return view('Admin.profile');});
 
 
-//
+//check email
 Route::post('/check-email', function (Request $request) {
     $email = $request->input('email');
-    $emailExists = DB::table('tbl_account')->where('email', $email)->exists();
+    $emailExists = DB::table('tbl_useraccount')->where('email', $email)->exists();
 
     // dd('Email check result for ' . $email . ': ' . ($emailExists ? 'exists' : 'does not exist'));
 
