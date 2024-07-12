@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -27,6 +30,12 @@ class AppServiceProvider extends ServiceProvider
             ]);
 
             return $response->json()['success'];
+        });
+
+        DB::listen(function ($query) {
+            Log::info($query->sql);
+            Log::info($query->bindings);
+            Log::info($query->time);
         });
     }
 }

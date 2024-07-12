@@ -41,12 +41,6 @@
                             <input type="email" name="email" placeholder="Enter email to have access" class="form-control bg-white border-1 rounded-4 shadow-none px-4 py-3 w-100" required>
                             <button class="btn btn-primary rounded-4 px-3 py-2 position-absolute align-items-center m-1 end-0">Register</button>
                         </form>
-                        @if(session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-
                     </div>
                 </div>
                 <div class="col-md-6 mt-5">

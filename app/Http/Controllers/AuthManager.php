@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 Use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 
 class AuthManager extends Controller
@@ -47,33 +48,40 @@ class AuthManager extends Controller
         return redirect()->route('login')->with('error', 'Login details are invalid');
     }
 
-    function registerPost(Request $request){
+    function registerPost(Request $request) {
         $request->validate([
-            'email' => 'required|email|unique:tbl_useraccount',
-            'username' => 'required',
             'fullname' => 'required',
-            'password' => 'required|min:8|confirmed', // 'password_confirmation' field must be present
+            'username' => 'required',
+            'email' => 'required|email|unique:tbl_useraccount',
+            'password' => 'required|min:8|confirmed',
         ]);
 
         // Additional password complexity check
         $password = $request->password;
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $password)) {
-            return redirect(route('/register'))->with('error', 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+            return redirect(route('register'))->with('error', 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
         }
 
         $data = [
-            'email' => $request->email,
-            'username' => $request->username,
             'fullname' => $request->fullname,
-            'password' => $request->$password // Hash the password before storing
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => $password,
         ];
 
-        $user = User::create($data);
-        if (!$user) {
-            return redirect(route('/register'))->with('error', 'Registration failed. Try again');
+        try {
+            $user = User::create($data);
+
+        } catch (\Exception $e) {
+            return redirect(route('register'))->with('error', 'An error occurred: ' . $e->getMessage());
         }
 
-        return redirect(route('/login'))->with('success', 'Registration successful');
+        if (!$user) {
+            return redirect(route('register'))->with('error', 'Registration failed. Try again');
+        }
+
+        return redirect(route('login'))->with('success', 'Registration successful');
+
     }
 
     function logout(){
