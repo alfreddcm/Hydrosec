@@ -22,15 +22,31 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot() {
-        Validator::extend('recaptcha', function($attribute, $value, $parameters, $validator) {
-            $recaptchaSecret = env('RECAPTCHA_SECRET_KEY');
-            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret' => $recaptchaSecret,
-                'response' => $value,
+        Validator::extend('google_captcha', function ($attribute, $value, $parameters, $validator){
+
+            $http=Http::asForm()->post(config('google_captcha.gc_verification_url'),[
+                'secret' => config('google_captcha.secret_key'),
+                'response' =>$value,
             ]);
 
-            return $response->json()['success'];
-        });
+            if(!$http->object()->success){
+
+                $errorMessage=null;
+                collect($http->object()->{"error-codes"})->each(function ($item)use(&$errorMessage){
+                    $errorMessage.=config('google_captcha.error_codes')[$item];
+
+                });
+
+                $validator->addReplacer('google_captcha',
+                    function($message, $attribute, $rule, $parameters) use ($errorMessage) {
+                        return \str_replace(':message', $errorMessage, $message);
+                    }
+                );
+            }
+
+            return $http->object()->success;
+        },":message");
+
 
         DB::listen(function ($query) {
             Log::info($query->sql);
@@ -38,4 +54,5 @@ class AppServiceProvider extends ServiceProvider
             Log::info($query->time);
         });
     }
-}
+    }
+

@@ -7,88 +7,80 @@ use Illuminate\Support\Facades\Auth;
 Use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+
 
 
 class AuthManager extends Controller
 {
 
     function login(){
+
+        if (Auth::check()) {
+            return redirect(route('ownerdashboard'));
+        }
+
         return view('login');
     }
 
     function register(){
+        if (Auth::check()) {
+            return redirect(route('ownerdashboard'));
+        }
         return view('register');
     }
 
     public function loginPost(Request $request) {
-        // Validate the form input
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-            'g-recaptcha-response' => 'required'
-        ]);
+            $credentials = $request->validate([
+            'username' => 'required|min:8',
+            'password' => 'required'
+            ]);
 
-        // Verify the reCAPTCHA response
-        $recaptchaResponse = $request->input('g-recaptcha-response');
-        $recaptchaSecret = env('RECAPTCHA_SECRET_KEY'); // Ensure you have this in your .env file
-        $recaptcha = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => $recaptchaSecret,
-            'response' => $recaptchaResponse,
-        ]);
 
-        if (!$recaptcha->json()['success']) {
-            return redirect()->route('login')->with('error', 'ReCAPTCHA verification failed. Please try again.');
+        if(Auth::attempt($credentials))
+        {
+            $request->session()->regenerate();
+            return redirect()->route('ownerdashboard')
+                ->with('success','You have successfully logged in!');
         }
 
-        $credentials = $request->only('username', 'password');
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended(route('dashboard'));
-        }
-
-        return redirect()->route('login')->with('error', 'Login details are invalid');
+        return back()->withErrors([
+            'username' => 'Your provided credentials do not match in our records.']);
     }
 
     function registerPost(Request $request) {
+
         $request->validate([
-            'fullname' => 'required',
-            'username' => 'required',
-            'email' => 'required|email|unique:tbl_useraccount',
-            'password' => 'required|min:8|confirmed',
+            'username'=>'required|string|min:8|unique:tbl_useraccounts',
+            'name' => 'required|string|max:250',
+            'email' => 'required|email|max:250|unique:tbl_useraccounts',
+            'password' => 'required|min:8|confirmed'
         ]);
 
-        // Additional password complexity check
-        $password = $request->password;
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $password)) {
-            return redirect(route('register'))->with('error', 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
-        }
-
-        $data = [
-            'fullname' => $request->fullname,
-            'username' => $request->username,
+        User::create([
+            'username'=>$request->username,
+            'name' => $request->name,
             'email' => $request->email,
-            'password' => $password,
-        ];
+            'password' => $request->password,
+        ]);
 
-        try {
-            $user = User::create($data);
+        return redirect()->route('login')
+        ->with('success','You have successfully registered & logged in!');
 
-        } catch (\Exception $e) {
-            return redirect(route('register'))->with('error', 'An error occurred: ' . $e->getMessage());
+    }
+    function index()
+    {
+        if (!Auth::check()) {
+
+            return redirect(route('index'));
         }
-
-        if (!$user) {
-            return redirect(route('register'))->with('error', 'Registration failed. Try again');
-        }
-
-        return redirect(route('login'))->with('success', 'Registration successful');
-
     }
 
     function logout(){
         Session::flush();
         Auth::logout();
 
-        return redirect(route('/'));
+        return redirect(route('index'));
 
     }
 

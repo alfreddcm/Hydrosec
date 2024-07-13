@@ -16,13 +16,13 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $table = 'tbl_useraccount'; // Specify the table name
+    protected $table = 'tbl_useraccounts'; // Specify the table name
 
     protected $fillable = [
-        'fullname',
         'username',
+        'name',
         'email',
-        'password',
+        'password'
     ];
 
     /**

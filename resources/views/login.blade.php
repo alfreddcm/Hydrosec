@@ -31,25 +31,28 @@
                     </div>
                 @endif
 
-
                   <div class="col-12">
                     <label for="yourUsername" class="form-label">Username</label>
-                    <div class="input-group has-validation">
-                      <span class="input-group-text" id="inputGroupPrepend">@</span>
-
-                      <input type="text" name="username" class="form-control" id="yourUsername">
-
+                    <input type="username" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('email') }}">
+                      @if ($errors->has('username'))
+                          <span class="text-danger">{{ $errors->first('username') }}</span>
+                      @endif
                   </div>
 
                   <div class="col-12">
                     <label for="yourPassword" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="yourPassword">
-                  </div>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
+                    @if ($errors->has('password'))
+                        <span class="text-danger">{{ $errors->first('password') }}</span>
+                    @endif
+                    </div>
 
                   <div class="col-12">
                     <div class="form-group form-check">
                         <div class="g-recaptcha" name="g-recaptcha-response" data-sitekey="6LebogwqAAAAAJ47BvpYsyGSY5z2szywzZzJ6rMA"></div>
-
+                        @if ($errors->has('captcha'))
+                        <span class="text-danger">{{ $errors->first('captcha') }}</span>
+                    @endif
                     </div>
 
                   </div>
@@ -68,9 +71,19 @@
           </div>
         </div>
       </div>
-
     </section>
-
   </div>
+
+  <script>
+    @if (session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('success') }}',
+            showConfirmButton: true,
+            timer: 3000
+        });
+    @endif
+</script>
 
   @endsection
