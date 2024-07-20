@@ -1,8 +1,5 @@
-<!-- resources/views/your-view.blade.php -->
 @extends('layout')
-
 @section('title', 'Hydrosec')
-
 @section('content')
 <body>
     <nav class="main-menu d-flex navbar navbar-expand-lg p-2 py-3 p-lg-4 py-lg-4">

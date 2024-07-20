@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\PHPMailerController;
 
 Route::get('/', function () { return view('index');})->name('index');
 
@@ -22,18 +23,17 @@ Route::get('/Owner/dashboard', function () { return view('Owner.dashboard');})->
 Route::get('/Owner/ManageTower', function () {return view('Owner.ManageTower');})->name('ownermanagetower')->middleware('auth');
 Route::get('/Owner/WorkerAccounts', function () {return view('Owner.WorkerAccounts');})->name('ownerworkeraccount')->middleware('auth');
 
-Route::get('/Worker/dashboard', function () {return view('Worker.dashboard');});
+Route::get('/Worker/dashboard', function () {return view('Worker.dashboard');})->name('workerashboard');
 Route::get('/Worker/Nutrient', function () {return view('Worker.Nutrient');});
 
-Route::get('/Admin/dashboard', function () {return view('Admin.dashboard');});
+Route::get('/Admin/dashboard', function () {return view('Admin.dashboard');})->name('admindashboard');
 Route::get('/Admin/profile', function () {return view('Admin.profile');});
 
 
-//check email
-Route::post('/check-email', function (Request $request) {
-    $email = $request->input('email');
-    $emailExists = DB::table('tbl_useraccounts')->where('email', $email)->exists();
-    // dd('Email check result for ' . $email . ': ' . ($emailExists ? 'exists' : 'does not exist'));
-    if ($emailExists) { return Redirect::back()->with('error', 'Email already in use');
-    } else { return Redirect::to('/register?email=' . $email);
-    }})->name('checkEmail');
+Route::post('/check-email', [PHPMailerController::class, 'checkEmail'])->name('checkEmail');
+Route::post('/send-otp', [PHPMailerController::class, 'store'])->name('store');
+Route::post('/verify-otp', [PHPMailerController::class, 'verifyOtpPost'])->name('verifyOtpPost');
+Route::get('/verifyotp', [PHPMailerController::class, 'verifyOtp'])->name('otp.show');
+Route::get('/cancel', [PHPMailerController::class, 'cancel'])->name('cancel');
+Route::post('/resend-otp', [PHPMailerController::class, 'resendOtp'])->name('resendOtp');
+

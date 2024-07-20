@@ -71,10 +71,10 @@
 
                             </form>
 
-                            <div class="text-center pt-1">
-                                <button type="button" class="btn btn-secondary btn-block"
-                                    onclick="window.location.href='{{ url('/') }}'">RETURN</button>
+                            <div class="col-12 text-center">
+                                <p class="small mb-0"> Already have an account?<a href="{{ route('cancel') }}">Login</a></p>
                             </div>
+
 
                         </div>
                     </div>
