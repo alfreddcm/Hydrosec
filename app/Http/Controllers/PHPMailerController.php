@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
 use App\Mail\OtpMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
+use App\Exceptions\CustomDecryptException;
+use Illuminate\Contracts\Encryption\DecryptException;
+
 
 class PHPMailerController extends Controller
 {
@@ -27,41 +31,53 @@ class PHPMailerController extends Controller
     }
 
     public function checkEmail(Request $request)
-    {
-        $email = $request->input('email');
-        $emailExists = DB::table('tbl_useraccounts')->where('email', $email)->exists();
+{
+    $email = $request->input('email');
+    // Fetch all encrypted emails from the database
+    $check = DB::table('tbl_useraccounts')->get();
 
-        if ($emailExists) {
-            return Redirect::back()->with('error', 'Email already in use');
-        } else {
-            return $this->store($request);
+    // Iterate through each user to check for email existence
+    foreach ($check as $user) {
+        try {
+            $emailStored = Crypt::decryptString($user->email);
+            if ($email === $emailStored) {
+                // If email exists, return with error message
+                return Redirect::back()->with('error', 'Email already in use');
+            }
+        } catch (DecryptException $e) {
+            return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
         }
     }
 
-   /**
- * Send an email with OTP.
- *
- * @param  \Illuminate\Http\Request  $request
- * @return RedirectResponse
- */
+    // If no matching email was found, proceed with the store method
+    return $this->store($request);
+}
 
 
- public function store(Request $request)
- {
-     $receiver = $request->email;
-     $otp = rand(100000, 999999); // Generate a 6-digit OTP
+    /**
+     * Send an email with OTP.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return RedirectResponse
+     */
 
-     Session::put('otp', $otp);
-     Session::put('otp_email', $receiver);
 
-     try {
-         Mail::to($receiver)->send(new OtpMail($otp));
+    public function store(Request $request)
+    {
+        $receiver = $request->email;
+        $otp = rand(100000, 999999); // Generate a 6-digit OTP
 
-         return redirect()->route('otp.show')->with(['email' => $receiver, 'success' => 'Email has been sent.']);
+        Session::put('otp', $otp);
+        Session::put('otp_email', $receiver);
+
+        try {
+            Mail::to($receiver)->send(new OtpMail($otp));
+
+            return redirect()->route('otp.show')->with(['email' => $receiver, 'success' => 'Email has been sent.']);
         } catch (\Exception $e) {
-         return back()->with('error', 'Message could not be sent. '.$e->getMessage());
-     }
- }
+            return back()->with('error', 'Message could not be sent. ' /*. $e->getMessage()*/);
+        }
+    }
 
 
 
@@ -77,7 +93,8 @@ class PHPMailerController extends Controller
         $email = $request->session()->get('otp_email');
         $successMessage = $request->session()->get('success');
 
-        return view('verifyotp', ['email' => $email, 'success' => $successMessage]);    }
+        return view('verifyotp', ['email' => $email, 'success' => $successMessage]);
+    }
 
     /**
      * Verify the OTP.
@@ -102,14 +119,16 @@ class PHPMailerController extends Controller
             return Redirect::to('/register?email=' . $email);
         } else {
             // OTP is incorrect, return with an error message
-            return Redirect::back()->withErrors(['otp' => 'Invalid OTP. Please try again.'])->withInput();
-        }
+            return Redirect::back()->with('error', 'Invalid OTP. Please try again.')->withInput();
+     }
     }
 
-    public function cancel(){
+    public function cancel()
+    {
         Session::forget('otp');
-            Session::forget('otp_email');
-            return Redirect::to('/');
+        Session::forget('otp_email');
+        return Redirect::to('/');
     }
 
 }
+

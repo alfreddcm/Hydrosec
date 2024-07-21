@@ -4,5 +4,8 @@
     "editor.defaultFormatter": "rifi2k.format-html-in-php",
     "[javascript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[php]": {
+        "editor.defaultFormatter": "kokororin.vscode-phpfmt"
     }
 }

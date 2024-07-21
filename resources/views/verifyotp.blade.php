@@ -26,15 +26,11 @@
                                 </div>
                                 <form action="{{ route('verifyOtpPost') }}" method="POST">
                                     @csrf
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
+                                    @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
 
                                     @if (session('success'))
                                         <div class="alert alert-success">
@@ -42,7 +38,7 @@
                                         </div>
                                     @endif
                                     <div class="col-12">
-                                        <label for="otp" class="form-label">Enter OTP:</label>                                        
+                                        <label for="otp" class="form-label">Enter OTP:</label>
                                         <input type="hidden" class="form-control text-center" id="otp" name="email" value="{{ $email }}" >
                                         <input type="text" class="form-control text-center" id="otp" name="otp"
                                             required maxlength="6" pattern="\d{6}" title="Please enter a 6-digit OTP">
