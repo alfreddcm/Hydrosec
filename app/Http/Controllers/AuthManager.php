@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CustomDecryptException;
-use App\Models\User;
+use App\Models\Owner;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Log;
@@ -20,6 +20,14 @@ class AuthManager extends Controller
 
     public function login()
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admindashboard');
+        } elseif (Auth::guard('worker')->check()) {
+            return redirect()->route('workerdashboard');
+        } elseif (Auth::guard('owner')->check()) {
+            return redirect()->route('ownerdashboard');
+        }
+
         return view('login');
     }
 
@@ -110,7 +118,7 @@ class AuthManager extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
-        User::create([
+        Owner::create([
             'username' => Crypt::encryptString($request->username),
             'name' => Crypt::encryptString($request->name),
             'email' => Crypt::encryptString($request->email),
@@ -120,12 +128,6 @@ class AuthManager extends Controller
         return redirect()->route('index')
             ->with('success', 'You have successfully registered & logged in!');
 
-    }
-    public function index()
-    {
-        if (!Auth::check()) {
-            return redirect(route('index'));
-        }
     }
 
     public function logout()

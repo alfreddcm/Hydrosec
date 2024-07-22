@@ -20,16 +20,20 @@
                         href="#"class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <img src="" alt="logo">
                         <span class="fs-4">
-                            <div class="dropdown">
+                            <div class="dropdown ps-1">
                                 <a href="#"
                                     class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                                     id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://github.com/mdo.png" alt="" width="32" height="32"
-                                        class="rounded-circle me-2">
+
                                     <strong>
                                         @if (Auth::check())
-                                        <p>{{ Auth::user()->name }}</p>
-                                    @endif
+                                            @php
+                                                $decryptedName = \Illuminate\Support\Facades\Crypt::decryptString(
+                                                    Auth::user()->name,
+                                                );
+                                            @endphp
+                                            <p>{{ $decryptedName }}</p>
+                                        @endif
                                     </strong>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
@@ -38,7 +42,7 @@
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="{{route('logout')}}">Sign out</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('logout') }}">Sign out</a></li>
                                 </ul>
                             </div>
                         </span>
@@ -79,16 +83,16 @@
 
             </div>
             <div class="col-10 main">
-                    <div class="dashboard-header mb-2">
-                        <div class="row">
-                            <div class="col ">
-                                <h2>@yield('title')</h2>
-                            </div>
-                            <div class="col text-end ">
-                                <p>{{ \Carbon\Carbon::now()->format('D | M d, Y') }}</p>
-                            </div>
+                <div class="dashboard-header mb-2">
+                    <div class="row">
+                        <div class="col ">
+                            <h2>@yield('title')</h2>
+                        </div>
+                        <div class="col text-end ">
+                            <p>{{ \Carbon\Carbon::now()->format('D | M d, Y') }}</p>
                         </div>
                     </div>
+                </div>
                 @yield('content')
             </div>
     </main>

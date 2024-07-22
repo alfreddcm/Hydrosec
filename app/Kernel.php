@@ -8,4 +8,12 @@ class Kernel extends HttpKernel
         // Other middleware
         \App\Http\Middleware\HandleDecryptionErrors::class,
     ];
+
+    protected $routeMiddleware = [
+        // ...
+        'admin' => \App\Http\Middleware\Admin::class,
+        'owner' => \App\Http\Middleware\User::class,
+        'worker' => \App\Http\Middleware\Admin::class,
+    ];
+
 }
