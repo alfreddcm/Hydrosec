@@ -8,7 +8,7 @@
     <style>
         a{
             text-decoration: none;
-        
+
         }
         .header {
             display: flex;
@@ -49,7 +49,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <div>                
+            <div>
                 <div>
                     <a href="/Admin/dashboard">
                         <strong> DASHBOARD
@@ -57,17 +57,24 @@
                         </a>
                     <a href="/Admin/profile">
                         | Manage Account
-                    </a> 
+                    </a>
                 </div>
             </div>
             <div>
-                <a href="#">LOG OUT</a>
+                <a href="{{ route('logout') }}">LOG OUT</a>
             </div>
         </div>
         <div class="content">
             <h4>Welcome</h4>
-            <h2>PATRICK</h2>
-            <p>Wed | May 16, 2024</p>
+            <h2>@if (Auth::check())
+                @php
+                    $decryptedName = \Illuminate\Support\Facades\Crypt::decryptString(
+                        Auth::user()->name,
+                    );
+                @endphp
+                <p>{{ $decryptedName }}</p>
+            @endif</h2>
+            <p>{{ \Carbon\Carbon::now()->format('D | M d, Y') }}</p>
             <div class="user-card">
                 <span>ANDREY PIMPIL</span>
                 <span>

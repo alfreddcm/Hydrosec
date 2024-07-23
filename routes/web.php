@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\PHPMailerController;
+use App\Http\Controllers\Owner\OwnerProfile;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {return view('index');})->name('index');
@@ -27,10 +29,17 @@ Route::middleware('guest')->group(function () {
 Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 
 // Routes for Owner with 'auth:owner' middleware
+// Route::middleware(['auth:owner', 'singlesession'])->group(function () {
+
 Route::middleware('auth:owner')->group(function () {
     Route::get('/Owner/dashboard', function () {return view('Owner.dashboard');})->name('ownerdashboard');
     Route::get('/Owner/ManageTower', function () {return view('Owner.ManageTower');})->name('ownermanagetower');
     Route::get('/Owner/WorkerAccounts', function () {return view('Owner.WorkerAccounts');})->name('ownerworkeraccount');
+    Route::get('/Owner/Manageprofile', function () {return view('Owner.Manageprofile');})->name('ownermanageprofile');
+    Route::post('/Owner/Manageprofile', [OwnerProfile::class, 'update'])->name('owner.profile.update');
+
+    Route::get('/Owner/Updatepassword', function () {return view('Owner.Updatepassword');})->name('updatepassword');
+    Route::get('/Owner/Addworker', function () {return view('Owner.Addworker');})->name('addworker');
 });
 
 // Routes for Worker with 'auth:worker' middleware

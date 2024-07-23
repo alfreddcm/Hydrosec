@@ -26,19 +26,21 @@
                                     id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 
                                     <strong>
-                                        @if (Auth::check())
-                                            @php
-                                                $decryptedName = \Illuminate\Support\Facades\Crypt::decryptString(
-                                                    Auth::user()->name,
-                                                );
-                                            @endphp
-                                            <p>{{ $decryptedName }}</p>
-                                        @endif
+                                        @php
+                                            use Illuminate\Support\Facades\Crypt;
+
+                                            if (Auth::check()) {
+                                                $decryptedName = Crypt::decryptString(Auth::user()->name);
+                                            }
+
+                                        @endphp
+                                        <p>{{ $decryptedName }}</p>
                                     </strong>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
                                     aria-labelledby="dropdownUser1">
-                                    <li><a class="dropdown-item" href="#">Manage Account</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('ownermanageprofile') }}">Manage
+                                            Account</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -85,7 +87,7 @@
             <div class="col-10 main">
                 <div class="dashboard-header mb-2">
                     <div class="row">
-                        <div class="col ">
+                        <div class="col ps-3">
                             <h2>@yield('title')</h2>
                         </div>
                         <div class="col text-end ">

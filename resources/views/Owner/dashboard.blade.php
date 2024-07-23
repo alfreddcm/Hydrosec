@@ -4,44 +4,6 @@
 
 <div class="container">
 
-    <div class="card">
-        <div class="row solution-status">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">A</p>
-                        <p class="card-text">76%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">B</p>
-                        <p class="card-text">89%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">pH +</p>
-                        <p class="card-text">80%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">pH -</p>
-                        <p class="card-text">76%</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <div class="card mb-3">
         <div class="row tower">
             <div class="col-md-12">

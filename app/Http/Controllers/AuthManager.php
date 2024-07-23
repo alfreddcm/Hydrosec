@@ -56,6 +56,13 @@ class AuthManager extends Controller
                 if ($username === $storedusername && Hash::check($Password, $storedPassword)) {
                     Auth::guard('worker')->loginUsingId($user->id);
                     $request->session()->regenerate();
+
+                //to be added feature: Single device log(already have middleware)
+                // $sessionToken = Str::random(60);
+                // DB::table('tbl_adminaccount')->where('id', $admin->id)->update(['session_token' => $sessionToken]);
+                // session(['session_token' => $sessionToken]);
+
+
                     return redirect()->route('workerdashboard')
                         ->with('success', 'You have successfully logged in as Worker!');
                 }

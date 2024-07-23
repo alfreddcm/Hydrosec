@@ -80,20 +80,20 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        'workers' => [
-            'driver' => 'database',
-            'table' => 'tbl_workeraccount',
-        ],
+        'worker' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Worker::class,
+    ],
 
-        'admins' => [
-            'driver' => 'database',
-            'table' => 'tbl_adminaccount',
-        ],
+        'admin' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Admin::class,
+    ],
 
         'owners' => [
-            'driver' => 'database',
-            'table' => 'tbl_useraccounts',
-        ],
+        'driver' => 'eloquent',
+        'model' => App\Models\Owner::class,
+    ],
 
 
         // 'users' => [

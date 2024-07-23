@@ -14,8 +14,7 @@ return new class extends Migration
             $table->tinyInteger('id', false, true)->autoIncrement();
             $table->string('pH');
             $table->string('temperature');
-            $table->string('water');
-            $table->string('nutrient');
+            $table->string('nutrientlevel');
             $table->string('status');
             $table->timestamps();
         });
@@ -36,28 +35,6 @@ return new class extends Migration
             $table->tinyInteger('id', false, true)->autoIncrement();
             $table->tinyInteger('ID_tower', false, true);
             $table->string('activity');
-            $table->timestamps();
-
-            $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');
-        });
-
-        Schema::create('tbl_nutrientsolution', function (Blueprint $table) {
-            $table->tinyInteger('id', false, true)->autoIncrement();
-            $table->tinyInteger('ID_tower', false, true);
-            $table->string('name');
-            $table->string('level');
-            $table->timestamps();
-
-            $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');
-        });
-
-        Schema::create('tbl_cultivation', function (Blueprint $table) {
-            $table->tinyInteger('id', false, true)->autoIncrement();
-            $table->tinyInteger('ID_tower', false, true);
-            $table->string('plant_type');
-            $table->string('status');
-            $table->timestamp('date_start')->nullable();
-            $table->timestamp('date_harvest')->nullable();
             $table->timestamps();
 
             $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');
