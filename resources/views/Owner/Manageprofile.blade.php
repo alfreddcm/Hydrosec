@@ -25,15 +25,6 @@
                     @endif
 
                     <!-- Display Validation Errors -->
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
 
                     <form method="POST" action="{{ route('owner.profile.update') }}">
                         @csrf
@@ -42,11 +33,20 @@
                             <input type="text" class="form-control" id="name" name="name" value="{{ $Name }}">
                         </div>
                         <div class="mb-2">
+
                             <label for="username" class="form-label">Username</label>
+                            @if ($errors->has('username'))
+                            <br>
+                            <span class="text-danger">{{ $errors->first('username') }}</span>
+                        @endif
                             <input type="text" class="form-control" id="username" name="username" value="{{ $Username }}">
                         </div>
                         <div class="mb-2">
                             <label for="email" class="form-label">Email</label>
+                            @if ($errors->has('email'))
+                            <br>
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @endif
                             <input type="email" class="form-control" id="email" name="email" value="{{ $Email }}">
                         </div>
                         <div class="mb-2 text">
