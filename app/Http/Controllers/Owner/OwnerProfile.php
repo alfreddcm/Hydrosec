@@ -28,8 +28,8 @@ class OwnerProfile extends Controller
         ]);
 
         // Decrypt and check if the username or email already exists in any of the three tables
-        $usernameExists = $this->check('username', $request->username, Auth::id());
-        $emailExists = $this->check('email', $request->email, Auth::id());
+        $usernameExists = $this->checkUsername('username', $request->username, Auth::id());
+        $emailExists = $this->checkEmail('email', $request->email, Auth::id());
 
         if ($usernameExists) {
             return back()->withErrors(['username' => 'The username has already been taken.']);
@@ -56,24 +56,39 @@ class OwnerProfile extends Controller
     }
 }
 
-    public function check($field, $value, $currentUserId){
+    public function checkUsername($field, $value, $currentUserId){
         {
             // Check in Owner table, excluding the current user
             $ownerCheck = Owner::where($field, Crypt::encryptString($value))
                 ->where('id', '!=', $currentUserId)
                 ->exists();
 
-            // Check in Admin table
-            // $adminCheck = Admin::all()->filter(function ($admin) use ($field, $value) {
-            //     return Crypt::decryptString($admin->$field) === $value;
-            // })->isNotEmpty();
+            $adminCheck = Admin::all()->filter(function ($admin) use ($field, $value) {
+                return Crypt::decryptString($admin->$field) === $value;
+            })->isNotEmpty();
 
             // Check in Worker table
             $workerCheck = Worker::all()->filter(function ($worker) use ($field, $value) {
                 return Crypt::decryptString($worker->$field) === $value;
             })->isNotEmpty();
 
-            return $ownerCheck || $workerCheck;
+            return $ownerCheck || $workerCheck || $adminCheck;
+        }
+    }
+
+    public function checkEmail($field, $value, $currentUserId){
+        {
+            // Check in Owner table, excluding the current user
+            $ownerCheck = Owner::where($field, Crypt::encryptString($value))
+                ->where('id', '!=', $currentUserId)
+                ->exists();
+
+            // Check in Worker table
+            $workerCheck = Worker::all()->filter(function ($worker) use ($field, $value) {
+                return Crypt::decryptString($worker->$field) === $value;
+            })->isNotEmpty();
+
+            return $ownerCheck || $workerCheck ;
         }
     }
 }

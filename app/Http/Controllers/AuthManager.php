@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CustomDecryptException;
 use App\Models\Owner;
+use App\Models\Admin;
+use App\Models\Worker;
+use App\Rules\UniqueUsername;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Log;
@@ -119,11 +122,17 @@ class AuthManager extends Controller
     {
 
         $request->validate([
-            'username' => 'required|string|min:8|unique:tbl_useraccounts',
+            'username' => 'required|string|max:255',
             'name' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:tbl_useraccounts',
             'password' => 'required|min:8|confirmed',
         ]);
+
+        $usernameExists = $this->checkUsername('username', $request->username);
+
+        if ($usernameExists) {
+            return back()->withErrors(['username' => 'The username has already been taken.']);
+        }
 
         Owner::create([
             'username' => Crypt::encryptString($request->username),
@@ -144,6 +153,26 @@ class AuthManager extends Controller
 
         return redirect(route('index'));
 
+    }
+
+    public function checkUsername($field, $value, ){
+        {
+            // Check in Owner table, excluding the current user
+            $ownerCheck = Owner::all()->filter(function ($owner) use ($field, $value) {
+                return Crypt::decryptString($owner->$field) === $value;
+            })->isNotEmpty();
+
+            $adminCheck = Admin::all()->filter(function ($admin) use ($field, $value) {
+                return Crypt::decryptString($admin->$field) === $value;
+            })->isNotEmpty();
+
+            // Check in Worker table
+            $workerCheck = Worker::all()->filter(function ($worker) use ($field, $value) {
+                return Crypt::decryptString($worker->$field) === $value;
+            })->isNotEmpty();
+
+            return $ownerCheck || $workerCheck || $adminCheck;
+        }
     }
 
 }

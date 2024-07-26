@@ -6,10 +6,11 @@ use App\Http\Controllers\Owner\OwnerProfile;
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {return view('index');})->name('index');
 
 // Guest Routes: Only accessible to unauthenticated users
 Route::middleware('guest')->group(function () {
+    Route::get('/', function () {return view('index');})->name('index');
+
     Route::get('/login', [AuthManager::class, 'login'])->name('login');
     Route::post('/login', [AuthManager::class, 'loginPost'])->name('login.post');
 

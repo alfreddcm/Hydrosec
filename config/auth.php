@@ -43,17 +43,17 @@ return [
 
         'worker' => [
             'driver' => 'session',
-            'provider' => 'workers',
+            'provider' => 'worker',
         ],
 
         'admin' => [
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'admin',
         ],
 
         'owner' => [
             'driver' => 'session',
-            'provider' => 'owners',
+            'provider' => 'owner',
         ],
     ],
 
@@ -90,7 +90,7 @@ return [
         'model' => App\Models\Admin::class,
     ],
 
-        'owners' => [
+        'owner' => [
         'driver' => 'eloquent',
         'model' => App\Models\Owner::class,
     ],
