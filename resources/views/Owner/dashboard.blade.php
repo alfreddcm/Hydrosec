@@ -35,7 +35,37 @@
             </div>
         </div>
     </div>
-
+<h1 class="mt-5">Sensor Data</h1>
+@php
+$data = DB::table('sensor')->get();
+@endphp
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>pH</th>
+                    <th>Temperature</th>
+                    <th>Nutrient Level</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                @foreach ($data as $sensor)
+                    <tr>
+                        <td>{{ $sensor->id }}</td>
+                        <td>{{ $sensor->pH }}</td>
+                        <td>{{ $sensor->temperature }}</td>
+                        <td>{{ $sensor->nutrientlevel }}</td>
+                        <td>{{ $sensor->status }}</td>
+                        <td>{{ $sensor->created_at }}</td>
+                        <td>{{ $sensor->updated_at }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 </div>
 
 @endsection
