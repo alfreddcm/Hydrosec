@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\Owner\OwnerProfile;
+use App\Http\Controllers\Admin\admincontroller;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +53,14 @@ Route::middleware('auth:worker')->group(function () {
 
 // Routes for Admin with 'auth:admin' middleware
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/Admin/dashboard', function () {return view('Admin.dashboard');})->name('admindashboard');
+    Route::get('/Admin/Dashboard', function () {return view('Admin.dashboard');})->name('admindashboard');
     Route::get('/Admin/profile', function () {return view('Admin.profile');})->name('adminprofile');
+    Route::get('/Admin/UserAccounts', function () {return view('Admin.UserAccounts');})->name('UserAccounts');
+
+    Route::get('/Admin/edit/{id}', [admincontroller::class, 'edit'])->name('admin.edit');
+Route::post('/Admin/update/{id}', [admincontroller::class, 'update'])->name('admin.update');
+Route::post('/Admin/update-password/{id}', [admincontroller::class, 'updatePassword'])->name('admin.updatePassword');
+
+
+    Route::delete('delete/{id}', [admincontroller::class, 'destroy']);
 });

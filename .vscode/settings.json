@@ -6,6 +6,6 @@
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "[php]": {
-        "editor.defaultFormatter": "kokororin.vscode-phpfmt"
+        "editor.defaultFormatter": "DEVSENSE.phptools-vscode"
     }
 }

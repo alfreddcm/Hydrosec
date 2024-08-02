@@ -177,7 +177,7 @@ $conn->close();
 
 // Decrypt data
 $method = "AES-128-CBC";
-$key = "2B7E151628AED2A6ABF7CFA598883C23";
+$key = "aaaaaaaaaaaaaaaa";
 $ivv = base64_decode($key);
 
 
