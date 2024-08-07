@@ -43,6 +43,10 @@ Route::middleware('auth:owner')->group(function () {
 
     Route::get('/Owner/Updatepassword', function () {return view('Owner.Updatepassword');})->name('updatepassword');
     Route::get('/Owner/Addworker', function () {return view('Owner.Addworker');})->name('addworker');
+
+    Route::post('/Owner/Addworker', function () {return view('Owner.Addworker');})->name('addworkerpost');
+
+
 });
 
 // Routes for Worker with 'auth:worker' middleware
@@ -59,8 +63,9 @@ Route::middleware('auth:admin')->group(function () {
 
     Route::get('/Admin/edit/{id}', [admincontroller::class, 'edit'])->name('admin.edit');
 Route::post('/Admin/update/{id}', [admincontroller::class, 'update'])->name('admin.update');
-Route::post('/Admin/update-password/{id}', [admincontroller::class, 'updatePassword'])->name('admin.updatePassword');
+Route::post('/Admin/update-password/{id}', [admincontroller::class, 'OwnerupdatePassword'])->name('admin.updatePassword');
 
 
     Route::delete('delete/{id}', [admincontroller::class, 'destroy']);
+
 });

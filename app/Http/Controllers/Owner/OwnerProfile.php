@@ -10,6 +10,9 @@ use App\Models\Owner;
 use App\Models\Worker;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Redirect;
+
 
 
 
@@ -91,6 +94,45 @@ class OwnerProfile extends Controller
             return $ownerCheck || $workerCheck ;
         }
     }
+
+
+
+
+        public function addworker(Request $request){
+
+
+            $credentials = $request->validate([
+                'name'     =>'required',
+                'username' => 'required',
+                'password' => 'required',
+            ]);
+    
+            $name = $credentials['name'];
+            $username = $credentials['username'];
+            $Password = $credentials['password'];
+    
+            $ownerCheck = Owner::where($username);
+            $adminCheck = Admin::where($username);
+            $workerCheck = Worker::where($username);
+
+            foreach ($ownerCheck as $user) {
+                try {
+                    $storedusername = Crypt::decryptString($user->username);
+                    $storedPassword = $user->password;
+    
+                    if ($username === $storedusername && Hash::check($Password, $storedPassword)) {
+                        $worker = new Worker();
+                        $worker->name = $request->input('name');
+                        $worker->username = $request->input('username');
+                        $worker->password = Hash::make($request->input('password')); // Encrypt the password
+                        $worker->save();
+            }
+
+
+
+
+        }
+    
 }
 
 

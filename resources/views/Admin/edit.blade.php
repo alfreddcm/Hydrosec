@@ -32,6 +32,7 @@
                                         <label for="email">Email:</label>
                                         <input type="email" class="form-control" name="email" value="{{ $user->email }}" required>
                                     </div>
+                                    <a href="javascript:void(0);" onclick="openPasswordModal({{ $user->id }})" class="btn btn-success">Update Password</a>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                     <a href="{{ route('UserAccounts') }}" class="btn btn-secondary">Cancel</a>
                                 </form>
@@ -43,5 +44,42 @@
         </nav>
     </div>
 </div>
+
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="passwordModalLabel">Update Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form id="passwordForm" action="{{ route('admin.updatePassword', ['id' => $user->id]) }}" method="post">
+      @csrf
+          <div class="form-group">
+            <label for="password">New Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="password_confirmation">Confirm Password</label>
+            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+          </div>
+          <input type="hidden" id="userId">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+    function openPasswordModal(userId) {
+        $('#userId').val(userId);
+        $('#passwordModal').modal('show');
+    }
+
+</script>
 
 @endsection

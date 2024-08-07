@@ -10,6 +10,10 @@ use App\Models\Worker;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class admincontroller extends Controller
 {
@@ -49,5 +53,28 @@ class admincontroller extends Controller
             echo $exception->getMessage();
         }
         return redirect(route('UserAccounts'));
+    }
+
+
+    public function OwnerupdatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $user = Owner::find(auth()->user()->id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password updated successfully');
     }
 }
