@@ -1,8 +1,8 @@
 
-@extends('Owner/header')
+@extends('Worker/header')
 <link href="{{ asset('css/worker/dashboard.css') }}" rel="stylesheet">
 @section('title', 'Hydrosec')
-@section('Owner.content')
+@section('Worker.content')
 
 
 <div class="container" style="max-width:100%; padding:0%;">

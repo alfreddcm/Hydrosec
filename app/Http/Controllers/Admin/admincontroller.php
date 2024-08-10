@@ -43,6 +43,29 @@ class admincontroller extends Controller
         return redirect()->route('UserAccounts')->with('success', 'User updated successfully.');
     }
 
+    public function edit2($id)
+    {
+        $worker = Worker::find($id);
+        $worker->name = Crypt::decryptString($worker->name);
+
+        $worker->username = Crypt::decryptString($worker->username);
+        return view('Admin.edit2', compact('worker'));
+    }
+
+    public function update2(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username'=> 'required',
+        ]);
+
+        $user = Worker::find($id);
+        $user->name = Crypt::encryptString($request->input('name'));
+        $user->username = Crypt::encryptString($request->input('username'));
+        $user->save();
+
+        return redirect()->route('UserAccounts')->with('success', 'User updated successfully.');
+    }
     
 
         public function destroy(int $id)

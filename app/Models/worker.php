@@ -21,7 +21,8 @@ class Worker extends Authenticatable
     protected $fillable = [
         'username',
         'name',
-        'password'
+        'password',
+        'OwnerID'
     ];
 
     /**
