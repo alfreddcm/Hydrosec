@@ -9,6 +9,8 @@
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="{{asset('js/jquery.min.js')}}"></script>
+
 </head>
 
 <body>

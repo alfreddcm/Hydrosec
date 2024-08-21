@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\CustomDecryptException;
 use Illuminate\Contracts\Encryption\DecryptException;
-
+use App\Models\Owner;
+use App\Models\Admin;
+use App\Models\Worker;
 
 class PHPMailerController extends Controller
 {
@@ -34,7 +36,7 @@ class PHPMailerController extends Controller
 {
     $email = $request->input('email');
     // Fetch all encrypted emails from the database
-    $check = DB::table('tbl_useraccounts')->get();
+    $check = Owner::get();
 
     // Iterate through each user to check for email existence
     foreach ($check as $user) {
@@ -64,6 +66,8 @@ class PHPMailerController extends Controller
 
     public function store(Request $request)
     {
+
+        //ranbytes
         $receiver = $request->email;
         $otp = rand(100000, 999999); // Generate a 6-digit OTP
 
@@ -78,7 +82,6 @@ class PHPMailerController extends Controller
             return back()->with('error', 'Message could not be sent. ' /*. $e->getMessage()*/);
         }
     }
-
 
 
     /**

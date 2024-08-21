@@ -35,7 +35,7 @@
                         <div class="col-lg-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Owner Accounts List
+                                    Owner Worker Accounts List
                                 </div>
                                 <div class="panel-body">
                                     <div class="dataTable_wrapper">
@@ -46,6 +46,7 @@
                                                     <th>No</th>
                                                     <th>Name</th>
                                                     <th>Username</th>
+                                                    <th>Tower ID</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -56,9 +57,10 @@
                                                             <td>{{ $counter++ }}</td>
                                                             <td>{{ Crypt::decryptString($user->name) }}</td>
                                                             <td>{{ Crypt::decryptString($user->username) }}</td>
+                                                            <td>{{($user->towerid)}}</td>
                                                             <td>
                                                                 <div class="btn-group">
-                                                                    <a href="{{ route('admin.edit', $user->id) }}"
+                                                                    <a href="{{ route('ownerworker.edit', $user->id) }}"
                                                                         class="btn btn-success">Edit</a>
 
                                                                     <form action="/student/delete/{{ $user->id }}"

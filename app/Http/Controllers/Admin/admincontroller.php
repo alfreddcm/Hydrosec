@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 
 
 
+
 class admincontroller extends Controller
 {
     public function edit($id)
@@ -68,18 +69,38 @@ class admincontroller extends Controller
     }
     
 
-        public function destroy(int $id)
+    public function disableOwner()
     {
         try {
-            Owner::destroy($id);
-        } catch (\Exception $exception){
-            echo $exception->getMessage();
+            $user = Owner::find(auth()->user()->id);
+            $user->status = "disabled"; 
+            $user->save();
+        } catch (\Exception $exception) {
+           
+            return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to disable the account.']);
         }
-        return redirect(route('UserAccounts'));
+    
+        return redirect()->route('UserAccounts')->with('status', 'Account disabled successfully.');
+    }
+    
+    public function disableWorker(int $id)
+    {
+        try {
+            $user = Worker::find(auth()->user()->id);
+            $user->status = "disabled"; 
+            $user->save();
+
+        } catch (\Exception $exception){
+            return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to disable the account.']);
+
+        }
+        return redirect()->route('UserAccounts')->with('status', 'Account disabled successfully.');
     }
 
 
-    public function OwnerupdatePassword(Request $request)
+        //ownerupdate pass
+
+    public function adminupdatePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'password' => 'required',
@@ -89,6 +110,51 @@ class admincontroller extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $user = Owner::find(auth()->user()->id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password updated successfully');
+    }
+    
+    //workerupdate pass
+    public function adminupdatePassword2(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $user = Worker::find(auth()->user()->id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password updated successfully');
+    }
+
+    public function adminPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $user = Admin::find(auth()->user()->id);
 
         if (!$user) {
             return redirect()->back()->with('error', 'User not found');

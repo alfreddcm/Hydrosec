@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+
 
 
 
@@ -140,6 +142,55 @@ class OwnerProfile extends Controller
         })->isNotEmpty();
 
         return $ownerCheck || $workerCheck || $adminCheck;
+    }
+
+    public function edit($id)
+    {
+        $user = Worker::find($id);
+        $user->name = Crypt::decryptString($user->name);
+        $user->username = Crypt::decryptString($user->username);
+        return view('owner.edit', compact('user'));
+    }
+
+    public function workerupdate(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required',
+            'towerid' => 'required',
+
+        ]);
+
+        $user = Worker::find($id);
+        $user->name = Crypt::encryptString($request->input('name'));
+        $user->username = Crypt::encryptString($request->input('username'));
+        $user->towerid = $request->input('towerid');
+
+        $user->save();
+
+        return redirect()->route('ownerworkeraccount')->with('success', 'User updated successfully.');
+    }
+
+    public function workerPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $user = Worker::find(auth()->user()->id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password updated successfully');
     }
 
 }

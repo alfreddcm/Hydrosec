@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\CustomDecryptException;
 use App\Models\Owner;
 use App\Models\Admin;
 use App\Models\Worker;
-use App\Rules\UniqueUsername;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +47,7 @@ class AuthManager extends Controller
         $username = $credentials['username'];
         $Password = $credentials['password'];
 
-        $worker = DB::table('tbl_workeraccount')->get();
+        $worker =Worker::get();
         foreach ($worker as $user) {
             try {
                 $storedusername = Crypt::decryptString($user->username);
@@ -75,7 +72,7 @@ class AuthManager extends Controller
 
         }
 
-        $admin = DB::table('tbl_adminaccount')->get();
+        $admin = Admin::get();
 
         foreach ($admin as $user) {
             try {
@@ -93,7 +90,7 @@ class AuthManager extends Controller
             }
         }
 
-        $owner = DB::table('tbl_useraccounts')->get();
+        $owner =Owner::get();
 
         foreach ($owner as $user) {
             try {

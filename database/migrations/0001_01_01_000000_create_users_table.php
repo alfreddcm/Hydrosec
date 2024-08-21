@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('status')->default('active');
             $table->timestamps();
         });
 
@@ -26,6 +27,8 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('OwnerID');
+            $table->string('status')->default('active');
+
             $table->timestamps();
         });
 
@@ -35,6 +38,8 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('status')->default('active');
+
             $table->timestamps();
         });
 

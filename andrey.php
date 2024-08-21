@@ -58,7 +58,6 @@ $conn->close();
 ?>
 
 
-////////////
 
 <?php
 $hostname = "localhost"; 
@@ -108,12 +107,12 @@ $dbname = "sensor_data"; // Name of the database
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 // Fetch the most recent encrypted data from the database
+
 $sql = "SELECT ph, temp, waterlevel, iv FROM measurements ";
 $result = $conn->query($sql);
 
@@ -130,26 +129,17 @@ if ($result->num_rows > 0) {
 
     // Decrypt data
     $method = "AES-128-CBC";
-    $key = "aaaaaaaaaaaaaaaa"; // Ensure this key is 16 bytes
+    $key = "aaaaaaaaaaaaaaaa"; 
 
-    // Function to decrypt each variable
     function decrypt_data($encrypted_data, $method, $key, $iv) {
-        // Decode the Base64-encoded encrypted data
         $encrypted_data = base64_decode($encrypted_data);
 
-        // Decrypt the data
         $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
-
-        // Remove padding
         $decrypted_data = rtrim($decrypted_data, "\0");
-
-        // Decode the Base64-encoded decrypted message
         $decoded_msg = base64_decode($decrypted_data);
-
         return $decoded_msg;
     }
 
-    // Decrypt each variable
     $decrypted_ph = decrypt_data($encrypted_ph, $method, $key, $iv);
     $decrypted_temp = decrypt_data($encrypted_temp, $method, $key, $iv);
     $decrypted_waterlevel = decrypt_data($encrypted_waterlevel, $method, $key, $iv);

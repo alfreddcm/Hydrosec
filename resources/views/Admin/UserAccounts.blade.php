@@ -55,7 +55,7 @@
                         <div class="btn-group">
                             <a href="{{ route('admin.edit', $user->id) }}" class="btn btn-success">Edit</a>
 
-                            <form action="/student/delete/{{ $user->id }}" method="post">
+                            <form action="{{ route('admin.dis', $user->id) }}" method="post">
                                 @method('DELETE')
                                 @csrf
                                 <button onclick="return confirm('Are you sure You want to delete this?')" type="submit"
@@ -95,7 +95,7 @@
                                         <div class="btn-group">
                             <a href="{{ route('admin.edit2', $workerUser->id) }}" class="btn btn-success">Edit</a>
 
-                            <form action="/#/{{ $workerUser->id }}" method="post">
+                            <form action="{{ route('admin.dis2', $workerUser->id) }}" method="post">
                                 @method('DELETE')
                                 @csrf
                                 <button onclick="return confirm('Are you sure You want to delete this?')" type="submit"

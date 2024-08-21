@@ -4,15 +4,11 @@ use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\Admin\admincontroller;
-
-
+use App\Models\Sensor;
 use Illuminate\Support\Facades\Route;
 
-
-// Guest Routes: Only accessible to unauthenticated users
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return view('index'); })->name('index');
+    Route::get('/', function () { return view('index'); })->name('index');
 
     Route::get('/login', [AuthManager::class, 'login'])->name('login');
     Route::post('/login', [AuthManager::class, 'loginPost'])->name('login.post');
@@ -28,6 +24,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/resend-otp', [PHPMailerController::class, 'resendOtp'])->name('resendOtp');
 
 });
+
 
 // Authenticated Routes: Accessible to authenticated users
 Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
@@ -55,10 +52,17 @@ Route::middleware('auth:owner')->group(function () {
         return view('Owner.Addworker'); })->name('addworkerpost');
     Route::post('/Owner/Addworker', [OwnerProfile::class, 'addworker'])->name('addownerworkeraccount');
 
+    Route::get('/Owner/edit/{id}', [OwnerProfile::class, 'edit'])->name('ownerworker.edit');
+    Route::post('/Owner/update/{id}', [OwnerProfile::class, 'workerupdate'])->name('ownerworker.update');
+    
+Route::post('/Owner/update-password/{id}', [OwnerProfile::class, 'workerPassword'])->name('owner.workerupdatePassword');
+
+
 
 });
 
-// Routes for Worker with 'auth:worker' middleware
+
+
 Route::middleware('auth:worker')->group(function () {
     Route::get('/Worker/dashboard', function () {
         return view('Worker.dashboard'); })->name('workerdashboard');
@@ -66,7 +70,7 @@ Route::middleware('auth:worker')->group(function () {
         return view('Worker.Nutrient'); })->name('workernutrient');
 });
 
-// Routes for Admin with 'auth:admin' middleware
+
 Route::middleware('auth:admin')->group(function () {
     Route::get('/Admin/Dashboard', function () {
         return view('Admin.dashboard'); })->name('admindashboard');
@@ -81,10 +85,13 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/Admin/update/{id}', [admincontroller::class, 'update'])->name('admin.update');
     Route::post('/Admin/update2/{id}', [admincontroller::class, 'update2'])->name('admin.update2');
 
-    Route::post('/Admin/update-password/{id}', [admincontroller::class, 'OwnerupdatePassword'])->name('admin.updatePassword');
-    Route::post('/Admin/update-password2/{id}', [admincontroller::class, 'OwnerupdatePassword2'])->name('admin.updatePassword2');
+    Route::post('/Admin/update-password/{id}', [admincontroller::class, 'adminupdatePassword'])->name('admin.updatePassword');
+    Route::post('/Admin/update-password2/{id}', [admincontroller::class, 'adminupdatePassword2'])->name('admin.updatePassword2');
 
 
-    Route::delete('delete/{id}', [admincontroller::class, 'destroy']);
+    Route::delete('delete/{id}', [admincontroller::class, 'disableOwner'])->name('admin.dis');;
+    Route::delete('delete2/{id}', [admincontroller::class, 'disableWorker'])->name('admin.dis2');;
+
 
 });
+Route::get('/sensor/latest', [Sensor::class, 'getLatestSensorData']);

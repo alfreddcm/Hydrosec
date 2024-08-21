@@ -12,11 +12,15 @@ return new class extends Migration
     {
         Schema::create('sensor', function (Blueprint $table) {
             $table->tinyInteger('id', false, true)->autoIncrement();
+            $table->tinyInteger('towerid', false, true);
             $table->string('pH');
             $table->string('temperature');
             $table->string('nutrientlevel');
             $table->string('status');
             $table->timestamps();
+
+            $table->foreign('towerid')->references('id')->on('tbl_tower')->onDelete('cascade');
+
         });
 
         Schema::create('tbl_tower', function (Blueprint $table) {
@@ -29,7 +33,12 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('ID_sensor')->references('id')->on('sensor')->onDelete('cascade');
+            $table->foreign('ID_owner')->references('id')->on('tbl_owneraccounts')->onDelete('cascade');
+            $table->foreign('ID_worker')->references('id')->on('tbl_workeracount')->onDelete('cascade');
+
         });
+
+        //trigger INSERT INTO tbl_towerlogs (towerid, activity) VALUES (sensor.towerid,(sensor.pH,sensor.temperature,sensor.nutrientlevel)
 
         Schema::create('tbl_towerlogs', function (Blueprint $table) {
             $table->tinyInteger('id', false, true)->autoIncrement();
