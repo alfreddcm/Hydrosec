@@ -99,7 +99,6 @@ class OwnerProfile extends Controller
 
     public function addworker(Request $request)
 {
-    $id=Auth::id();
     $credentials = $request->validate([
         'name' => 'required|string|max:255',
         'username' => 'required|string|max:255',
@@ -118,7 +117,8 @@ class OwnerProfile extends Controller
             'username' => Crypt::encryptString($request->username),
             'name' => Crypt::encryptString($request->name),
             'password' => Hash::make($request->password),
-            'OwnerID' => Crypt::encryptString($id)
+            'OwnerID' => Auth::id()
+
         ]);
 
         // Redirect with a success message
@@ -148,7 +148,8 @@ class OwnerProfile extends Controller
     {
         $user = Worker::find($id);
         $user->name = Crypt::decryptString($user->name);
-        $user->username = Crypt::decryptString($user->username);
+        $user->username = Crypt::decryptString($user->username); 
+
         return view('owner.edit', compact('user'));
     }
 
@@ -164,6 +165,7 @@ class OwnerProfile extends Controller
         $user = Worker::find($id);
         $user->name = Crypt::encryptString($request->input('name'));
         $user->username = Crypt::encryptString($request->input('username'));
+        $user->OwnerID = Auth::id();
         $user->towerid = $request->input('towerid');
 
         $user->save();

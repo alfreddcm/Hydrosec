@@ -10,6 +10,12 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="{{asset('js/jquery.min.js')}}"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+
+
 
 </head>
 
@@ -104,10 +110,11 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- Bootstrap JavaScript Libraries -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <!-- <script src="{{ asset('js/jquery.min.js') }}"></script> -->
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert.js') }}"></script>
+
 </body>
 
 </html>

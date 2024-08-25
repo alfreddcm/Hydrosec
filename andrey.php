@@ -122,12 +122,9 @@ if ($result->num_rows > 0) {
     $encrypted_ph = $row['ph'];
     $encrypted_temp = $row['temp'];
     $encrypted_waterlevel = $row['waterlevel'];
+    
     $iv_base64 = $row['iv'];
-
-    // Decode the Base64-encoded IV
     $iv = base64_decode($iv_base64);
-
-    // Decrypt data
     $method = "AES-128-CBC";
     $key = "aaaaaaaaaaaaaaaa"; 
 

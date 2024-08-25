@@ -5,11 +5,10 @@
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Crypt;
     use App\Models\Owner;
-    use App\Models\Admin;
     use App\Models\Worker;
 
 
-    $accs = DB::table('tbl_useraccounts')->get();
+    $accs = Owner::where('status','active')->get();
     
 
 @endphp
@@ -80,7 +79,7 @@
                             </thead>
                             <tbody>
                                 @php
-                                $worker = DB::table('tbl_workeraccount')->get();
+                                $worker = Worker::get();
                                 $counter2 = 1;
                                 @endphp
 

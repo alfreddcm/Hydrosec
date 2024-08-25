@@ -12,32 +12,12 @@
                     <h4>Tower List:</h4>
 
                     <div class="col-sm-3">
-                        <a href="##">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Tower 1</h5>
-                                    <p class="card-text">
-                                        Nutrient Level:
-                                    </p>
-                                    <p>
-                                        pH Level:
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
-
-                    </div>
-
-                    <div class="col-sm-3">
                         <a href="">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Tower 1</h5>
                                     <p class="card-text">
                                         Nutrient Level:
-                                    </p>
-                                    <p>
-                                        pH Level:
                                     </p>
                                 </div>
                             </div>
@@ -46,7 +26,8 @@
 
                     </div>
                 </div>
-                <a href="{{ route('addworker') }}" class="btn btn-success mt-1">
+                <!-- route('addtower') -->
+                <a href="{{ }}" class="btn btn-success mt-1">
                     Add Tower
                 </a>
             </div>

@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'Login')
+@section('title', 'Verify One-time-pin')
 
 
 @section('content')
@@ -37,6 +37,7 @@
                                             {{ session('success') }}
                                         </div>
                                     @endif
+
                                     <div class="col-12">
                                         <label for="otp" class="form-label">Enter OTP:</label>
                                         <input type="hidden" class="form-control text-center" id="otp" name="email" value="{{ $email }}" >
@@ -50,7 +51,11 @@
                                 <button class="btn btn-primary w-100" type="submit">Verify</button>
                             </div>
                             </form>
-
+                            <div class="col-12 mb-1 text-center">
+                                <p class="small mb-0"> 
+                                <a href="{{ route('resendotp') }}">Click here</a>
+                                    to resend OTP.</p>
+                            </div>
                             <div class="col-12 mb-1 text-center">
                                 <p class="small mb-0"> Already have an account?<a href="{{ route('cancel') }}">Login</a></p>
                             </div>
@@ -64,5 +69,8 @@
     </div>
     </div>
 
+    <script>
+
+    </script>
 
 @endsection

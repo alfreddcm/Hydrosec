@@ -47,7 +47,7 @@ class AuthManager extends Controller
         $username = $credentials['username'];
         $Password = $credentials['password'];
 
-        $worker =Worker::get();
+        $worker =Worker::where('status','active')->get();
         foreach ($worker as $user) {
             try {
                 $storedusername = Crypt::decryptString($user->username);
@@ -72,7 +72,7 @@ class AuthManager extends Controller
 
         }
 
-        $admin = Admin::get();
+        $admin = Admin::where('status','active')->get();
 
         foreach ($admin as $user) {
             try {
@@ -90,7 +90,7 @@ class AuthManager extends Controller
             }
         }
 
-        $owner =Owner::get();
+        $owner =Owner::where('status','active')->get();
 
         foreach ($owner as $user) {
             try {
@@ -155,16 +155,15 @@ class AuthManager extends Controller
     public function checkUsername($field, $value, ){
         {
             // Check in Owner table, excluding the current user
-            $ownerCheck = Owner::all()->filter(function ($owner) use ($field, $value) {
+            $ownerCheck = Owner::where('status','active')->get()->filter(function ($owner) use ($field, $value) {
                 return Crypt::decryptString($owner->$field) === $value;
             })->isNotEmpty();
 
-            $adminCheck = Admin::all()->filter(function ($admin) use ($field, $value) {
+            $adminCheck = Admin::where('status','active')->get()->filter(function ($admin) use ($field, $value) {
                 return Crypt::decryptString($admin->$field) === $value;
             })->isNotEmpty();
 
-            // Check in Worker table
-            $workerCheck = Worker::all()->filter(function ($worker) use ($field, $value) {
+            $workerCheck = Worker::where('status','active')->get()->filter(function ($worker) use ($field, $value) {
                 return Crypt::decryptString($worker->$field) === $value;
             })->isNotEmpty();
 

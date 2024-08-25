@@ -36,7 +36,7 @@
                         <form id="form" class="d-flex align-items-center position-relative" method="POST" action="{{ route('checkEmail') }}" >
                             @csrf
                             <input type="email" name="email" placeholder="Enter email to have access" class="form-control bg-white border-1 rounded-4 shadow-none px-4 py-3 w-100" required>
-                            <button class="btn btn-primary rounded-4 px-3 py-2 position-absolute align-items-center m-1 end-0">Register</button>
+                            <button id="registerBtn" class="btn btn-primary rounded-4 px-3 py-2 position-absolute align-items-center m-1 end-0">Register</button>
                         </form>
                     </div>
                 </div>
@@ -60,6 +60,22 @@
         </script>
     @endif
 
+    <script>
+           const showLoading = function() {
+        Swal.fire({
+            title: '',
+            html: '<b>Be patient.</b><br/>Checking Email.',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    };
+
+    // Attach event listener to the button
+    document.getElementById('registerBtn').addEventListener('click', showLoading);
+    </script>
 </body>
 <footer class="fixed-bottom">
     <hr class="text-black-50">

@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Sensor;
+use App\Http\Controllers\SensorData;
 
-
-Route::get('/sensor/latest', [Sensor::class, 'getLatestSensorData']);
-Route::post('/sensor/latest', [Sensor::class, 'postSensorData']);
+// Route::get('/sensor/latest', [SensorData::class, 'getLatestSensorData']);
+Route::post('/api', [SensorData::class, 'store'])->name('postdata');
