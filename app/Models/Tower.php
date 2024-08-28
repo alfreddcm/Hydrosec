@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Owner extends Authenticatable
+class Tower extends Authenticatable
 {
     use Notifiable;
 
@@ -19,8 +19,8 @@ class Owner extends Authenticatable
     protected $table = 'tbl_tower'; // Specify the table name
 
     protected $fillable = [
-        'API_key',
-        'Mac_add'
+        'ipAdd',
+        'MacAdd',
     ];
 
     /**

@@ -15,7 +15,7 @@ class Admin extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $table = 'tbl_adminaccount'; // Specify the table name
+    protected $table = 'tbl_adminaccounts'; // Specify the table name
 
     protected $fillable = [
         'username',

@@ -5,17 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sensor;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use App\Models\Tower;
+
+
+
 
 class SensorData extends Controller
 {
-    public function getLatestSensorData()
-{
+    
+    public function getLatestSensorData(Request $Request){
+                $key_str = "ISUHydroSec2024!";
+                $iv_str ="HydroVertical143";
+                $method = "AES-128-CBC";
+
     try {
-        $sdata = Sensor::orderBy('id', 'desc')->take(4)->get();
+ 
+        $sdata = Sensor::
+        where('towerid', $Request->towerid)->
+        orderBy('id', 'desc')
+        ->take(4)
+        ->get();
 
         if ($sdata->isNotEmpty()) {
-            $method = "AES-128-CBC";
-            $key = "aaaaaaaaaaaaaaaa";
+
             $decrypted_data = [
                 'pH' => [],
                 'temperature' => [],
@@ -23,12 +36,17 @@ class SensorData extends Controller
             ];
 
             foreach ($sdata as $sensor) {
-                $iv_base64 = $sensor->iv;
-                $iv = base64_decode($iv_base64);
+                
+                $key = $sensor->k;
+                $iv = $sensor->iv;
 
-                $decrypted_ph = $this->decrypt_data($sensor->pH, $method, $key, $iv);
-                $decrypted_temp = $this->decrypt_data($sensor->temperature, $method, $key, $iv);
-                $decrypted_nutrient = $this->decrypt_data($sensor->nutrientlevel, $method, $key, $iv);
+                $decrypted_key = $this->decrypt_data($key, $method, $key_str, $iv_str);
+                $decrypted_iv = $this->decrypt_data($iv, $method, $key_str, $iv_str);
+    
+                
+                $decrypted_ph = $this->decrypt_data($sensor->pH, $method, $decrypted_key, $decrypted_iv);
+                $decrypted_temp = $this->decrypt_data($sensor->temperature, $method, $decrypted_key, $decrypted_iv);
+                $decrypted_nutrient = $this->decrypt_data($sensor->nutrientlevel, $method, $decrypted_key, $decrypted_iv);
 
                 $decrypted_data['pH'][] = [
                     'timestamp' => $sensor->created_at,
@@ -71,32 +89,98 @@ class SensorData extends Controller
     }
 
 
-    public function store(Request $request)
+    public function storedata(Request $request)
     {
-        $request->validate([
-            'phValue' => 'required|numeric',
-            'temp' => 'required|numeric',
-            'waterLevel' => 'required|numeric',
-        ]);
-
-        $iv = "aaaaaaaaaaaaaaaa";
-        $iv_base64 = base64_encode($iv);
-
-        $towerid='1';
-        $pH=$request->phValue;
-        $temperature=$request->temp;
-        $nutrientlevel=$request->waterlevel;
-
-        Sensor::create([
-            'towerid' => $towerid,
-            'pH' => $pH,
-            'temperature' => $temperature,
-            'nutrientlevel' => $nutrientlevel,
-            'iv' => $iv_base64
-        ]);
-
-        return response()->json(['status' => 'success'], 201);
-
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+    
+        try {
+            Log::info('Request received:', $request->all());
+    
+            $validatedData = $request->validate([
+                'phValue' => 'required',
+                'temp' => 'required',
+                'waterLevel' => 'required',
+                'key' => 'required',
+                'iv' => 'required',
+                'ipAddress' => 'required',
+                'macAddress' => 'required'
+            ]);
+    
+            Log::info('Validated data:', $validatedData);
+    
+            $encrypted_ip = $validatedData['ipAddress'];
+            $encrypted_mac = $validatedData['macAddress'];
+            $key = $validatedData['key'];
+            $iv = $validatedData['iv'];
+    
+            try {
+                $decrypted_ip = $this->decrypt_data($encrypted_ip, $method, $key_str, $iv_str);
+                $decrypted_mac = $this->decrypt_data($encrypted_mac, $method, $key_str, $iv_str);
+    
+                $decrypted_key = $this->decrypt_data($key, $method, $key_str, $iv_str);
+                $decrypted_iv = $this->decrypt_data($iv, $method, $key_str, $iv_str);
+    
+                Log::info('Decrypted data:', [
+                    'decrypted_ip' => $decrypted_ip,
+                    'decrypted_mac' => $decrypted_mac,
+                    'decrypted_key' => $decrypted_key,
+                    'decrypted_iv' => $decrypted_iv
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Decryption failed:', ['error' => $e->getMessage()]);
+                return response()->json(['error' => 'decryption_failed', 'message' => $e->getMessage()], 400);
+            }
+    
+            $tower = Tower::get();
+            Log::info('Retrieved towers:', ['count' => $tower->count()]);
+    
+            foreach ($tower as $data) {
+                $id = $data->id;
+                $ip = $data->ipAdd;
+                $mac = $data->macAdd;
+    
+                $decrypted_ip1 = $this->decrypt_data($ip, $method, $key_str, $iv_str);
+                $decrypted_mac1 = $this->decrypt_data($mac, $method, $key_str, $iv_str);
+    
+                Log::info("Checking tower ID $id", [
+                    'decrypted_ip1' => $decrypted_ip1,
+                    'decrypted_mac1' => $decrypted_mac1
+                ]);
+    
+                if ($decrypted_ip == $decrypted_ip1 && $decrypted_mac == $decrypted_mac1) {
+                    Log::info("Match found for Tower ID: $id");
+    
+                    Sensor::create([
+                        'towerid' => $id,
+                        'pH' => $validatedData['phValue'],
+                        'temperature' => $validatedData['temp'],
+                        'nutrientlevel' => $validatedData['waterLevel'],
+                        'k' => $validatedData['key'],
+                        'iv' => $validatedData['iv'],
+                        'status' => 'active'
+                    ]);
+    
+                    Log::info('Sensor data stored successfully for Tower ID:', ['id' => $id]);
+    
+                    return response()->json(['status' => 'success'], 201);
+                }
+            }
+    
+            Log::warning('No matching tower found for the provided IP and MAC addresses.');
+            return response()->json(['error' => 'notfound'], 404);
+    
+        } catch (ValidationException $e) {
+            Log::error('Validation failed:', ['errors' => $e->errors()]);
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            Log::critical('An unexpected error occurred:', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'internal_server_error', 'message' => $e->getMessage()], 500);
+        }
     }
+    
+    
+    
     
 }

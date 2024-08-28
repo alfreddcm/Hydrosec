@@ -16,13 +16,13 @@ class Singlesession
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
+        // $user = Auth::user();
 
-        if ($user && $user->session_token !== session('session_token')) {
-            Auth::logout();
-            return redirect()->route('login')->with('error', 'You have been logged out from other device.');
-        }
+        // if ($user && $user->session_token !== session('session_token')) {
+        //     Auth::logout();
+        //     return redirect()->route('login')->with('error', 'You have been logged out from other device.');
+        // }
 
-        return $next($request);
+        // return $next($request);
     }
 }

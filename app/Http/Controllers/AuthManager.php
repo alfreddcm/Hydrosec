@@ -124,15 +124,26 @@ class AuthManager extends Controller
             'email' => 'required|email|max:250|unique:tbl_useraccounts',
             'password' => 'required|min:8|confirmed',
         ]);
+        $username=$request->username;
 
-        $usernameExists = $this->checkUsername('username', $request->username);
+        $usernameExists = $this->checkUsername('username', $username);
 
         if ($usernameExists) {
-            return back()->withErrors(['username' => 'The username has already been taken.']);
+
+            $usernamedeact = $this->checkUsernamedect('username', $username);
+            if($usernamedeact){
+                // Owner::set('status','1')->where('username',$username);
+
+                return back()->withErrors(['react' => 'User has been deactivated. To reactivate click ']);
+
+            }else{
+                return back()->withErrors(['username' => 'The username has already been taken.']);
+            }
+            
         }
 
         Owner::create([
-            'username' => Crypt::encryptString($request->username),
+            'username' => Crypt::encryptString($username),
             'name' => Crypt::encryptString($request->name),
             'email' => Crypt::encryptString($request->email),
             'password' => Hash::make($request->password),
@@ -155,20 +166,49 @@ class AuthManager extends Controller
     public function checkUsername($field, $value, ){
         {
             // Check in Owner table, excluding the current user
-            $ownerCheck = Owner::where('status','active')->get()->filter(function ($owner) use ($field, $value) {
+            $ownerCheck = Owner::where('status','1')->get()->filter(function ($owner) use ($field, $value) {
                 return Crypt::decryptString($owner->$field) === $value;
             })->isNotEmpty();
 
-            $adminCheck = Admin::where('status','active')->get()->filter(function ($admin) use ($field, $value) {
+            $adminCheck = Admin::where('status','1')->get()->filter(function ($admin) use ($field, $value) {
                 return Crypt::decryptString($admin->$field) === $value;
             })->isNotEmpty();
 
-            $workerCheck = Worker::where('status','active')->get()->filter(function ($worker) use ($field, $value) {
+            $workerCheck = Worker::where('status','1')->get()->filter(function ($worker) use ($field, $value) {
                 return Crypt::decryptString($worker->$field) === $value;
             })->isNotEmpty();
 
             return $ownerCheck || $workerCheck || $adminCheck;
         }
+
+    }
+    public function checkUsernamedect($field, $value,){
+        $ownerCheck = Owner::where('status','0')->get()->filter(function ($owner) use ($field, $value) {
+            return Crypt::decryptString($owner->$field) === $value;
+        })->isNotEmpty();
+
+        $adminCheck = Admin::where('status','0')->get()->filter(function ($admin) use ($field, $value) {
+            return Crypt::decryptString($admin->$field) === $value;
+        })->isNotEmpty();
+
+        $workerCheck = Worker::where('status','0')->get()->filter(function ($worker) use ($field, $value) {
+            return Crypt::decryptString($worker->$field) === $value;
+        })->isNotEmpty();
+
+        return $ownerCheck || $workerCheck || $adminCheck;
+
+
     }
 
 }
+
+
+// $subject=table::where('scuriculim','1','strand_id','1')->get();
+// foreach($subjec as $data){
+//     $subject=subject::where('id',$data->sucjectid)->get();
+
+//     <select>
+//     <option value='{{$data->subject-id}}'>{{$subject->name}}</option>
+//     </select>
+// }
+

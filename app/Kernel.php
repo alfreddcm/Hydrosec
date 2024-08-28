@@ -18,10 +18,13 @@ class Kernel extends HttpKernel
 
     ];
 
-    protected $middlewareGroups = [
-        'web' => [
-            // ...
-            \App\Http\Middleware\Singlesession::class,
-        ],
-    ];
+    // protected $middlewareGroups = [
+    //     'web' => [
+    //         // ...
+    //         \App\Http\Middleware\Singlesession::class,
+    //     ],
+    //     'api' => [
+            
+    // ],
+    // ];
 }

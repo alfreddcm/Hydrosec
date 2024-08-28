@@ -3,10 +3,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
 
 class Sensor extends Model
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens, Notifiable;
 
     protected $fillable = [
         'towerid',
@@ -14,7 +17,7 @@ class Sensor extends Model
         'temperature',
         'nutrientlevel',
         'iv',
-        'status',
+        'k'
     ];
 
     // Optionally, specify the table name if it doesn't follow Laravel's naming convention

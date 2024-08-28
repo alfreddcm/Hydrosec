@@ -34,23 +34,39 @@ class PHPMailerController extends Controller
     }
 
     public function checkEmail(Request $request)
-{
-    $email = $request->input('email');
-    $check = Owner::where('status', 'active')->get();
+    {
+        $email = $request->input('email');
+        $check = Owner::get();
 
-    foreach ($check as $user) {
-        try {
-            $emailStored = Crypt::decryptString($user->email);
-            if ($email === $emailStored) {
-                return Redirect::back()->with('error', 'Email already in use');
+        if ($check->status == '0') {
+            foreach ($check as $user) {
+                try {
+                    $emailStored = Crypt::decryptString($user->email);
+                    if ($email === $emailStored) {
+                        return Redirect::back()->with('deact', 'Account is deactivated. contact support');
+                    }
+                } catch (DecryptException $e) {
+                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
+                }
             }
-        } catch (DecryptException $e) {
-            return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
-        }
-    }
+        } else if ($check->status == '1') {
+            foreach ($check as $user) {
+                try {
+                    $emailStored = Crypt::decryptString($user->email);
+                    if ($email === $emailStored) {
+                        return Redirect::back()->with('error', 'Email already in use');
+                    }
+                } catch (DecryptException $e) {
+                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
+                }
 
-    return $this->store($request);
-}
+            }
+        }
+
+
+
+        return $this->store($request);
+    }
 
 
     /**
@@ -75,7 +91,7 @@ class PHPMailerController extends Controller
             Mail::to($receiver)->send(new OtpMail($otp));
 
             return redirect()->route('otp.show')->with(['email' => $receiver, 'success' => 'OTP has been sent to your email.']);
-        }  catch (TransportExceptionInterface $e) {
+        } catch (TransportExceptionInterface $e) {
             return back()->with('error', 'Failed to connect to the SMTP server. Please try again later.');
         } catch (\Exception $e) {
             return back()->with('error', 'Message could not be sent. Please try again later.');
@@ -118,25 +134,26 @@ class PHPMailerController extends Controller
             return Redirect::to('/register?email=' . $email);
         } else {
             return Redirect::back()->with('error', 'Invalid OTP. Please try again.')->withInput();
-     }
+        }
     }
 
-    public function resendOtp() {
+    public function resendOtp()
+    {
         $otp = Session::get('otp');
         $receiver = Session::get('otp_email');
-    
+
         try {
             Mail::to($receiver)->send(new OtpMail($otp));
-            
+
             return back()->with([
                 'email' => $receiver,
                 'success' => 'OTP has been sent.'
             ]);
-        }catch (TransportExceptionInterface $e) {
-                return back()->with('error', 'Failed to connect to the SMTP server. Please try again later.');
-            } catch (\Exception $e) {
-                return back()->with('error', 'Message could not be sent. Please try again later.');
-            }
+        } catch (TransportExceptionInterface $e) {
+            return back()->with('error', 'Failed to connect to the SMTP server. Please try again later.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Message could not be sent. Please try again later.');
+        }
     }
 
     public function cancel()
@@ -147,4 +164,3 @@ class PHPMailerController extends Controller
     }
 
 }
-
