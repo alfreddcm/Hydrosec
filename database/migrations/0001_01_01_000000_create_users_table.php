@@ -12,14 +12,16 @@ return new class extends Migration
     {
         Schema::create('tbl_tower', function (Blueprint $table) {
             $table->tinyInteger('id', false, true)->autoIncrement();
-            $table->string('ipAdd');
-            $table->string('macAdd');
+            $table->string('name');
+            $table->string('towercode');
+            $table->tinyInteger('OwnerID');
+            $table->string('ipAdd')->nullable() ;
+            $table->string('macAdd')->nullable();
             $table->timestamps();
         });
 
         Schema::create('tbl_useraccounts', function (Blueprint $table) {
             $table->id(); 
-            $table->unsignedTinyInteger('ID_tower');
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
@@ -27,7 +29,6 @@ return new class extends Migration
             $table->string('status')->default('active');
             $table->timestamps();
 
-            $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');
         });
 
         Schema::create('tbl_workeraccounts', function (Blueprint $table) {
@@ -35,11 +36,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
-            $table->unsignedBigInteger('owner_id'); // Use unsignedBigInteger
+            $table->unsignedBigInteger('OwnerID'); // Use unsignedBigInteger
             $table->string('status')->default('active');
             $table->timestamps();
 
-            $table->foreign('owner_id')->references('id')->on('tbl_useraccounts')->onDelete('cascade');
+            $table->foreign('OwnerID')->references('id')->on('tbl_useraccounts')->onDelete('cascade');
         });
 
         Schema::create('tbl_adminaccounts', function (Blueprint $table) {
@@ -54,7 +55,7 @@ return new class extends Migration
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
-            $table->string('token')->nullable(); // Consider making this nullable if needed
+            $table->string('token')->nullable(); 
             $table->timestamp('created_at')->nullable();
         });
 

@@ -22,6 +22,7 @@ class Worker extends Authenticatable
         'username',
         'name',
         'password',
+        'status',
         'OwnerID'
     ];
 

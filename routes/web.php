@@ -6,6 +6,8 @@ use App\Http\Controllers\SensorData;
 
 use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\Admin\admincontroller;
+use App\Http\Controllers\Towercontroller;
+
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -34,9 +36,8 @@ Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 // Route::middleware(['auth:owner', 'singlesession'])->group(function () {
 
 Route::middleware('auth:owner')->group(function () {
-    Route::get('/Owner/dashboard', function () {
-        return view('Owner.dashboard');
-    })->name('ownerdashboard');
+    Route::get('/Owner/dashboard', [OwnerProfile::class, 'showCounts'])
+    ->name('ownerdashboard');
     Route::get('/Owner/ManageTower', function () {
         return view('Owner.ManageTower');
     })->name('ownermanagetower');
@@ -65,8 +66,19 @@ Route::middleware('auth:owner')->group(function () {
 
     Route::post('/Owner/update-password/{id}', [OwnerProfile::class, 'workerPassword'])->name('owner.workerupdatePassword');
 
-    Route::get('/sensor/latest', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/startcycle', [SensorData::class, 'startcycle'])->name('startcycle');
+
+    Route::post('/addtower', [Towercontroller::class, 'store'])->name('posttower');
+
+
+Route::get('/towerdata/{id}',function(){        
+return view('Owner.tower');
+})->name('towerdata');
+Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
+
+
+
+
 
 });
 

@@ -34,39 +34,27 @@ class PHPMailerController extends Controller
     }
 
     public function checkEmail(Request $request)
-    {
-        $email = $request->input('email');
-        $check = Owner::get();
+{
+    $email = $request->input('email');
+    $users = Owner::all();
 
-        if ($check->status == '0') {
-            foreach ($check as $user) {
-                try {
-                    $emailStored = Crypt::decryptString($user->email);
-                    if ($email === $emailStored) {
-                        return Redirect::back()->with('deact', 'Account is deactivated. contact support');
-                    }
-                } catch (DecryptException $e) {
-                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
+    foreach ($users as $user) {
+        try {
+            $emailStored = Crypt::decryptString($user->email);
+            if ($email === $emailStored) {
+                if ($user->status == '0') {
+                    return Redirect::back()->with('deact', 'Account is deactivated. Contact support.');
+                } elseif ($user->status == '1') {
+                    return Redirect::back()->with('error', 'Email already in use');
                 }
             }
-        } else if ($check->status == '1') {
-            foreach ($check as $user) {
-                try {
-                    $emailStored = Crypt::decryptString($user->email);
-                    if ($email === $emailStored) {
-                        return Redirect::back()->with('error', 'Email already in use');
-                    }
-                } catch (DecryptException $e) {
-                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
-                }
-
-            }
+        } catch (DecryptException $e) {
+            return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
         }
-
-
-
-        return $this->store($request);
     }
+    return $this->store($request);
+}
+
 
 
     /**

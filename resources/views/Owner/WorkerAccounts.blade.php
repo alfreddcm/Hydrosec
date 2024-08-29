@@ -10,9 +10,9 @@
     use App\Models\Admin;
     use App\Models\Worker;
 
-    $id = Crypt::encryptString(Auth::id());
+    $id = Auth::id();
 
-    $accs = DB::table('tbl_workeraccount')->get();
+    $accs =Worker::get()->where('OwnerID',$id);
     $counter = 1;
 
 @endphp
@@ -52,7 +52,7 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($accs as $user)
-                                                    @if (Crypt::decryptString($user->OwnerID) == Auth::id())
+                                                    
                                                         <tr class="odd gradeX">
                                                             <td>{{ $counter++ }}</td>
                                                             <td>{{ Crypt::decryptString($user->name) }}</td>
@@ -77,7 +77,7 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                    @endif
+                                                    
                                                 @endforeach
                                             </tbody>
 

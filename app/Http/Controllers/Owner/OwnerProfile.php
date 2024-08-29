@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
 use App\Models\Owner;
 use App\Models\Worker;
+use App\Models\Tower;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -15,12 +17,16 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 
-
-
-
-
 class OwnerProfile extends Controller
 {
+    public function showCounts()
+{
+    $towerCount = Tower::where('OwnerID', Auth::id())->count();
+    $workerCount = Worker::where('OwnerID', Auth::id())->count();
+
+    return view('Owner.dashboard', compact('towerCount', 'workerCount'));
+}
+
 
     //
     public function update(Request $request)

@@ -14,6 +14,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
 
 
 

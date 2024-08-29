@@ -19,6 +19,9 @@ class Tower extends Authenticatable
     protected $table = 'tbl_tower'; // Specify the table name
 
     protected $fillable = [
+        'name',
+        'OwnerID',
+        'towercode',
         'ipAdd',
         'MacAdd',
     ];

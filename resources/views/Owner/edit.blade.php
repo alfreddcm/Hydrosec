@@ -15,8 +15,17 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Edit User
-                            </div>
+                    @if(session('success'))
+                    <div class="alert alert-success">
+                    {{ session('success') }}
+                    </div>
+                    @endif   
+                    @if(session('error'))
+                    <div class="alert alert-success">
+                    {{ session('error') }}
+                    </div>
+                    @endif                             
+         </div>
                             <div class="panel-body">
                                 <form action="{{ route('ownerworker.update', $user->id) }}" method="POST">
                                     @csrf

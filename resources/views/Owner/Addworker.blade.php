@@ -8,11 +8,6 @@
             <div class="card">
                 <div class="card-body">
 
-                    @if($errors->has('username'))
-                        <div class="alert alert-danger">
-                            {{ $errors->first('username') }}
-                        </div>
-                    @endif
                     <a href="{{ route('ownerworkeraccount') }}">Back</a>
 
                     <h5 class="card-title">Woker Profile Information</h5>

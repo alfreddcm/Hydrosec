@@ -131,6 +131,7 @@ class AuthManager extends Controller
         if ($usernameExists) {
 
             $usernamedeact = $this->checkUsernamedect('username', $username);
+            
             if($usernamedeact){
                 // Owner::set('status','1')->where('username',$username);
 
