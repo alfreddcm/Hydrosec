@@ -17,4 +17,6 @@ class DatabaseSeeder extends Seeder
         Admin::factory()->create();
 
     }
+    //php artisan db:seed
+
 }

@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
-        return view('index'); })->name('index');
-        
+        return view('index') ;
+    })->name('index');
+
     Route::get('/login', [AuthManager::class, 'login'])->name('login');
     Route::post('/login', [AuthManager::class, 'loginPost'])->name('login.post');
 
@@ -37,7 +38,7 @@ Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 
 Route::middleware('auth:owner')->group(function () {
     Route::get('/Owner/dashboard', [OwnerProfile::class, 'showCounts'])
-    ->name('ownerdashboard');
+        ->name('ownerdashboard');
     Route::get('/Owner/ManageTower', function () {
         return view('Owner.ManageTower');
     })->name('ownermanagetower');
@@ -71,12 +72,10 @@ Route::middleware('auth:owner')->group(function () {
     Route::post('/addtower', [Towercontroller::class, 'store'])->name('posttower');
 
 
-Route::get('/towerdata/{id}',function(){        
-return view('Owner.tower');
-})->name('towerdata');
-Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
-
-
+    Route::get('/towerdata/{id}', function () {
+        return view('Owner.tower');
+    })->name('towerdata');
+    Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
 
 
 

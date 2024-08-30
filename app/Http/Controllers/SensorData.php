@@ -205,4 +205,50 @@ class SensorData extends Controller
     }
 
 
+
+
+    private function getPHCondition($averagePH)
+    {
+        if ($averagePH < 5.5) {
+            return 'Critical Low';
+        } elseif ($averagePH < 6.0) {
+            return 'Acidic';
+        } elseif ($averagePH > 7.0) {
+            return 'Critical High';
+        } elseif ($averagePH > 6.5) {
+            return 'Basic';
+        } else {
+            return 'Good';
+        }
+    }
+
+    private function getNutrientCondition($averageWaterLevel)
+    {
+        if ($averageWaterLevel <= 15) {
+            return 'Critical Low';
+        } elseif ($averageWaterLevel <= 20) {
+            return 'Low';
+        } elseif ($averageWaterLevel >= 25) {
+            return 'Critical High';
+        } elseif ($averageWaterLevel >= 20) {
+            return 'Nearing Good';
+        } else {
+            return 'Good';
+        }
+    }
+
+private function getTemperatureCondition($averageTemp)
+{
+    if ($averageTemp <= 18) {
+        return 'Cold';
+    } elseif ($averageTemp > 18 && $averageTemp <= 25) {
+        return 'Good';
+    } elseif ($averageTemp > 25 && $averageTemp <= 30) {
+        return 'Hot';
+    } else {
+        return 'Too Hot';
+    }
+}
+
+
 }

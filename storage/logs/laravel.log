@@ -34321,3 +34321,1593 @@
 [2024-08-29 09:50:20] local.INFO: Request received: {"phValue":"LkPFfD0lZcOd0ZOjPr5IOg==","temp":"SDNHgkUoAAF+aXvuz4On4g==","waterLevel":"ydxC+3xJsBUFDHam/KDgaQ==","key":"rSHsM97DCLypdFg1g3YXj6npyJQ2QVRMf9pFOjK6EVc=","iv":"lc29c32NENaLEU1rD2riNyXSxW3PTjY2j6B62RaDVTo=","ipAddress":"EshFAMwJwxChVs/Rfk75ug==","macAddress":"lc29c32NENaLEU1rD2riNyXSxW3PTjY2j6B62RaDVTo=","towercode":"QNXvBPGDGwZFskXBHkebtw=="} 
 [2024-08-29 09:50:24] local.INFO: Validated data: {"phValue":"LkPFfD0lZcOd0ZOjPr5IOg==","temp":"SDNHgkUoAAF+aXvuz4On4g==","waterLevel":"ydxC+3xJsBUFDHam/KDgaQ==","key":"rSHsM97DCLypdFg1g3YXj6npyJQ2QVRMf9pFOjK6EVc=","iv":"lc29c32NENaLEU1rD2riNyXSxW3PTjY2j6B62RaDVTo=","ipAddress":"EshFAMwJwxChVs/Rfk75ug==","macAddress":"lc29c32NENaLEU1rD2riNyXSxW3PTjY2j6B62RaDVTo=","towercode":"QNXvBPGDGwZFskXBHkebtw=="} 
 [2024-08-29 09:50:33] local.INFO: Decrypted data: {"decrypted_ip":"(IP unset)","decrypted_mac":"liR3dQCM97pMz5Xc","decrypted_key":"hYyWqn5VYfitqUD0","decrypted_iv":"liR3dQCM97pMz5Xc","decrypted_towercode":"2024"} 
+[2024-08-30 12:59:58] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 12:59:58] local.INFO: array (
+  0 => 'hJ62BCq4o4RreYe0tlMg9YDTC9MwVEeQjf5XAqC3',
+)  
+[2024-08-30 12:59:58] local.INFO: 913.43  
+[2024-08-30 12:59:58] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 12:59:58] local.INFO: array (
+  0 => 'hJ62BCq4o4RreYe0tlMg9YDTC9MwVEeQjf5XAqC3',
+)  
+[2024-08-30 12:59:58] local.INFO: 0.8  
+[2024-08-30 12:59:58] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-08-30 12:59:58] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiYnZRVDdWWUxUVkIzMDV3QUFadmVsOGRMTGdMN1phWGxvMVBCVlFHbCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=',
+  1 => 1724993998,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'hJ62BCq4o4RreYe0tlMg9YDTC9MwVEeQjf5XAqC3',
+)  
+[2024-08-30 12:59:58] local.INFO: 170.88  
+[2024-08-30 13:00:01] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:00:01] local.INFO: array (
+  0 => 'hJ62BCq4o4RreYe0tlMg9YDTC9MwVEeQjf5XAqC3',
+)  
+[2024-08-30 13:00:01] local.INFO: 72.33  
+[2024-08-30 13:00:01] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:00:01] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiYnZRVDdWWUxUVkIzMDV3QUFadmVsOGRMTGdMN1phWGxvMVBCVlFHbCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=',
+  1 => 1724994001,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'hJ62BCq4o4RreYe0tlMg9YDTC9MwVEeQjf5XAqC3',
+)  
+[2024-08-30 13:00:01] local.INFO: 115.63  
+[2024-08-30 13:00:09] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:00:09] local.INFO: array (
+  0 => 'hJ62BCq4o4RreYe0tlMg9YDTC9MwVEeQjf5XAqC3',
+)  
+[2024-08-30 13:00:09] local.INFO: 59.94  
+[2024-08-30 13:00:09] local.INFO: select * from `tbl_workeraccounts` where `status` = ?  
+[2024-08-30 13:00:09] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:00:09] local.INFO: 309.72  
+[2024-08-30 13:00:09] local.INFO: select * from `tbl_adminaccounts` where `status` = ?  
+[2024-08-30 13:00:09] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:00:09] local.INFO: 85.49  
+[2024-08-30 13:00:10] local.INFO: select * from `tbl_useraccounts` where `status` = ?  
+[2024-08-30 13:00:10] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:00:10] local.INFO: 159.82  
+[2024-08-30 13:00:10] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:00:10] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:10] local.INFO: 0.88  
+[2024-08-30 13:00:10] local.INFO: delete from `sessions` where `id` = ?  
+[2024-08-30 13:00:10] local.INFO: array (
+  0 => 'hJ62BCq4o4RreYe0tlMg9YDTC9MwVEeQjf5XAqC3',
+)  
+[2024-08-30 13:00:10] local.INFO: 108.42  
+[2024-08-30 13:00:10] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:00:10] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:00:10] local.INFO: 2.19  
+[2024-08-30 13:00:10] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-08-30 13:00:10] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjE6e2k6MDtzOjc6InN1Y2Nlc3MiO31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjc6InN1Y2Nlc3MiO3M6NDE6IllvdSBoYXZlIHN1Y2Nlc3NmdWxseSBsb2dnZWQgaW4gYXMgT3duZXIhIjt9',
+  1 => 1724994010,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:00:10] local.INFO: 48.64  
+[2024-08-30 13:00:10] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:00:10] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:00:10] local.INFO: 2.04  
+[2024-08-30 13:00:10] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:00:10] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:10] local.INFO: 0.79  
+[2024-08-30 13:00:11] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:00:11] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:11] local.INFO: 300.11  
+[2024-08-30 13:00:11] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:00:11] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:11] local.INFO: 392.96  
+[2024-08-30 13:00:12] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:00:12] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1724994012,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:00:12] local.INFO: 90.01  
+[2024-08-30 13:00:51] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:00:51] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:00:51] local.INFO: 1.78  
+[2024-08-30 13:00:51] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:00:51] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:51] local.INFO: 0.77  
+[2024-08-30 13:00:51] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:00:51] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:51] local.INFO: 0.66  
+[2024-08-30 13:00:51] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:00:51] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:51] local.INFO: 0.67  
+[2024-08-30 13:00:51] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:00:51] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1724994051,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:00:51] local.INFO: 17.16  
+[2024-08-30 13:00:55] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:00:55] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:00:55] local.INFO: 2.05  
+[2024-08-30 13:00:55] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:00:55] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:55] local.INFO: 1.98  
+[2024-08-30 13:00:55] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:00:55] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:55] local.INFO: 0.89  
+[2024-08-30 13:00:55] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:00:55] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:00:55] local.INFO: 0.65  
+[2024-08-30 13:00:55] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:00:55] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1724994055,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:00:55] local.INFO: 81.21  
+[2024-08-30 13:01:29] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:01:29] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:01:29] local.INFO: 1.94  
+[2024-08-30 13:01:29] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:01:29] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1724994089,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:01:29] local.INFO: 17.32  
+[2024-08-30 13:01:31] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:01:31] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:01:31] local.INFO: 1.72  
+[2024-08-30 13:01:31] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:01:31] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:01:31] local.INFO: 1.14  
+[2024-08-30 13:01:31] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:01:31] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1724994091,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:01:31] local.INFO: 1.82  
+[2024-08-30 13:01:32] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:01:32] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:01:32] local.INFO: 1.75  
+[2024-08-30 13:01:32] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:01:32] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:01:32] local.INFO: 0.76  
+[2024-08-30 13:01:32] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:01:32] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:01:32] local.INFO: 0.73  
+[2024-08-30 13:01:32] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:01:32] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:01:32] local.INFO: 0.96  
+[2024-08-30 13:01:32] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:01:32] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1724994092,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:01:32] local.INFO: 1.72  
+[2024-08-30 13:02:25] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:02:25] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:25] local.INFO: 1.88  
+[2024-08-30 13:02:25] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:02:25] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:02:25] local.INFO: 0.72  
+[2024-08-30 13:02:25] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:02:25] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:02:25] local.INFO: 0.63  
+[2024-08-30 13:02:25] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:02:25] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:02:25] local.INFO: 0.68  
+[2024-08-30 13:02:25] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:02:25] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1724994145,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:25] local.INFO: 57.91  
+[2024-08-30 13:02:29] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:02:29] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:29] local.INFO: 2.13  
+[2024-08-30 13:02:29] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:02:29] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1724994149,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:29] local.INFO: 32.03  
+[2024-08-30 13:02:30] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:02:30] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:30] local.INFO: 1.9  
+[2024-08-30 13:02:30] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:02:30] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1724994150,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:30] local.INFO: 50.88  
+[2024-08-30 13:02:33] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:02:33] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:33] local.INFO: 2.18  
+[2024-08-30 13:02:33] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:02:33] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:02:33] local.INFO: 0.73  
+[2024-08-30 13:02:33] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:02:33] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1724994153,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:33] local.INFO: 22.16  
+[2024-08-30 13:02:33] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:02:33] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:33] local.INFO: 1.97  
+[2024-08-30 13:02:33] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:02:33] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:02:33] local.INFO: 0.69  
+[2024-08-30 13:02:33] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:02:33] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:02:33] local.INFO: 0.59  
+[2024-08-30 13:02:33] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:02:33] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:02:33] local.INFO: 0.67  
+[2024-08-30 13:02:33] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:02:33] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1724994153,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:02:33] local.INFO: 1.88  
+[2024-08-30 13:03:08] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:08] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:03:08] local.INFO: 3.19  
+[2024-08-30 13:03:08] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:03:08] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:08] local.INFO: 0.87  
+[2024-08-30 13:03:08] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:03:08] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:08] local.INFO: 0.82  
+[2024-08-30 13:03:08] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:03:08] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1724994188,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:03:08] local.INFO: 8.72  
+[2024-08-30 13:03:19] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:19] local.INFO: array (
+  0 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:03:19] local.INFO: 2  
+[2024-08-30 13:03:19] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:03:19] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:19] local.INFO: 5.04  
+[2024-08-30 13:03:19] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:03:19] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:19] local.INFO: 0.77  
+[2024-08-30 13:03:19] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:03:19] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:19] local.INFO: 0.55  
+[2024-08-30 13:03:19] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:03:19] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieFBQM1lWdXMybEYzaWRZSHRESFJDcTVuTWdDdlZYejlLTjhMcUpuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1724994199,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'uBQ3FWPgabG1qWQtBJIxtLfWh5f0Lh9JCVyKZ2JX',
+)  
+[2024-08-30 13:03:19] local.INFO: 53.99  
+[2024-08-30 13:03:36] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:36] local.INFO: array (
+  0 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:36] local.INFO: 14.42  
+[2024-08-30 13:03:36] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:36] local.INFO: array (
+  0 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:36] local.INFO: 6.09  
+[2024-08-30 13:03:36] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-08-30 13:03:36] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZWphOVRHU2pRMjRtY2dsOVNnSzBvZk1PdHQ3RTZac1FhTXd5MUhLViI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MTk6Imh0dHA6Ly8wLjAuMC4wOjgwMDAiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1724994216,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:36] local.INFO: 21.31  
+[2024-08-30 13:03:38] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:38] local.INFO: array (
+  0 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:38] local.INFO: 9.24  
+[2024-08-30 13:03:38] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:03:38] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZWphOVRHU2pRMjRtY2dsOVNnSzBvZk1PdHQ3RTZac1FhTXd5MUhLViI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjU6Imh0dHA6Ly8wLjAuMC4wOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1724994218,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:38] local.INFO: 28.39  
+[2024-08-30 13:03:43] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:43] local.INFO: array (
+  0 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:43] local.INFO: 2.13  
+[2024-08-30 13:03:43] local.INFO: select * from `tbl_workeraccounts` where `status` = ?  
+[2024-08-30 13:03:43] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:03:43] local.INFO: 3.89  
+[2024-08-30 13:03:43] local.INFO: select * from `tbl_adminaccounts` where `status` = ?  
+[2024-08-30 13:03:43] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:03:43] local.INFO: 0.79  
+[2024-08-30 13:03:43] local.INFO: select * from `tbl_useraccounts` where `status` = ?  
+[2024-08-30 13:03:43] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:03:43] local.INFO: 0.72  
+[2024-08-30 13:03:43] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:03:43] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZWphOVRHU2pRMjRtY2dsOVNnSzBvZk1PdHQ3RTZac1FhTXd5MUhLViI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjU6Imh0dHA6Ly8wLjAuMC4wOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YToxOntpOjA7czo2OiJlcnJvcnMiO31zOjM6Im5ldyI7YTowOnt9fXM6NjoiZXJyb3JzIjtPOjMxOiJJbGx1bWluYXRlXFN1cHBvcnRcVmlld0Vycm9yQmFnIjoxOntzOjc6IgAqAGJhZ3MiO2E6MTp7czo3OiJkZWZhdWx0IjtPOjI5OiJJbGx1bWluYXRlXFN1cHBvcnRcTWVzc2FnZUJhZyI6Mjp7czoxMToiACoAbWVzc2FnZXMiO2E6Mjp7czo4OiJ1c2VybmFtZSI7YToxOntpOjA7czo1NDoiWW91ciBwcm92aWRlZCBjcmVkZW50aWFscyBkbyBub3QgbWF0Y2ggaW4gb3VyIHJlY29yZHMuIjt9czo4OiJwYXNzd29yZCI7YToxOntpOjA7czozODoiVGhlIHBhc3N3b3JkIHlvdSBlbnRlcmVkIGlzIGluY29ycmVjdC4iO319czo5OiIAKgBmb3JtYXQiO3M6ODoiOm1lc3NhZ2UiO319fX0=',
+  1 => 1724994223,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:43] local.INFO: 11.17  
+[2024-08-30 13:03:44] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:44] local.INFO: array (
+  0 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:44] local.INFO: 3.72  
+[2024-08-30 13:03:44] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:03:44] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZWphOVRHU2pRMjRtY2dsOVNnSzBvZk1PdHQ3RTZac1FhTXd5MUhLViI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjU6Imh0dHA6Ly8wLjAuMC4wOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',
+  1 => 1724994224,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:44] local.INFO: 22.21  
+[2024-08-30 13:03:53] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:53] local.INFO: 3.3  
+[2024-08-30 13:03:53] local.INFO: select * from `tbl_workeraccounts` where `status` = ?  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:03:53] local.INFO: 0.91  
+[2024-08-30 13:03:53] local.INFO: select * from `tbl_adminaccounts` where `status` = ?  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:03:53] local.INFO: 0.55  
+[2024-08-30 13:03:53] local.INFO: select * from `tbl_useraccounts` where `status` = ?  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 13:03:53] local.INFO: 0.59  
+[2024-08-30 13:03:53] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:53] local.INFO: 1  
+[2024-08-30 13:03:53] local.INFO: delete from `sessions` where `id` = ?  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'ZQRjFVcChnPHH7OX9kPn8k7mgKuzKrrq6ATyp7Gz',
+)  
+[2024-08-30 13:03:53] local.INFO: 63.33  
+[2024-08-30 13:03:53] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'hdikkASj0WTvVZSUSw6TrQTTTmRWGGNjkbzj4igl',
+)  
+[2024-08-30 13:03:53] local.INFO: 0.95  
+[2024-08-30 13:03:53] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiWHpZTmczQnlnQ2pieGhTN2hRUDBhNDBKdm1ZQ1FLQXBTYXFWQjFPNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjU6Imh0dHA6Ly8wLjAuMC4wOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YToxOntpOjA7czo3OiJzdWNjZXNzIjt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo3OiJzdWNjZXNzIjtzOjQxOiJZb3UgaGF2ZSBzdWNjZXNzZnVsbHkgbG9nZ2VkIGluIGFzIE93bmVyISI7fQ==',
+  1 => 1724994233,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'hdikkASj0WTvVZSUSw6TrQTTTmRWGGNjkbzj4igl',
+)  
+[2024-08-30 13:03:53] local.INFO: 4.36  
+[2024-08-30 13:03:53] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'hdikkASj0WTvVZSUSw6TrQTTTmRWGGNjkbzj4igl',
+)  
+[2024-08-30 13:03:53] local.INFO: 3.37  
+[2024-08-30 13:03:53] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:53] local.INFO: 0.75  
+[2024-08-30 13:03:53] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:53] local.INFO: 0.57  
+[2024-08-30 13:03:53] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:03:53] local.INFO: 0.65  
+[2024-08-30 13:03:53] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:03:53] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWHpZTmczQnlnQ2pieGhTN2hRUDBhNDBKdm1ZQ1FLQXBTYXFWQjFPNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8wLjAuMC4wOjgwMDAvT3duZXIvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1724994233,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'hdikkASj0WTvVZSUSw6TrQTTTmRWGGNjkbzj4igl',
+)  
+[2024-08-30 13:03:53] local.INFO: 24.08  
+[2024-08-30 13:04:43] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:04:43] local.INFO: array (
+  0 => 'hdikkASj0WTvVZSUSw6TrQTTTmRWGGNjkbzj4igl',
+)  
+[2024-08-30 13:04:43] local.INFO: 18.75  
+[2024-08-30 13:04:43] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:04:43] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:04:43] local.INFO: 0.76  
+[2024-08-30 13:04:43] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:04:43] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:04:43] local.INFO: 0.73  
+[2024-08-30 13:04:43] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:04:43] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:04:43] local.INFO: 0.72  
+[2024-08-30 13:04:43] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:04:43] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWHpZTmczQnlnQ2pieGhTN2hRUDBhNDBKdm1ZQ1FLQXBTYXFWQjFPNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8wLjAuMC4wOjgwMDAvT3duZXIvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1724994283,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'hdikkASj0WTvVZSUSw6TrQTTTmRWGGNjkbzj4igl',
+)  
+[2024-08-30 13:04:43] local.INFO: 38.95  
+[2024-08-30 13:05:07] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 13:05:07] local.INFO: array (
+  0 => 'hdikkASj0WTvVZSUSw6TrQTTTmRWGGNjkbzj4igl',
+)  
+[2024-08-30 13:05:07] local.INFO: 35.94  
+[2024-08-30 13:05:07] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 13:05:07] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:05:07] local.INFO: 1.48  
+[2024-08-30 13:05:07] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 13:05:07] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:05:07] local.INFO: 0.92  
+[2024-08-30 13:05:07] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 13:05:07] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 13:05:07] local.INFO: 0.82  
+[2024-08-30 13:05:07] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 13:05:07] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWHpZTmczQnlnQ2pieGhTN2hRUDBhNDBKdm1ZQ1FLQXBTYXFWQjFPNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8wLjAuMC4wOjgwMDAvT3duZXIvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1724994307,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'hdikkASj0WTvVZSUSw6TrQTTTmRWGGNjkbzj4igl',
+)  
+[2024-08-30 13:05:07] local.INFO: 20.24  
+[2024-08-30 16:33:20] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:20] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:20] local.INFO: 32.05  
+[2024-08-30 16:33:20] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:20] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:20] local.INFO: 0.91  
+[2024-08-30 16:33:20] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-08-30 16:33:20] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZ3BZUzhrbVRHTzl1MkIycmQwcEZRcnl0TFpzbktZWDdHbkdoTXo2RSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM3OiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL01hbmFnZVRvd2VyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1725006800,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:20] local.INFO: 39.88  
+[2024-08-30 16:33:20] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:20] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:20] local.INFO: 8.65  
+[2024-08-30 16:33:20] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:33:20] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZ3BZUzhrbVRHTzl1MkIycmQwcEZRcnl0TFpzbktZWDdHbkdoTXo2RSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI1OiJodHRwOi8vMC4wLjAuMDo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1725006800,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:20] local.INFO: 20.42  
+[2024-08-30 16:33:25] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:25] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:25] local.INFO: 39.67  
+[2024-08-30 16:33:25] local.INFO: select * from `tbl_workeraccounts` where `status` = ?  
+[2024-08-30 16:33:25] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:25] local.INFO: 5.21  
+[2024-08-30 16:33:25] local.INFO: select * from `tbl_adminaccounts` where `status` = ?  
+[2024-08-30 16:33:25] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:25] local.INFO: 3.27  
+[2024-08-30 16:33:25] local.INFO: select * from `tbl_useraccounts` where `status` = ?  
+[2024-08-30 16:33:25] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:25] local.INFO: 2.28  
+[2024-08-30 16:33:25] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:33:25] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiZ3BZUzhrbVRHTzl1MkIycmQwcEZRcnl0TFpzbktZWDdHbkdoTXo2RSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI1OiJodHRwOi8vMC4wLjAuMDo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6NjoiZXJyb3JzIjt9czozOiJuZXciO2E6MDp7fX1zOjY6ImVycm9ycyI7TzozMToiSWxsdW1pbmF0ZVxTdXBwb3J0XFZpZXdFcnJvckJhZyI6MTp7czo3OiIAKgBiYWdzIjthOjE6e3M6NzoiZGVmYXVsdCI7TzoyOToiSWxsdW1pbmF0ZVxTdXBwb3J0XE1lc3NhZ2VCYWciOjI6e3M6MTE6IgAqAG1lc3NhZ2VzIjthOjI6e3M6ODoidXNlcm5hbWUiO2E6MTp7aTowO3M6NTQ6IllvdXIgcHJvdmlkZWQgY3JlZGVudGlhbHMgZG8gbm90IG1hdGNoIGluIG91ciByZWNvcmRzLiI7fXM6ODoicGFzc3dvcmQiO2E6MTp7aTowO3M6Mzg6IlRoZSBwYXNzd29yZCB5b3UgZW50ZXJlZCBpcyBpbmNvcnJlY3QuIjt9fXM6OToiACoAZm9ybWF0IjtzOjg6IjptZXNzYWdlIjt9fX19',
+  1 => 1725006805,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:25] local.INFO: 28.85  
+[2024-08-30 16:33:26] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:26] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:26] local.INFO: 2.51  
+[2024-08-30 16:33:26] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:33:26] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZ3BZUzhrbVRHTzl1MkIycmQwcEZRcnl0TFpzbktZWDdHbkdoTXo2RSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI1OiJodHRwOi8vMC4wLjAuMDo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1725006806,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:26] local.INFO: 16.2  
+[2024-08-30 16:33:30] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:30] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:30] local.INFO: 3.93  
+[2024-08-30 16:33:30] local.INFO: select * from `tbl_workeraccounts` where `status` = ?  
+[2024-08-30 16:33:30] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:30] local.INFO: 1.06  
+[2024-08-30 16:33:30] local.INFO: select * from `tbl_adminaccounts` where `status` = ?  
+[2024-08-30 16:33:30] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:30] local.INFO: 0.91  
+[2024-08-30 16:33:30] local.INFO: select * from `tbl_useraccounts` where `status` = ?  
+[2024-08-30 16:33:30] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:30] local.INFO: 1.11  
+[2024-08-30 16:33:30] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:33:30] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiZ3BZUzhrbVRHTzl1MkIycmQwcEZRcnl0TFpzbktZWDdHbkdoTXo2RSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI1OiJodHRwOi8vMC4wLjAuMDo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6NjoiZXJyb3JzIjt9czozOiJuZXciO2E6MDp7fX1zOjY6ImVycm9ycyI7TzozMToiSWxsdW1pbmF0ZVxTdXBwb3J0XFZpZXdFcnJvckJhZyI6MTp7czo3OiIAKgBiYWdzIjthOjE6e3M6NzoiZGVmYXVsdCI7TzoyOToiSWxsdW1pbmF0ZVxTdXBwb3J0XE1lc3NhZ2VCYWciOjI6e3M6MTE6IgAqAG1lc3NhZ2VzIjthOjI6e3M6ODoidXNlcm5hbWUiO2E6MTp7aTowO3M6NTQ6IllvdXIgcHJvdmlkZWQgY3JlZGVudGlhbHMgZG8gbm90IG1hdGNoIGluIG91ciByZWNvcmRzLiI7fXM6ODoicGFzc3dvcmQiO2E6MTp7aTowO3M6Mzg6IlRoZSBwYXNzd29yZCB5b3UgZW50ZXJlZCBpcyBpbmNvcnJlY3QuIjt9fXM6OToiACoAZm9ybWF0IjtzOjg6IjptZXNzYWdlIjt9fX19',
+  1 => 1725006810,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:30] local.INFO: 19.21  
+[2024-08-30 16:33:30] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:30] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:30] local.INFO: 1.9  
+[2024-08-30 16:33:30] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:33:30] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZ3BZUzhrbVRHTzl1MkIycmQwcEZRcnl0TFpzbktZWDdHbkdoTXo2RSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI1OiJodHRwOi8vMC4wLjAuMDo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1725006810,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:30] local.INFO: 17.89  
+[2024-08-30 16:33:34] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:34] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:34] local.INFO: 2.64  
+[2024-08-30 16:33:34] local.INFO: select * from `tbl_workeraccounts` where `status` = ?  
+[2024-08-30 16:33:34] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:34] local.INFO: 1.04  
+[2024-08-30 16:33:34] local.INFO: select * from `tbl_adminaccounts` where `status` = ?  
+[2024-08-30 16:33:34] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:34] local.INFO: 1.1  
+[2024-08-30 16:33:34] local.INFO: select * from `tbl_useraccounts` where `status` = ?  
+[2024-08-30 16:33:34] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:33:34] local.INFO: 0.71  
+[2024-08-30 16:33:34] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:33:34] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiZ3BZUzhrbVRHTzl1MkIycmQwcEZRcnl0TFpzbktZWDdHbkdoTXo2RSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI1OiJodHRwOi8vMC4wLjAuMDo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6NjoiZXJyb3JzIjt9czozOiJuZXciO2E6MDp7fX1zOjY6ImVycm9ycyI7TzozMToiSWxsdW1pbmF0ZVxTdXBwb3J0XFZpZXdFcnJvckJhZyI6MTp7czo3OiIAKgBiYWdzIjthOjE6e3M6NzoiZGVmYXVsdCI7TzoyOToiSWxsdW1pbmF0ZVxTdXBwb3J0XE1lc3NhZ2VCYWciOjI6e3M6MTE6IgAqAG1lc3NhZ2VzIjthOjI6e3M6ODoidXNlcm5hbWUiO2E6MTp7aTowO3M6NTQ6IllvdXIgcHJvdmlkZWQgY3JlZGVudGlhbHMgZG8gbm90IG1hdGNoIGluIG91ciByZWNvcmRzLiI7fXM6ODoicGFzc3dvcmQiO2E6MTp7aTowO3M6Mzg6IlRoZSBwYXNzd29yZCB5b3UgZW50ZXJlZCBpcyBpbmNvcnJlY3QuIjt9fXM6OToiACoAZm9ybWF0IjtzOjg6IjptZXNzYWdlIjt9fX19',
+  1 => 1725006814,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:34] local.INFO: 1.96  
+[2024-08-30 16:33:34] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:33:34] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:34] local.INFO: 1.98  
+[2024-08-30 16:33:34] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:33:34] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZ3BZUzhrbVRHTzl1MkIycmQwcEZRcnl0TFpzbktZWDdHbkdoTXo2RSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI1OiJodHRwOi8vMC4wLjAuMDo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1725006814,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:33:34] local.INFO: 1.87  
+[2024-08-30 16:34:32] local.ERROR: Command "?" is not defined. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"?\" is not defined. at /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php:702)
+[stacktrace]
+#0 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(258): Symfony\\Component\\Console\\Application->find('?')
+#1 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(167): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1203): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /Users/j/Desktop/Hydrosec/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#5 {main}
+"} 
+[2024-08-30 16:35:06] local.ERROR: No arguments expected for "migrate" command, got "factory". {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): No arguments expected for \"migrate\" command, got \"factory\". at /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php:193)
+[stacktrace]
+#0 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php(86): Symfony\\Component\\Console\\Input\\ArgvInput->parseArgument('factory')
+#1 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php(71): Symfony\\Component\\Console\\Input\\ArgvInput->parseToken('factory', true)
+#2 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/Input.php(53): Symfony\\Component\\Console\\Input\\ArgvInput->parse()
+#3 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Command/Command.php(238): Symfony\\Component\\Console\\Input\\Input->bind(Object(Symfony\\Component\\Console\\Input\\InputDefinition))
+#4 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#5 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(1047): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(316): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(167): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1203): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 /Users/j/Desktop/Hydrosec/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#11 {main}
+"} 
+[2024-08-30 16:36:15] local.ERROR: The "--h" option does not exist. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): The \"--h\" option does not exist. at /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php:220)
+[stacktrace]
+#0 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php(149): Symfony\\Component\\Console\\Input\\ArgvInput->addLongOption('h', NULL)
+#1 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php(82): Symfony\\Component\\Console\\Input\\ArgvInput->parseLongOption('--h')
+#2 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php(71): Symfony\\Component\\Console\\Input\\ArgvInput->parseToken('--h', true)
+#3 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/Input.php(53): Symfony\\Component\\Console\\Input\\ArgvInput->parse()
+#4 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Command/Command.php(238): Symfony\\Component\\Console\\Input\\Input->bind(Object(Symfony\\Component\\Console\\Input\\InputDefinition))
+#5 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(1047): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(316): Symfony\\Component\\Console\\Application->doRunCommand(Object(Symfony\\Component\\Console\\Command\\ListCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(167): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1203): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 /Users/j/Desktop/Hydrosec/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#11 {main}
+"} 
+[2024-08-30 16:37:35] local.ERROR: Command "database" is not defined. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"database\" is not defined. at /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php:702)
+[stacktrace]
+#0 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(258): Symfony\\Component\\Console\\Application->find('database')
+#1 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(167): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1203): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /Users/j/Desktop/Hydrosec/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#5 {main}
+"} 
+[2024-08-30 16:37:45] local.ERROR: Command "database" is not defined. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"database\" is not defined. at /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php:702)
+[stacktrace]
+#0 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(258): Symfony\\Component\\Console\\Application->find('database')
+#1 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(167): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1203): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /Users/j/Desktop/Hydrosec/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#5 {main}
+"} 
+[2024-08-30 16:38:00] local.ERROR: No arguments expected for "migrate" command, got "AdminFactory". {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): No arguments expected for \"migrate\" command, got \"AdminFactory\". at /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php:193)
+[stacktrace]
+#0 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php(86): Symfony\\Component\\Console\\Input\\ArgvInput->parseArgument('AdminFactory')
+#1 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/ArgvInput.php(71): Symfony\\Component\\Console\\Input\\ArgvInput->parseToken('AdminFactory', true)
+#2 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Input/Input.php(53): Symfony\\Component\\Console\\Input\\ArgvInput->parse()
+#3 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Command/Command.php(238): Symfony\\Component\\Console\\Input\\Input->bind(Object(Symfony\\Component\\Console\\Input\\InputDefinition))
+#4 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#5 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(1047): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(316): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 /Users/j/Desktop/Hydrosec/vendor/symfony/console/Application.php(167): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1203): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 /Users/j/Desktop/Hydrosec/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#11 {main}
+"} 
+[2024-08-30 16:39:21] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:21] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:39:21] local.INFO: 3.49  
+[2024-08-30 16:39:21] local.INFO: select * from `tbl_workeraccounts` where `status` = ?  
+[2024-08-30 16:39:21] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:39:21] local.INFO: 0.88  
+[2024-08-30 16:39:21] local.INFO: select * from `tbl_adminaccounts` where `status` = ?  
+[2024-08-30 16:39:21] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:39:21] local.INFO: 0.59  
+[2024-08-30 16:39:21] local.INFO: select * from `tbl_useraccounts` where `status` = ?  
+[2024-08-30 16:39:21] local.INFO: array (
+  0 => 'active',
+)  
+[2024-08-30 16:39:21] local.INFO: 0.5  
+[2024-08-30 16:39:22] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:22] local.INFO: 1.62  
+[2024-08-30 16:39:22] local.INFO: delete from `sessions` where `id` = ?  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 'REhbEGqTRV02LTVWqefFqAVUu8xoRjkdJlqZpdoK',
+)  
+[2024-08-30 16:39:22] local.INFO: 48.83  
+[2024-08-30 16:39:22] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:22] local.INFO: 0.91  
+[2024-08-30 16:39:22] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI1OiJodHRwOi8vMC4wLjAuMDo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6Nzoic3VjY2VzcyI7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6Nzoic3VjY2VzcyI7czo0MToiWW91IGhhdmUgc3VjY2Vzc2Z1bGx5IGxvZ2dlZCBpbiBhcyBPd25lciEiO30=',
+  1 => 1725007162,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:22] local.INFO: 19.57  
+[2024-08-30 16:39:22] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:22] local.INFO: 11.38  
+[2024-08-30 16:39:22] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:22] local.INFO: 0.72  
+[2024-08-30 16:39:22] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:22] local.INFO: 0.59  
+[2024-08-30 16:39:22] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:22] local.INFO: 0.67  
+[2024-08-30 16:39:22] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:22] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM1OiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL2Rhc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1725007162,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:22] local.INFO: 29.05  
+[2024-08-30 16:39:24] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:24] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:24] local.INFO: 2.47  
+[2024-08-30 16:39:24] local.INFO: delete from `sessions` where `last_activity` <= ?  
+[2024-08-30 16:39:24] local.INFO: array (
+  0 => 1724999964,
+)  
+[2024-08-30 16:39:24] local.INFO: 56.99  
+[2024-08-30 16:39:24] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:24] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:24] local.INFO: 0.77  
+[2024-08-30 16:39:24] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 16:39:24] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:24] local.INFO: 0.81  
+[2024-08-30 16:39:24] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:24] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM3OiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL01hbmFnZVRvd2VyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007164,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:24] local.INFO: 15.7  
+[2024-08-30 16:39:25] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:25] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:25] local.INFO: 1.89  
+[2024-08-30 16:39:25] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:25] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:25] local.INFO: 1.32  
+[2024-08-30 16:39:25] local.INFO: select * from `tbl_workeraccounts`  
+[2024-08-30 16:39:25] local.INFO: array (
+)  
+[2024-08-30 16:39:25] local.INFO: 0.89  
+[2024-08-30 16:39:25] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:25] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQwOiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL1dvcmtlckFjY291bnRzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007165,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:25] local.INFO: 1.72  
+[2024-08-30 16:39:28] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:28] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:28] local.INFO: 2.29  
+[2024-08-30 16:39:28] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:28] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:28] local.INFO: 0.65  
+[2024-08-30 16:39:28] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 16:39:28] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:28] local.INFO: 0.7  
+[2024-08-30 16:39:28] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:28] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM3OiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL01hbmFnZVRvd2VyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007168,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:28] local.INFO: 24.09  
+[2024-08-30 16:39:29] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:29] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:29] local.INFO: 2.1  
+[2024-08-30 16:39:29] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:29] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:29] local.INFO: 1.79  
+[2024-08-30 16:39:29] local.INFO: select * from `tbl_workeraccounts`  
+[2024-08-30 16:39:29] local.INFO: array (
+)  
+[2024-08-30 16:39:29] local.INFO: 1.01  
+[2024-08-30 16:39:29] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:29] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQwOiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL1dvcmtlckFjY291bnRzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007169,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:29] local.INFO: 20.77  
+[2024-08-30 16:39:30] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:30] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:30] local.INFO: 1.78  
+[2024-08-30 16:39:30] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:30] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:30] local.INFO: 1.1  
+[2024-08-30 16:39:30] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 16:39:30] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:30] local.INFO: 0.89  
+[2024-08-30 16:39:30] local.INFO: select count(*) as aggregate from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-08-30 16:39:30] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:30] local.INFO: 0.75  
+[2024-08-30 16:39:30] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:30] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM1OiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL2Rhc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1725007170,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:30] local.INFO: 28.83  
+[2024-08-30 16:39:31] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:31] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:31] local.INFO: 3.7  
+[2024-08-30 16:39:31] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:31] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:31] local.INFO: 0.76  
+[2024-08-30 16:39:31] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 16:39:31] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:31] local.INFO: 0.59  
+[2024-08-30 16:39:31] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:31] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM3OiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL01hbmFnZVRvd2VyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007171,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:31] local.INFO: 3.73  
+[2024-08-30 16:39:31] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:31] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:31] local.INFO: 2.43  
+[2024-08-30 16:39:31] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:31] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:31] local.INFO: 0.82  
+[2024-08-30 16:39:32] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:32] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007172,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:32] local.INFO: 20.77  
+[2024-08-30 16:39:32] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:32] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:32] local.INFO: 1.79  
+[2024-08-30 16:39:32] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:32] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:32] local.INFO: 0.89  
+[2024-08-30 16:39:32] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:32] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:32] local.INFO: 19.29  
+[2024-08-30 16:39:32] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:32] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:32] local.INFO: 58.59  
+[2024-08-30 16:39:32] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:32] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007172,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:32] local.INFO: 1.02  
+[2024-08-30 16:39:35] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:35] local.INFO: 2.91  
+[2024-08-30 16:39:35] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:35] local.INFO: 1.27  
+[2024-08-30 16:39:35] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007175,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:35] local.INFO: 15.87  
+[2024-08-30 16:39:35] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:35] local.INFO: 3.63  
+[2024-08-30 16:39:35] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:35] local.INFO: 1.26  
+[2024-08-30 16:39:35] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:35] local.INFO: 1.8  
+[2024-08-30 16:39:35] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:35] local.INFO: 1.74  
+[2024-08-30 16:39:35] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007175,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:35] local.INFO: 0.71  
+[2024-08-30 16:39:35] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:35] local.INFO: 1.91  
+[2024-08-30 16:39:35] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:35] local.INFO: 0.66  
+[2024-08-30 16:39:35] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:35] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007175,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:35] local.INFO: 1.27  
+[2024-08-30 16:39:36] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:36] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:36] local.INFO: 2.31  
+[2024-08-30 16:39:36] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:36] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:36] local.INFO: 2.09  
+[2024-08-30 16:39:36] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:36] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:36] local.INFO: 0.77  
+[2024-08-30 16:39:36] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:36] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:36] local.INFO: 0.69  
+[2024-08-30 16:39:36] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:36] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007176,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:36] local.INFO: 1.76  
+[2024-08-30 16:39:36] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:36] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:36] local.INFO: 2.18  
+[2024-08-30 16:39:36] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:36] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:36] local.INFO: 0.89  
+[2024-08-30 16:39:36] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:36] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007176,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:36] local.INFO: 1.62  
+[2024-08-30 16:39:37] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:37] local.INFO: 1.97  
+[2024-08-30 16:39:37] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:37] local.INFO: 0.76  
+[2024-08-30 16:39:37] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:37] local.INFO: 0.63  
+[2024-08-30 16:39:37] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:37] local.INFO: 2  
+[2024-08-30 16:39:37] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007177,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:37] local.INFO: 680.01  
+[2024-08-30 16:39:37] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:37] local.INFO: 2.2  
+[2024-08-30 16:39:37] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:37] local.INFO: 0.87  
+[2024-08-30 16:39:37] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:37] local.INFO: 0.64  
+[2024-08-30 16:39:37] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:37] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM3OiJodHRwOi8vMC4wLjAuMDo4MDAwL093bmVyL01hbmFnZVRvd2VyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007177,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:37] local.INFO: 175.14  
+[2024-08-30 16:39:39] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:39] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:39] local.INFO: 1.99  
+[2024-08-30 16:39:39] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:39] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:39] local.INFO: 0.89  
+[2024-08-30 16:39:39] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:39] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007179,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:39] local.INFO: 20.47  
+[2024-08-30 16:39:39] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:39] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:39] local.INFO: 4.1  
+[2024-08-30 16:39:39] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:39] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:39] local.INFO: 1.77  
+[2024-08-30 16:39:39] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:39] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:39] local.INFO: 0.88  
+[2024-08-30 16:39:39] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:39] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:39] local.INFO: 1.11  
+[2024-08-30 16:39:39] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:39] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007179,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:39] local.INFO: 0.87  
+[2024-08-30 16:39:44] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:44] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:44] local.INFO: 1.88  
+[2024-08-30 16:39:44] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:44] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:44] local.INFO: 0.84  
+[2024-08-30 16:39:44] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:44] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:44] local.INFO: 0.72  
+[2024-08-30 16:39:44] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:44] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:44] local.INFO: 0.64  
+[2024-08-30 16:39:44] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:44] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007184,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:44] local.INFO: 3.96  
+[2024-08-30 16:39:49] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:49] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:49] local.INFO: 2.27  
+[2024-08-30 16:39:49] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:49] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:49] local.INFO: 0.93  
+[2024-08-30 16:39:49] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:49] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:49] local.INFO: 0.92  
+[2024-08-30 16:39:49] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:49] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:49] local.INFO: 1.09  
+[2024-08-30 16:39:49] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:49] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007189,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:49] local.INFO: 58.56  
+[2024-08-30 16:39:54] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:54] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:54] local.INFO: 2.26  
+[2024-08-30 16:39:54] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:54] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:54] local.INFO: 0.65  
+[2024-08-30 16:39:54] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:54] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:54] local.INFO: 0.64  
+[2024-08-30 16:39:54] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:54] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:54] local.INFO: 1.51  
+[2024-08-30 16:39:54] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:39:54] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007194,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:54] local.INFO: 56.64  
+[2024-08-30 16:39:59] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:39:59] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:39:59] local.INFO: 25.26  
+[2024-08-30 16:39:59] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:39:59] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:39:59] local.INFO: 5.69  
+[2024-08-30 16:39:59] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:39:59] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:59] local.INFO: 9.74  
+[2024-08-30 16:39:59] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:39:59] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:39:59] local.INFO: 8.51  
+[2024-08-30 16:40:00] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:40:00] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007199,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:40:00] local.INFO: 48.18  
+[2024-08-30 16:40:04] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:40:04] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:40:04] local.INFO: 2.55  
+[2024-08-30 16:40:04] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:40:04] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:40:04] local.INFO: 1.24  
+[2024-08-30 16:40:04] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:40:04] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:40:04] local.INFO: 1.47  
+[2024-08-30 16:40:04] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:40:04] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:40:04] local.INFO: 1.63  
+[2024-08-30 16:40:04] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:40:04] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007204,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:40:04] local.INFO: 19.84  
+[2024-08-30 16:40:09] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:40:09] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:40:09] local.INFO: 2.11  
+[2024-08-30 16:40:09] local.INFO: delete from `sessions` where `last_activity` <= ?  
+[2024-08-30 16:40:09] local.INFO: array (
+  0 => 1725000009,
+)  
+[2024-08-30 16:40:09] local.INFO: 50.49  
+[2024-08-30 16:40:09] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:40:09] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:40:09] local.INFO: 0.64  
+[2024-08-30 16:40:09] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:40:09] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:40:09] local.INFO: 0.83  
+[2024-08-30 16:40:09] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:40:09] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:40:09] local.INFO: 0.78  
+[2024-08-30 16:40:09] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:40:09] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007209,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:40:09] local.INFO: 13.73  
+[2024-08-30 16:40:14] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-08-30 16:40:14] local.INFO: array (
+  0 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:40:14] local.INFO: 1.94  
+[2024-08-30 16:40:14] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-08-30 16:40:14] local.INFO: array (
+  0 => 1,
+)  
+[2024-08-30 16:40:14] local.INFO: 0.92  
+[2024-08-30 16:40:14] local.INFO: select * from `tbl_tower` where `id` = ?  
+[2024-08-30 16:40:14] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:40:14] local.INFO: 0.68  
+[2024-08-30 16:40:14] local.INFO: select * from `sensor` where `towerid` = ? order by `id` desc limit 1  
+[2024-08-30 16:40:14] local.INFO: array (
+  0 => '1',
+)  
+[2024-08-30 16:40:14] local.INFO: 0.96  
+[2024-08-30 16:40:14] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-08-30 16:40:14] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSGhQNWtpNXQ1QnVyYTFaOEU2NDBuM01qUjdCcUdlT2I2bUJ2dkNPQSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovLzAuMC4wLjA6ODAwMC9Pd25lci9NYW5hZ2VUb3dlciI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMC4wLjAuMDo4MDAwL3Rvd2VyZGF0YS8xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MjoibG9naW5fb3duZXJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',
+  1 => 1725007214,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'UzZZxMcWhxBBOcQVB4iK3giAsv2QYUK6hldN5t3X',
+)  
+[2024-08-30 16:40:14] local.INFO: 51.82  
+[2024-08-30 17:47:10] local.INFO: insert into `tbl_adminaccounts` (`name`, `username`, `email`, `password`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)  
+[2024-08-30 17:47:10] local.INFO: array (
+  0 => 'eyJpdiI6IkFKNkJRUXl2UXRFUnRDZlRmdnNpNnc9PSIsInZhbHVlIjoibTBQaEFaQ0hmeGJuQ1Y2ejV2cDlBdz09IiwibWFjIjoiNjk1OGZmNWQyODU2NTNmNDNkZDY3OTBhN2JkMDgyNDJkYTNlN2VkMWM4Zjk5ZDM4YjFiMzk5OTk1ZGE3OTAwNiIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6IjdCTVJMcklCc3BxamdNTUdPY0o3M1E9PSIsInZhbHVlIjoiUW9HTGpsN1BpeDMvUlUvdzRrNXlYQT09IiwibWFjIjoiNWI3MzM5MjNjZjdhOTNiM2E0ODNhOGE2YmViNjZiZjIxZWExNWQwYjk5YWM0ODAxMDVjMDg3N2EwZDU5M2UxNyIsInRhZyI6IiJ9',
+  2 => 'eyJpdiI6IkIyTDlqeExYMStmSUpnWnlCWW9Mamc9PSIsInZhbHVlIjoiT3k4YUk5cGQ3QTI4aTc2OXV3VzR1TlJBNlRWMXhXKzVTNDdKakNzRG05WT0iLCJtYWMiOiJkMjczZTBmNmE4OTZlMzE2ZjExZTk1ZjQ5OTgwMjkzMDQ5MTMyZjJjZWRkNDUyMTdlZDBhZTJiNmE0MjRlMzM4IiwidGFnIjoiIn0=',
+  3 => '$2y$12$C0gXSb.E7p8876HndClIde1GSROKaE9TbCNimg1EyXNpJa5oK8a8a',
+  4 => '2024-08-30 17:47:09',
+  5 => '2024-08-30 17:47:09',
+)  
+[2024-08-30 17:47:10] local.INFO: 316  
