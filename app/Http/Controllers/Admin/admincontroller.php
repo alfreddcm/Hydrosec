@@ -18,6 +18,55 @@ use Illuminate\Support\Facades\Hash;
 
 class admincontroller extends Controller
 {
+    public function addowneraccount(Request $request){
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'name' => 'required|string|max:250',
+            'email' => 'required|email|max:250|',
+            'password' => [
+                'required',
+                'string',
+                'min:8',  
+                'regex:/[a-z]/',    
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/', 
+                'regex:/[@$!%*?&]/'],
+                ]);
+
+
+        $username = $request->username;
+        $email = $request->email;
+    
+        if ($this->checkUser('username', $username, '1') || $this->checkUser('email', $email, '1')) {
+            if ($this->checkUser('username', $username, '0') || $this->checkUser('email', $email, '0')) {
+                return back()->withErrors(['react' => 'User has already existed and has been deactivated.']);
+            } else {
+                return back()->withErrors(['username' => 'The username or email already exists!']);
+            }
+        }
+
+        Owner::create([
+            'username' => Crypt::encryptString($username),
+            'name' => Crypt::encryptString($request->name),
+            'email' => Crypt::encryptString($request->email),
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()
+            ->with('success', 'You have successfully added!');
+
+    }
+    
+    
+
+    public function showCounts()
+    {
+        $ownerCount = Owner::where('status','1')->count();
+        $workerCount = Worker::where('status','1')->count();
+    
+        return view('Admin.dashboard', compact('ownerCount', 'workerCount'));
+    }
+    
     public function edit($id)
     {
         $user = Owner::find($id);
@@ -73,7 +122,7 @@ class admincontroller extends Controller
     {
         try {
             $user = Owner::find(auth()->user()->id);
-            $user->status = "disabled"; 
+            $user->status = "0"; 
             $user->save();
         } catch (\Exception $exception) {
            
@@ -82,20 +131,21 @@ class admincontroller extends Controller
     
         return redirect()->route('UserAccounts')->with('status', 'Account disabled successfully.');
     }
-    
-    public function disableWorker(int $id)
+
+    public function en()
     {
         try {
-            $user = Worker::find(auth()->user()->id);
-            $user->status = "disabled"; 
+            $user = Owner::find(auth()->user()->id);
+            $user->status = "1"; 
             $user->save();
-
-        } catch (\Exception $exception){
-            return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to disable the account.']);
-
+        } catch (\Exception $exception) {
+           
+            return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to enable the account.']);
         }
-        return redirect()->route('UserAccounts')->with('status', 'Account disabled successfully.');
+    
+        return redirect()->route('UserAccounts')->with('status', 'Account enabled successfully.');
     }
+    
 
 
         //ownerupdate pass
@@ -165,5 +215,35 @@ class admincontroller extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Password updated successfully');
+    }
+
+
+
+
+    //check email
+    public function checkUser($field, $value, $status)
+    {
+        $ownerCheck = Owner::where('status', $status)
+                            ->get()
+                            ->filter(function ($owner) use ($field, $value) {
+                                return Crypt::decryptString($owner->$field) === $value;
+                            })
+                            ->isNotEmpty();
+    
+        $adminCheck = Admin::where('status', $status)
+                            ->get()
+                            ->filter(function ($admin) use ($field, $value) {
+                                return Crypt::decryptString($admin->$field) === $value;
+                            })
+                            ->isNotEmpty();
+    
+        $workerCheck = Worker::where('status', $status)
+                            ->get()
+                            ->filter(function ($worker) use ($field, $value) {
+                                return Crypt::decryptString($worker->$field) === $value;
+                            })
+                            ->isNotEmpty();
+    
+        return $ownerCheck || $adminCheck || $workerCheck;
     }
 }

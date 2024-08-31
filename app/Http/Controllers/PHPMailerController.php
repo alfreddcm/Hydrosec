@@ -33,8 +33,7 @@ class PHPMailerController extends Controller
         return view('sendEmail');
     }
 
-    public function checkEmail(Request $request)
-{
+    public function checkEmail(Request $request){
     $email = $request->input('email');
     $users = Owner::all();
 

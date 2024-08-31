@@ -47,7 +47,7 @@ class AuthManager extends Controller
         $username = $credentials['username'];
         $Password = $credentials['password'];
 
-        $worker =Worker::where('status','active')->get();
+        $worker =Worker::where('status','1')->get();
         foreach ($worker as $user) {
             try {
                 $storedusername = Crypt::decryptString($user->username);
@@ -72,7 +72,7 @@ class AuthManager extends Controller
 
         }
 
-        $admin = Admin::where('status','active')->get();
+        $admin = Admin::where('status','1')->get();
 
         foreach ($admin as $user) {
             try {
@@ -90,7 +90,7 @@ class AuthManager extends Controller
             }
         }
 
-        $owner =Owner::where('status','active')->get();
+        $owner =Owner::where('status','1')->get();
 
         foreach ($owner as $user) {
             try {
@@ -121,7 +121,7 @@ class AuthManager extends Controller
         $request->validate([
             'username' => 'required|string|max:255',
             'name' => 'required|string|max:250',
-            'email' => 'required|email|max:250|unique:tbl_useraccounts',
+            'email' => 'required|email|max:250',
             'password' => 'required|min:8|confirmed',
         ]);
         $username=$request->username;

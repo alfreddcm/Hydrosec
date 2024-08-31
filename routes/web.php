@@ -94,15 +94,15 @@ Route::middleware('auth:worker')->group(function () {
 
 
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/Admin/Dashboard', function () {
-        return view('Admin.dashboard');
-    })->name('admindashboard');
+    Route::get('/Admin/Dashboard', [admincontroller::class, 'showCounts'])->name('admindashboard');
     Route::get('/Admin/profile', function () {
         return view('Admin.profile');
     })->name('adminprofile');
     Route::get('/Admin/UserAccounts', function () {
         return view('Admin.UserAccounts');
     })->name('UserAccounts');
+
+    Route::post('/Admin/UserAccounts', [admincontroller::class, 'addowneraccount'])->name('PUserAccounts');
 
     Route::get('/Admin/edit/{id}', [admincontroller::class, 'edit'])->name('admin.edit');
     Route::get('/Admin/edit2/{id}', [admincontroller::class, 'edit2'])->name('admin.edit2');
@@ -112,6 +112,8 @@ Route::middleware('auth:admin')->group(function () {
 
     Route::post('/Admin/update-password/{id}', [admincontroller::class, 'adminupdatePassword'])->name('admin.updatePassword');
     Route::post('/Admin/update-password2/{id}', [admincontroller::class, 'adminupdatePassword2'])->name('admin.updatePassword2');
+
+    Route::post('/Admin/en/{id}', [admincontroller::class, 'en'])->name('admin.en');
 
 
     Route::delete('delete/{id}', [admincontroller::class, 'disableOwner'])->name('admin.dis');

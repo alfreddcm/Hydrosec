@@ -17,8 +17,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 
-class OwnerProfile extends Controller
-{
+class OwnerProfile extends Controller{
     public function showCounts()
 {
     $towerCount = Tower::where('OwnerID', Auth::id())->count();
