@@ -9,6 +9,9 @@ use App\Models\Admin;
 use App\Models\Owner;
 use App\Models\Worker;
 use App\Models\Tower;
+use App\Models\Towerlogs;
+
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
@@ -19,13 +22,25 @@ use Illuminate\Support\Facades\Validator;
 
 class OwnerProfile extends Controller{
     public function showCounts()
-{
-    $towerCount = Tower::where('OwnerID', Auth::id())->count();
+    {
+        $towerCount = Tower::where('OwnerID', Auth::id())->count();
     $workerCount = Worker::where('OwnerID', Auth::id())->count();
 
-    return view('Owner.dashboard', compact('towerCount', 'workerCount'));
-}
 
+        $towerCount = Tower::where('OwnerID', Auth::id())->count();
+        
+        $towerId = Tower::where('OwnerID', Auth::id())->value('id');
+        
+        $towerLogs = DB::table('tbl_towerlogs')
+            ->join('tbl_tower', 'tbl_towerlogs.ID_tower', '=', 'tbl_tower.id')
+            ->where('tbl_towerlogs.ID_tower', $towerId)
+            ->select('tbl_tower.name as tower_name', 'tbl_tower.towercode as tower_code', 'tbl_towerlogs.activity', 'tbl_towerlogs.created_at')
+            ->orderBy('tbl_towerlogs.created_at', 'desc')
+            ->get();
+
+        // Return view with both counts and logs
+        return view('owner.dashboard', compact('towerCount', 'towerLogs', 'workerCount'));
+    }
 
     //
     public function update(Request $request)

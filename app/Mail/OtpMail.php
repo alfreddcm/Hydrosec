@@ -35,6 +35,7 @@ class OtpMail extends Mailable
         return $this->markdown('mailotp')
                     ->with(['otpcode' => $this->otp]);
     }
+    
     public function envelope(): Envelope
     {
         return new Envelope(

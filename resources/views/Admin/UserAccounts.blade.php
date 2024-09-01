@@ -30,20 +30,8 @@
                                 <div class="panel-heading">
                                     Owner Accounts List
                                 </div>
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
+                               
+                               
                                 <div class="panel-body">
                                     @if ($accs->isNotEmpty())
                                         <div class="dataTable_wrapper">
@@ -254,6 +242,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Display success message if present
             @if (session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -262,16 +251,21 @@
                     timer: 3000,
                     showConfirmButton: false
                 });
-            @elseif ($errors->any())
+            @endif
+    
+            // Display error messages if present
+            @if ($errors->any())
+                var errors = @json($errors->all());
+                var errorText = errors.join('\n');
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: '{{ session('error') }}',
-                    timer: 3000,
-                    showConfirmButton: false
+                    text: errorText,
+                    timer: 5000,
+                    showConfirmButton: true
                 });
-                @endif
-                
+            @endif
         });
     </script>
+    
 @endsection

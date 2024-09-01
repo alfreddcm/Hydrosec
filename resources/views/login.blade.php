@@ -34,27 +34,23 @@
                                         <label for="yourUsername" class="form-label">Username</label>
                                         <input type="username" class="form-control @error('username') is-invalid @enderror"
                                             id="username" name="username" value="{{ old('email') }}">
-                                        @if ($errors->has('username'))
-                                            <span class="text-danger">{{ $errors->first('username') }}</span>
-                                        @endif
+                                    
                                     </div>
 
                                     <div class="col-12">
                                         <label for="yourPassword" class="form-label">Password</label>
                                         <input type="password" class="form-control @error('password') is-invalid @enderror"
                                             id="password" name="password">
-                                        @if ($errors->has('password'))
-                                            <span class="text-danger">{{ $errors->first('password') }}</span>
-                                        @endif
+                                     
                                     </div>
 
                                     <div class="col-12">
                                         <div class="form-group form-check">
-                                            <div class="g-recaptcha" name="g-recaptcha-response"
-                                                data-sitekey="6LebogwqAAAAAJ47BvpYsyGSY5z2szywzZzJ6rMA"></div>
-                                            @if ($errors->has('captcha'))
-                                                <span class="text-danger">{{ $errors->first('captcha') }}</span>
-                                            @endif
+                                            <div class="g-recaptcha" 
+         data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+    @if ($errors->has('g-recaptcha-response'))
+        <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+    @endif
                                         </div>
 
                                     </div>
@@ -75,15 +71,42 @@
             </div>
         </section>
     </div>
- @if(session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Display success message if present
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+    
+            // Display error messages if present
+            @if ($errors->any())
+                var errors = @json($errors->all());
+                var errorText = errors.join('\n');
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: '{{ session('error') }}',
+                    title: 'Error',
+                    text: errorText,
+                    timer: 5000,
+                    showConfirmButton: true
                 });
-            });
-        </script>
-    @endif
+            @endif
+    
+            // Display a timeout error alert if there's a timeout
+            @if (session('timeout'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Timeout Error',
+                    text: 'The connection to the server timed out. Please try again later.',
+                    timer: 5000,
+                    showConfirmButton: true
+                });
+            @endif
+        });
+    </script>
 @endsection
