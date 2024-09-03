@@ -8,11 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="{{asset('js/jquery.min.js')}}"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <link href="{{ asset('css/worker/dashboard.css') }}" rel="stylesheet">
+
+
+
 </head>
 
 <body>
-    <main class="containe">
+    <main class="container">
         <div class="row g-0">
             <div class="col-2 side">
                 <div class="p-2 text-white">
@@ -39,8 +48,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
                                     aria-labelledby="dropdownUser1">
-                                    <li><a class="dropdown-item" href="{{ route('ownermanageprofile') }}">Manage
-                                            Account</a></li>
+                                    
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

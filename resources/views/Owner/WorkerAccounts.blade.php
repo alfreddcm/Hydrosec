@@ -10,9 +10,11 @@
     use App\Models\Admin;
     use App\Models\Worker;
 
-    $id = Auth::id();
-
-    $accs =Worker::get()->where('OwnerID',$id);
+    $accs = DB::table('tbl_workeraccounts')
+        ->join('tbl_tower', 'tbl_workeraccounts.OwnerID', '=', 'tbl_tower.OwnerID')
+        ->where('tbl_workeraccounts.OwnerID', Auth::id())
+        ->select('tbl_workeraccounts.*', 'tbl_tower.name as tower_name','tbl_tower.name as towerid')
+        ->get();
     $counter = 1;
 
 @endphp
@@ -46,7 +48,7 @@
                                                     <th>No</th>
                                                     <th>Name</th>
                                                     <th>Username</th>
-                                                    <th>Tower ID</th>
+                                                    <th>Tower</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -57,7 +59,7 @@
                                                             <td>{{ $counter++ }}</td>
                                                             <td>{{ Crypt::decryptString($user->name) }}</td>
                                                             <td>{{ Crypt::decryptString($user->username) }}</td>
-                                                            <td>{{($user->towerid)}}</td>
+                                                            <td>{{Crypt::decryptString($user->tower_name)}}</td>
                                                             <td>
                                                                 <div class="btn-group">
                                                                     <a href="{{ route('ownerworker.edit', $user->id) }}"

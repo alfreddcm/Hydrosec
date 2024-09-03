@@ -7,6 +7,7 @@ use App\Http\Controllers\SensorData;
 use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\Admin\admincontroller;
 use App\Http\Controllers\Towercontroller;
+use App\Http\Controllers\EspController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -70,14 +71,12 @@ Route::middleware('auth:owner')->group(function () {
     Route::get('/startcycle', [SensorData::class, 'startcycle'])->name('startcycle');
 
     Route::post('/addtower', [Towercontroller::class, 'store'])->name('posttower');
-
-
     Route::get('/towerdata/{id}', function () {
         return view('Owner.tower');
     })->name('towerdata');
     Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
-
-
+    Route::get('/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
+    Route::get('/pump-data/{id}', [SensorData::class, 'getPump']);
 
 });
 
@@ -90,6 +89,12 @@ Route::middleware('auth:worker')->group(function () {
     Route::get('/Worker/Nutrient', function () {
         return view('Worker.Nutrient');
     })->name('workernutrient');
+
+   
+    Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
+    Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
+    Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);
+
 });
 
 
@@ -123,3 +128,4 @@ Route::middleware('auth:admin')->group(function () {
 
 
 });
+

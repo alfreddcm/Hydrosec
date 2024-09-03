@@ -4,9 +4,9 @@ Hello!
 
 You have received an OTP: {{ $otpcode }}
 
-@component('mail::button', ['url' => 'https://www.google.com'])
-Click here
-@endcomponent
+If you did not create an account, no further action is required.
+
+
 Thanks,<br>
 {{ config('app.name') }}
 

@@ -37,24 +37,7 @@
                                         <label >Username:</label>
                                         <input type="text" class="form-control" name="username" value="{{ $user->username }}" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label >Tower Id:</label>
-
-                                        <select name="towerid" id="towerid" class="form-select form-select-lg">
-                                            <option value="{{ $user->towerid }}" selected >{{ $user->towerid }} </option>
-
-                                            @php
-                                            $list=DB::table('tbl_tower')->get();
-                                            
-                                            @endphp
-                                            @foreach ($list as $tower)
-                                            
-                                            
-                                            @endforeach
-                                        </select>
-                                        
-
-                                    </div>
+                                   
                                     
                                     <a href="javascript:void(0);" onclick="openPasswordModal({{ $user->id }})" class="btn btn-success">Update Password</a>
                                     <button type="submit" class="btn btn-primary">Update</button>

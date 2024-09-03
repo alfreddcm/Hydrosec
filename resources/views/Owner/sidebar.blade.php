@@ -6,15 +6,17 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.28.0/date-fns.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
 
 
@@ -95,7 +97,7 @@
 
             </div>
             <div class="col-10 main">
-                <div class="dashboard-header mb-2">
+                <div class="dashboard-header">
                     <div class="row">
                         <div class="col ps-3">
                             <h2>@yield('title')</h2>
@@ -105,7 +107,10 @@
                         </div>
                     </div>
                 </div>
-                @yield('content')
+                <div class="mt-4">
+                    @yield('content')
+
+                </div>
             </div>
     </main>
 

@@ -28,7 +28,6 @@ $towers=Tower::where('OwnerID',Auth::id())->get();
                         <h5 class="card-title">{{$data->id}} {{Crypt::decryptString($data->name)}}</h5>
                         <p class="card-text">
                         {{Crypt::decryptString($data->towercode)}}
-                            <!-- Additional tower details can be displayed here -->
                         </p>
                     </div>
                 </div>
@@ -41,7 +40,6 @@ $towers=Tower::where('OwnerID',Auth::id())->get();
 
                    
             </div>
-            <!-- route('addtower') -->
             <a href="#" class="btn btn-success mt-1" data-bs-toggle="modal" data-bs-target="#addTowerModal">
                 Add Tower
             </a>
@@ -79,6 +77,13 @@ $towers=Tower::where('OwnerID',Auth::id())->get();
         </div>
     </div>
 </div>
+
+{{-- <form action="{{ url('/send-to-esp') }}" method="POST">
+    @csrf
+    <input type="text" name="data" value="your_data_here">
+    <button type="submit" class="btn btn-primary">Send to ESP8266</button>
+</form> --}}
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

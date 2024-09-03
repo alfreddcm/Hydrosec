@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('pH');
             $table->string('temperature');
             $table->string('nutrientlevel');
+            $table->string('pump');
+            $table->string('light');
             $table->string('status')->default('1');
             $table->text('iv'); 
             $table->text('k'); 
@@ -47,6 +49,15 @@ return new class extends Migration
 
              $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');
         });
+
+        Schema::create('pump', function (Blueprint $table) {
+            $table->tinyInteger('id', false, true)->autoIncrement();
+            $table->tinyInteger('towerid', false, true);
+            $table->string('status');
+            $table->timestamps();
+
+            $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');
+        });
     
     }
 
@@ -58,6 +69,7 @@ return new class extends Migration
         Schema::dropIfExists('tbl_tower');
         Schema::dropIfExists('tbl_alert');
         Schema::dropIfExists('tbl_towerlogs');
+        Schema::dropIfExists('pump');
         Schema::dropIfExists('sensor');
     }
 };
