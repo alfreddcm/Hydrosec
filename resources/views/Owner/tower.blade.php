@@ -101,10 +101,7 @@
             overflow-y: auto;
         }
 
-        .con {
-            padding: 5px;
-            margin-top: 30px;
-        }
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -231,23 +228,99 @@
                     <div class="row justify-content-center">
                         <div class="col-sm-3">
                             <h5>Date Started</h5>
-                            <h6>N/A</h6>
+                            <h6>
+                                {{ $towerinfo->startdate ? \Carbon\Carbon::parse($towerinfo->startdate)->format('F j, Y') : 'N/A' }}
+                            </h6>
                         </div>
                         <div class="col-sm-3">
                             <h5>Expected Date Harvest</h5>
-                            <h6>N/A</h6>
+                            
+                            <h6>
+                                {{ $towerinfo->enddate ? \Carbon\Carbon::parse($towerinfo->enddate)->format('F j, Y') : 'N/A' }}
+                            </h6>
                         </div>
                     </div>
+                    
+                    @if(is_null($towerinfo->startdate) && is_null($towerinfo->enddate))
+    <!-- Show Start Cycle Button and Modal if dates are null -->
+    <form>
+        @csrf
+        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#startCycleModal">
+            START CYCLE
+        </button>
+    </form>
+@else
+    <!-- Show Update Dates Button and Modal if dates are not null -->
+    <form>
+        @csrf
+        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCycleModal">
+            UPDATE CYCLE
+        </button>
+    </form>
+@endif
 
+<!-- Start Cycle Modal -->
+<div class="modal fade" id="startCycleModal" tabindex="-1" aria-labelledby="startCycleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('cycle') }}" method="POST">
+                @csrf
+                <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="startCycleModalLabel">Start New Cycle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="days">Select Number of Days:</label>
+                        <select name="days" id="days" class="form-control">
+                            @for($i = 15; $i <= 50; $i++)
+                                <option value="{{ $i }}">{{ $i }} days</option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Start Cycle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                    <form action="">
-                        @csrf
+<!-- Update Cycle Modal -->
+<div class="modal fade" id="updateCycleModal" tabindex="-1" aria-labelledby="updateCycleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('cycle') }}" method="POST">
+                @csrf
+                <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCycleModalLabel">Update Cycle Dates</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="newDays">Select New Number of Days:</label>
+                        <select name="newDays" id="newDays" class="form-control">
+                            @for($i = 1; $i <= 50; $i++)
+                                <option value="{{ $i }}">{{ $i }} days</option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-warning">Update Dates</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-
-                        <button type="submit" class="btn btn-primary">
-                            START CYCLE
-                        </button>
-                    </form>
                 </div>
             </div>
 
@@ -299,6 +372,9 @@
             </div>
         </div>
 
+
+
+</div>
         <script>
             var towerId = @json($towerinfo->id);
             $(document).ready(function() {

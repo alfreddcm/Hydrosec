@@ -77,6 +77,8 @@ Route::middleware('auth:owner')->group(function () {
     Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/pump-data/{id}', [SensorData::class, 'getPump']);
+   
+    Route::post('/cycle', [Towercontroller::class, 'updateDates'])->name('cycle');
 
 });
 

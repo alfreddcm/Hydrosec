@@ -2,46 +2,31 @@
 @section('title', 'Hydrosec')
 @section('content')
 <body>
-    <nav class="main-menu d-flex navbar navbar-expand-lg p-2 py-3 p-lg-4 py-lg-4">
-        <div class="container-fluid">
-            <div class="main-logo d-lg-none">
+    <section id="hero">
+        <div class="container">
+            <div class="main-logo">
                 <a href="/">
                     <img src="images/logo.png" alt="logo" class="img-fluid">
                 </a>
             </div>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-body justify-content-between">
-                    <div class="main-logo">
-                        <img src="images/logo.png" alt="logo" class="img-fluid">
-                    </div>
-                    <div class="d-none d-lg-flex align-items-center">
-                        <ul class="d-flex align-items-center list-unstyled m-0">
-                            <li>
-                                <a href="/login">Login</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <section id="hero" style="background-image:url(images/billboard-bg.png); background-repeat: no-repeat;">
-        <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-6 pe-5 mt-5 mt-md-0">
+                <div class="col-md-6">
                     <h2 class="display-1 text-uppercase">Nurture your Hydroponics</h2>
                     <p class="fs-8 my-4 pb-2">Register to use HYDROSEC, a multi-level Security Web Smart monitoring system</p>
                     <div>
-
                         <form id="form" class="d-flex align-items-center position-relative" method="POST" action="{{ route('checkEmail') }}" >
                             @csrf
                             <input type="email" name="email" placeholder="Enter email to have access" class="form-control bg-white border-1 rounded-4 shadow-none px-4 py-3 w-100" required>
                             <button id="registerBtn" class="btn btn-primary rounded-4 px-3 py-2 position-absolute align-items-center m-1 end-0">Register</button>
                         </form>
                     </div>
+                    <a href="/login" class="login-link btn btn-primary rounded-4 px-3 py-2 position-absolute align-items-center m-1 ">Login</a>
+
                 </div>
                 <div class="col-md-6 mt-5">
-                    <img src="images/billboard-img.jpg" alt="img" class="img-fluid">
+                    <div class="card material-card">
+                        <img src="" alt="img" class="img-fluid">
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,26 +46,25 @@
     @endif
 
     <script>
-           const showLoading = function() {
-        Swal.fire({
-            title: '',
-            html: '<b>Be patient.</b><br/>Checking Email.',
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-    };
+        const showLoading = function() {
+            Swal.fire({
+                title: '',
+                html: '<b>Be patient.</b><br/>Checking Email.',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        };
 
-    // Attach event listener to the button
-    document.getElementById('registerBtn').addEventListener('click', showLoading);
+        // Attach event listener to the button
+        document.getElementById('registerBtn').addEventListener('click', showLoading);
     </script>
 </body>
 <footer class="fixed-bottom">
-    <hr class="text-black-50">
     <div class="container text-center">
-        <div class="row padding-0">
+        <div class="row padding-1">
             <div class="col copyright">
                 <p>© 2025 Hydrosec All rights reserved.</p>
             </div>

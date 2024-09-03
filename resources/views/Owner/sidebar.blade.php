@@ -1,3 +1,11 @@
+@php
+    use Illuminate\Support\Facades\Crypt;
+
+    if (Auth::check()) {
+        $decryptedName = Crypt::decryptString(Auth::user()->name);
+    }
+
+@endphp
 <!doctype html>
 <html lang="en">
 
@@ -11,16 +19,12 @@
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="{{asset('js/jquery.min.js')}}"></script>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@2.28.0/date-fns.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
-
-
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js">
+    </script>
 </head>
 
 <body>
@@ -30,32 +34,17 @@
                 <div class="p-2 text-white">
                     <a
                         href="#"class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <img src="" alt="logo">
                         <span class="fs-4">
+
                             <div class="dropdown ps-1">
-                                <a href="#"
-                                    class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                                    id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-
-                                    <strong>
-                                        @php
-                                            use Illuminate\Support\Facades\Crypt;
-
-                                            if (Auth::check()) {
-                                                $decryptedName = Crypt::decryptString(Auth::user()->name);
-                                            }
-
-                                        @endphp
-                                        <p>{{ $decryptedName }}</p>
-                                    </strong>
+                                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                                   id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{ asset('images/logo.png') }}" alt="logo" class="rounded-circle" style="width: 50px; height: 50px; margin-right: 8px;">
+                                    <strong>{{ $decryptedName }}</strong>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
-                                    aria-labelledby="dropdownUser1">
-                                    <li><a class="dropdown-item" href="{{ route('ownermanageprofile') }}">Manage
-                                            Account</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
+                                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                                    <li><a class="dropdown-item" href="{{ route('ownermanageprofile') }}">Manage Account</a></li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="{{ route('logout') }}">Sign out</a></li>
                                 </ul>
                             </div>

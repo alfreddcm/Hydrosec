@@ -18,14 +18,20 @@ class Tower extends Authenticatable
      */
     protected $table = 'tbl_tower'; // Specify the table name
 
+   
+    protected $primaryKey = 'id';
+
+    public $timestamps = true;
+
     protected $fillable = [
         'name',
-        'OwnerID',
         'towercode',
+        'OwnerID',
         'ipAdd',
-        'MacAdd',
+        'macAdd',
+        'startdate',
+        'enddate',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *

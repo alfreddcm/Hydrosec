@@ -15,8 +15,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('towercode');
             $table->tinyInteger('OwnerID');
-            $table->string('ipAdd')->nullable() ;
+            $table->string('ipAdd')->nullable();
             $table->string('macAdd')->nullable();
+            $table->timestamp('startdate')->nullable();
+            $table->timestamp('enddate')->nullable();   
             $table->timestamps();
         });
 

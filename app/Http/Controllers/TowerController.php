@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 use App\Models\Tower;
@@ -49,6 +51,61 @@ class TowerController extends Controller
     return redirect()->back()->with('success', 'Tower added and owner updated successfully!');
 }
 
+
+
+public function updateDates(Request $request)
+{
+    // Cast the 'days' input to an integer
+    $days = (int) $request->input('days', 0); // Default to 0 if not present
+    $newDays = (int) $request->input('newDays', 0); // Default to 0 if not present
+    $towerId = $request->input('tower_id');
+    
+    $tower = Tower::find($towerId);
+
+    if ($tower) {
+        if ($days > 0) {
+            // Handle starting a new cycle
+            $startdate = Carbon::now();
+            $enddate = $startdate->copy()->addDays($days);
+
+            $tower->startdate = $startdate;
+            $tower->enddate = $enddate;
+            $tower->save();
+
+            Log::info('New cycle started', [
+                'tower_id' => $tower->id,
+                'date_started' => $startdate,
+                'date_end' => $enddate,
+            ]);
+
+            return redirect()->back()->with('success', 'Cycle started successfully!');
+        } elseif ($newDays > 0) {
+            // Handle updating an existing cycle
+            $startdate = $tower->startdate;
+            $enddate = Carbon::parse($startdate)->addDays($newDays);
+
+            $tower->enddate = $enddate;
+            $tower->save();
+
+            Log::info('Cycle dates updated', [
+                'tower_id' => $tower->id,
+                'date_end' => $enddate,
+            ]);
+
+            return redirect()->back()->with('success', 'Cycle dates updated successfully!');
+        }
+
+        // If no valid input is provided
+        return redirect()->back()->with('error', 'Invalid input.');
+    }
+
+    // Log the error if the tower was not found
+    Log::error('Failed to handle cycle - Tower not found', [
+        'tower_id' => $towerId,
+    ]);
+
+    return redirect()->back()->with('error', 'Tower not found!');
+}
     }
 
 

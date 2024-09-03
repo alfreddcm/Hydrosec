@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('pH');
             $table->string('temperature');
             $table->string('nutrientlevel');
-            $table->string('pump');
             $table->string('light');
             $table->string('status')->default('1');
             $table->text('iv'); 

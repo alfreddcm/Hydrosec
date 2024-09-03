@@ -2,6 +2,28 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('{{ asset(images/bg.png) }}');
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+}
+
+.glass-effect {
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.2); /* White with 20% opacity */
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* Applies the glass blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff; /* Text color for readability */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: adds a slight shadow */
+    text-align: center;
+}
 .side a {
     color: #ecf0f1;
 }
@@ -12,20 +34,25 @@ body {
     background-color: #ecf0f1;
 }
 .dashboard-header {
-    padding: 2px;
+    padding: 10px 20px; 
     background-color: #00bcd4;
     color: #fff;
     text-align: start;
     top: 0;
     width: 100%;
     position: fixed;
+    z-index: 1000;
+    height: 60px; 
 }
 
-/* sidebar.css */
+.containe {
+    margin-top: 60px;
+}
+
 .side {
     position: fixed;
-    top: 0; /* Aligns it to the top of the page */
-    left: 0; /* Aligns it to the left edge of the page */
+    top: 0; 
+    left: 0; 
     height: 100vh; /* Makes it span the full height of the viewport */
     width: 16.6667%; /* Adjust width as needed, 2/12 in Bootstrap's grid system */
     overflow-y: auto; /* Adds vertical scrolling if the content exceeds the height */
@@ -36,5 +63,13 @@ body {
     height: 100vh;
     margin-left: 16.6667%;
     margin-top: 30px;
+}
+
+.logo{
+    width: 30px;
+    height: 30px;
+}
+ a{
+    text-decoration: none;
 }
 
