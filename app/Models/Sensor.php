@@ -16,9 +16,7 @@ class Sensor extends Model
         'pH',
         'temperature',
         'nutrientlevel',
-        'pump',
         'light',
-
         'iv',
         'k'
     ];

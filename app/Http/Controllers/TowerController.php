@@ -55,9 +55,8 @@ class TowerController extends Controller
 
 public function updateDates(Request $request)
 {
-    // Cast the 'days' input to an integer
-    $days = (int) $request->input('days', 0); // Default to 0 if not present
-    $newDays = (int) $request->input('newDays', 0); // Default to 0 if not present
+    $days = (int) $request->input('days', 0); 
+    $newDays = (int) $request->input('newDays', 0); 
     $towerId = $request->input('tower_id');
     
     $tower = Tower::find($towerId);
@@ -67,7 +66,7 @@ public function updateDates(Request $request)
             // Handle starting a new cycle
             $startdate = Carbon::now();
             $enddate = $startdate->copy()->addDays($days);
-
+            $tower->status = Crypt::encryptString('1');
             $tower->startdate = $startdate;
             $tower->enddate = $enddate;
             $tower->save();
@@ -105,6 +104,19 @@ public function updateDates(Request $request)
     ]);
 
     return redirect()->back()->with('error', 'Tower not found!');
+}
+
+
+public function modestat(Request $request, $id){
+    $tower = Tower::find($id)->first();
+
+
+    $decrypted_data = [
+        'mode' => Crypt::decryptString($tower->mode),
+        'status' => Crypt::decryptString($tower->status),
+    ];
+
+    return response()->json(['modestat' => $decrypted_data]);
 }
     }
 

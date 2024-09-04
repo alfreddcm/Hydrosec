@@ -53,6 +53,14 @@ body {
     color: #fff;
 }
 
+#hero .main-logo img{
+    top: 30px;
+    position: absolute;
+    display: flex;
+    width: 100px;
+    height: 100px;
+}
+
 /* h2.display-1 {
     font-size: 3.5rem;
     font-weight: bold;
@@ -83,6 +91,7 @@ footer {
     background: rgba(255, 255, 255, 0.8);
     padding: 1px 0;
 }
+
 
 </style>
     <body>

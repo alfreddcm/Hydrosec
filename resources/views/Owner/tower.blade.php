@@ -42,8 +42,15 @@
             text-transform: uppercase;
         }
 
+        .maincard {
+            margin: 30px;
+            padding: 10px;
+            align-self: center;
+        }
+
         /*  */
         .sensor-card {
+            width: 90%;
             height: 200px;
             border-radius: 10px;
             border: 1px solid #ddd;
@@ -100,14 +107,12 @@
             max-height: 300px;
             overflow-y: auto;
         }
-
-
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <body>
-        <div class="con">
-            <div class="card text-center">
+        <div class="con justify-content-center ">
+            <div class="card text-center maincard">
                 <div class="card-body justify-content-center">
                     <div class="card-title">
 
@@ -118,7 +123,7 @@
                         </h2>
                         @if ($wokername)
                             <p class="card-text">
-                                {{ Crypt::decryptString($wokername->name) }}
+                                Assgned User: {{ Crypt::decryptString($wokername->name) }}
                             </p>
                         @else
                             <p class="card-text">
@@ -126,7 +131,11 @@
                             </p>
                         @endif
 
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center g-1">
+                            <div class="col-sm-3">
+                                <h5>Mode: <span id="modeCircle" class="circle"></span><span id="modeText"
+                                        class="status-text">N/a</span></h5>
+                            </div>
                             <div class="col-sm-3">
                                 <h5>Status: <span id="statusCircle1" class="circle"></span><span id="statusText1"
                                         class="status-text">Inactive</span></h5>
@@ -234,92 +243,100 @@
                         </div>
                         <div class="col-sm-3">
                             <h5>Expected Date Harvest</h5>
-                            
+
                             <h6>
                                 {{ $towerinfo->enddate ? \Carbon\Carbon::parse($towerinfo->enddate)->format('F j, Y') : 'N/A' }}
                             </h6>
                         </div>
                     </div>
-                    
-                    @if(is_null($towerinfo->startdate) && is_null($towerinfo->enddate))
-    <!-- Show Start Cycle Button and Modal if dates are null -->
-    <form>
-        @csrf
-        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#startCycleModal">
-            START CYCLE
-        </button>
-    </form>
-@else
-    <!-- Show Update Dates Button and Modal if dates are not null -->
-    <form>
-        @csrf
-        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateCycleModal">
-            UPDATE CYCLE
-        </button>
-    </form>
-@endif
 
-<!-- Start Cycle Modal -->
-<div class="modal fade" id="startCycleModal" tabindex="-1" aria-labelledby="startCycleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('cycle') }}" method="POST">
-                @csrf
-                <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="startCycleModalLabel">Start New Cycle</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="days">Select Number of Days:</label>
-                        <select name="days" id="days" class="form-control">
-                            @for($i = 15; $i <= 50; $i++)
-                                <option value="{{ $i }}">{{ $i }} days</option>
-                            @endfor
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Start Cycle</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                    @if (is_null($towerinfo->startdate) && is_null($towerinfo->enddate))
+                        <!-- Show Start Cycle Button and Modal if dates are null -->
+                        <form>
+                            @csrf
+                            <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#startCycleModal">
+                                START CYCLE
+                            </button>
+                        </form>
+                    @else
+                        <!-- Show Update Dates Button and Modal if dates are not null -->
+                        <form>
+                            @csrf
+                            <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                data-bs-target="#updateCycleModal">
+                                UPDATE CYCLE
+                            </button>
+                        </form>
+                    @endif
 
-<!-- Update Cycle Modal -->
-<div class="modal fade" id="updateCycleModal" tabindex="-1" aria-labelledby="updateCycleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('cycle') }}" method="POST">
-                @csrf
-                <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="updateCycleModalLabel">Update Cycle Dates</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="newDays">Select New Number of Days:</label>
-                        <select name="newDays" id="newDays" class="form-control">
-                            @for($i = 1; $i <= 50; $i++)
-                                <option value="{{ $i }}">{{ $i }} days</option>
-                            @endfor
-                        </select>
+                    <!-- Start Cycle Modal -->
+                    <div class="modal fade" id="startCycleModal" tabindex="-1" aria-labelledby="startCycleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ route('cycle') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="startCycleModalLabel">Start New Cycle</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="days">Select Number of Days:</label>
+                                            <select name="days" id="days" class="form-control">
+                                                @for ($i = 15; $i <= 50; $i++)
+                                                    <option value="{{ $i }}">{{ $i }} days</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Start Cycle</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-warning">Update Dates</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
+                    <!-- Update Cycle Modal -->
+                    <div class="modal fade" id="updateCycleModal" tabindex="-1" aria-labelledby="updateCycleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ route('cycle') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateCycleModalLabel">Update Cycle Dates</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="newDays">Select New Number of Days:</label>
+                                            <select name="newDays" id="newDays" class="form-control">
+                                                @for ($i = 1; $i <= 50; $i++)
+                                                    <option value="{{ $i }}">{{ $i }} days</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-warning">Update Dates</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -374,7 +391,7 @@
 
 
 
-</div>
+        </div>
         <script>
             var towerId = @json($towerinfo->id);
             $(document).ready(function() {
@@ -476,7 +493,6 @@
                                 const NutrientVolume = parseFloat(response.sensorData.nutrient_level) || 0;
                                 const pHlevel = parseFloat(response.sensorData.pH) || 0;
                                 const light = parseFloat(response.sensorData.light) || 0;
-                                const status = parseFloat(response.sensorData.status) || 0;
 
 
 
@@ -485,7 +501,6 @@
                                 updateNutrientImage(NutrientVolume);
                                 updatePhScaleImage(pHlevel);
                                 updateLightStatus(light);
-                                updatestatus(status);
 
                             } else {
                                 console.log('No data available');
@@ -626,7 +641,7 @@
                         $.each(data, function(index, item) {
                             var status = item.pump == 1 ? 'Pumped' : 'Not Pumped';
                             var textColor = item.pump == 1 ? '' :
-                            'style="color: red;"'; // Set text color to red if not pumped
+                                'style="color: red;"'; // Set text color to red if not pumped
                             var row = `<tr class="table-light">
                             <td>${index + 1}</td>
                             <td ${textColor}>${status}</td>
@@ -656,18 +671,41 @@
                 }
             }
 
+            function updatemode(mode) {
+                const modeText = document.getElementById('modeText');
+                const modeCircle = document.getElementById('modeCircle');
+
+                switch (mode) {
+                    case 0:
+                        modeText.textContent = 'Inactive';
+                        modeCircle.style.backgroundColor = 'gray';
+                        break;
+                    case 1:
+                        modeText.textContent = 'Day Mode';
+                        modeCircle.style.backgroundColor = 'yellow';
+                        break;
+                    case 2:
+                        modeText.textContent = 'Night Mode';
+                        modeCircle.style.backgroundColor = 'blue';
+                        break;
+                    default:
+                        modeText.textContent = 'Unknown';
+                        modeCircle.style.backgroundColor = 'red';
+                        break;
+                }
+            }
+
+            // Function to update the status
             function updatestatus(status) {
-                const circle = document.getElementById('statusCircle1');
+                const statusCircle = document.getElementById('statusCircle1');
                 const statusText = document.getElementById('statusText1');
 
                 if (status === 1) {
-                    circle.style.backgroundColor = 'green';
+                    statusCircle.style.backgroundColor = 'green';
                     statusText.textContent = 'Active';
-
                 } else {
-                    circle.style.backgroundColor = 'gray';
+                    statusCircle.style.backgroundColor = 'gray';
                     statusText.textContent = 'Inactive';
-
                 }
             }
 
@@ -675,6 +713,34 @@
                 fetchpump();
 
                 setInterval(fetchpump, 30000);
+            });
+
+
+
+            $(document).ready(function() {
+
+                function fetchmodestat() {
+                    $.ajax({
+                        url: '/modestat/' + id, // Adjust the URL as needed
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.modestat) {
+                                const mode = parseFloat(response.modestat.mode);
+                                const status = parseFloat(response.modestat.status);
+                                updatemode(mode);
+                                updatestatus(status);
+                            } else {
+                                console.log('No data available');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error: ' + status + ' ' + error);
+                        }
+                    });
+
+                    setInterval(fetchmodestat, 10000); // Refresh graph data every 10 seconds
+                }
+                fetchmodestat();
             });
         </script>
         </script>

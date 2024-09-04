@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         
-
-        // Create the sensor table first
         Schema::create('sensor', function (Blueprint $table) {
             $table->tinyInteger('id', false, true)->autoIncrement();
-            $table->tinyInteger('towerid', false, true); // This column should match the data type of `id` in `tbl_tower`
+            $table->tinyInteger('towerid', false, true);
             $table->string('pH');
             $table->string('temperature');
             $table->string('nutrientlevel');

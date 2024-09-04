@@ -14,5 +14,22 @@ Artisan::command('schedule:run', function () {
     Artisan::call('tower:update-mode', [], [
         'cron' => '*/15 18-22 * * *',
     ]);
-// php artisan schedule:work
+
+// $data = YourModel::all();
+
+// // Convert the data to a JSON string or another format
+// $dataJson = $data->toJson();
+
+// Artisan::call('tower:update-mode', [], [
+//     'cron' => '* * * * *',
+// ]);
+
+// Run every 5 hours
+
+// Artisan::call('tower:update-mode', [], [
+//     'cron' => '0 */5 * * *',
+// ]);
+
+
+
 });

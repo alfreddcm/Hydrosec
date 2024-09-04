@@ -9,7 +9,7 @@ $vali2 = Crypt::encryptString("0");
 @endphp --}}
     <style>
         .table-responsive {
-            max-height: 400px;
+            max-height: 350px;
             overflow-y: auto;
         }
 

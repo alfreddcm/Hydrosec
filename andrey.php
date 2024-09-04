@@ -37,10 +37,16 @@ $pad=16 - strlen($str_padded) % 16;
 if (strlen($str_padded) % 16) {
     $str_padded = str_pad($str_padded,strlen($str_padded)+$pad, "\0");
 }
-// do encryption:
-$result = openssl_encrypt($str_padded, $method, $key, OPENSSL_NO_PADDING,$iv); // OPENSSL_NO_PADDING is important parameter
+
+$result = openssl_encrypt($str_padded, $method, $key, OPENSSL_NO_PADDING,$iv); 
 $result = base64_encode($result);
+
+
+
 $iv=base64_encode($iv);
+
+
+
 echo "Encrypted data:";
 var_dump($result);
 

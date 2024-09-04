@@ -10,7 +10,24 @@
         $towers = Tower::where('OwnerID', Auth::id())->get();
 
     @endphp
+<style>
+    .addtowerb{
+        position: absolute;
+    bottom: 20px;
+    right: 20px;
 
+    
+}
+    .addtowerbutton{
+        position: sticky;
+}
+a{
+    text-decoration: none;
+}
+.card{
+    text-transform: uppercase;
+}
+</style>
     <div class="container">
         <div class="row">
             <div class="col">
@@ -22,10 +39,11 @@
                                 <a href="{{ route('towerdata', ['id' => $data->id]) }}">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title">{{ $data->id }}
+                                            <h5 class="card-title">
+                                                <span><b>{{ $data->id }}</b></span>
                                                 {{ Crypt::decryptString($data->name) }}</h5>
                                             <p class="card-text">
-                                                {{ Crypt::decryptString($data->towercode) }}
+                                               Code: {{ Crypt::decryptString($data->towercode) }}
                                             </p>
                                         </div>
                                     </div>
@@ -38,13 +56,14 @@
 
 
                 </div>
-                <a href="#" class="btn btn-success mt-1" data-bs-toggle="modal" data-bs-target="#addTowerModal">
+                <div class="addtowerb">
+                    <a href="#" class="btn btn-success mt-1 addtowerbutton" data-bs-toggle="modal" data-bs-target="#addTowerModal">
                     Add Tower
                 </a>
+                </div>
+                
             </div>
         </div>
-
-
     </div>
 
 

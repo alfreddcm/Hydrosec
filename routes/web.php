@@ -79,6 +79,8 @@ Route::middleware('auth:owner')->group(function () {
     Route::get('/pump-data/{id}', [SensorData::class, 'getPump']);
    
     Route::post('/cycle', [Towercontroller::class, 'updateDates'])->name('cycle');
+    Route::get('/modestat/{id}', [Towercontroller::class, 'modestat'])->name('modestat');
+
 
 });
 
