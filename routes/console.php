@@ -20,9 +20,9 @@ Artisan::command('schedule:run', function () {
 // // Convert the data to a JSON string or another format
 // $dataJson = $data->toJson();
 
-// Artisan::call('tower:update-mode', [], [
-//     'cron' => '* * * * *',
-// ]);
+Artisan::call('tower:update-mode', [], [
+     'cron' => '* * * * *',
+ ]);
 
 // Run every 5 hours
 

@@ -29,6 +29,8 @@ class Tower extends Authenticatable
         'OwnerID',
         'ipAdd',
         'macAdd',
+        'mode',
+        'status',
         'startdate',
         'enddate',
     ];

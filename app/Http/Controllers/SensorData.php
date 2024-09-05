@@ -26,35 +26,60 @@ class SensorData extends Controller
         $method = "AES-128-CBC";
 
         try {
-            $towerdata = Tower::where('id', $tid)->first();
-            $stat = $towerdata->status;
+            $towerdata = Tower::where('id', $tid)
+                ->first();
+            $stat = Crypt::decryptString($towerdata->status);
 
-            $sdata = Sensor::where('towerid', $tid)->orderBy('id', 'desc')->first();
+            if ($stat == '1') {
+                $oneHourAgo = Carbon::now()->subHour();
+                $sdata = Sensor::where('towerid', $tid)
+                    ->where('created_at', '>=', $oneHourAgo)
+                    ->orderBy('id', 'desc')
+                    ->first();
 
-            if ($sdata) {
-                $key = $sdata->k;
-                $iv = $sdata->iv;
+                if ($sdata) {
+                    $key = $sdata->k;
+                    $iv = $sdata->iv;
 
-                $decrypted_key = $this->decrypt_data($key, $method, $key_str, $iv_str);
-                $decrypted_iv = $this->decrypt_data($iv, $method, $key_str, $iv_str);
+                    $decrypted_key = $this->decrypt_data($key, $method, $key_str, $iv_str);
+                    $decrypted_iv = $this->decrypt_data($iv, $method, $key_str, $iv_str);
 
-                $ph = $this->decrypt_data($sdata->pH, $method, $decrypted_key, $decrypted_iv);
-                $temp = $this->decrypt_data($sdata->temperature, $method, $decrypted_key, $decrypted_iv);
-                $volume = $this->decrypt_data($sdata->nutrientlevel, $method, $decrypted_key, $decrypted_iv);
-                $status = $this->decrypt_data($sdata->status, $method, $decrypted_key, $decrypted_iv);
-                $light = $this->decrypt_data($sdata->light, $method, $decrypted_key, $decrypted_iv);
+                    $ph = $this->decrypt_data($sdata->pH, $method, $decrypted_key, $decrypted_iv);
+                    $temp = $this->decrypt_data($sdata->temperature, $method, $decrypted_key, $decrypted_iv);
+                    $volume = $this->decrypt_data($sdata->nutrientlevel, $method, $decrypted_key, $decrypted_iv);
+                    $status = $this->decrypt_data($sdata->status, $method, $decrypted_key, $decrypted_iv);
+                    $light = $this->decrypt_data($sdata->light, $method, $decrypted_key, $decrypted_iv);
 
+                    $decrypted_data = [
+                        'pH' => $ph,
+                        'temperature' => $temp,
+                        'nutrient_level' => $volume,
+                        'light' => $light,
+                    ];
+
+                    return response()->json(['sensorData' => $decrypted_data]);
+                } else {
+
+                    $decrypted_data = [
+                        'pH' => null,
+                        'temperature' => null,
+                        'nutrient_level' => null,
+                        'light' => null,
+                    ];
+
+                    return response()->json(['sensorData' => $decrypted_data]);
+                }
+            } else {
                 $decrypted_data = [
-                    'pH' => $ph,
-                    'temperature' => $temp,
-                    'nutrient_level' => $volume,
-                    'light' => $light,
+                    'pH' => null,
+                    'temperature' => null,
+                    'nutrient_level' => null,
+                    'light' => null,
                 ];
 
                 return response()->json(['sensorData' => $decrypted_data]);
-            } else {
-                return response()->json(['error' => 'No data found'], 404);
             }
+
         } catch (\Exception $e) {
             Log::error('Error fetching sensor data: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error'], 500);
@@ -194,21 +219,6 @@ class SensorData extends Controller
         }
     }
 
-    private function decrypt_data($encrypted_data, $method, $key, $iv)
-    {
-        try {
-
-            $encrypted_data = base64_decode($encrypted_data);
-            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
-            $decrypted_data = rtrim($decrypted_data, "\0");
-            $decoded_msg = base64_decode($decrypted_data);
-            return $decoded_msg;
-        } catch (\Exception $e) {
-            Log::error('Decryption error: ' . $e->getMessage());
-            return null;
-        }
-    }
-
     public function storedata(Request $request)
     {
         $alertMessages = [];
@@ -223,26 +233,14 @@ class SensorData extends Controller
             'volumeCondition' => '',
         ];
 
-        // Start the session if it hasn't been started already
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        if (session_status() == PHP_SESSION_NONE) {session_start();}
 
-        // Initialize session data if not already set
-        if (!isset($_SESSION['sensor_data'])) {
-            $_SESSION['sensor_data'] = [];
-        }
+        if (!isset($_SESSION['sensor_data'])) {$_SESSION['sensor_data'] = [];}
 
-        try {
-            Log::info('Request received:', $request->all());
+        try {Log::info('Request received:', $request->all());
 
-            $validatedData = $request->validate([
-                'phValue' => 'required',
-                'temp' => 'required',
-                'waterLevel' => 'required',
-                'key' => 'required',
-                'iv' => 'required',
-                'light' => 'required',
+            $validatedData = $request->validate(['phValue' => 'required','temp' => 'required',
+                'waterLevel' => 'required','key' => 'required','iv' => 'required','light' => 'required',
                 'ipAddress' => 'required',
                 'macAddress' => 'required',
                 'towercode' => 'required',
@@ -263,7 +261,7 @@ class SensorData extends Controller
 
             $towers = Tower::all(['id', 'name', 'towercode']);
 
-            \Log::info('Decrypted Data:', [
+            \Log::info('Decrypted Data: from tower', [
                 'key' => $decrypted_key,
                 'iv' => $decrypted_iv,
                 'phValue' => $decrypted_ph,
@@ -275,13 +273,14 @@ class SensorData extends Controller
                 'towercode' => $decrypted_towercode,
             ]);
 
+        
             foreach ($towers as $tower) {
                 $towercode = Crypt::decryptString($tower->towercode);
 
                 if ($towercode == $decrypted_towercode) {
                     $ipmac = Tower::where('id', $tower->id)->first();
 
-                    if ($ipmac) {
+                    if ($ipmac && $ipmac->ipAdd) {
                         $ip = Crypt::decryptString($ipmac->ipAdd);
                         $mac = Crypt::decryptString($ipmac->macAdd);
                         \Log::info('D ecrypted IP and MAC addresses:', [
@@ -306,7 +305,7 @@ class SensorData extends Controller
                             if ($decrypted_temp < -16 || $decrypted_temp > 60 || is_nan($decrypted_temp)) {
                                 $alertMessages[] = "Temperature value is invalid or out of range (-16°C to 60°C),";
                             }
-                            if ($decrypted_nutrient < 1 || $decrypted_nutrient > 23 || is_nan($decrypted_nutrient)) {
+                            if ($decrypted_nutrient < 0 || $decrypted_nutrient > 23 || is_nan($decrypted_nutrient)) {
                                 $alertMessages[] = "Nutrient level is invalid or out of range (1-20),";
                             }
 
@@ -315,13 +314,13 @@ class SensorData extends Controller
                                 $body = "The following conditions have been detected at Tower '" . Crypt::decryptString($ipmac->name) . "': ";
 
                                 $body .= implode(", ", $alertMessages);
-                                
+
                                 $details = [
                                     'title' => 'Alert: Sensor not Working please check the sensors',
                                     'body' => $body,
                                 ];
 
-                                $this->sendAlertEmail($details,$tower->id);
+                                $this->sendAlertEmail($details, $tower->id);
 
                                 return response()->json(['errors' => $e->errors()], 422);
                             } else {
@@ -376,7 +375,7 @@ class SensorData extends Controller
                                         Log::info('Sending alert email with conditions: ', $alerts);
 
                                         $body = "The following conditions have been detected at Tower '{$decryptedTowerName}': ";
-                                        
+
                                         $body .= implode(", ", $alerts);
 
                                         $details = [
@@ -414,15 +413,17 @@ class SensorData extends Controller
                                 }
                             }
 
-                        } else {
-                            $ipmac->ipAdd = Crypt::encryptString($decrypted_ip);
-                            $ipmac->macAdd = Crypt::encryptString($decrypted_mac);
-                            $ipmac->save();
-
-                            Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
-                            return response()->json(['status' => 'success'], 201);
                         }
+
+                    } else {
+                        $ipmac->ipAdd = Crypt::encryptString($decrypted_ip);
+                        $ipmac->macAdd = Crypt::encryptString($decrypted_mac);
+                        $ipmac->save();
+
+                        Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
+                        return response()->json(['status' => 'success'], 201);
                     }
+
                 }
             }
 
@@ -512,18 +513,16 @@ class SensorData extends Controller
                         $mailStatus = 'Failed';
 
                         Log::error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
-                    }finally{
+                    } finally {
                         TowerLogs::create([
-                        'ID_tower' => $towerId,
-                        'activity' => Crypt::encryptString(
-                            "Alert: Conditions detected - " . json_encode($details['body']) . " Mail Status: " . $mailStatus
-                        ),
-                    ]);
+                            'ID_tower' => $towerId,
+                            'activity' => Crypt::encryptString(
+                                "Alert: Conditions detected - " . json_encode($details['body']) . " Mail Status: " . $mailStatus
+                            ),
+                        ]);
 
-                    Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => json_encode($details['body'])]);
+                        Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => json_encode($details['body'])]);
                     }
-
-                    
 
                 } else {
                     Log::warning('Owner not found or email not available for Tower ID', ['tower_id' => $towerId]);
@@ -533,6 +532,22 @@ class SensorData extends Controller
             }
         } else {
             Log::warning('Tower ID not available in session.');
+        }
+    }
+
+
+    private function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
+            return null;
         }
     }
 

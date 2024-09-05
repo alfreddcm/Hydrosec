@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('temperature');
             $table->string('nutrientlevel');
             $table->string('light');
-            $table->string('status')->default('1');
+            $table->string('status')->nullable();
             $table->text('iv'); 
             $table->text('k'); 
             $table->timestamps();
@@ -53,7 +53,7 @@ return new class extends Migration
             $table->string('status');
             $table->timestamps();
 
-            $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');
+            $table->foreign('towerid')->references('id')->on('tbl_tower')->onDelete('cascade');
         });
     
     }

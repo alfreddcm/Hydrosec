@@ -24,18 +24,17 @@ class UpdateTowerMode extends Command
         $hour = now()->hour;
 
         if ($hour >= 6 && $hour < 18) {
-            $mode = 1; 
+            $mode = 1;
         } elseif ($hour >= 18 && $hour < 22) {
-            $mode = 2; 
+            $mode = 2;
         } else {
             $mode = 0;
         }
-        
+
         $encryptedMode = Crypt::encryptString($mode);
         Tower::query()->update(['mode' => $encryptedMode]);
         $this->info("Tower mode updated to {$mode}");
         Log::info("Tower mode updated to {$mode} at " . now());
-
 
         $now = Carbon::now();
         $oneDayLater = $now->copy()->addDay();
@@ -55,7 +54,7 @@ class UpdateTowerMode extends Command
                 if ($tower->enddate->isSameDay($oneDayLater)) {
                     $subject = "Reminder: Tower Harvest Date Today";
                     $body = "Dear Owner,\n\nThis is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.\n\nBest regards,\nYour Team";
-                    $mode='4';
+                    $mode = '4';
                     $encryptedMode = Crypt::encryptString($mode);
                     Tower::query()->update(['mode' => $encryptedMode]);
 
@@ -88,6 +87,61 @@ class UpdateTowerMode extends Command
             } else {
                 $this->error("Owner not found for tower ID {$tower->id}.");
             }
+        }
+
+        //check houly
+        // Get the current time and the next hour
+        $now = Carbon::now();
+        $nextHour = $now->copy()->addHour();
+        $hoursBefore = 1;
+
+// Get all tower IDs
+        $allTowers = Tower::pluck('id');
+
+// Get towers with data in the time range
+        $towersWithData = Tower::whereNotNull('enddate')
+            ->where(function ($query) use ($now, $nextHour, $hoursBefore) {
+                $query->whereBetween('enddate', [$now->copy()->subHours($hoursBefore), $nextHour])
+                    ->orWhereBetween('enddate', [$nextHour, $nextHour]);
+            })
+            ->pluck('id');
+
+// Get the tower IDs that don't have data in the range
+        $towersWithoutData = $allTowers->diff($towersWithData);
+
+        foreach ($towersWithoutData as $towerId) {
+            $owner = Owner::find($tower->OwnerID);
+            if ($owner) {
+
+                $subject = "Reminder: Tower Harvest Date Today";
+                $body = "Dear Owner,
+                \n\nTower did not pump \n\n
+                Best regards,\nYour Team";                   
+
+
+                $ownerEmail = Crypt::decryptString($owner->email);
+                try {
+                     $mailStatus = 'Sent';
+                    Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
+                } catch (\Exception $e) {
+                    $mailStatus = 'Failed';
+                    Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
+                } finally {
+                    // Encrypt and log the activity, regardless of email success or failure
+                    $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
+
+                    TowerLogs::create([
+                        'ID_tower' => $tower->id,
+                        'activity' => $activityLog,
+                    ]);
+
+                    Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
+                }
+
+            } else {
+                $this->error("Owner not found for tower ID {$tower->id}.");
+            }
+
         }
 
         // public function handle()

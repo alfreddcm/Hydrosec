@@ -17,6 +17,8 @@ return new class extends Migration
             $table->tinyInteger('OwnerID');
             $table->string('ipAdd')->nullable();
             $table->string('macAdd')->nullable();
+            $table->string('status')->nullable();
+            $table->string('mode')->nullable();
             $table->timestamp('startdate')->nullable();
             $table->timestamp('enddate')->nullable();   
             $table->timestamps();

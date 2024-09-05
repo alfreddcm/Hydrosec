@@ -394,8 +394,15 @@
         </div>
         <script>
             var towerId = @json($towerinfo->id);
+
+            var id = {{ $towerinfo->id }};
+
+
             $(document).ready(function() {
+                var towerId = @json($towerinfo->id);
                 let tempChart = null;
+                let sensorDataInterval = null;
+                let modeStatInterval = null;
 
                 $('#tempmodal').on('shown.bs.modal', function(event) {
                     let button = event.relatedTarget;
@@ -407,7 +414,6 @@
                     let towerId = button.getAttribute('data-tower-id');
                     let column = button.getAttribute('data-column');
 
-                    // Clear the existing chart if it exists
                     if (tempChart) {
                         tempChart.destroy();
                     }
@@ -425,14 +431,12 @@
                             const labels = data.map(item => item.timestamp);
                             const values = data.map(item => item.value);
 
-                            // Ensure the canvas element is present
                             const ctx = document.getElementById('tempChart');
                             if (!ctx) {
                                 console.error('Canvas element not found.');
                                 return;
                             }
 
-                            // Ensure the context is retrieved correctly
                             const chartCtx = ctx.getContext('2d');
                             if (!chartCtx) {
                                 console.error('Unable to get canvas context.');
@@ -441,7 +445,6 @@
 
                             tempChart = new Chart(chartCtx, {
                                 labels: labels,
-
                                 type: 'line',
                                 data: {
                                     labels: labels,
@@ -476,16 +479,11 @@
                         }
                     });
                 });
-            });
 
-
-            var id = {{ $towerinfo->id }};
-
-            $(document).ready(function() {
-
+                // Fetch sensor data and update images
                 function fetchSensorData2() {
                     $.ajax({
-                        url: '/sensor-data/' + id, // Adjust the URL as needed
+                        url: '/sensor-data/' + towerId,
                         method: 'GET',
                         success: function(response) {
                             if (response.sensorData) {
@@ -494,14 +492,10 @@
                                 const pHlevel = parseFloat(response.sensorData.pH) || 0;
                                 const light = parseFloat(response.sensorData.light) || 0;
 
-
-
-                                // Update the graphs/images
                                 updateThermometerImage(Temperature);
                                 updateNutrientImage(NutrientVolume);
                                 updatePhScaleImage(pHlevel);
                                 updateLightStatus(light);
-
                             } else {
                                 console.log('No data available');
                             }
@@ -510,13 +504,84 @@
                             console.error('AJAX Error: ' + status + ' ' + error);
                         }
                     });
-
-                    setInterval(fetchSensorData2, 10000); // Refresh graph data every 10 seconds
                 }
-                fetchSensorData2();
+
+                // Fetch pump data
+                function fetchPumpData() {
+                    $.ajax({
+                        url: `/pump-data/${towerId}`,
+                        method: 'GET',
+                        success: function(data) {
+                            var tbody = $('#sensor-data-body');
+                            tbody.empty();
+                            $.each(data, function(index, item) {
+                                var status;
+                                var textColor = '';
+
+                                if (item.pump == 1) {
+                                    status = 'Pump';
+                                    textColor = 'style="color: red;"';
+                                } else {
+                                    status = 'Not Pump';
+                                }
+
+                                var row = `<tr class="table-light">
+                            <td>${index + 1}</td>
+                            <td ${textColor}>${status}</td>
+                            <td ${textColor}>${item.timestamp}</td>
+                            </tr>`;
+                                tbody.append(row);
+                            });
+                        },
+                        error: function() {
+                            console.error('Failed to fetch pump data');
+                        }
+                    });
+                }
+
+                function fetchModeStat() {
+                    $.ajax({
+                        url: '/modestat/' + towerId,
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.modestat) {
+                                const mode = parseFloat(response.modestat.mode);
+                                const status = parseFloat(response.modestat.status);
+                                updatemode(mode);
+                                updatestatus(status);
+                            } else {
+                                console.log('No data available');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error: ' + status + ' ' + error);
+                        }
+                    });
+                }
+
+                // Start intervals
+                function startIntervals() {
+                    if (!sensorDataInterval) {
+                        sensorDataInterval = setInterval(fetchSensorData2, 10000);
+                    }
+                    if (!modeStatInterval) {
+                        modeStatInterval = setInterval(fetchModeStat, 10000);
+                    }
+                }
+
+                // Stop intervals
+                function stopIntervals() {
+                    clearInterval(sensorDataInterval);
+                    clearInterval(modeStatInterval);
+                    sensorDataInterval = null;
+                    modeStatInterval = null;
+                }
+                fetchPumpData();
+                startIntervals();
+
+                // Refresh pump data every 30 seconds
+                setInterval(fetchPumpData, 30000);
             });
-
-
 
 
 
@@ -630,32 +695,6 @@
 
             }
 
-
-            function fetchpump() {
-                $.ajax({
-                    url: `/pump-data/${id}`,
-                    method: 'GET',
-                    success: function(data) {
-                        var tbody = $('#sensor-data-body');
-                        tbody.empty();
-                        $.each(data, function(index, item) {
-                            var status = item.pump == 1 ? 'Pumped' : 'Not Pumped';
-                            var textColor = item.pump == 1 ? '' :
-                                'style="color: red;"'; // Set text color to red if not pumped
-                            var row = `<tr class="table-light">
-                            <td>${index + 1}</td>
-                            <td ${textColor}>${status}</td>
-                            <td ${textColor}>${item.timestamp}</td>
-                            </tr>`;
-                            tbody.append(row);
-                        });
-                    },
-                    error: function() {
-                        console.error('Failed to fetch pump data');
-                    }
-                });
-            }
-
             function updateLightStatus(status) {
                 const circle = document.getElementById('statusCircle');
                 const statusText = document.getElementById('statusText');
@@ -695,7 +734,6 @@
                 }
             }
 
-            // Function to update the status
             function updatestatus(status) {
                 const statusCircle = document.getElementById('statusCircle1');
                 const statusText = document.getElementById('statusText1');
@@ -708,41 +746,6 @@
                     statusText.textContent = 'Inactive';
                 }
             }
-
-            $(document).ready(function() {
-                fetchpump();
-
-                setInterval(fetchpump, 30000);
-            });
-
-
-
-            $(document).ready(function() {
-
-                function fetchmodestat() {
-                    $.ajax({
-                        url: '/modestat/' + id, // Adjust the URL as needed
-                        method: 'GET',
-                        success: function(response) {
-                            if (response.modestat) {
-                                const mode = parseFloat(response.modestat.mode);
-                                const status = parseFloat(response.modestat.status);
-                                updatemode(mode);
-                                updatestatus(status);
-                            } else {
-                                console.log('No data available');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('AJAX Error: ' + status + ' ' + error);
-                        }
-                    });
-
-                    setInterval(fetchmodestat, 10000); // Refresh graph data every 10 seconds
-                }
-                fetchmodestat();
-            });
-        </script>
         </script>
 
     @endsection

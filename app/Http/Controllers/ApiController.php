@@ -110,29 +110,16 @@ class ApiController extends Controller
 
         return response()->json(['error' => 'Tower code not found'], 404);
     }
-    private function decrypt_data($encrypted_data, $method, $key, $iv)
-    {
-        try {
 
-            $encrypted_data = base64_decode($encrypted_data);
-            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
-            $decrypted_data = rtrim($decrypted_data, "\0");
-            $decoded_msg = base64_decode($decrypted_data);
-            return $decoded_msg;
-        } catch (\Exception $e) {
-            Log::error('Decryption error: ' . $e->getMessage());
-            return null;
-        }
-    }
     public function getmode(Request $request)
     {
-        Log::info('Mode request received', [
-            'input' => $request->all(),
-        ]);
-
         $key_str = "ISUHydroSec2024!";
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
+
+        Log::info('Mode request received', [
+            'input' => $request->all(),
+        ]);
 
         // Validate incoming request data
         $validatedData = $request->validate([
@@ -146,87 +133,92 @@ class ApiController extends Controller
         $decryptedMacAddress = $this->decrypt_data($validatedData['macAddress'], $method, $key_str, $iv_str);
         $decryptedTowercode = $this->decrypt_data($validatedData['towercode'], $method, $key_str, $iv_str);
 
-        Log::info('Checking tower code', [
+        Log::info('Decrypted request data', [
             'decryptedIpAddress' => $decryptedIpAddress,
             'decryptedMacAddress' => $decryptedMacAddress,
             'decryptedTowercode' => $decryptedTowercode,
-
         ]);
 
         $towerData = Tower::all();
-        Log::info('tower', [
-            'tower' => $towerData->all(),
+        Log::info('Retrieved tower data', [
+            'towerData' => $towerData->toArray(),
         ]);
 
         foreach ($towerData as $tower) {
-            // Decrypt stored tower code
             $towercode = Crypt::decryptString($tower->towercode);
-
             Log::info('Checking tower code', [
                 'currentTowerCode' => $towercode,
                 'decryptedTowercode' => $decryptedTowercode,
             ]);
 
-            // Check if the tower code matches
-            if ($towercode == $decryptedTowercode) {
-                // Retrieve IP and MAC addresses for the tower
+            $mode = Crypt::decryptString($tower->mode);
+            $status = Crypt::decryptString($tower->status);
+            Log::info('Decrypted mode and status', [
+                'mode' => $mode,
+                'status' => $status,
+            ]);
+
+            if ($towercode == $decryptedTowercode && $tower->ipAdd) {
+                // Retrieve and decrypt IP and MAC addresses
                 $ipmac = Tower::where('id', $tower->id)->first();
+                $ip = Crypt::decryptString($ipmac->ipAdd);
+                $mac = Crypt::decryptString($tower->macAdd);
 
-                if ($ipmac) {
-                    // Decrypt stored IP and MAC addresses
-                    $ip = Crypt::decryptString($ipmac->ipAdd);
-                    $mac = Crypt::decryptString($ipmac->macAdd);
+                Log::info('Decrypted IP and MAC addresses from DB', [
+                    'ipAddress' => $ip,
+                    'macAddress' => $mac,
+                ]);
 
-                    Log::info('Decrypted IP and MAC addresses from DB', [
-                        'ipAddress' => $ip,
-                        'macAddress' => $mac,
+                if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
+                    Log::info('IP and MAC address match', [
+                        'ip' => $ip,
+                        'decryptedIpAddress' => $decryptedIpAddress,
+                        'mac' => $mac,
+                        'decryptedMacAddress' => $decryptedMacAddress,
                     ]);
 
-                    // Check if IP and MAC addresses match
-                    if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
-                        Log::info('Mode and status data', [
-                            'ip' => $ip,
-                            'ip2' => $decryptedIpAddress,
-                        ]);
-                        Log::info('Mode and status data', [
-                            'mac' => $mac,
-                            'mac2' => $decryptedMacAddress,
-                        ]);
-                        $mode = Crypt::decryptString($ipmac->mode);
-                        $status = Crypt::decryptString($ipmac->status);
+                    $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
+                    $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
 
-                        // Decrypt the mode and status using custom decryption method
-                        $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
-                        $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
+                    Log::info('Encrypted mode and status', [
+                        'mode' => $encryptedMode,
+                        'status' => $encryptedStatus,
+                    ]);
 
-                        // Prepare response data
-                        $modestatus_data = [
-                            'mode' => $encryptedMode,
-                            'status' => $encryptedStatus,
-                        ];
+                    $modestatus_data = [
+                        'mode' => $encryptedMode,
+                        'status' => $encryptedStatus,
+                    ];
 
-                        Log::info('Mode and status data', [
-                            'mode' => $encryptedMode,
-                            'status' => $encryptedStatus,
-                        ]);
-
-                        // Return response
-                        return response()->json(['modestat' => $modestatus_data]);
-                    } else {
-                        Log::warning('IP or MAC address mismatch', [
-                            'expectedIp' => $decryptedIpAddress,
-                            'actualIp' => $ip,
-                            'expectedMac' => $decryptedMacAddress,
-                            'actualMac' => $mac,
-                        ]);
-
-                        return response()->json(['error' => 'IP or MAC address mismatch'], 400);
-                    }
+                    return response()->json(['modestat' => $modestatus_data]);
                 } else {
-                    Log::warning('No matching IP/MAC data found for tower', [
-                        'towerId' => $tower->id,
+                    Log::warning('IP or MAC address mismatch', [
+                        'expectedIp' => $decryptedIpAddress,
+                        'actualIp' => $ip,
+                        'expectedMac' => $decryptedMacAddress,
+                        'actualMac' => $mac,
                     ]);
+
+                    return response()->json(['error' => 'IP or MAC address mismatch'], 400);
                 }
+
+            } else {
+                $mode = 0;
+                $status = 0;
+                $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
+                $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
+
+                Log::info('Encrypted mode and status', [
+                    'mode' => $encryptedMode,
+                    'status' => $encryptedStatus,
+                ]);
+
+                $modestatus_data = [
+                    'mode' => $encryptedMode,
+                    'status' => $encryptedStatus,
+                ];
+
+                return response()->json(['modestat' => $modestatus_data]);
             }
         }
 
@@ -241,7 +233,6 @@ class ApiController extends Controller
     {
         try {
             $data = base64_encode($data);
-// zero-padding:
             $str_padded = $data;
             $pad = 16 - strlen($str_padded) % 16;
             if (strlen($str_padded) % 16) {
@@ -258,4 +249,18 @@ class ApiController extends Controller
         }
     }
 
+    private function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
+            return null;
+        }
+    }
 }

@@ -1,12 +1,31 @@
 @extends('Owner/sidebar')
 @section('title', 'Dashboard')
 @section('content')
-    {{-- @php
+  @php
 use Illuminate\Support\Facades\Crypt;
+$key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+        $vali = decrypt_data('yYWitIHG242+3ATbRxFwYA==', $method, $key_str, $iv_str);
 
-$vali = Crypt::encryptString("1");
-$vali2 = Crypt::encryptString("0");
-@endphp --}}
+// $vali = Crypt::decryptString("yYWitIHG242+3ATbRxFwYA==");
+// $vali2 = Crypt::encryptString("0");
+
+ function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
+            return null;
+        }
+    }
+@endphp 
     <style>
         .table-responsive {
             max-height: 350px;
@@ -48,7 +67,7 @@ $vali2 = Crypt::encryptString("0");
     <div class="container">
         <div class="row">
 
-            {{-- <span>{{ $vali }}</span><br> --}}
+            <span>{{ $vali }}</span><br>
             {{-- <span>{{ $vali2 }}</span> --}}
 
             <!-- Tower Count Card -->
