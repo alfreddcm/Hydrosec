@@ -11,10 +11,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tbl_tower', function (Blueprint $table) {
-            $table->tinyInteger('id', false, true)->autoIncrement();
+            $table->id(); // Equivalent to unsignedBigInteger and auto-incrementing
             $table->string('name');
             $table->string('towercode');
-            $table->tinyInteger('OwnerID');
+            $table->unsignedBigInteger('OwnerID'); // Use unsignedBigInteger
             $table->string('ipAdd')->nullable();
             $table->string('macAdd')->nullable();
             $table->string('status')->nullable();
@@ -32,7 +32,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('status')->default('1');
             $table->timestamps();
-
         });
 
         Schema::create('tbl_workeraccounts', function (Blueprint $table) {
@@ -83,5 +82,6 @@ return new class extends Migration
         Schema::dropIfExists('tbl_adminaccounts');
         Schema::dropIfExists('tbl_workeraccounts');
         Schema::dropIfExists('tbl_useraccounts');
+        Schema::dropIfExists('tbl_tower'); // Make sure to drop this last if needed
     }
 };
