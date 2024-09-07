@@ -39,7 +39,7 @@ class OwnerProfile extends Controller{
             ->get();
 
         // Return view with both counts and logs
-        return view('owner.dashboard', compact('towerCount', 'towerLogs', 'workerCount'));
+        return view('Owner.dashboard', compact('towerCount', 'towerLogs', 'workerCount'));
     }
 
     //
