@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Owner extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

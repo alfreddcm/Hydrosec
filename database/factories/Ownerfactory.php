@@ -26,6 +26,8 @@ class Ownerfactory extends Factory
             'username' => Crypt::encryptString('alfred45'),
             'email' => Crypt::encryptString('alfredmarcelino@gmail.com'),
             'password' => Hash::make('Alfred45!'),
+            'status' =>Crypt::encryptString('Alfred45!'),
+
         ];
     }
 }

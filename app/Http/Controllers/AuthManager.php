@@ -38,7 +38,6 @@ class AuthManager extends Controller
 
     public function loginPost(Request $request)
     {
-        $status = Crypt::encryptString('1');
 
         // Validate reCAPTCHA response
         $request->validate([
@@ -68,59 +67,64 @@ class AuthManager extends Controller
         $username = $credentials['username'];
         $password = $credentials['password'];
 
-        // Check Worker credentials
-        $worker = Worker::where('status', '1')->get();
-        foreach ($worker as $user) {
-            try {
-                $storedUsername = Crypt::decryptString($user->username);
-                $storedPassword = $user->password;
-
-                if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                    Auth::guard('worker')->loginUsingId($user->id);
-                    $request->session()->regenerate();
-                    return view('Worker.dashboard')->with('success', 'You have successfully logged in as Owner!');
-
+            // Check Worker credentials
+            $workers = Worker::all();
+            foreach ($workers as $user) {
+                try {
+                    if (Crypt::decryptString($user->status) == '1') {
+                        $storedUsername = Crypt::decryptString($user->username);
+                        $storedPassword = $user->password;
+        
+                        if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                            Auth::guard('worker')->loginUsingId($user->id);
+                            $request->session()->regenerate();
+                            return view('Worker.dashboard')->with('success', 'You have successfully logged in as Worker!');
+                        }
+                    }
+                } catch (DecryptException $e) {
+                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
                 }
-            } catch (DecryptException $e) {
-                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
             }
-        }
-
-        $admin = Admin::where('status', '1')->get();
-        foreach ($admin as $user) {
-            try {
-                $storedUsername = Crypt::decryptString($user->username);
-                $storedPassword = $user->password;
-
-                if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                    Auth::guard('admin')->loginUsingId($user->id);
-                    $request->session()->regenerate();
-                    return view('Admin.dashboard')->with('success', 'You have successfully logged in as Owner!');
-
+        
+            // Check Admin credentials
+            $admins = Admin::all();
+            foreach ($admins as $user) {
+                try {
+                    if (Crypt::decryptString($user->status) == '1') {
+                        $storedUsername = Crypt::decryptString($user->username);
+                        $storedPassword = $user->password;
+        
+                        if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                            Auth::guard('admin')->loginUsingId($user->id);
+                            $request->session()->regenerate();
+                            return view('Admin.dashboard')->with('success', 'You have successfully logged in as Admin!');
+                        }
+                    }
+                } catch (DecryptException $e) {
+                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
                 }
-            } catch (DecryptException $e) {
-                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
             }
-        }
-
-        // Check Owner credentials
-        $owner = Owner::where('status', '1')->get();
-        foreach ($owner as $user) {
-            try {
-                $storedUsername = Crypt::decryptString($user->username);
-                $storedPassword = $user->password;
-
-                if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                    Auth::guard('owner')->loginUsingId($user->id);
-                    $request->session()->regenerate();
-                    return view('Owner.dashboard')->with('success', 'You have successfully logged in as Owner!');
-
+        
+            // Check Owner credentials
+            $owners = Owner::all();
+            foreach ($owners as $user) {
+                try {
+                    if (Crypt::decryptString($user->status) == '1') {
+                        $storedUsername = Crypt::decryptString($user->username);
+                        $storedPassword = $user->password;
+        
+                        if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                            Auth::guard('owner')->loginUsingId($user->id);
+                            $request->session()->regenerate();
+                            return view('Owner.dashboard')->with('success', 'You have successfully logged in as Owner!');
+                        }
+                    }
+                } catch (DecryptException $e) {
+                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
                 }
-            } catch (DecryptException $e) {
-                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
             }
-        }
-
+                
+        
         return back()->withErrors([
             'username' => 'Your provided credentials do not match in our records.',
             'password' => 'The password you entered is incorrect.',
@@ -160,6 +164,8 @@ class AuthManager extends Controller
             'name' => Crypt::encryptString($request->name),
             'email' => Crypt::encryptString($request->email),
             'password' => Hash::make($request->password),
+            'status' => Crypt::encryptString('1'),
+
         ]);
 
         return redirect()->route('index')

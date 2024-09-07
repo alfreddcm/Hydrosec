@@ -51,6 +51,15 @@
             padding: 5px 10px;
             color: #000;
         }
+
+        .card-body img {
+            height: 100px;
+        }
+
+        .no-line-spacing {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
     </style>
     <div class="container">
         <div class="row">
@@ -59,35 +68,56 @@
                     <h4>Tower List:</h4>
                     @if ($towers->isNotEmpty())
                         @foreach ($towers as $data)
-                            <div class="col-sm-3">
-                                <a href="{{ route('towerdata', ['id' => $data->id]) }}">
+                            @php
+                                $decryptedStatus = Crypt::decryptString($data->status);
+                            @endphp
+                    
+                            @if ($decryptedStatus == '0' || $decryptedStatus == '1')
+                                <div class="col-sm-3">
+                                    <a href="{{ route('towerdata', ['id' => $data->id]) }}">
+                                        <div class="card shadow-sm mb-4 border-0">
+                                            <div class="card-body">
+                                                <div class="row g-0 mr-0">
+                                                    <div class="col-sm-4">
+                                                        <img src="{{ asset('images/icon/towericon.png') }}" alt="towericon">
+                                                    </div>
+                                                    <div class="col">
+                                                        <h5 class="card-title text-uppercase text-primary">
+                                                            <b>{{ $data->id }} {{ Crypt::decryptString($data->name) }}</b>
+                                                        </h5>
+                                                        <p class="card-text">
+                                                            <span class="text-muted">Code:</span> 
+                                                            <span class="font-weight-bold">{{ Crypt::decryptString($data->towercode) }}</span>
+                                                        </p>
+                                                        <p class="card-text">
+                                                            <b>Status:</b>
+                                                            <span class="badge">
+                                                                {{ $decryptedStatus == '1' ? 'Active' : 'Pending' }}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @elseif ($decryptedStatus == '4')
+                                <!-- Display card for towers ready for harvesting -->
+                                <div class="col-sm-3">
                                     <div class="card shadow-sm mb-4 border-0">
                                         <div class="card-body">
-                                            <h5 class="card-title text-uppercase text-primary">
-                                                <b>{{ $data->id }} {{ Crypt::decryptString($data->name) }}</b>
+                                            <h5 class="card-title text-uppercase text-danger">
+                                                Tower {{ Crypt::decryptString($data->name) }} ready for harvesting!
                                             </h5>
-                                            <p class="card-text">
-                                                <span class="text-muted">Code:</span> <span class="font-weight-bold">{{ Crypt::decryptString($data->towercode) }}</span>
-                                            </p>
-                                            <p class="card-text">
-                                                @php
-                                                        $decryptedStatus = Crypt::decryptString($data->status);
-                                                        $statusText = $decryptedStatus == 0 ? 'Inactive' : 'Active';
-                                                @endphp
-                                                <b>Status:</b> 
-                                                <span class="badge">
-                                                    {{ $statusText }}
-                                                </span>
-                                            </p>
                                         </div>
                                     </div>
-                                    
-                                </a>
-                            </div>
+                                </div>
+                            @endif
                         @endforeach
                     @else
                         <span>No towers</span>
                     @endif
+                    
 
 
                 </div>

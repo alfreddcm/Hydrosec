@@ -97,7 +97,6 @@ class UpdateTowerMode extends Command
 // Get all tower IDs
         $allTowers = Tower::pluck('id');
 
-// Get towers with data in the time range
         $towersWithData = Tower::whereNotNull('enddate')
             ->where(function ($query) use ($now, $nextHour, $hoursBefore) {
                 $query->whereBetween('enddate', [$now->copy()->subHours($hoursBefore), $nextHour])
@@ -105,7 +104,7 @@ class UpdateTowerMode extends Command
             })
             ->pluck('id');
 
-// Get the tower IDs that don't have data in the range
+        // Get the tower IDs that don't have data in the range
         $towersWithoutData = $allTowers->diff($towersWithData);
 
         foreach ($towersWithoutData as $towerId) {
@@ -129,10 +128,15 @@ class UpdateTowerMode extends Command
                     // Encrypt and log the activity, regardless of email success or failure
                     $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
 
+                    $tow = Tower::find($tower->id);
+                    $tow->status = Crypt::encryptString('4');
+                    $tow->save();
+            
                     TowerLogs::create([
                         'ID_tower' => $tower->id,
                         'activity' => $activityLog,
                     ]);
+
 
                     Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
                 }

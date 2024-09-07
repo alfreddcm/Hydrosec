@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('status')->default('1');
+            $table->string('status');
             $table->timestamps();
         });
 
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->unsignedBigInteger('OwnerID'); // Use unsignedBigInteger
-            $table->string('status')->default('1');
+            $table->string('status');
             $table->timestamps();
 
             $table->foreign('OwnerID')->references('id')->on('tbl_useraccounts')->onDelete('cascade');

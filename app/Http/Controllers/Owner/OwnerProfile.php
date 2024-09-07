@@ -60,7 +60,7 @@ class OwnerProfile extends Controller
 
     public function checkUsername($field, $value, $currentUserId)
     {
-        // Check in Owner table, excluding the current user
+
         $ownerCheck = Owner::where($field, Crypt::encryptString($value))
             ->where('id', '!=', $currentUserId)
             ->exists();
@@ -69,7 +69,6 @@ class OwnerProfile extends Controller
             return Crypt::decryptString($admin->$field) === $value;
         })->isNotEmpty();
 
-        // Check in Worker table
         $workerCheck = Worker::all()->filter(function ($worker) use ($field, $value) {
             return Crypt::decryptString($worker->$field) === $value;
         })->isNotEmpty();
@@ -78,19 +77,13 @@ class OwnerProfile extends Controller
     }
 
     public function checkEmail($field, $value, $currentUserId)
-    {{
-        // Check in Owner table, excluding the current user
+    {
         $ownerCheck = Owner::where($field, Crypt::encryptString($value))
             ->where('id', '!=', $currentUserId)
             ->exists();
 
-        // Check in Worker table
-        $workerCheck = Worker::all()->filter(function ($worker) use ($field, $value) {
-            return Crypt::decryptString($worker->$field) === $value;
-        })->isNotEmpty();
-
-        return $ownerCheck || $workerCheck;
-    }}
+        return $ownerCheck;
+    }
 
     public function addworker(Request $request)
     {
@@ -99,27 +92,34 @@ class OwnerProfile extends Controller
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:8',
         ]);
-
-        // Check if the username already exists
+    
         $usernameExists = $this->checkUsernameWorker('username', $request->username);
-
+    
         if ($usernameExists) {
-            // Redirect back with an error message if the username is taken
+            $workerCheck2=Worker::get();
+            foreach ($workerCheck2 as $data) {
+                if(Crypt::decryptString($data->username) == $credentials->username && Crypt::decryptString($data->status)== '0'){
+                    return back()->withErrors(['error' => 'The this user has disable.']);
+                }
+            }
+
             return back()->withErrors(['username' => 'The username has already been taken.']);
         } else {
-            // Create a new worker account
+
             Worker::create([
                 'username' => Crypt::encryptString($request->username),
                 'name' => Crypt::encryptString($request->name),
                 'password' => Hash::make($request->password),
                 'OwnerID' => Auth::id(),
+                'status' => Crypt::encryptString('1'),
 
             ]);
-
+    
             // Redirect with a success message
             return redirect()->route('ownerworkeraccount')->with('success', 'Account successfully created.');
         }
     }
+    
 
     public function checkUsernameWorker($field, $value)
     {
@@ -189,4 +189,24 @@ class OwnerProfile extends Controller
         return redirect()->back()->with('success', 'Password updated successfully');
     }
 
+
+    
+    public function workerdis(Request $request, $id)
+    {
+       
+        $user = Worker::find($id);
+        $user->status = crypt::encryptString('0');
+        $user->save();
+
+        return redirect()->route('ownerworkeraccount')->with('success', 'User disable successfully.');
+    }
+    public function workeren(Request $request, $id)
+    {
+       
+        $user = Worker::find($id);
+        $user->status = crypt::encryptString('1');
+        $user->save();
+
+        return redirect()->route('ownerworkeraccount')->with('success', 'User enable successfully.');
+    }
 }

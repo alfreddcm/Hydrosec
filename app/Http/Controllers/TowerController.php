@@ -108,6 +108,59 @@ class TowerController extends Controller
         return redirect()->back()->with('error', 'Tower not found!');
     }
 
+
+    public function stop(Request $request)
+    {
+        $towerId = $request->input('tower_id');
+        $tow = Tower::find($towerId);
+    
+        // Encrypt the status to '4' (indicating "done" or "harvesting complete")
+        $tow->status = Crypt::encryptString('4');
+        $tow->save();
+        $ownerID = $tow->OwnerID;
+    
+        $sensorData = SensorData::where('towerid', $towerId)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+    
+        $sensorDataArray = $sensorData->map(function ($data) {
+            return [
+                'pH' => $data->pH,
+                'temperature' => $data->temperature,
+                'nutrientlevel' => $data->nutrientlevel,
+                'light' => $data->light,
+                'iv' => $data->iv,
+                'k' => $data->k,
+                'created_at' => $data->created_at->toDateTimeString(),
+            ];
+        })->toArray();
+    
+        SensorDataHistory::create([
+            'towerid' => $towerId,
+            'OwnerID' => $ownerID,
+            'sensor_data' => json_encode($sensorDataArray),
+            'created_at' => Carbon\Carbon::now(),
+        ]);
+    
+        // Create the activity log
+        $activityLog = [
+            'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set to done cycle.',
+            'Date' => Carbon::now()->toDateTimeString(),
+        ];
+    
+        // Insert log into TowerLogs
+        TowerLogs::create([
+            'ID_tower' => $tow->id,
+            'activity' => json_encode($activityLog), // If you are storing the activity log as a JSON string
+        ]);
+    
+        return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
+    }
+    
+    
+
+  
+
     public function modestat(Request $request, $id)
     {
         $tower = Tower::find($id)->first();

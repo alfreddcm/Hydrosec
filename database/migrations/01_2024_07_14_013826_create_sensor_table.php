@@ -54,8 +54,19 @@ return new class extends Migration
 
             $table->foreign('towerid')->references('id')->on('tbl_tower')->onDelete('cascade');
         });
+    
+    
+        Schema::create('sensor_data_history', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('towerid');
+            $table->unsignedTinyInteger('OwnerID'); // Add OwnerID column
+            $table->json('sensor_data');
+            $table->timestamps();
+        });
+        
     }
 
+    
     /**
      * Reverse the migrations.
      */

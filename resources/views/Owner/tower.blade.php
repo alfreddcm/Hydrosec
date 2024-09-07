@@ -228,7 +228,7 @@
 
                                     <div class="card-body justify-content-center g-4">
                                         <div class="icon ">
-                                            <img id="nutrient-image" src="{{ asset('images/towicon.png') }}"
+                                            <img id="nutrient-image" src="{{ asset('images/Water/100.png') }}"
                                                 alt="Nutient_volume">
                                         </div>
                                         <div class="value">
@@ -362,9 +362,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="sensor-data-body" class="table-group-divider">
-                                    <tr>
-                                        <td colspan="3" class="text-center">No records available.</td>
-                                    </tr>
+                                    <tr><td colspan="3" class="text-center">No records available.</td></tr>
                                 </tbody>
                                 <tfoot>
 
@@ -526,35 +524,33 @@
                     success: function(data) {
                         var tbody = $('#sensor-data-body');
                         tbody.empty();
-
+                        
                         $.each(data, function(index, item) {
                             var status;
                             var textColor = '';
 
                             if (data.length === 0) {
-                                tbody.append(
-                                    '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
-                                    );
-                            } else {
-                                $.each(data, function(index, item) {
-                                    var status;
-                                    var textColor = '';
+                            tbody.append('<tr><td colspan="3" class="text-center">No records available.</td></tr>');
+                        } else {
+                            $.each(data, function(index, item) {
+                                var status;
+                                var textColor = '';
 
-                                    if (item.pump == 1) {
-                                        status = 'Pump';
-                                    } else {
-                                        status = 'Not Pump';
-                                        textColor = 'style="color: red;"';
-                                    }
+                                if (item.pump == 1) {
+                                    status = 'Pump';
+                                } else {
+                                    status = 'Not Pump';
+                                    textColor = 'style="color: red;"';
+                                }
 
-                                    var row = `<tr class="table-light">
+                                var row = `<tr class="table-light">
                                     <td>${index + 1}</td>
                                     <td ${textColor}>${status}</td>
                                     <td ${textColor}>${item.timestamp}</td>
                                 </tr>`;
-                                    tbody.append(row);
-                                });
-                            }
+                                tbody.append(row);
+                            });
+                        }
                         });
                     },
                     error: function() {
@@ -624,7 +620,7 @@
                 volumeValueElement.textContent = `${nutrientVolume.toFixed(2)}%`;
 
                 if (nutrientVolume >= 20) {
-                    nutrientImage.src = '{{ asset('images/Water/Full.png') }}';
+                    nutrientImage.src = '{{ asset('images/Water/100.png') }}';
                     statusText.textContent = "Full";
                     statusText.style.color = 'blue';
                     volumeValueElement.style.color = 'blue';

@@ -69,6 +69,10 @@ Route::middleware('auth:owner')->group(function () {
 
     Route::post('/Owner/update-password/{id}', [OwnerProfile::class, 'workerPassword'])->name('owner.workerupdatePassword');
 
+    Route::post('/Owner/worker-dis/{id}', [OwnerProfile::class, 'workerdis'])->name('ownerworker.dis');
+        Route::post('/Owner/worker-en/{id}', [OwnerProfile::class, 'workeren'])->name('ownerworker.en');
+
+
     Route::get('/startcycle', [SensorData::class, 'startcycle'])->name('startcycle');
 
     Route::post('/addtower', [Towercontroller::class, 'store'])->name('posttower');

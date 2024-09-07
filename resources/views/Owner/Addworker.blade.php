@@ -48,7 +48,7 @@ $towers = Tower::where('OwnerID', $userId)->get();
                         </div>
                         <div class="mb-2">
                             <label for="tower" class="form-label">Towers</label>
-                            <select id="tower" name="tower" class="form-select">
+                            <select id="tower" name="tower" class="form-select" required>
                                 <option value="" disabled selected>Select a tower</option>
                                 @foreach ($towers as $tower)
                                     <option value="{{ $tower->id }}">{{ Crypt::decryptString($tower->name) }}</option>

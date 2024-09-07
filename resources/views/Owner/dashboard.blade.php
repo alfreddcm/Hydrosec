@@ -9,8 +9,13 @@
         use Carbon\Carbon;
 
         $towerCount = Tower::where('OwnerID', Auth::id())->count();
-        $workerCount = Worker::where('OwnerID', Auth::id())->count();
+        $workers = Worker::where('OwnerID', Auth::id())->get();
 
+        $enabledWorkerCount = $workers
+            ->filter(function ($worker) {
+                return Crypt::decryptString($worker->status) === '1';
+            })
+            ->count();
         $towerCount = Tower::where('OwnerID', Auth::id())->count();
 
         $towerId = Tower::where('OwnerID', Auth::id())->value('id');
@@ -42,6 +47,7 @@
         }
 
         .card {
+            padding: 10px;
             height: 200px;
             border-radius: 10px;
             border: 1px solid #ddd;
@@ -59,15 +65,23 @@
         }
 
         .count {
+            margin-left: 20px;
             display: inline-flex;
-            justify-content: center;
+            justify-content: start;
             align-items: center;
             width: 25px;
             height: 25px;
-            border-radius: 50%;
-            border: 1px solid black;
-            text-align: center;
+            font-size: 100px;
 
+        }
+
+        .card-text {
+            justify-self: flex-start;
+        }
+
+        .card-body img {
+
+            height: 100px;
         }
     </style>
     <div class="container">
@@ -77,31 +91,32 @@
             {{-- <span>{{ $vali2 }}</span> --}}
 
             <!-- Tower Count Card -->
-            @foreach ($tower as $item)
+            {{-- @foreach ($tower as $item)
                 <div class="col-md-6 mb-4">
                     <div class="card">
-                        <img src="{{ asset('images/towicon.png') }}" alt="Tower Image">
                         <div>
-                            <strong>Tower Name:</strong> {{ $tower->name }}
+                            <strong>Tower Name:</strong> {{ $item->name }}
                         </div>
                         <div>
-                            <strong>Date Started:</strong> {{ Carbon::parse($tower->startdate)->format('d/m/Y') }}
+                            <strong>Date Started:</strong> {{ Carbon::parse($item->startdate)->format('d/m/Y') }}
                         </div>
                         <div>
-                            <strong>Harvest Date:</strong>{{ Carbon::parse($tower->enddate)->format('d/m/Y') }}
+                            <strong>Harvest Date:</strong>{{ Carbon::parse($item->enddate)->format('d/m/Y') }}
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @endforeach --}}
 
-<br>
+            <br>
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Tower</h5>
                     </div>
-                    <div class="card-body">
-                        <img src="{{'assets/image/towicon.png'}}" alt="towericon"><span class="card-text count">{{ $towerCount }}</span>
+                    <div class="card-body text-start">
+                        <span class="card-text count">{{ $towerCount }}</span>
+
+                        <img src="{{ asset('images/icon/towericon.png') }}" alt="towericon">
 
                     </div>
                 </div>
@@ -111,9 +126,12 @@
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Workers <span class="card-text count">{{ $towerCount }}</span></h5>
+                        <h5 class="card-title">Workers</h5>
                     </div>
                     <div class="card-body">
+                        <span class="card-text count">{{ $enabledWorkerCount }}</span>
+
+                        <img src="{{ asset('images/icon/workericon.png') }}" alt="towericon">
 
                     </div>
                 </div>
