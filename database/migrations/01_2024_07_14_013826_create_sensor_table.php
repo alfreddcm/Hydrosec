@@ -29,9 +29,9 @@ return new class extends Migration
 
         // Create the tbl_towerlogs table
         Schema::create('tbl_towerlogs', function (Blueprint $table) {
-            $table->tinyInteger('id', false, true)->autoIncrement();
+            $table->int('id', false, true)->autoIncrement();
             $table->tinyInteger('ID_tower', false, true);
-            $table->string('activity');
+            $table->text('activity');
             $table->timestamps();
 
             $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');
@@ -39,9 +39,9 @@ return new class extends Migration
 
         // Create the tbl_alert table
         Schema::create('tbl_alert', function (Blueprint $table) {
-            $table->tinyInteger('id', false, true)->autoIncrement();
+            $table->int('id', false, true)->autoIncrement();
             $table->tinyInteger('ID_tower', false, true);
-            $table->string('message');
+            $table->text('message');
             $table->timestamps();
 
              $table->foreign('ID_tower')->references('id')->on('tbl_tower')->onDelete('cascade');

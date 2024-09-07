@@ -3,22 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Owner;
 use App\Models\Admin;
+use App\Models\Owner;
 use App\Models\Worker;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-
-
-
+use Illuminate\Support\Facades\Validator;
 
 class admincontroller extends Controller
 {
-    public function addowneraccount(Request $request){
+    public function addowneraccount(Request $request)
+    {
         $request->validate([
             'username' => 'required|string|max:255',
             'name' => 'required|string|max:250',
@@ -26,17 +22,16 @@ class admincontroller extends Controller
             'password' => [
                 'required',
                 'string',
-                'min:8',  
-                'regex:/[a-z]/',    
+                'min:8',
+                'regex:/[a-z]/',
                 'regex:/[A-Z]/',
-                'regex:/[0-9]/', 
+                'regex:/[0-9]/',
                 'regex:/[@$!%*?&]/'],
-                ]);
-
+        ]);
 
         $username = $request->username;
         $email = $request->email;
-    
+
         if ($this->checkUser('username', $username, '1') || $this->checkUser('email', $email, '1')) {
             if ($this->checkUser('username', $username, '0') || $this->checkUser('email', $email, '0')) {
                 return back()->withErrors(['react' => 'User has already existed and has been deactivated.']);
@@ -56,17 +51,15 @@ class admincontroller extends Controller
             ->with('success', 'You have successfully added!');
 
     }
-    
-    
 
     public function showCounts()
     {
-        $ownerCount = Owner::where('status','1')->count();
-        $workerCount = Worker::where('status','1')->count();
-    
+        $ownerCount = Owner::where('status', '1')->count();
+        $workerCount = Worker::where('status', '1')->count();
+
         return view('Admin.dashboard', compact('ownerCount', 'workerCount'));
     }
-    
+
     public function edit($id)
     {
         $user = Owner::find($id);
@@ -106,7 +99,7 @@ class admincontroller extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username'=> 'required',
+            'username' => 'required',
         ]);
 
         $user = Worker::find($id);
@@ -116,19 +109,18 @@ class admincontroller extends Controller
 
         return redirect()->route('UserAccounts')->with('success', 'User updated successfully.');
     }
-    
 
     public function disableOwner()
     {
         try {
             $user = Owner::find(auth()->user()->id);
-            $user->status = "0"; 
+            $user->status = "0";
             $user->save();
         } catch (\Exception $exception) {
-           
+
             return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to disable the account.']);
         }
-    
+
         return redirect()->route('UserAccounts')->with('status', 'Account disabled successfully.');
     }
 
@@ -136,53 +128,67 @@ class admincontroller extends Controller
     {
         try {
             $user = Owner::find(auth()->user()->id);
-            $user->status = "1"; 
+            $user->status = "1";
             $user->save();
         } catch (\Exception $exception) {
-           
+
             return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to enable the account.']);
         }
-    
+
         return redirect()->route('UserAccounts')->with('status', 'Account enabled successfully.');
     }
-    
 
-
-        //ownerupdate pass
+    //ownerupdate pass
 
     public function adminupdatePassword(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'password' => 'required',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'id' => 'required',
+        'password' => 'required|min:8|confirmed',
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        $user = Owner::find(auth()->user()->id);
-
-        if (!$user) {
-            return redirect()->back()->with('error', 'User not found');
-        }
-
-        // Update the user's password
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return redirect()->back()->with('success', 'Password updated successfully');
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
     }
+
+    // Find the user by ID
+    $user = Owner::find($request->id);
+
+    if (!$user) {
+        return redirect()->back()->with('error', 'User not found');
+    }
+
+    // Update the user's password
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    // Prepare email details
+    $body = "Dear " . Crypt::decryptString($user->name) . ", your password has been changed to: " . $request->password;
     
+    $details = [
+        'title' => 'Alert: Password Change',
+        'body' => $body,
+    ];
+
+    // Send email to the user
+    $email = Crypt::decryptString($user->email);
+    Mail::to($email)->send(new Alert($details));
+
+    return redirect()->back()->with('success', 'Password updated successfully');
+}
+
     //workerupdate pass
     public function adminupdatePassword2(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'password' => 'required',
+            'id' => 'required',
+            'password' => 'required|min:8|confirmed',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $user = Worker::find(auth()->user()->id);
+        $user = Worker::find($request->id);
 
         if (!$user) {
             return redirect()->back()->with('error', 'User not found');
@@ -217,33 +223,30 @@ class admincontroller extends Controller
         return redirect()->back()->with('success', 'Password updated successfully');
     }
 
-
-
-
     //check email
     public function checkUser($field, $value, $status)
     {
         $ownerCheck = Owner::where('status', $status)
-                            ->get()
-                            ->filter(function ($owner) use ($field, $value) {
-                                return Crypt::decryptString($owner->$field) === $value;
-                            })
-                            ->isNotEmpty();
-    
+            ->get()
+            ->filter(function ($owner) use ($field, $value) {
+                return Crypt::decryptString($owner->$field) === $value;
+            })
+            ->isNotEmpty();
+
         $adminCheck = Admin::where('status', $status)
-                            ->get()
-                            ->filter(function ($admin) use ($field, $value) {
-                                return Crypt::decryptString($admin->$field) === $value;
-                            })
-                            ->isNotEmpty();
-    
+            ->get()
+            ->filter(function ($admin) use ($field, $value) {
+                return Crypt::decryptString($admin->$field) === $value;
+            })
+            ->isNotEmpty();
+
         $workerCheck = Worker::where('status', $status)
-                            ->get()
-                            ->filter(function ($worker) use ($field, $value) {
-                                return Crypt::decryptString($worker->$field) === $value;
-                            })
-                            ->isNotEmpty();
-    
+            ->get()
+            ->filter(function ($worker) use ($field, $value) {
+                return Crypt::decryptString($worker->$field) === $value;
+            })
+            ->isNotEmpty();
+
         return $ownerCheck || $adminCheck || $workerCheck;
     }
 }

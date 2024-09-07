@@ -61,7 +61,7 @@
             <label for="password_confirmation">Confirm Password</label>
             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
           </div>
-          <input type="hidden" id="userId">
+          <input type="hidden" id="{{$worker->id}}">
           <button type="submit" class="btn btn-primary">Update</button>
         </form>
       </div>

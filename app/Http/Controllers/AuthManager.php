@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Owner;
 use App\Models\Admin;
+use App\Models\Owner;
 use App\Models\Worker;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Http;
-
-
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class AuthManager extends Controller
 {
@@ -39,96 +36,96 @@ class AuthManager extends Controller
         return view('register');
     }
 
-public function loginPost(Request $request)
-{
-    // Validate reCAPTCHA response
-    $request->validate([
-        'g-recaptcha-response' => 'required'
-    ]);
+    public function loginPost(Request $request)
+    {
+        $status = Crypt::encryptString('1');
 
-    $recaptchaResponse = $request->input('g-recaptcha-response');
-    $recaptchaSecret = env('RECAPTCHA_SECRET_KEY'); 
+        // Validate reCAPTCHA response
+        $request->validate([
+            'g-recaptcha-response' => 'required',
+        ]);
 
-    $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        'secret' => $recaptchaSecret,
-        'response' => $recaptchaResponse
-    ]);
+        $recaptchaResponse = $request->input('g-recaptcha-response');
+        $recaptchaSecret = env('RECAPTCHA_SECRET_KEY');
 
-    $responseBody = $response->json();
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => $recaptchaSecret,
+            'response' => $recaptchaResponse,
+        ]);
 
-    if (!$responseBody['success']) {
-        return Redirect::back()->with('error', 'CAPTCHA verification failed.');
-    }
+        $responseBody = $response->json();
 
-    // Validate username and password
-    $credentials = $request->validate([
-        'username' => 'required',
-        'password' => 'required',
-    ]);
-
-    $username = $credentials['username'];
-    $password = $credentials['password'];
-
-    // Check Worker credentials
-    $worker = Worker::where('status', '1')->get();
-    foreach ($worker as $user) {
-        try {
-            $storedUsername = Crypt::decryptString($user->username);
-            $storedPassword = $user->password;
-
-            if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                Auth::guard('worker')->loginUsingId($user->id);
-                $request->session()->regenerate();
-                return redirect()->route('workerdashboard')
-                    ->with('success', 'You have successfully logged in as Worker!');
-            }
-        } catch (DecryptException $e) {
-            return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
+        if (!$responseBody['success']) {
+            return Redirect::back()->with('error', 'CAPTCHA verification failed.');
         }
-    }
 
-    // Check Admin credentials
-    $admin = Admin::where('status', '1')->get();
-    foreach ($admin as $user) {
-        try {
-            $storedUsername = Crypt::decryptString($user->username);
-            $storedPassword = $user->password;
+        // Validate username and password
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-            if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                Auth::guard('admin')->loginUsingId($user->id);
-                $request->session()->regenerate();
-                return redirect()->route('admindashboard')
-                    ->with('success', 'You have successfully logged in as Admin!');
+        $username = $credentials['username'];
+        $password = $credentials['password'];
+
+        // Check Worker credentials
+        $worker = Worker::where('status', '1')->get();
+        foreach ($worker as $user) {
+            try {
+                $storedUsername = Crypt::decryptString($user->username);
+                $storedPassword = $user->password;
+
+                if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                    Auth::guard('worker')->loginUsingId($user->id);
+                    $request->session()->regenerate();
+                    return redirect()->route('workerdashboard')
+                        ->with('success', 'You have successfully logged in as Worker!');
+                }
+            } catch (DecryptException $e) {
+                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
             }
-        } catch (DecryptException $e) {
-            return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
         }
-    }
 
-    // Check Owner credentials
-    $owner = Owner::where('status', '1')->get();
-    foreach ($owner as $user) {
-        try {
-            $storedUsername = Crypt::decryptString($user->username);
-            $storedPassword = $user->password;
+        $admin = Admin::where('status', '1')->get();
+        foreach ($admin as $user) {
+            try {
+                $storedUsername = Crypt::decryptString($user->username);
+                $storedPassword = $user->password;
 
-            if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                Auth::guard('owner')->loginUsingId($user->id);
-                $request->session()->regenerate();
-                return redirect()->route('ownerdashboard')
-                    ->with('success', 'You have successfully logged in as Owner!');
+                if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                    Auth::guard('admin')->loginUsingId($user->id);
+                    $request->session()->regenerate();
+                    return redirect()->route('admindashboard')
+                        ->with('success', 'You have successfully logged in as Admin!');
+                }
+            } catch (DecryptException $e) {
+                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
             }
-        } catch (DecryptException $e) {
-            return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
         }
+
+        // Check Owner credentials
+        $owner = Owner::where('status', '1')->get();
+        foreach ($owner as $user) {
+            try {
+                $storedUsername = Crypt::decryptString($user->username);
+                $storedPassword = $user->password;
+
+                if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                    Auth::guard('owner')->loginUsingId($user->id);
+                    $request->session()->regenerate();
+                    return redirect()->route('ownerdashboard')
+                        ->with('success', 'You have successfully logged in as Owner!');
+                }
+            } catch (DecryptException $e) {
+                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
+            }
+        }
+
+        return back()->withErrors([
+            'username' => 'Your provided credentials do not match in our records.',
+            'password' => 'The password you entered is incorrect.',
+        ]);
     }
-
-    return back()->withErrors([
-        'username' => 'Your provided credentials do not match in our records.',
-        'password' => 'The password you entered is incorrect.',
-    ]);
-}
-
 
     public function registerPost(Request $request)
     {
@@ -139,23 +136,23 @@ public function loginPost(Request $request)
             'email' => 'required|email|max:250',
             'password' => 'required|min:8|confirmed',
         ]);
-        $username=$request->username;
+        $username = $request->username;
 
         $usernameExists = $this->checkUsername('username', $username);
 
         if ($usernameExists) {
 
             $usernamedeact = $this->checkUsernamedect('username', $username);
-            
-            if($usernamedeact){
+
+            if ($usernamedeact) {
                 // Owner::set('status','1')->where('username',$username);
 
                 return back()->withErrors(['react' => 'User has been deactivated. To reactivate click ']);
 
-            }else{
+            } else {
                 return back()->withErrors(['username' => 'The username has already been taken.']);
             }
-            
+
         }
 
         Owner::create([
@@ -179,18 +176,19 @@ public function loginPost(Request $request)
 
     }
 
-    public function checkUsername($field, $value, ){
+    public function checkUsername($field, $value, )
+    {
         {
             // Check in Owner table, excluding the current user
-            $ownerCheck = Owner::where('status','1')->get()->filter(function ($owner) use ($field, $value) {
+            $ownerCheck = Owner::where('status', '1')->get()->filter(function ($owner) use ($field, $value) {
                 return Crypt::decryptString($owner->$field) === $value;
             })->isNotEmpty();
 
-            $adminCheck = Admin::where('status','1')->get()->filter(function ($admin) use ($field, $value) {
+            $adminCheck = Admin::where('status', '1')->get()->filter(function ($admin) use ($field, $value) {
                 return Crypt::decryptString($admin->$field) === $value;
             })->isNotEmpty();
 
-            $workerCheck = Worker::where('status','1')->get()->filter(function ($worker) use ($field, $value) {
+            $workerCheck = Worker::where('status', '1')->get()->filter(function ($worker) use ($field, $value) {
                 return Crypt::decryptString($worker->$field) === $value;
             })->isNotEmpty();
 
@@ -198,26 +196,25 @@ public function loginPost(Request $request)
         }
 
     }
-    public function checkUsernamedect($field, $value,){
-        $ownerCheck = Owner::where('status','0')->get()->filter(function ($owner) use ($field, $value) {
+    public function checkUsernamedect($field, $value, )
+    {
+        $ownerCheck = Owner::where('status', '0')->get()->filter(function ($owner) use ($field, $value) {
             return Crypt::decryptString($owner->$field) === $value;
         })->isNotEmpty();
 
-        $adminCheck = Admin::where('status','0')->get()->filter(function ($admin) use ($field, $value) {
+        $adminCheck = Admin::where('status', '0')->get()->filter(function ($admin) use ($field, $value) {
             return Crypt::decryptString($admin->$field) === $value;
         })->isNotEmpty();
 
-        $workerCheck = Worker::where('status','0')->get()->filter(function ($worker) use ($field, $value) {
+        $workerCheck = Worker::where('status', '0')->get()->filter(function ($worker) use ($field, $value) {
             return Crypt::decryptString($worker->$field) === $value;
         })->isNotEmpty();
 
         return $ownerCheck || $workerCheck || $adminCheck;
 
-
     }
 
 }
-
 
 // $subject=table::where('scuriculim','1','strand_id','1')->get();
 // foreach($subjec as $data){
@@ -227,4 +224,3 @@ public function loginPost(Request $request)
 //     <option value='{{$data->subject-id}}'>{{$subject->name}}</option>
 //     </select>
 // }
-
