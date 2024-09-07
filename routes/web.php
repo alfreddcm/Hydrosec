@@ -7,7 +7,6 @@ use App\Http\Controllers\SensorData;
 use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\Admin\admincontroller;
 use App\Http\Controllers\Towercontroller;
-use App\Http\Controllers\EspController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -38,8 +37,10 @@ Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 // Route::middleware(['auth:owner', 'singlesession'])->group(function () {
 
 Route::middleware('auth:owner')->group(function () {
-    Route::get('/Owner/dashboard', [OwnerProfile::class, 'showCounts'])
-        ->name('ownerdashboard');
+    Route::get('/Owner/dashboard', function () {
+    return view('Owner.dashboard');
+})->name('ownerdashboard');
+
     Route::get('/Owner/ManageTower', function () {
         return view('Owner.ManageTower');
     })->name('ownermanagetower');

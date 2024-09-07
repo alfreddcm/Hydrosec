@@ -73,7 +73,6 @@ class UpdateTowerMode extends Command
                     $mailStatus = 'Failed';
                     Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
                 } finally {
-                    // Encrypt and log the activity, regardless of email success or failure
                     $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
 
                     TowerLogs::create([

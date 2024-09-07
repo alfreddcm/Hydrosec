@@ -60,6 +60,8 @@ body {
 }
 
 .main {
+    overflow: scroll; 
+    scrollbar-width: none; 
     height: 90vh;
     margin-left: 16.6667%;
     margin-top: 30px;

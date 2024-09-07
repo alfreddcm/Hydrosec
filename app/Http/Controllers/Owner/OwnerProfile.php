@@ -3,44 +3,21 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
 use App\Models\Owner;
-use App\Models\Worker;
 use App\Models\Tower;
-use App\Models\Towerlogs;
-
-use Illuminate\Support\Facades\DB;
-
-use Illuminate\Support\Facades\Hash;
+use App\Models\Worker;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
-
-class OwnerProfile extends Controller{
-    public function showCounts()
-    {
-        $towerCount = Tower::where('OwnerID', Auth::id())->count();
-    $workerCount = Worker::where('OwnerID', Auth::id())->count();
-
-
-        $towerCount = Tower::where('OwnerID', Auth::id())->count();
-        
-        $towerId = Tower::where('OwnerID', Auth::id())->value('id');
-        
-        $towerLogs = DB::table('tbl_towerlogs')
-            ->join('tbl_tower', 'tbl_towerlogs.ID_tower', '=', 'tbl_tower.id')
-            ->where('tbl_towerlogs.ID_tower', $towerId)
-            ->select('tbl_tower.name as tower_name', 'tbl_tower.towercode as tower_code', 'tbl_towerlogs.activity', 'tbl_towerlogs.created_at')
-            ->orderBy('tbl_towerlogs.created_at', 'desc')
-            ->get();
-
-        // Return view with both counts and logs
-        return view('Owner.dashboard', compact('towerCount', 'towerLogs', 'workerCount'));
-    }
+class OwnerProfile extends Controller
+{
+  
 
     //
     public function update(Request $request)
@@ -101,51 +78,48 @@ class OwnerProfile extends Controller{
     }
 
     public function checkEmail($field, $value, $currentUserId)
-    { {
-            // Check in Owner table, excluding the current user
-            $ownerCheck = Owner::where($field, Crypt::encryptString($value))
-                ->where('id', '!=', $currentUserId)
-                ->exists();
+    {{
+        // Check in Owner table, excluding the current user
+        $ownerCheck = Owner::where($field, Crypt::encryptString($value))
+            ->where('id', '!=', $currentUserId)
+            ->exists();
 
-            // Check in Worker table
-            $workerCheck = Worker::all()->filter(function ($worker) use ($field, $value) {
-                return Crypt::decryptString($worker->$field) === $value;
-            })->isNotEmpty();
+        // Check in Worker table
+        $workerCheck = Worker::all()->filter(function ($worker) use ($field, $value) {
+            return Crypt::decryptString($worker->$field) === $value;
+        })->isNotEmpty();
 
-            return $ownerCheck || $workerCheck;
-        }
-    }
-
+        return $ownerCheck || $workerCheck;
+    }}
 
     public function addworker(Request $request)
-{
-    $credentials = $request->validate([
-        'name' => 'required|string|max:255',
-        'username' => 'required|string|max:255',
-        'password' => 'required|string|min:8',
-    ]);
-
-    // Check if the username already exists
-    $usernameExists = $this->checkUsernameWorker('username', $request->username);
-
-    if ($usernameExists) {
-        // Redirect back with an error message if the username is taken
-        return back()->withErrors(['username' => 'The username has already been taken.']);
-    } else {
-        // Create a new worker account
-        Worker::create([
-            'username' => Crypt::encryptString($request->username),
-            'name' => Crypt::encryptString($request->name),
-            'password' => Hash::make($request->password),
-            'OwnerID' => Auth::id()
-
+    {
+        $credentials = $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
         ]);
 
-        // Redirect with a success message
-        return redirect()->route('ownerworkeraccount')->with('success', 'Account successfully created.');
-    }
-}
+        // Check if the username already exists
+        $usernameExists = $this->checkUsernameWorker('username', $request->username);
 
+        if ($usernameExists) {
+            // Redirect back with an error message if the username is taken
+            return back()->withErrors(['username' => 'The username has already been taken.']);
+        } else {
+            // Create a new worker account
+            Worker::create([
+                'username' => Crypt::encryptString($request->username),
+                'name' => Crypt::encryptString($request->name),
+                'password' => Hash::make($request->password),
+                'OwnerID' => Auth::id(),
+
+            ]);
+
+            // Redirect with a success message
+            return redirect()->route('ownerworkeraccount')->with('success', 'Account successfully created.');
+        }
+    }
 
     public function checkUsernameWorker($field, $value)
     {
@@ -168,7 +142,7 @@ class OwnerProfile extends Controller{
     {
         $user = Worker::find($id);
         $user->name = Crypt::decryptString($user->name);
-        $user->username = Crypt::decryptString($user->username); 
+        $user->username = Crypt::decryptString($user->username);
 
         return view('owner.edit', compact('user'));
     }
@@ -216,5 +190,3 @@ class OwnerProfile extends Controller{
     }
 
 }
-
-

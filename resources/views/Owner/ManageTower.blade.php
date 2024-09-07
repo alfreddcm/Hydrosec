@@ -10,24 +10,48 @@
         $towers = Tower::where('OwnerID', Auth::id())->get();
 
     @endphp
-<style>
-    .addtowerb{
-        position: absolute;
-    bottom: 20px;
-    right: 20px;
+    <style>
+        .addtowerb {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
 
-    
-}
-    .addtowerbutton{
-        position: sticky;
-}
-a{
-    text-decoration: none;
-}
-.card{
-    text-transform: uppercase;
-}
-</style>
+        .addtowerbutton {
+            position: sticky;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .card {
+            text-transform: uppercase;
+        }
+
+        .card {
+            border-radius: 10px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-title {
+            letter-spacing: 1px;
+        }
+
+        .card-text span.font-weight-bold {
+            font-size: 1.1em;
+        }
+
+        .badge {
+            font-size: 1em;
+            padding: 5px 10px;
+            color: #000;
+        }
+    </style>
     <div class="container">
         <div class="row">
             <div class="col">
@@ -37,16 +61,27 @@ a{
                         @foreach ($towers as $data)
                             <div class="col-sm-3">
                                 <a href="{{ route('towerdata', ['id' => $data->id]) }}">
-                                    <div class="card">
+                                    <div class="card shadow-sm mb-4 border-0">
                                         <div class="card-body">
-                                            <h5 class="card-title">
-                                                <span><b>{{ $data->id }}</b></span>
-                                                {{ Crypt::decryptString($data->name) }}</h5>
+                                            <h5 class="card-title text-uppercase text-primary">
+                                                <b>{{ $data->id }} {{ Crypt::decryptString($data->name) }}</b>
+                                            </h5>
                                             <p class="card-text">
-                                               Code: {{ Crypt::decryptString($data->towercode) }}
+                                                <span class="text-muted">Code:</span> <span class="font-weight-bold">{{ Crypt::decryptString($data->towercode) }}</span>
+                                            </p>
+                                            <p class="card-text">
+                                                @php
+                                                        $decryptedStatus = Crypt::decryptString($data->status);
+                                                        $statusText = $decryptedStatus == 0 ? 'Inactive' : 'Active';
+                                                @endphp
+                                                <b>Status:</b> 
+                                                <span class="badge">
+                                                    {{ $statusText }}
+                                                </span>
                                             </p>
                                         </div>
                                     </div>
+                                    
                                 </a>
                             </div>
                         @endforeach
@@ -57,11 +92,12 @@ a{
 
                 </div>
                 <div class="addtowerb">
-                    <a href="#" class="btn btn-success mt-1 addtowerbutton" data-bs-toggle="modal" data-bs-target="#addTowerModal">
-                    Add Tower
-                </a>
+                    <a href="#" class="btn btn-success mt-1 addtowerbutton" data-bs-toggle="modal"
+                        data-bs-target="#addTowerModal">
+                        Add Tower
+                    </a>
                 </div>
-                
+
             </div>
         </div>
     </div>

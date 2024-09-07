@@ -1,31 +1,33 @@
 @extends('Owner/sidebar')
 @section('title', 'Dashboard')
 @section('content')
-  @php
-use Illuminate\Support\Facades\Crypt;
-$key_str = "ISUHydroSec2024!";
-        $iv_str = "HydroVertical143";
-        $method = "AES-128-CBC";
-        $vali = decrypt_data('yYWitIHG242+3ATbRxFwYA==', $method, $key_str, $iv_str);
+    @php
 
-// $vali = Crypt::decryptString("yYWitIHG242+3ATbRxFwYA==");
-// $vali2 = Crypt::encryptString("0");
+        use App\Models\Owner;
+        use App\Models\Tower;
+        use App\Models\Worker;
+        use Carbon\Carbon;
 
- function decrypt_data($encrypted_data, $method, $key, $iv)
-    {
-        try {
+        $towerCount = Tower::where('OwnerID', Auth::id())->count();
+        $workerCount = Worker::where('OwnerID', Auth::id())->count();
 
-            $encrypted_data = base64_decode($encrypted_data);
-            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
-            $decrypted_data = rtrim($decrypted_data, "\0");
-            $decoded_msg = base64_decode($decrypted_data);
-            return $decoded_msg;
-        } catch (\Exception $e) {
-            Log::error('Decryption error: ' . $e->getMessage());
-            return null;
-        }
-    }
-@endphp 
+        $towerCount = Tower::where('OwnerID', Auth::id())->count();
+
+        $towerId = Tower::where('OwnerID', Auth::id())->value('id');
+
+        $towerLogs = DB::table('tbl_towerlogs')
+            ->join('tbl_tower', 'tbl_towerlogs.ID_tower', '=', 'tbl_tower.id')
+            ->where('tbl_towerlogs.ID_tower', $towerId)
+            ->select(
+                'tbl_tower.name as tower_name',
+                'tbl_tower.towercode as tower_code',
+                'tbl_towerlogs.activity',
+                'tbl_towerlogs.created_at',
+            )
+            ->orderBy('tbl_towerlogs.created_at', 'desc')
+            ->get();
+        $tower = Tower::where('OwnerID', Auth::id());
+    @endphp
     <style>
         .table-responsive {
             max-height: 350px;
@@ -44,6 +46,10 @@ $key_str = "ISUHydroSec2024!";
             border-radius: 10px;
             border: 1px solid #ddd;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: scale(1.02);
         }
 
         .card .card-body {
@@ -67,24 +73,42 @@ $key_str = "ISUHydroSec2024!";
     <div class="container">
         <div class="row">
 
-            <span>{{ $vali }}</span><br>
+            {{-- <span>{{ $vali }}</span><br> --}}
             {{-- <span>{{ $vali2 }}</span> --}}
 
             <!-- Tower Count Card -->
-            <div class="col-md-6 mb-4">
+            @foreach ($tower as $item)
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <img src="{{ asset('images/towicon.png') }}" alt="Tower Image">
+                        <div>
+                            <strong>Tower Name:</strong> {{ $tower->name }}
+                        </div>
+                        <div>
+                            <strong>Date Started:</strong> {{ Carbon::parse($tower->startdate)->format('d/m/Y') }}
+                        </div>
+                        <div>
+                            <strong>Harvest Date:</strong>{{ Carbon::parse($tower->enddate)->format('d/m/Y') }}
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+<br>
+            <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Tower <span class="card-text count">{{ $towerCount }}</span></h5>
-
+                        <h5 class="card-title">Tower</h5>
                     </div>
                     <div class="card-body">
+                        <img src="{{'assets/image/towicon.png'}}" alt="towericon"><span class="card-text count">{{ $towerCount }}</span>
 
                     </div>
                 </div>
             </div>
 
             <!-- Worker Count Card -->
-            <div class="col-md-6 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Workers <span class="card-text count">{{ $towerCount }}</span></h5>
