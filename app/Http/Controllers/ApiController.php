@@ -73,11 +73,10 @@ class ApiController extends Controller
                             'towercode' => $decryptedTowercode,
                         ]);
 
-                        
                         Pump::create([
-                                'towerid' => $tower->id,
-                                'status' => $validatedData['pumped'],
-                            ]);
+                            'towerid' => $tower->id,
+                            'status' => $validatedData['pumped'],
+                        ]);
 
                         Log::info('Pump data processed successfully', [
                             'towerId' => $ipmac->id,
@@ -158,29 +157,66 @@ class ApiController extends Controller
                 'status' => $status,
             ]);
 
-            if ($towercode == $decryptedTowercode && $tower->ipAdd) {
-                // Retrieve and decrypt IP and MAC addresses
+            if ($towercode == $decryptedTowercode) {
+
                 $ipmac = Tower::where('id', $tower->id)->first();
-                $ip = Crypt::decryptString($ipmac->ipAdd);
-                $mac = Crypt::decryptString($tower->macAdd);
 
-                Log::info('Decrypted IP and MAC addresses from DB', [
-                    'ipAddress' => $ip,
-                    'macAddress' => $mac,
-                ]);
+                if ($ipmac && !is_null($ipmac->ipAdd)) {
+                    $ip = Crypt::decryptString($ipmac->ipAdd);
+                    $mac = Crypt::decryptString($tower->macAdd);
 
-                if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
-                    Log::info('IP and MAC address match', [
-                        'ip' => $ip,
-                        'decryptedIpAddress' => $decryptedIpAddress,
-                        'mac' => $mac,
-                        'decryptedMacAddress' => $decryptedMacAddress,
+                    Log::info('Decrypted IP and MAC addresses from DB', [
+                        'ipAddress' => $ip,
+                        'macAddress' => $mac,
                     ]);
 
+                    if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
+                        Log::info('IP and MAC address match', [
+                            'ip' => $ip,
+                            'decryptedIpAddress' => $decryptedIpAddress,
+                            'mac' => $mac,
+                            'decryptedMacAddress' => $decryptedMacAddress,
+                        ]);
+
+                        $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
+                        $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
+
+                        Log::info('Encrypted mode and status', [
+                            'mode' => $encryptedMode,
+                            'status' => $encryptedStatus,
+                        ]);
+
+                        $modestatus_data = [
+                            'mode' => $encryptedMode,
+                            'status' => $encryptedStatus,
+                        ];
+
+                        return response()->json(['modestat' => $modestatus_data]);
+                    } else {
+                        Log::warning('IP or MAC address mismatch', [
+                            'expectedIp' => $decryptedIpAddress,
+                            'actualIp' => $ip,
+                            'expectedMac' => $decryptedMacAddress,
+                            'actualMac' => $mac,
+                        ]);
+
+                        return response()->json(['error' => 'IP or MAC address mismatch'], 400);
+                    }
+                } else {
+
+                    $ipmac->ipAdd = Crypt::encryptString($decryptedIpAddress);
+                    $ipmac->macAdd = Crypt::encryptString($decryptedMacAddress);
+                    $ipmac->save();
+
+                    Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
+                    return response()->json(['success' => 'success'], 201);
+
+                    $mode = 0;
+                    $status = 0;
                     $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
                     $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
 
-                    Log::info('Encrypted mode and status', [
+                    Log::info('Encrypted mode and status when ipAdd is null', [
                         'mode' => $encryptedMode,
                         'status' => $encryptedStatus,
                     ]);
@@ -191,35 +227,12 @@ class ApiController extends Controller
                     ];
 
                     return response()->json(['modestat' => $modestatus_data]);
-                } else {
-                    Log::warning('IP or MAC address mismatch', [
-                        'expectedIp' => $decryptedIpAddress,
-                        'actualIp' => $ip,
-                        'expectedMac' => $decryptedMacAddress,
-                        'actualMac' => $mac,
-                    ]);
-
-                    return response()->json(['error' => 'IP or MAC address mismatch'], 400);
                 }
 
             } else {
-                $mode = 0;
-                $status = 0;
-                $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
-                $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
-
-                Log::info('Encrypted mode and status', [
-                    'mode' => $encryptedMode,
-                    'status' => $encryptedStatus,
-                ]);
-
-                $modestatus_data = [
-                    'mode' => $encryptedMode,
-                    'status' => $encryptedStatus,
-                ];
-
-                return response()->json(['modestat' => $modestatus_data]);
+                return response()->json(['error' => 'Invalid tower code'], 400);
             }
+
         }
 
         Log::warning('Tower code not found', [

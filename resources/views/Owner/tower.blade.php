@@ -759,9 +759,6 @@
             }
         }
 
-
-
-
         function updateLightStatus(status) {
             const circle = document.getElementById('statusCircle');
             const statusText = document.getElementById('statusText');

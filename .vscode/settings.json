@@ -10,5 +10,7 @@
     },
     "[blade]": {
         "editor.defaultFormatter": "shufo.vscode-blade-formatter"
-    }
+    },
+    "editor.fontSize": 13,
+    "workbench.editor.wrapTabs": true
 }

@@ -224,7 +224,7 @@ class SensorData extends Controller
                 if ($towercode == $decrypted_towercode) {
                     $ipmac = Tower::where('id', $tower->id)->first();
 
-                    if ($ipmac && $ipmac->ipAdd) {
+                    if ($ipmac && !is_null($ipmac->ipAdd)) {
                         $ip = Crypt::decryptString($ipmac->ipAdd);
                         $mac = Crypt::decryptString($ipmac->macAdd);
                         Log::info('Decrypted IP and MAC addresses:', [

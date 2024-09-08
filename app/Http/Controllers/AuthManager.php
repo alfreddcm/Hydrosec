@@ -140,8 +140,8 @@ class AuthManager extends Controller
             'email' => 'required|email|max:250',
             'password' => 'required|min:8|confirmed',
         ]);
-        $username = $request->username;
 
+        $username = $request->username;
         $usernameExists = $this->checkUsername('username', $username);
 
         if ($usernameExists) {
@@ -149,8 +149,6 @@ class AuthManager extends Controller
             $usernamedeact = $this->checkUsernamedect('username', $username);
 
             if ($usernamedeact) {
-                // Owner::set('status','1')->where('username',$username);
-
                 return back()->withErrors(['react' => 'User has been deactivated. To reactivate click ']);
 
             } else {
@@ -202,24 +200,26 @@ class AuthManager extends Controller
         }
 
     }
-    public function checkUsernamedect($field, $value, )
+    public function checkUsernamedect($field, $value)
     {
-        $ownerCheck = Owner::where('status', '0')->get()->filter(function ($owner) use ($field, $value) {
-            return Crypt::decryptString($owner->$field) === $value;
-        })->isNotEmpty();
-
-        $adminCheck = Admin::where('status', '0')->get()->filter(function ($admin) use ($field, $value) {
-            return Crypt::decryptString($admin->$field) === $value;
-        })->isNotEmpty();
-
-        $workerCheck = Worker::where('status', '0')->get()->filter(function ($worker) use ($field, $value) {
-            return Crypt::decryptString($worker->$field) === $value;
-        })->isNotEmpty();
-
-        return $ownerCheck || $workerCheck || $adminCheck;
-
+        $ownerCheck = Owner::get()->contains(function ($owner) use ($field, $value) {
+            return Crypt::decryptString($owner->status) === '0' &&
+                   Crypt::decryptString($owner->$field) === $value;
+        });
+    
+        $adminCheck = Admin::get()->contains(function ($admin) use ($field, $value) {
+            return Crypt::decryptString($admin->status) === '0' &&
+                   Crypt::decryptString($admin->$field) === $value;
+        });
+    
+        $workerCheck = Worker::get()->contains(function ($worker) use ($field, $value) {
+            return Crypt::decryptString($worker->status) === '0' &&
+                   Crypt::decryptString($worker->$field) === $value;
+        });
+    
+        return $ownerCheck || $adminCheck || $workerCheck;
     }
-
+    
 }
 
 // $subject=table::where('scuriculim','1','strand_id','1')->get();

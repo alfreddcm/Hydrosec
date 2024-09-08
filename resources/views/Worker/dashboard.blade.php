@@ -1,67 +1,40 @@
-@extends('Worker/header')
-@section('title', 'Hydrosec Dashboard')
-@section('content')
-    @php
-        use App\Models\Tower;
-        use App\Models\Worker;
-        use App\Models\Owner;
+<!doctype html>
+<html lang="en">
 
-        use Illuminate\Support\Facades\Auth;
-        use Illuminate\Support\Facades\Crypt;
-        $ownerid = Worker::where('id', Auth::id())->first();
-        $owner = Owner::where('id', Auth::id())->first();
-
-        $towerinfo = Tower::where('OwnerID', $ownerid->OwnerID)->first();
-    @endphp
-
-    @php
-        use App\Models\Tower;
-        use App\Models\Worker;
-
-        use Illuminate\Support\Facades\Auth;
-        use Illuminate\Support\Facades\Crypt;
-
-        $towerinfo = Tower::where('OwnerID', Auth::id())->first();
-        $wokername = Worker::where('OwnerID', Auth::id())->first();
-    @endphp
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@yield('title')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js">
+    </script>
+    <link href="{{ asset('css/worker/dashboard.css') }}" rel="stylesheet">
     <style>
+        body {
+            height: 100vh;
+        }
+
         canvas {
             height: max-content !important;
             width: 700px;
         }
 
-        a {
-            text-decoration: none;
-            display: inline-block;
-            padding: 3px 10px;
-        }
-
-        a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        .previous {
-            background-color: #4495f1;
-            color: white;
-            border-radius: 3px;
-            position: absolute;
-            top: 0;
-            left: 1%;
-
+        .nutcard {
+            margin: 10px;
+            width: 90%;
+            height: 200px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .title {
             text-transform: uppercase;
         }
 
-        .maincard {
-            margin: 30px;
-            padding: 10px;
-            align-self: center;
-        }
-
-        /*  */
         .sensor-card {
             width: 90%;
             height: 200px;
@@ -81,25 +54,28 @@
             color: #007bff;
         }
 
-        #thermometer {
-            width: 50px;
-            height: auto;
-        }
-
-        #nutrient-image {
-            width: 50px;
-            height: auto;
-        }
-
-        #ph-scale {
-            width: 110px;
-            height: auto;
-        }
-
         .btnpop {
             position: absolute;
             bottom: 0;
             right: 1%;
+        }
+
+        #thermometer,
+        #nutrient-image,
+        #ph-scale {
+            height: auto;
+        }
+
+        #thermometer {
+            width: 50px;
+        }
+
+        #nutrient-image {
+            width: 50px;
+        }
+
+        #ph-scale {
+            width: 110px;
         }
 
         .circle {
@@ -120,241 +96,223 @@
             max-height: 300px;
             overflow-y: auto;
         }
+
+        .dashboard-header {
+            padding: 10px 20px;
+            background-color: #00bcd4;
+            color: #fff;
+            text-align: start;
+            top: 0;
+            width: 100%;
+            position: fixed;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .logo {
+            width: 30px;
+            height: 30px;
+        }
+
+        .time {
+            margin: 0;
+            padding: 0;
+        }
+
+        .main .con {
+            margin: 5%;
+        }
+
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .logout-btn {
+            background-color: #d32f2f;
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .logout-btn:hover {
+            background-color: #b71c1c;
+        }
+
+        h3 {
+            margin: 0;
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-    <body>
-        <div class="con justify-content-center ">
-            <div class="card text-center maincard">
-                <div class="card-body justify-content-center">
-                    <div class="card-title">
+<body>
+    @php
+        use App\Models\Tower;
+        use App\Models\Worker;
+        use App\Models\Owner;
+        use Illuminate\Support\Facades\Auth;
+        use Illuminate\Support\Facades\Crypt;
 
-                        <h2 class="title">
-                            <a href="{{ route('ownermanagetower') }}" class="previous">&laquo;</a>
+        $owner = Worker::where('id', Auth::id())->first();
+        $ownername = Owner::where('id', $owner->OwnerID)->first();
+        $towerinfo = Tower::where('OwnerID', $owner->OwnerID)->first();
+    @endphp
 
-                            {{ Crypt::decryptString($towerinfo->name) }}
-                        </h2>
-                        @if ($wokername)
-                            <p class="card-text">
-                                Assgned User: {{ Crypt::decryptString($wokername->name) }}
-                            </p>
-                        @else
-                            <p class="card-text">
-                                No Worker set
-                            </p>
-                        @endif
-
-                        <div class="row justify-content-center g-1">
-                            <div class="col-sm-3">
-                                <h5>Mode: <span id="modeCircle" class="circle"></span><span id="modeText"
-                                        class="status-text">N/a</span></h5>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5>Status: <span id="statusCircle1" class="circle"></span><span id="statusText1"
-                                        class="status-text">Inactive</span></h5>
-                            </div>
-                            <div class="col-sm-3">
-                                <h5>Grow Lights : <span id="statusCircle" class="circle"></span><span id="statusText"
-                                        class="status-text">Inactive</span></h5>
-                            </div>
-                        </div>
-
-
-                        <div class="row g-3">
-
-                            <!-- Temperature Card -->
-                            <div class="col-sm-4">
-                                <div class="card sensor-card">
-                                    <center>
-                                        <h3 class="mt-3">Temperature</h3>
-
-                                        <button type="button" class="btn btnpop" data-bs-toggle="modal"
-                                            data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
-                                            data-column="temperature">
-
-                                            <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
-                                                alt="" style="height:30px" ; />
-                                        </button>
-
-                                        <div class="card-body justify-content-center g-4">
-                                            <div class="icon ">
-                                                <i class="bi bi-thermometer-half">
-                                                    <img id="thermometer" src="{{ asset('images/Temp/normal.png') }}"
-                                                        alt="Thermometer">
-                                                </i>
-                                            </div>
-                                            <div class="value">
-                                                <h4 class="mt-3"><span id="temp-value">n/a</span></h4>
-                                                <span id="temp-status">n/a</span>
-                                            </div>
-                                        </div>
-                                    </center>
-                                </div>
-                            </div>
-
-                            <!-- Humidity Card -->
-                            <div class="col-sm-4">
-                                <div class="card sensor-card">
-                                    <center>
-                                        <h3 class="mt-3">pH Level</h3>
-                                        <button type="button" class="btn btnpop" data-bs-toggle="modal"
-                                            data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
-                                            data-column="pH">
-
-                                            <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
-                                                alt="" style="height:30px" ; />
-                                        </button>
-                                        <div class="icon ">
-                                            <img id="ph-scale" src="{{ asset('images/ph/8.png') }}" alt="ph-scale">
-                                        </div>
-
-
-                                        <div class="value">
-                                            <h4 class="mt-3"><span id="ph-value">n/a</span> <span
-                                                    id="ph-status">n/a</span></h4>
-
-                                        </div>
-                                    </center>
-                                </div>
-                            </div>
-
-
-                            {{-- ph --}}
-                            <div class="col-sm-4">
-                                <div class="card sensor-card">
-                                    <center>
-                                        <h3 class="mt-3">Nutrient Level</h3>
-                                        <button type="button" class="btn btnpop" data-bs-toggle="modal"
-                                            data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
-                                            data-column="nutrientlevel">
-
-                                            <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
-                                                alt="" style="height:30px" ; />
-                                        </button>
-
-                                        <div class="card-body justify-content-center g-4">
-                                            <div class="icon ">
-                                                <img id="nutrient-image" src="{{ asset('images/Water/100.png') }}"
-                                                    alt="Nutient_volume">
-                                            </div>
-                                            <div class="value">
-                                                <h4 class="mt-3"><span id="nutrient-value">n/a</span></h4>
-                                                <span id="nutrient-status">n/a</span>
-                                            </div>
-                                        </div>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-sm-3">
-                            <h5>Date Started</h5>
-                            <h6>
-                                {{ $towerinfo->startdate ? \Carbon\Carbon::parse($towerinfo->startdate)->format('F j, Y') : 'N/A' }}
-                            </h6>
-                        </div>
-                        <div class="col-sm-3">
-                            <h5>Expected Date Harvest</h5>
-
-                            <h6>
-                                {{ $towerinfo->enddate ? \Carbon\Carbon::parse($towerinfo->enddate)->format('F j, Y') : 'N/A' }}
-                            </h6>
-                        </div>
-                    </div>
-
-                    @if (is_null($towerinfo->startdate) && is_null($towerinfo->enddate))
-                        <!-- Show Start Cycle Button and Modal if dates are null -->
-                        <form>
-                            @csrf
-                            <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#startCycleModal">
-                                START CYCLE
-                            </button>
-                        </form>
-                    @else
-                        <!-- Show Update Dates Button and Modal if dates are not null -->
-                        <form>
-                            @csrf
-                            <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#updateCycleModal">
-                                UPDATE CYCLE
-                            </button>
-                        </form>
-                    @endif
-
-                    <!-- Start Cycle Modal -->
-                    <div class="modal fade" id="startCycleModal" tabindex="-1" aria-labelledby="startCycleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <form action="{{ route('cycle') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="startCycleModalLabel">Start New Cycle</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="days">Select Number of Days:</label>
-                                            <select name="days" id="days" class="form-control">
-                                                @for ($i = 15; $i <= 50; $i++)
-                                                    <option value="{{ $i }}">{{ $i }} days</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Start Cycle</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Update Cycle Modal -->
-                    <div class="modal fade" id="updateCycleModal" tabindex="-1" aria-labelledby="updateCycleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <form action="{{ route('cycle') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="updateCycleModalLabel">Update Cycle Dates</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="newDays">Select New Number of Days:</label>
-                                            <select name="newDays" id="newDays" class="form-control">
-                                                @for ($i = 1; $i <= 50; $i++)
-                                                    <option value="{{ $i }}">{{ $i }} days</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-warning">Update Dates</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+    <div class="col main">
+        <div class="dashboard-header mb-2">
+            <div class="row">
+                <div class="col">
+                    <h2>Hydrosec: Hydroponics Monitoring System</h2>
+                </div>
+                <div class="col text-end align-content-center">
+                    <h4><span id="current-time"> </span> | {{ \Carbon\Carbon::now()->format('D | M d, Y') }}</h4>
 
                 </div>
             </div>
+        </div>
 
-            <div class="card nutcard text-start mt-2">
+        <div class="main">
+            <div class="con justify-content-center">
+                <div class="user-info">
+                    <div class="col ">
+                        <h3>Hi, <b>{{ Crypt::decryptString(Auth::user()->name) }}</b></h3>
+                    </div>
+                    <div class="col text-end">
+
+                        <a href="{{ route('logout') }}"> <button type="submit" class="logout-btn">Logout?</button></a>
+                    </div>
+                </div>
+                <div class="card text-center maincard">
+                    <div class="card-body justify-content-center">
+                        <div class="card-title">
+                            <h2 class="title">{{ Crypt::decryptString($towerinfo->name) }}</h2>
+                            @if ($owner)
+                                <p class="card-text">Owner Name: {{ Crypt::decryptString($ownername->name) }}</p>
+                            @else
+                                <p class="card-text">No Worker set</p>
+                            @endif
+
+                            <div class="row justify-content-center g-1">
+                                <div class="col-sm-3">
+                                    <h5>Mode: <span id="modeCircle" class="circle"></span><span id="modeText"
+                                            class="status-text">N/A</span></h5>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h5>Status: <span id="statusCircle1" class="circle"></span><span id="statusText1"
+                                            class="status-text">Inactive</span></h5>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h5>Grow Lights : <span id="statusCircle" class="circle"></span><span
+                                            id="statusText" class="status-text">Inactive</span></h5>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <!-- Temperature Card -->
+                                <div class="col-sm-4">
+                                    <div class="card sensor-card">
+                                        <center>
+                                            <h3 class="mt-3">Temperature</h3>
+                                            <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                                data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
+                                                data-column="temperature">
+                                                <img src="{{ asset('images/icon/graph.png') }}"
+                                                    class="img-fluid rounded-top" alt="" style="height:30px" />
+                                            </button>
+                                            <div class="card-body justify-content-center g-4">
+                                                <div class="icon">
+                                                    <img id="thermometer" src="{{ asset('images/Temp/normal.png') }}"
+                                                        alt="Thermometer">
+                                                </div>
+                                                <div class="value">
+                                                    <h4 class="mt-3"><span id="temp-value">n/a</span></h4>
+                                                    <span id="temp-status">n/a</span>
+                                                </div>
+                                            </div>
+                                        </center>
+                                    </div>
+                                </div>
+
+                                <!-- pH Card -->
+                                <div class="col-sm-4">
+                                    <div class="card sensor-card">
+                                        <center>
+                                            <h3 class="mt-3">pH Level</h3>
+                                            <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                                data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
+                                                data-column="pH">
+                                                <img src="{{ asset('images/icon/graph.png') }}"
+                                                    class="img-fluid rounded-top" alt="" style="height:30px" />
+                                            </button>
+                                            <div class="icon">
+                                                <img id="ph-scale" src="{{ asset('images/ph/8.png') }}"
+                                                    alt="ph-scale">
+                                            </div>
+                                            <div class="value">
+                                                <h4 class="mt-3"><span id="ph-value">n/a</span> <span
+                                                        id="ph-status">n/a</span></h4>
+                                            </div>
+                                        </center>
+                                    </div>
+                                </div>
+
+                                <!-- Nutrient Level Card -->
+                                <div class="col-sm-4">
+                                    <div class="card sensor-card">
+                                        <center>
+                                            <h3 class="mt-3">Nutrient Level</h3>
+                                            <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                                data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
+                                                data-column="nutrientlevel">
+                                                <img src="{{ asset('images/icon/graph.png') }}"
+                                                    class="img-fluid rounded-top" alt="" style="height:30px" />
+                                            </button>
+                                            <div class="card-body justify-content-center g-4">
+                                                <div class="icon">
+                                                    <img id="nutrient-image"
+                                                        src="{{ asset('images/Water/100.png') }}"
+                                                        alt="Nutient_volume">
+                                                </div>
+                                                <div class="value">
+                                                    <h4 class="mt-3"><span id="nutrient-value">n/a</span></h4>
+                                                    <span id="nutrient-status">n/a</span>
+                                                </div>
+                                            </div>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-sm-3">
+                                <h5>Date Started</h5>
+                                <h6>{{ $towerinfo->datestarted ? \Carbon\Carbon::parse($towerinfo->datestarted)->format('M d, Y') : 'N/A' }}
+                                </h6>
+                            </div>
+                            <div class="col-sm-3">
+                                <h5>Date Ended</h5>
+                                <h6>{{ $towerinfo->dateended ? \Carbon\Carbon::parse($towerinfo->dateended)->format('M d, Y') : 'N/A' }}
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <center>
+            <div class="card nutcard">
                 <div class="card-body">
                     <h4 class="card-title">Nutrient Delivery Logs</h4>
                     <div class="table-container">
@@ -368,7 +326,9 @@
                                     </tr>
                                 </thead>
                                 <tbody id="sensor-data-body" class="table-group-divider">
-                                    <!-- Data rows go here -->
+                                    <tr>
+                                        <td colspan="3" class="text-center">No records available.</td>
+                                    </tr>
                                 </tbody>
                                 <tfoot>
 
@@ -378,465 +338,445 @@
                     </div>
                 </div>
             </div>
+        </center>
 
-        </div>
+    </div>
 
-        <!-- Modal -->
-        <div class="modal fade " id="tempmodal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
-            aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-center" id="modalTitleId">
-                            Graph
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <canvas id="tempChart"> <img src="{{ asset('images/icon/loading.gif') }}"
-                                    class="img-fluid rounded-top" alt="" style="height:30px" ; /></canvas>
-                        </div>
+    <div class="modal fade " id="tempmodal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="modalTitleId">
+                        Graph
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <canvas id="tempChart"> <img src="{{ asset('images/icon/loading.gif') }}"
+                                class="img-fluid rounded-top" alt="" style="height:30px" ; /></canvas>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
 
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/sidebar.js') }}"></script>
+    <script src="{{ asset('js/worker/dashboard.js') }}"></script>
+</body>
+<script>
+    function updateTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
 
-        </div>
-        <script>
-            var towerId = @json($towerinfo->id);
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        hours = String(hours).padStart(2, '0');
 
-            var id = {{ $towerinfo->id }};
+        document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
 
 
-            $(document).ready(function() {
-                var towerId = @json($towerinfo->id);
-                let tempChart = null;
-                let sensorDataInterval = null;
-                let modeStatInterval = null;
+    var towerId = @json($towerinfo->id);
 
-                $('#tempmodal').on('shown.bs.modal', function(event) {
-                    let button = event.relatedTarget;
-                    if (!button) {
-                        console.error('No related target found. Unable to get data attributes.');
+    var id = {{ $towerinfo->id }};
+    $(document).ready(function() {
+        var towerId = @json($towerinfo->id);
+        let tempChart = null;
+        let sensorDataInterval = null;
+        let modeStatInterval = null;
+
+        $('#tempmodal').on('shown.bs.modal', function(event) {
+            let button = event.relatedTarget;
+            if (!button) {
+                console.error('No related target found. Unable to get data attributes.');
+                return;
+            }
+
+            let towerId = button.getAttribute('data-tower-id');
+            let column = button.getAttribute('data-column');
+
+            if (tempChart) {
+                tempChart.destroy();
+            }
+
+            $.ajax({
+                url: `/Worker/get-data/${towerId}/${column}`,
+                method: 'GET',
+                success: function(response) {
+                    if (response.error) {
+                        console.error('Error fetching data:', response.error);
                         return;
                     }
 
-                    let towerId = button.getAttribute('data-tower-id');
-                    let column = button.getAttribute('data-column');
+                    const data = response.sensorData;
+                    const labels = data.map(item => item.timestamp);
+                    const values = data.map(item => item.value);
 
-                    if (tempChart) {
-                        tempChart.destroy();
+                    const ctx = document.getElementById('tempChart');
+                    if (!ctx) {
+                        console.error('Canvas element not found.');
+                        return;
                     }
 
-                    $.ajax({
-                        url: `/get-data/${towerId}/${column}`,
-                        method: 'GET',
-                        success: function(response) {
-                            if (response.error) {
-                                console.error('Error fetching data:', response.error);
-                                return;
-                            }
+                    const chartCtx = ctx.getContext('2d');
+                    if (!chartCtx) {
+                        console.error('Unable to get canvas context.');
+                        return;
+                    }
 
-                            const data = response.sensorData;
-                            const labels = data.map(item => item.timestamp);
-                            const values = data.map(item => item.value);
-
-                            const ctx = document.getElementById('tempChart');
-                            if (!ctx) {
-                                console.error('Canvas element not found.');
-                                return;
-                            }
-
-                            const chartCtx = ctx.getContext('2d');
-                            if (!chartCtx) {
-                                console.error('Unable to get canvas context.');
-                                return;
-                            }
-
-                            tempChart = new Chart(chartCtx, {
-                                labels: labels,
-                                type: 'line',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                        data: values,
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        borderWidth: 1
-                                    }]
+                    tempChart = new Chart(chartCtx, {
+                        labels: labels,
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: values,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    type: 'category',
+                                    title: {
+                                        display: true,
+                                        text: 'Time'
+                                    }
                                 },
-                                options: {
-                                    scales: {
-                                        x: {
-                                            type: 'category',
-                                            title: {
-                                                display: true,
-                                                text: 'Time'
-                                            }
-                                        },
-                                        y: {
-                                            title: {
-                                                display: true,
-                                                text: 'Value'
-                                            }
-                                        }
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Value'
                                     }
                                 }
-                            });
-                        },
-                        error: function(xhr) {
-                            console.error('An error occurred:', xhr.responseText);
-                        }
-                    });
-                });
-
-                // Fetch sensor data and update images
-                function fetchSensorData2() {
-                    $.ajax({
-                        url: '/sensor-data/' + towerId,
-                        method: 'GET',
-                        success: function(response) {
-                            if (response.sensorData) {
-                                const Temperature = response.sensorData.temperature !== null ? parseFloat(
-                                    response.sensorData.temperature).toFixed(2) : '0';
-                                const NutrientVolume = response.sensorData.nutrient_level !== null ?
-                                    parseFloat(response.sensorData.nutrient_level).toFixed(2) : '0';
-                                const pHlevel = response.sensorData.pH !== null ? parseFloat(response
-                                    .sensorData.pH).toFixed(2) : '0';
-                                const light = response.sensorData.light !== null ? parseFloat(response
-                                    .sensorData.light) : '3';
-
-                                updateThermometerImage(Temperature);
-                                updateNutrientImage(NutrientVolume);
-                                updatePhScaleImage(pHlevel);
-                                updateLightStatus(light);
-                            } else {
-                                console.log('No data available');
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('AJAX Error: ' + status + ' ' + error);
                         }
                     });
+                },
+                error: function(xhr) {
+                    console.error('An error occurred:', xhr.responseText);
                 }
-
-                // Fetch pump data
-                function fetchPumpData() {
-                    $.ajax({
-                        url: `/pump-data/${towerId}`,
-                        method: 'GET',
-                        success: function(data) {
-                            var tbody = $('#sensor-data-body');
-                            tbody.empty();
-                            $.each(data, function(index, item) {
-                                var status;
-                                var textColor = '';
-
-                                if (item.pump == 1) {
-                                    status = 'Pump';
-                                    textColor = 'style="color: red;"';
-                                } else {
-                                    status = 'Not Pump';
-                                }
-
-                                var row = `<tr class="table-light">
-                     <td>${index + 1}</td>
-                     <td ${textColor}>${status}</td>
-                     <td ${textColor}>${item.timestamp}</td>
-                     </tr>`;
-                                tbody.append(row);
-                            });
-                        },
-                        error: function() {
-                            console.error('Failed to fetch pump data');
-                        }
-                    });
-                }
-
-                function fetchModeStat() {
-                    $.ajax({
-                        url: '/modestat/' + towerId,
-                        method: 'GET',
-                        success: function(response) {
-                            if (response.modestat) {
-                                const mode = parseFloat(response.modestat.mode);
-                                const status = parseFloat(response.modestat.status);
-                                updatemode(mode);
-                                updatestatus(status);
-                            } else {
-                                console.log('No data available');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('AJAX Error: ' + status + ' ' + error);
-                        }
-                    });
-                }
-
-                // Start intervals
-                function startIntervals() {
-                    if (!sensorDataInterval) {
-                        sensorDataInterval = setInterval(fetchSensorData2, 10000);
-                    }
-                    if (!modeStatInterval) {
-                        modeStatInterval = setInterval(fetchModeStat, 10000);
-                    }
-                }
-
-                // Stop intervals
-                function stopIntervals() {
-                    clearInterval(sensorDataInterval);
-                    clearInterval(modeStatInterval);
-                    sensorDataInterval = null;
-                    modeStatInterval = null;
-                }
-                fetchPumpData();
-                startIntervals();
-
-                // Refresh pump data every 30 seconds
-                setInterval(fetchPumpData, 30000);
             });
+        });
 
+        // Fetch sensor data and update images
+        function fetchSensorData2() {
+            $.ajax({
+                url: '/Worker/sensor-data/' + towerId,
+                method: 'GET',
+                success: function(response) {
+                    if (response.sensorData) {
+                        const Temperature = parseFloat(response.sensorData.temperature);
+                        const NutrientVolume = parseFloat(response.sensorData.nutrient_level);
+                        const pHlevel = parseFloat(response.sensorData.pH);
+                        const light = parseFloat(response.sensorData.light);
 
-
-            function updateThermometerImage(temperature) {
-                const thermometer = document.getElementById('thermometer');
-                const statusText = document.getElementById('temp-status');
-                const tempValueElement = document.getElementById('temp-value');
-
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-                if (temperature === 0) {
-                    thermometer.src = '{{ asset('images/Temp/normal.png') }}';
-                    thermometer.style.filter = 'grayscale(100%)';
-                    statusText.textContent = "N/A";
-                    statusText.style.color = 'gray';
-                    tempValueElement.style.color = 'gray';
-
-                } else if (temperature < 18) {
-                    thermometer.src = '{{ asset('images/Temp/cold.png') }}';
-                    statusText.textContent = "Cold";
-                    statusText.style.color = 'blue';
-                    tempValueElement.style.color = 'blue';
-
-                } else if (temperature >= 18 && temperature <= 25) {
-                    thermometer.src = '{{ asset('images/Temp/normal.png') }}';
-                    statusText.textContent = "Normal (Optimal)";
-                    statusText.style.color = 'gray';
-                    tempValueElement.style.color = 'gray';
-
-                } else {
-                    thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                    statusText.textContent = "Hot";
-                    statusText.style.color = 'red';
-                    tempValueElement.style.color = 'red';
-                }
-
-            }
-
-            function updateNutrientImage(nutrientVolume) {
-                const nutrientImage = document.getElementById('nutrient-image');
-                const statusText = document.getElementById('nutrient-status');
-                const volumeValueElement = document.getElementById('nutrient-value');
-
-                volumeValueElement.textContent = `${nutrientVolume.toFixed(2)}%`;
-
-                if (nutrientVolume >= 10 && nutrientVolume <= 20) {
-                    nutrientImage.src = '{{ asset('images/Water/10.png') }}';
-                    statusText.textContent = "Critically Low";
-                    statusText.style.color = 'red';
-                    volumeValueElement.style.color = 'red';
-
-                } else if (nutrientVolume > 20 && nutrientVolume <= 30) {
-                    nutrientImage.src = '{{ asset('images/Water/30.png') }}';
-                    statusText.textContent = "Low";
-                    statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
-
-                    if (nutrientVolume === 0) {
-                        nutrientImage.src = '{{ asset('images/Water/50.png') }}';
-                        nutrientImage.style.filter = 'grayscale(100%)';
-                        statusText.textContent = "N/A";
-                        statusText.style.color = 'gray';
-                        volumeValueElement.style.color = 'gray';
-
-                    } else if (nutrientVolume > 0 && nutrientVolume <= 4) {
-                        nutrientImage.src = '{{ asset('images/Water/20.png') }}';
-                        statusText.textContent = "20% (4L)";
-                        statusText.style.color = 'green';
-                        volumeValueElement.style.color = 'green';
-
-                    } else if (nutrientVolume > 4 && nutrientVolume <= 8) {
-                        nutrientImage.src = '{{ asset('images/Water/40.png') }}';
-                        statusText.textContent = "40% (8L)";
-                        statusText.style.color = 'green';
-                        volumeValueElement.style.color = 'green';
-
-                    } else if (nutrientVolume > 8 && nutrientVolume <= 12) {
-                        nutrientImage.src = '{{ asset('images/Water/60.png') }}';
-                        statusText.textContent = "60% (12L)";
-                        statusText.style.color = 'yellow';
-                        volumeValueElement.style.color = 'yellow';
-
-                    } else if (nutrientVolume > 12 && nutrientVolume <= 16) {
-                        nutrientImage.src = '{{ asset('images/Water/80.png') }}';
-                        statusText.textContent = "80% (16L)";
-                        statusText.style.color = 'blue';
-                        volumeValueElement.style.color = 'blue';
-
-                    } else if (nutrientVolume > 16 && nutrientVolume <= 20) {
-                        nutrientImage.src = '{{ asset('images/Water/100.png') }}';
-                        statusText.textContent = "100% (20L)";
-                        statusText.style.color = 'blue';
-                        volumeValueElement.style.color = 'blue';
-
-                    } else if (nutrientVolume > 20 && nutrientVolume <= 30) {
-                        nutrientImage.src = '{{ asset('images/Water/30.png') }}';
-                        statusText.textContent = "30% (6L)";
-                        statusText.style.color = 'green';
-                        volumeValueElement.style.color = 'green';
-
-                    } else if (nutrientVolume > 30 && nutrientVolume <= 50) {
-                        nutrientImage.src = '{{ asset('images/Water/50.png') }}';
-                        statusText.textContent = "50% (10L)";
-                        statusText.style.color = 'green';
-                        volumeValueElement.style.color = 'green';
-
-                    } else if (nutrientVolume > 50 && nutrientVolume <= 70) {
-                        nutrientImage.src = '{{ asset('images/Water/70.png') }}';
-                        statusText.textContent = "70% (14L)";
-                        statusText.style.color = 'blue';
-                        volumeValueElement.style.color = 'blue';
-
-                    } else if (nutrientVolume > 70 && nutrientVolume <= 90) {
-                        nutrientImage.src = '{{ asset('images/Water/90.png') }}';
-                        statusText.textContent = "90% (18L)";
-                        statusText.style.color = 'blue';
-                        volumeValueElement.style.color = 'blue';
-
-                    } else if (nutrientVolume > 90 && nutrientVolume <= 100) {
-                        nutrientImage.src = '{{ asset('images/Water/100.png') }}';
-                        statusText.textContent = "100% (20L)";
-                        statusText.style.color = 'blue';
-                        volumeValueElement.style.color = 'blue';
+                        updateNutrientImage(NutrientVolume);
+                        updatePhScaleImage(pHlevel);
+                        updateLightStatus(light);
+                        updateThermometerImage(Temperature);
 
                     } else {
-                        nutrientImage.src = '{{ asset('images/Water/100.png') }}';
-                        statusText.textContent = "Out of Range";
-                        statusText.style.color = 'gray';
-                        volumeValueElement.style.color = 'gray';
+                        console.log('No data available');
                     }
-
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + status + ' ' + error);
                 }
-            }
+            });
+        }
 
-            function updatePhScaleImage(phValue) {
-                const phScale = document.getElementById('ph-scale');
-                const statusText = document.getElementById('ph-status');
-                const phValueElement = document.getElementById('ph-value');
+        // Fetch pump data
+        function fetchPumpData() {
+            $.ajax({
+                url: `/Worker/pump-data/${towerId}`,
+                method: 'GET',
+                success: function(data) {
+                    var tbody = $('#sensor-data-body');
+                    tbody.empty();
 
-                phValueElement.textContent = `${phValue.toFixed(2)}`;
-
-                if (phValue === 0) {
-                    phScale.src = `{{ asset('images/ph/7.png') }}`;
-                    statusText.textContent = "N/A";
-                    statusText.style.color = 'gray';
-                    phValueElement.style.color = 'gray';
-                    phScale.style.filter = 'grayscale(100%)';
-
-                } else if (phValue >= 0 && phValue <= 14) {
-                    phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
-                    phScale.style.filter = 'none';
-
-                    if (phValue < 5.0) {
-                        statusText.textContent = "Acidic";
-                        statusText.style.color = 'red';
-                        phValueElement.style.color = 'red';
-
-                    } else if (phValue === 7) {
-                        statusText.textContent = "Neutral";
-                        statusText.style.color = 'green';
-                        phValueElement.style.color = 'green';
-
+                    if (data.length === 0) {
+                        tbody.append(
+                            '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
+                        );
                     } else {
-                        statusText.textContent = "Good";
-                        statusText.style.color = 'blue';
-                        phValueElement.style.color = 'blue';
+                        $.each(data, function(index, item) {
+                            // Ensure item.pump is treated as a number
+                            var pumpStatus = parseInt(item.pump);
+                            var status;
+                            var textColor = '';
+
+                            if (pumpStatus === 1) {
+                                status = 'Pump';
+                            } else if (pumpStatus === 0) {
+                                status = 'Not Pump';
+                                textColor = 'style="color: red;"';
+                            } else {
+                                status = 'Unknown';
+                            }
+
+                            var row = `<tr class="table-light">
+                    <td>${index + 1}</td>
+                    <td ${textColor}>${status}</td>
+                    <td>${item.timestamp}</td>
+                </tr>`;
+                            tbody.append(row);
+                        });
                     }
-
-                } else {
-                    phScale.src = `{{ asset('images/ph/invalid.png') }}`;
-                    statusText.textContent = "Invalid pH value";
-                    statusText.style.color = 'black';
-                    phValueElement.style.color = 'black';
-                    phScale.style.filter = 'grayscale(100%)';
+                },
+                error: function() {
+                    console.error('Failed to fetch pump data');
                 }
+            });
+        }
 
-            }
-
-            function updateLightStatus(status) {
-                const circle = document.getElementById('statusCircle');
-                const statusText = document.getElementById('statusText');
-
-                if (status === 1) {
-                    circle.style.backgroundColor = 'green';
-                    statusText.textContent = 'Active';
-
-                } else if (status === 3) {
-                    circle.style.backgroundColor = 'gray';
-                    statusText.textContent = 'N/A';
-
-                } else {
-                    circle.style.backgroundColor = 'gray';
-                    statusText.textContent = 'Inactive';
+        function fetchModeStat() {
+            $.ajax({
+                url: '/Worker/modestat/' + towerId,
+                method: 'GET',
+                success: function(response) {
+                    if (response.modestat) {
+                        const mode = parseFloat(response.modestat.mode);
+                        const status = parseFloat(response.modestat.status);
+                        updatemode(mode);
+                        updatestatus(status);
+                    } else {
+                        console.log('No data available');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + status + ' ' + error);
                 }
+            });
+        }
+
+        // Start intervals
+        function startIntervals() {
+            if (!sensorDataInterval) {
+                sensorDataInterval = setInterval(fetchSensorData2, 10000);
             }
-
-
-            function updatemode(mode) {
-                const modeText = document.getElementById('modeText');
-                const modeCircle = document.getElementById('modeCircle');
-
-                switch (mode) {
-                    case 0:
-                        modeText.textContent = 'Inactive';
-                        modeCircle.style.backgroundColor = 'gray';
-                        break;
-                    case 1:
-                        modeText.textContent = 'Day Mode';
-                        modeCircle.style.backgroundColor = 'yellow';
-                        break;
-                    case 2:
-                        modeText.textContent = 'Night Mode';
-                        modeCircle.style.backgroundColor = 'blue';
-                        break;
-                    default:
-                        modeText.textContent = 'N/A';
-                        modeCircle.style.backgroundColor = 'red';
-                        break;
-                }
+            if (!modeStatInterval) {
+                modeStatInterval = setInterval(fetchModeStat, 10000);
             }
+        }
 
-            function updatestatus(status) {
-                const statusCircle = document.getElementById('statusCircle1');
-                const statusText = document.getElementById('statusText1');
+        // Stop intervals
+        function stopIntervals() {
+            clearInterval(sensorDataInterval);
+            clearInterval(modeStatInterval);
+            sensorDataInterval = null;
+            modeStatInterval = null;
+        }
+        fetchPumpData();
+        startIntervals();
 
-                if (status === 1) {
-                    statusCircle.style.backgroundColor = 'green';
-                    statusText.textContent = 'Active';
-                } if else (status ===0){
-                    statusCircle.style.backgroundColor = 'gray';
-                    statusText.textContent = 'Inactive';
-                }else {
-                    statusCircle.style.backgroundColor = 'black';
-                    statusText.textContent = 'N/A';
-                }
+        // Refresh pump data every 30 seconds
+        setInterval(fetchPumpData, 10000);
+    });
+
+    function updateNutrientImage(nutrientVolume) {
+        const nutrientImage = document.getElementById('nutrient-image');
+        const statusText = document.getElementById('nutrient-status');
+        const volumeValueElement = document.getElementById('nutrient-value');
+
+        if (isNaN(nutrientVolume) || nutrientVolume === null) {
+            nutrientImage.src = '{{ asset('images/Water/10.png') }}'; // Grayscale image
+            statusText.textContent = "N/A";
+            statusText.style.color = 'gray';
+            volumeValueElement.style.color = 'gray';
+            nutrientImage.style.filter = 'grayscale(100%)';
+
+        } else {
+            nutrientImage.style.filter = 'none'; // Reset filter for valid nutrient values
+            volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
+
+            if (nutrientVolume >= 20) {
+                nutrientImage.src = '{{ asset('images/Water/100.png') }}';
+                statusText.textContent = "Full";
+                statusText.style.color = 'blue';
+                volumeValueElement.style.color = 'blue';
+            } else if (nutrientVolume >= 17) {
+                nutrientImage.src = '{{ asset('images/Water/80.png') }}';
+                statusText.textContent = "85%";
+                statusText.style.color = 'blue';
+                volumeValueElement.style.color = 'blue';
+            } else if (nutrientVolume >= 15) {
+                nutrientImage.src = '{{ asset('images/Water/70.png') }}';
+                statusText.textContent = "75%";
+                statusText.style.color = 'blue';
+                volumeValueElement.style.color = 'blue';
+            } else if (nutrientVolume >= 12) {
+                nutrientImage.src = '{{ asset('images/Water/60.png') }}';
+                statusText.textContent = "60%";
+                statusText.style.color = 'blue';
+                volumeValueElement.style.color = 'blue';
+            } else if (nutrientVolume >= 10) {
+                nutrientImage.src = '{{ asset('images/Water/50.png') }}';
+                statusText.textContent = "50%";
+                statusText.style.color = 'blue';
+                volumeValueElement.style.color = 'blue';
+            } else if (nutrientVolume >= 7) {
+                nutrientImage.src = '{{ asset('images/Water/30.png') }}';
+                statusText.textContent = "35%";
+                statusText.style.color = 'orange';
+                volumeValueElement.style.color = 'orange';
+            } else if (nutrientVolume >= 5) {
+                nutrientImage.src = '{{ asset('images/Water/20.png') }}';
+                statusText.textContent = "25%";
+                statusText.style.color = 'orange';
+                volumeValueElement.style.color = 'orange';
+            } else {
+                nutrientImage.src = '{{ asset('images/Water/10.png') }}';
+                statusText.textContent = "Empty";
+                statusText.style.color = 'gray';
+                volumeValueElement.style.color = 'gray';
             }
-        </script>
+        }
+    }
 
+    function updatePhScaleImage(phValue) {
+        const phScale = document.getElementById('ph-scale');
+        const statusText = document.getElementById('ph-status');
+        const phValueElement = document.getElementById('ph-value');
 
+        phValueElement.textContent = `${phValue.toFixed(2)}`;
 
-    @endsection
+        if (phValue >= 0 && phValue <= 14) {
+            phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
+            if (phValue < 5.0) {
+                statusText.textContent = "Acidic";
+                statusText.style.color = 'red';
+                phValueElement.style.color = 'red';
+                phScale.style.filter = 'none';
+            } else if (phValue === 7) {
+                statusText.textContent = "Neutral";
+                statusText.style.color = 'green';
+                phValueElement.style.color = 'green';
+                phScale.style.filter = 'none';
+            } else {
+                statusText.textContent = "Good";
+                statusText.style.color = 'blue';
+                phValueElement.style.color = 'blue';
+                phScale.style.filter = 'none';
+            }
+        } else {
+            phScale.src = `{{ asset('images/ph/7.png') }}`;
+            statusText.textContent = "N/A";
+            statusText.style.color = 'black';
+            phValueElement.style.color = 'black';
+            phScale.style.filter = 'grayscale(100%)';
+        }
+
+    }
+
+    function updateThermometerImage(temperature) {
+
+        const thermometer = document.getElementById('thermometer');
+        const statusText = document.getElementById('temp-status');
+        const tempValueElement = document.getElementById('temp-value');
+
+        thermometer.style.filter = 'none'; // Reset filter for valid temperature values
+
+        if (temperature <= 18) {
+            thermometer.src = '{{ asset('images/Temp/cold.png') }}';
+            statusText.textContent = "Cold";
+            statusText.style.color = 'blue';
+            tempValueElement.style.color = 'blue';
+            tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+
+        } else if (temperature > 18 && temperature <= 25) {
+            thermometer.src = '{{ asset('images/Temp/normal.png') }}';
+            statusText.textContent = "Normal (Optimal)";
+            statusText.style.color = 'gray';
+            tempValueElement.style.color = 'gray';
+            tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+
+        } else if (temperature > 25 && temperature <= 30) {
+            thermometer.src = '{{ asset('images/Temp/hot.png') }}';
+            statusText.textContent = "Hot";
+            statusText.style.color = 'red';
+            tempValueElement.style.color = 'red';
+            tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+
+        } else if (temperature > 31) {
+            thermometer.src = '{{ asset('images/Temp/hot.png') }}';
+            statusText.textContent = "Too Hot";
+            statusText.style.color = 'darkred';
+            tempValueElement.style.color = 'darkred';
+            tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+
+        } else {
+            thermometer.src = '{{ asset('images/Temp/hot.png') }}';
+            thermometer.style.filter = 'grayscale(100%)';
+            tempValueElement.textContent = "N/A";
+            statusText.style.color = 'gray';
+            tempValueElement.style.color = 'gray';
+        }
+    }
+
+    function updateLightStatus(status) {
+        const circle = document.getElementById('statusCircle');
+        const statusText = document.getElementById('statusText');
+
+        if (status === 1) {
+            circle.style.backgroundColor = 'green';
+            statusText.textContent = 'Active';
+
+        } else {
+            circle.style.backgroundColor = 'gray';
+            statusText.textContent = 'Inactive';
+
+        }
+    }
+
+    function updatemode(mode) {
+        const modeText = document.getElementById('modeText');
+        const modeCircle = document.getElementById('modeCircle');
+
+        switch (mode) {
+            case 0:
+                modeText.textContent = 'Inactive';
+                modeCircle.style.backgroundColor = 'gray';
+                break;
+            case 1:
+                modeText.textContent = 'Day Mode';
+                modeCircle.style.backgroundColor = 'yellow';
+                break;
+            case 2:
+                modeText.textContent = 'Night Mode';
+                modeCircle.style.backgroundColor = 'blue';
+                break;
+            default:
+                modeText.textContent = 'Unknown';
+                modeCircle.style.backgroundColor = 'red';
+                break;
+        }
+    }
+
+    function updatestatus(status) {
+        const statusCircle = document.getElementById('statusCircle1');
+        const statusText = document.getElementById('statusText1');
+
+        if (status === 1) {
+            statusCircle.style.backgroundColor = 'green';
+            statusText.textContent = 'Active';
+        } else {
+            statusCircle.style.backgroundColor = 'gray';
+            statusText.textContent = 'Inactive';
+        }
+    }
+</script>
+
+</html>

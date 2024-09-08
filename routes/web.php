@@ -1,18 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\admincontroller;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\SensorData;
-
-use App\Http\Controllers\Owner\OwnerProfile;
-use App\Http\Controllers\Admin\admincontroller;
 use App\Http\Controllers\Towercontroller;
-
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
-        return view('index') ;
+        return view('index');
     })->name('index');
 
     Route::get('/login', [AuthManager::class, 'login'])->name('login');
@@ -30,7 +28,6 @@ Route::middleware('guest')->group(function () {
 
 });
 
-
 Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 
 // Routes for Owner with 'auth:owner' middleware
@@ -38,8 +35,8 @@ Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 
 Route::middleware('auth:owner')->group(function () {
     Route::get('/Owner/dashboard', function () {
-    return view('Owner.dashboard');
-})->name('ownerdashboard');
+        return view('Owner.dashboard');
+    })->name('ownerdashboard');
 
     Route::get('/Owner/ManageTower', function () {
         return view('Owner.ManageTower');
@@ -70,8 +67,7 @@ Route::middleware('auth:owner')->group(function () {
     Route::post('/Owner/update-password/{id}', [OwnerProfile::class, 'workerPassword'])->name('owner.workerupdatePassword');
 
     Route::post('/Owner/worker-dis/{id}', [OwnerProfile::class, 'workerdis'])->name('ownerworker.dis');
-        Route::post('/Owner/worker-en/{id}', [OwnerProfile::class, 'workeren'])->name('ownerworker.en');
-
+    Route::post('/Owner/worker-en/{id}', [OwnerProfile::class, 'workeren'])->name('ownerworker.en');
 
     Route::get('/startcycle', [SensorData::class, 'startcycle'])->name('startcycle');
 
@@ -82,7 +78,7 @@ Route::middleware('auth:owner')->group(function () {
     Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/pump-data/{id}', [SensorData::class, 'getPump']);
-   
+
     Route::post('/cycle', [Towercontroller::class, 'updateDates'])->name('cycle');
     Route::get('/modestat/{id}', [Towercontroller::class, 'modestat'])->name('modestat');
 
@@ -90,8 +86,6 @@ Route::middleware('auth:owner')->group(function () {
     Route::post('/tower/restart', [TowerController::class, 'restartCycle'])->name('tower.restart');
 
 });
-
-
 
 Route::middleware('auth:worker')->group(function () {
     Route::get('/Worker/dashboard', function () {
@@ -101,13 +95,16 @@ Route::middleware('auth:worker')->group(function () {
         return view('Worker.Nutrient');
     })->name('workernutrient');
 
-   
     Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);
 
-});
+    Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
+    Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
+    Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);
+    Route::get('/Worker/modestat/{id}', [Towercontroller::class, 'modestat'])->name('modestat');
 
+});
 
 Route::middleware('auth:admin')->group(function () {
     Route::get('/Admin/Dashboard', [admincontroller::class, 'showCounts'])->name('admindashboard');
@@ -129,14 +126,8 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/Admin/update-password/{id}', [admincontroller::class, 'adminupdatePassword'])->name('admin.updatePassword');
     Route::post('/Admin/update-password2/{id}', [admincontroller::class, 'adminupdatePassword2'])->name('admin.updatePassword2');
 
-    Route::post('/Admin/en/{id}', [admincontroller::class, 'en'])->name('admin.en');
 
-
-    Route::delete('delete/{id}', [admincontroller::class, 'disableOwner'])->name('admin.dis');
-    ;
-    Route::delete('delete2/{id}', [admincontroller::class, 'disableWorker'])->name('admin.dis2');
-    ;
-
+    Route::post('/Admin/worker-dis/{id}', [admincontroller::class, 'disableOwner'])->name('admin.dis');
+    Route::post('/Admin/worker-en/{id}', [admincontroller::class, 'en'])->name('admin.en');
 
 });
-

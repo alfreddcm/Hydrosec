@@ -36,7 +36,6 @@
                                         @if ($errors->has('react'))
                                             <span class="text-danger">{{ $errors->first('react') }} <a href="">Click here</a></span>
                                         @endif
-                                        //otp email
                                     </div>
                                 </div>
                                 <div class="mb-3 row">

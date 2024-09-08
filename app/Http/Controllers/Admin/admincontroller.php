@@ -45,6 +45,8 @@ class admincontroller extends Controller
             'name' => Crypt::encryptString($request->name),
             'email' => Crypt::encryptString($request->email),
             'password' => Hash::make($request->password),
+            'status' => Crypt::encryptString('1'),
+
         ]);
 
         return back()
@@ -54,8 +56,24 @@ class admincontroller extends Controller
 
     public function showCounts()
     {
-        $ownerCount = Owner::where('status', '1')->count();
-        $workerCount = Worker::where('status', '1')->count();
+        $ownerCount = 0;
+        $workerCount = 0;
+
+        // Count owners with decrypted status of 1
+        $owners = Owner::all();
+        foreach ($owners as $owner) {
+            if (Crypt::decryptString($owner->status) == '1') {
+                $ownerCount++;
+            }
+        }
+
+        // Count workers with decrypted status of 1
+        $workers = Worker::all();
+        foreach ($workers as $worker) {
+            if (Crypt::decryptString($worker->status) == '1') {
+                $workerCount++;
+            }
+        }
 
         return view('Admin.dashboard', compact('ownerCount', 'workerCount'));
     }
@@ -110,72 +128,44 @@ class admincontroller extends Controller
         return redirect()->route('UserAccounts')->with('success', 'User updated successfully.');
     }
 
-    public function disableOwner()
-    {
-        try {
-            $user = Owner::find(auth()->user()->id);
-            $user->status = "0";
-            $user->save();
-        } catch (\Exception $exception) {
-
-            return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to disable the account.']);
-        }
-
-        return redirect()->route('UserAccounts')->with('status', 'Account disabled successfully.');
-    }
-
-    public function en()
-    {
-        try {
-            $user = Owner::find(auth()->user()->id);
-            $user->status = "1";
-            $user->save();
-        } catch (\Exception $exception) {
-
-            return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to enable the account.']);
-        }
-
-        return redirect()->route('UserAccounts')->with('status', 'Account enabled successfully.');
-    }
-
     //ownerupdate pass
 
     public function adminupdatePassword(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'id' => 'required',
-        'password' => 'required|min:8|confirmed',
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
 
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Find the user by ID
+        $user = Owner::find($request->id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Prepare email details
+        $body = "Dear " . Crypt::decryptString($user->name) . ", your password has been changed to: " . $request->password;
+
+        $details = [
+            'title' => 'Alert: Password Change',
+            'body' => $body,
+        ];
+
+        // Send email to the user
+        $email = Crypt::decryptString($user->email);
+        Mail::to($email)->send(new Alert($details));
+
+        return redirect()->back()->with('success', 'Password updated successfully');
     }
-
-    // Find the user by ID
-    $user = Owner::find($request->id);
-
-    if (!$user) {
-        return redirect()->back()->with('error', 'User not found');
-    }
-
-    // Update the user's password
-    $user->password = Hash::make($request->password);
-    $user->save();
-
-    // Prepare email details
-    $body = "Dear " . Crypt::decryptString($user->name) . ", your password has been changed to: " . $request->password;
-    
-    $details = [
-        'title' => 'Alert: Password Change',
-        'body' => $body,
-    ];
-
-    // Send email to the user
-    $email = Crypt::decryptString($user->email);
-    Mail::to($email)->send(new Alert($details));
-
-    return redirect()->back()->with('success', 'Password updated successfully');
-}
 
     //workerupdate pass
     public function adminupdatePassword2(Request $request)
@@ -226,27 +216,76 @@ class admincontroller extends Controller
     //check email
     public function checkUser($field, $value, $status)
     {
-        $ownerCheck = Owner::where('status', $status)
-            ->get()
-            ->filter(function ($owner) use ($field, $value) {
-                return Crypt::decryptString($owner->$field) === $value;
-            })
-            ->isNotEmpty();
+        $models = [Owner::class, Admin::class, Worker::class];
 
-        $adminCheck = Admin::where('status', $status)
-            ->get()
-            ->filter(function ($admin) use ($field, $value) {
-                return Crypt::decryptString($admin->$field) === $value;
-            })
-            ->isNotEmpty();
+        foreach ($models as $model) {
+            $exists = $model::where('status', $status)
+                ->get()
+                ->filter(function ($record) use ($field, $value) {
+                    return Crypt::decryptString($record->$field) === $value;
+                })
+                ->isNotEmpty();
 
-        $workerCheck = Worker::where('status', $status)
-            ->get()
-            ->filter(function ($worker) use ($field, $value) {
-                return Crypt::decryptString($worker->$field) === $value;
-            })
-            ->isNotEmpty();
+            if ($exists) {
+                return true;
+            }
+        }
 
-        return $ownerCheck || $adminCheck || $workerCheck;
+        return false;
     }
+    public function disableOwner()
+    {
+        try {
+            $user = Owner::find(auth()->user()->id);
+            if ($user) {
+                $user->status = Crypt::encryptString("0");
+                $user->save();
+    
+                // Retrieve all workers associated with the owner
+                $workers = Worker::where('OwnerID', $user->id)->get();
+                foreach ($workers as $worker) {
+                    $worker->status = Crypt::encryptString("0");
+                    $worker->save();
+                }
+    
+                return redirect()->route('UserAccounts')->with('status', 'Account disabled successfully.');
+            } else {
+                return redirect()->route('UserAccounts')->withErrors(['error' => 'Owner not found.']);
+            }
+        } catch (\Exception $exception) {
+            // Optionally log the exception for further analysis
+            // Log::error('Failed to disable account: ' . $exception->getMessage());
+    
+            return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to disable the account.']);
+        }
+    }
+    
+
+    public function en()
+    {
+        try {
+            $user = Owner::find(auth()->user()->id);
+            if ($user) {
+                $user->status = Crypt::encryptString("1");
+                $user->save();
+    
+                // Retrieve all workers associated with the owner
+                $workers = Worker::where('OwnerID', $user->id)->get();
+                foreach ($workers as $worker) {
+                    $worker->status = Crypt::encryptString("1");
+                    $worker->save();
+                }
+    
+                return redirect()->route('UserAccounts')->with('status', 'Account enabled successfully.');
+            } else {
+                return redirect()->route('UserAccounts')->withErrors(['error' => 'Owner not found.']);
+            }
+        } catch (\Exception $exception) {
+            // Optionally log the exception for further analysis
+            // Log::error('Failed to enable account: ' . $exception->getMessage());
+    
+            return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to enable the account.']);
+        }
+    }
+    
 }

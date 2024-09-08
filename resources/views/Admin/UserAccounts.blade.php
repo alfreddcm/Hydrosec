@@ -7,9 +7,15 @@
         use App\Models\Owner;
         use App\Models\Worker;
 
-        $accs = Owner::where('status', '1')->get();
-        $accsdeac = Owner::where('status', '0')->get();
+        $activeOwners = Owner::all()->filter(function ($owner) {
+            return Crypt::decryptString($owner->status) === '1';
+        });
 
+        $deactivatedOwners = Owner::all()->filter(function ($owner) {
+            return Crypt::decryptString($owner->status) === '0';
+        });
+
+        $workers = Worker::all();
     @endphp
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
@@ -30,10 +36,9 @@
                                 <div class="panel-heading">
                                     Owner Accounts List
                                 </div>
-                               
-                               
+
                                 <div class="panel-body">
-                                    @if ($accs->isNotEmpty())
+                                    @if ($activeOwners->isNotEmpty())
                                         <div class="dataTable_wrapper">
                                             <table class="table table-striped table-bordered table-hover"
                                                 id="dataTables-example">
@@ -47,24 +52,23 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($accs as $user)
+                                                    @foreach ($activeOwners as $owner)
                                                         <tr class="odd gradeX owner-row">
-                                                            <td>{{ $user->id }}</td>
-                                                            <td>{{ Crypt::decryptString($user->name) }}</td>
-                                                            <td>{{ Crypt::decryptString($user->username) }}</td>
-                                                            <td>{{ Crypt::decryptString($user->email) }}</td>
+                                                            <td>{{ $owner->id }}</td>
+                                                            <td>{{ Crypt::decryptString($owner->name) }}</td>
+                                                            <td>{{ Crypt::decryptString($owner->username) }}</td>
+                                                            <td>{{ Crypt::decryptString($owner->email) }}</td>
                                                             <td>
                                                                 <div class="btn-group">
-                                                                    <a href="{{ route('admin.edit', $user->id) }}"
+                                                                    <a href="{{ route('admin.edit', $owner->id) }}"
                                                                         class="btn btn-success">Edit</a>
-                                                                    <form action="{{ route('admin.dis', $user->id) }}"
+                                                                    <form action="{{ route('admin.dis', $owner->id) }}"
                                                                         method="post">
-                                                                        @method('DELETE')
                                                                         @csrf
                                                                         <button
                                                                             onclick="return confirm('Are you sure You want to delete this?')"
                                                                             type="submit"
-                                                                            class="btn btn-danger ti-trash btn-rounded">Delete</button>
+                                                                            class="btn btn-info ti-trash btn-rounded">Disable</button>
                                                                     </form>
                                                                 </div>
                                                             </td>
@@ -81,23 +85,19 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        @php
-                                                                            $worker = Worker::get();
-                                                                            $counter2 = 1;
-                                                                        @endphp
-                                                                        @foreach ($worker as $workerUser)
-                                                                            @if (Crypt::decryptString($workerUser->OwnerID) == $user->id)
+                                                                        @php $counter2 = 1; @endphp
+                                                                        @foreach ($workers as $worker)
+                                                                            @if ($worker->OwnerID == $owner->id && Crypt::decryptString($worker->status) == '1')
                                                                                 <tr>
                                                                                     <td>{{ $counter2++ }}</td>
-                                                                                    <td>{{ Crypt::decryptString($workerUser->name) }}
+                                                                                    <td>{{ Crypt::decryptString($worker->name) }}
                                                                                     </td>
-                                                                                    <td>{{ Crypt::decryptString($workerUser->username) }}
+                                                                                    <td>{{ Crypt::decryptString($worker->username) }}
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="btn-group">
-                                                                                            <a href="{{ route('admin.edit2', $workerUser->id) }}"
+                                                                                            <a href="{{ route('admin.edit2', $worker->id) }}"
                                                                                                 class="btn btn-success">Edit</a>
-                                                                                           
                                                                                         </div>
                                                                                     </td>
                                                                                 </tr>
@@ -112,55 +112,58 @@
                                             </table>
                                         </div>
                                     @else
-                                        <p>No accounts available</p>
+                                        <p>No active accounts available</p>
                                     @endif
                                 </div>
+                               <u><button id="toggleButton" class="mb-2">Show hidden</button><br>
 
-                                 <div class="panel-heading">
-                                   Disabled Owner Accounts List
-                                </div>
-                                <div class="panel-body">
-                                    @if ($accsdeac->isNotEmpty())
-                                        <div class="dataTable_wrapper">
-                                            <table class="table table-striped table-bordered table-hover"
-                                                id="dataTables-example">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Name</th>
-                                                        <th>Username</th>
-                                                        <th>Email</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($accsdeac as $user)
-                                                        <tr class="odd gradeX owner-row">
-                                                            <td>{{ $user->id }}</td>
-                                                            <td>{{ Crypt::decryptString($user->name) }}</td>
-                                                            <td>{{ Crypt::decryptString($user->username) }}</td>
-                                                            <td>{{ Crypt::decryptString($user->email) }}</td>
-                                                            <td>
-                                                              <form action="{{ route('admin.en', $user->id) }}"
+                                </u> 
+                                <div class="dis" id="dis"> 
+                                    <div class="panel-heading">
+                                        Disabled Owner Accounts List
+                                    </div>
+                                    <div class="panel-body">
+                                        @if ($deactivatedOwners->isNotEmpty())
+                                            <div class="dataTable_wrapper">
+                                                <table class="table table-striped table-bordered table-hover"
+                                                    id="dataTables-example">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                            <th>Username</th>
+                                                            <th>Email</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($deactivatedOwners as $owner)
+                                                            <tr class="odd gradeX owner-row">
+                                                                <td>{{ $owner->id }}</td>
+                                                                <td>{{ Crypt::decryptString($owner->name) }}</td>
+                                                                <td>{{ Crypt::decryptString($owner->username) }}</td>
+                                                                <td>{{ Crypt::decryptString($owner->email) }}</td>
+                                                                <td>
+                                                                    <form action="{{ route('admin.en', $owner->id) }}"
                                                                         method="post">
                                                                         @csrf
                                                                         <button
-                                                                            onclick="return confirm('Are you sure You want to enable this?')"
+                                                                            onclick="return confirm('Are you sure you want to enable this?')"
                                                                             type="submit"
                                                                             class="btn btn-info ti-trash btn-rounded">Enable</button>
                                                                     </form>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                       
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    @else
-                                        <p>No deativated accounts </p>
-                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @else
+                                            <p>No deactivated accounts available</p>
+                                        @endif
+                                    </div>
                                 </div>
+
 
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#addAccountModal">
@@ -213,6 +216,19 @@
 
         <!-- Styles for Worker List Display -->
         <style>
+            #toggleButton{
+                border: none;
+                background: none;
+            }
+            #toggleButton:hover{
+                transform: scale(1.1);
+                color: rgb(0, 0, 0);
+            }
+            .dis {
+                display: none;
+                /* Initially hide the div */
+            }
+
             .workerlist {
                 display: none;
             }
@@ -252,7 +268,7 @@
                     showConfirmButton: false
                 });
             @endif
-    
+
             // Display error messages if present
             @if ($errors->any())
                 var errors = @json($errors->all());
@@ -266,6 +282,15 @@
                 });
             @endif
         });
+        document.getElementById('toggleButton').addEventListener('click', function() {
+            var div = document.getElementById('dis');
+
+            if (div.style.display === 'none' || div.style.display === '') {
+                div.style.display = 'block';
+            } else {
+                div.style.display = 'none';
+            }
+        });
     </script>
-    
+
 @endsection
