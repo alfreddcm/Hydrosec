@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js">
-    </script>
-    <link href="{{ asset('css/worker/dashboard.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <style>
         body {
             height: 100vh;
@@ -188,7 +188,7 @@
                     </div>
                     <div class="col text-end">
 
-                        <a href="{{ route('logout') }}"> <button type="submit" class="logout-btn">Logout?</button></a>
+                        <a href="{{ route('logout') }}"> <button type="submit" class="logout-btn">LOGOUT</button></a>
                     </div>
                 </div>
                 <div class="card text-center maincard">
@@ -342,6 +342,7 @@
 
     </div>
 
+    <!-- Modal -->
     <div class="modal fade " id="tempmodal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -354,19 +355,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <canvas id="tempChart"> <img src="{{ asset('images/icon/loading.gif') }}"
-                                class="img-fluid rounded-top" alt="" style="height:30px" ; /></canvas>
+                        <canvas id="tempChart"><img src="{{ asset('images/loading.svg') }}" alt=""
+                                style="height:30px" ; /></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/sidebar.js') }}"></script>
-    <script src="{{ asset('js/worker/dashboard.js') }}"></script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     function updateTime() {
         const now = new Date();

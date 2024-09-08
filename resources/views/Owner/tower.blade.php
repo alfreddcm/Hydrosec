@@ -408,8 +408,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <canvas id="tempChart"> <img src="{{ asset('images/icon/loading.gif') }}"
-                                class="img-fluid rounded-top" alt="" style="height:30px" ; /></canvas>
+                        <canvas id="tempChart"> ><img src="{{ asset('images/loading.svg') }}" alt="" style="height:30px" ; /></canvas>
                     </div>
                 </div>
             </div>

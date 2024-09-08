@@ -1,0 +1,31 @@
+.animated {
+  height: 550px;
+  top: 121px;
+  position: absolute;
+  right: 0;
+  animation: up-down 3s ease-in-out infinite alternate-reverse both;
+  z-index: -1; /* This positions the element behind other elements */
+}
+
+/* Keyframes for the up-down animation */
+@keyframes up-down {
+  0% {
+    transform: translateY(0); /* Starting position */
+  }
+  100% {
+    transform: translateY(-10px); /* Move up by 10px */
+  }
+}
+
+/* Media query for smaller screen sizes (like phones) */
+@media (max-width: 767px) {
+  .animated {
+    height: 300px;
+    width: auto;
+    bottom: 10px;
+    top: auto;
+    right: 10px;
+    left: auto;
+    z-index: -1; /* Maintain the lower z-index for smaller screens */
+  }
+}
