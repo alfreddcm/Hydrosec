@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tower;
+use App\Models\Sensor;
+use App\Models\TowerLogs;
+
+use App\Models\SensorDataHistory;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
+
 
 class TowerController extends Controller
 {
@@ -63,12 +69,24 @@ class TowerController extends Controller
 
         $tower = Tower::find($towerId);
 
+        $hour = now()->hour;
+
+        if ($hour >= 6 && $hour < 18) {
+            $mode = 1;
+        } elseif ($hour >= 18 && $hour < 22) {
+            $mode = 2;
+        } else {
+            $mode = 0;
+        }
+
+
         if ($tower) {
             if ($days > 0) {
-                // Handle starting a new cycle
+
                 $startdate = Carbon::now();
                 $enddate = $startdate->copy()->addDays($days);
                 $tower->status = Crypt::encryptString('1');
+                $tower->mode = Crypt::encryptString($mode);
                 $tower->startdate = $startdate;
                 $tower->enddate = $enddate;
                 $tower->save();
@@ -78,6 +96,18 @@ class TowerController extends Controller
                     'date_started' => $startdate,
                     'date_end' => $enddate,
                 ]);
+
+                Log::info('New cycle started', [
+                    'tower_id' => $tower->id,
+                    'date_started' => $startdate,
+                    'date_end' => $enddate,
+                ]);
+                
+                TowerLogs::create([
+                    'ID_tower' => $towerId,
+                    'activity' => Crypt::encryptString("New cycle started. Tower ID: {$tower->id}, Start date: {$startdate}, End date: {$enddate}"),
+                ]);
+                
 
                 return redirect()->back()->with('success', 'Cycle started successfully!');
             } elseif ($newDays > 0) {
@@ -96,7 +126,6 @@ class TowerController extends Controller
                 return redirect()->back()->with('success', 'Cycle dates updated successfully!');
             }
 
-            // If no valid input is provided
             return redirect()->back()->with('error', 'Invalid input.');
         }
 
@@ -119,7 +148,7 @@ class TowerController extends Controller
         $tow->save();
         $ownerID = $tow->OwnerID;
     
-        $sensorData = SensorData::where('towerid', $towerId)
+        $sensorData = Sensor::where('towerid', $towerId)
                                 ->orderBy('created_at', 'desc')
                                 ->get();
     
@@ -139,7 +168,7 @@ class TowerController extends Controller
             'towerid' => $towerId,
             'OwnerID' => $ownerID,
             'sensor_data' => json_encode($sensorDataArray),
-            'created_at' => Carbon\Carbon::now(),
+            'created_at' => Carbon::now(),
         ]);
     
         // Create the activity log
@@ -157,7 +186,20 @@ class TowerController extends Controller
         return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
     }
     
-    
+    public function restartCycle(Request $request)
+{
+    $tower = Tower::find($request->tower_id);
+
+    if ($tower) {
+        $tower->status =Crypt::encryptString('1');
+        $tower->save();
+
+        return redirect()->back()->with('success', 'Tower cycle restarted successfully.');
+    }
+
+    return redirect()->back()->with('error', 'Failed to restart the tower cycle.');
+}
+
 
   
 

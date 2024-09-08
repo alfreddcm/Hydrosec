@@ -34,6 +34,7 @@ class UpdateTowerMode extends Command
         $encryptedMode = Crypt::encryptString($mode);
         Tower::query()->update(['mode' => $encryptedMode]);
         $this->info("Tower mode updated to {$mode}");
+        
         Log::info("Tower mode updated to {$mode} at " . now());
 
         $now = Carbon::now();

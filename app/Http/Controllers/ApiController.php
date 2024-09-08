@@ -66,7 +66,6 @@ class ApiController extends Controller
                     ]);
 
                     if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
-                        // Store sensor data in session
                         session(['tower_id' => $ipmac->id]);
 
                         session()->push('pump_data', [
@@ -74,10 +73,11 @@ class ApiController extends Controller
                             'towercode' => $decryptedTowercode,
                         ]);
 
+                        
                         Pump::create([
-                            'towerid' => $tower->id,
-                            'status' => $validatedData['pumped'],
-                        ]);
+                                'towerid' => $tower->id,
+                                'status' => $validatedData['pumped'],
+                            ]);
 
                         Log::info('Pump data processed successfully', [
                             'towerId' => $ipmac->id,

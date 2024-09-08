@@ -1,10 +1,15 @@
 @php
     use Illuminate\Support\Facades\Crypt;
     use Carbon\Carbon;
+    use App\Models\Owner;
 
     if (Auth::check()) {
-        $decryptedName = Crypt::decryptString(Auth::user()->name);
+    $user = Owner::where('id', Auth::id())->first();
+    if ($user) {
+        $decryptedName = Crypt::decryptString($user->name);
     }
+}
+
 
 @endphp
 <!doctype html>

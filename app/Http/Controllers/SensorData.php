@@ -254,7 +254,7 @@ class SensorData extends Controller
                 if ($towercode == $decrypted_towercode) {
                     $ipmac = Tower::where('id', $tower->id)->first();
 
-                    if ($ipmac && $ipmac->macAdd) {
+                    if ($ipmac && $ipmac->ipAdd) {
                         $ip = Crypt::decryptString($ipmac->ipAdd);
                         $mac = Crypt::decryptString($ipmac->macAdd);
                         Log::info('Decrypted IP and MAC addresses:', [
@@ -385,7 +385,13 @@ class SensorData extends Controller
                             return response()->json(['errors' => 'IP or MAC addresses do not match'], 422);
                         }
                     } else {
-                        Log::error('Tower with the specified ID does not have an IP or MAC address.');
+                        $ipmac->ipAdd = Crypt::encryptString($decrypted_ip);
+                        $ipmac->macAdd = Crypt::encryptString($decrypted_mac);
+                        $ipmac->save();
+
+                        Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
+                        return response()->json(['status' => 'success'], 201);
+                    
                     }
                 }
             }

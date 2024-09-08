@@ -341,6 +341,13 @@
                                     <button type="submit" class="btn btn-warning">Update Dates</button>
                                 </div>
                             </form>
+
+                            <form action="{{ route('tower.stop') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="tower_id" value="{{ $towerinfo->id  }}">
+                                <button type="submit" class="btn btn-danger mb-3">Stop Cycle</button>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -405,8 +412,6 @@
         var towerId = @json($towerinfo->id);
 
         var id = {{ $towerinfo->id }};
-
-
         $(document).ready(function() {
             var towerId = @json($towerinfo->id);
             let tempChart = null;
@@ -518,46 +523,46 @@
 
             // Fetch pump data
             function fetchPumpData() {
-                $.ajax({
-                    url: `/pump-data/${towerId}`,
-                    method: 'GET',
-                    success: function(data) {
-                        var tbody = $('#sensor-data-body');
-                        tbody.empty();
-                        
-                        $.each(data, function(index, item) {
-                            var status;
-                            var textColor = '';
+    $.ajax({
+        url: `/pump-data/${towerId}`,
+        method: 'GET',
+        success: function(data) {
+            var tbody = $('#sensor-data-body');
+            tbody.empty();
 
-                            if (data.length === 0) {
-                            tbody.append('<tr><td colspan="3" class="text-center">No records available.</td></tr>');
-                        } else {
-                            $.each(data, function(index, item) {
-                                var status;
-                                var textColor = '';
+            if (data.length === 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No records available.</td></tr>');
+            } else {
+                $.each(data, function(index, item) {
+                    // Ensure item.pump is treated as a number
+                    var pumpStatus = parseInt(item.pump);
+                    var status;
+                    var textColor = '';
 
-                                if (item.pump == 1) {
-                                    status = 'Pump';
-                                } else {
-                                    status = 'Not Pump';
-                                    textColor = 'style="color: red;"';
-                                }
-
-                                var row = `<tr class="table-light">
-                                    <td>${index + 1}</td>
-                                    <td ${textColor}>${status}</td>
-                                    <td ${textColor}>${item.timestamp}</td>
-                                </tr>`;
-                                tbody.append(row);
-                            });
-                        }
-                        });
-                    },
-                    error: function() {
-                        console.error('Failed to fetch pump data');
+                    if (pumpStatus === 1) {
+                        status = 'Pump';
+                    } else if (pumpStatus === 0) {
+                        status = 'Not Pump';
+                        textColor = 'style="color: red;"';
+                    } else {
+                        // In case there's an unexpected value
+                        status = 'Unknown';
                     }
+
+                    var row = `<tr class="table-light">
+                        <td>${index + 1}</td>
+                        <td ${textColor}>${status}</td>
+                        <td>${item.timestamp}</td>
+                    </tr>`;
+                    tbody.append(row);
                 });
             }
+        },
+        error: function() {
+            console.error('Failed to fetch pump data');
+        }
+    });
+}
 
             function fetchModeStat() {
                 $.ajax({
@@ -617,7 +622,7 @@
 
             } else {
                 nutrientImage.style.filter = 'none'; // Reset filter for valid nutrient values
-                volumeValueElement.textContent = `${nutrientVolume.toFixed(2)}%`;
+                volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
 
                 if (nutrientVolume >= 20) {
                     nutrientImage.src = '{{ asset('images/Water/100.png') }}';
@@ -625,12 +630,12 @@
                     statusText.style.color = 'blue';
                     volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 17) {
-                    nutrientImage.src = '{{ asset('images/Water/85.png') }}';
+                    nutrientImage.src = '{{ asset('images/Water/80.png') }}';
                     statusText.textContent = "85%";
                     statusText.style.color = 'blue';
                     volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 15) {
-                    nutrientImage.src = '{{ asset('images/Water/75.png') }}';
+                    nutrientImage.src = '{{ asset('images/Water/70.png') }}';
                     statusText.textContent = "75%";
                     statusText.style.color = 'blue';
                     volumeValueElement.style.color = 'blue';
@@ -645,12 +650,12 @@
                     statusText.style.color = 'blue';
                     volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 7) {
-                    nutrientImage.src = '{{ asset('images/Water/35.png') }}';
+                    nutrientImage.src = '{{ asset('images/Water/30.png') }}';
                     statusText.textContent = "35%";
                     statusText.style.color = 'orange';
                     volumeValueElement.style.color = 'orange';
                 } else if (nutrientVolume >= 5) {
-                    nutrientImage.src = '{{ asset('images/Water/25.png') }}';
+                    nutrientImage.src = '{{ asset('images/Water/20.png') }}';
                     statusText.textContent = "25%";
                     statusText.style.color = 'orange';
                     volumeValueElement.style.color = 'orange';

@@ -78,8 +78,8 @@ class AuthManager extends Controller
                         if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
                             Auth::guard('worker')->loginUsingId($user->id);
                             $request->session()->regenerate();
-                            return view('Worker.dashboard')->with('success', 'You have successfully logged in as Worker!');
-                        }
+                            return redirect()->route('workerdashboard')
+                            ->with('success', 'You have successfully logged in as Worker!');                        }
                     }
                 } catch (DecryptException $e) {
                     return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
@@ -97,8 +97,8 @@ class AuthManager extends Controller
                         if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
                             Auth::guard('admin')->loginUsingId($user->id);
                             $request->session()->regenerate();
-                            return view('Admin.dashboard')->with('success', 'You have successfully logged in as Admin!');
-                        }
+                            return redirect()->route('admindashboard')
+                            ->with('success', 'You have successfully logged in as Admin!');                        }
                     }
                 } catch (DecryptException $e) {
                     return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
@@ -116,8 +116,8 @@ class AuthManager extends Controller
                         if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
                             Auth::guard('owner')->loginUsingId($user->id);
                             $request->session()->regenerate();
-                            return view('Owner.dashboard')->with('success', 'You have successfully logged in as Owner!');
-                        }
+                            return redirect()->route('ownerdashboard')
+                            ->with('success', 'You have successfully logged in as Owner!');                        }
                     }
                 } catch (DecryptException $e) {
                     return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');

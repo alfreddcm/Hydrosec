@@ -86,6 +86,8 @@ Route::middleware('auth:owner')->group(function () {
     Route::post('/cycle', [Towercontroller::class, 'updateDates'])->name('cycle');
     Route::get('/modestat/{id}', [Towercontroller::class, 'modestat'])->name('modestat');
 
+    Route::post('/tower/stop', [TowerController::class, 'stop'])->name('tower.stop');
+    Route::post('/tower/restart', [TowerController::class, 'restartCycle'])->name('tower.restart');
 
 });
 

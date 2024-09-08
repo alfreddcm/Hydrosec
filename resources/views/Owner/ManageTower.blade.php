@@ -104,11 +104,28 @@
                             @elseif ($decryptedStatus == '4')
                                 <!-- Display card for towers ready for harvesting -->
                                 <div class="col-sm-3">
-                                    <div class="card shadow-sm mb-4 border-0">
+                                    <div class="card shadow-sm mb-1 border-0">
                                         <div class="card-body">
-                                            <h5 class="card-title text-uppercase text-danger">
+                                            <a href="">
+
+                                                <h5 class="card-title text-uppercase text-success">
                                                 Tower {{ Crypt::decryptString($data->name) }} ready for harvesting!
+                                                <p class="card-text">
+                                                    <span class="text-muted">Code:</span> 
+                                                    <span class="font-weight-bold">{{ Crypt::decryptString($data->towercode) }}</span>
+                                                </p>
+                                                <center>
+                                                    <form action="{{ route('tower.restart') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="tower_id" value="{{ $data->id }}">
+                                                    <button type="submit" class="btn btn-primary mb-1">Restart</button>
+                                                </form>
+                                                </center>
+                                                
+                                                
                                             </h5>
+                                            </a>
+                                            
                                         </div>
                                     </div>
                                 </div>
