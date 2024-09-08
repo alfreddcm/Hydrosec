@@ -85,45 +85,6 @@ class SensorData extends Controller
         }
     }
 
-    public function getdata($id, $column)
-    {
-        $key_str = "ISUHydroSec2024!";
-        $iv_str = "HydroVertical143";
-        $method = "AES-128-CBC";
-
-        try {
-            // Fetch all relevant sensor data for the specified tower ID
-            $sensorData = Sensor::where('towerid', $id)
-                ->orderBy('created_at', 'asc') // Order by time for graph plotting
-                ->get(['k', 'iv', $column, 'created_at']);
-
-            $decryptedData = [];
-
-            foreach ($sensorData as $sdata) {
-                // Decrypt the key and IV for each record
-                $decrypted_key = $this->decrypt_data($sdata->k, $method, $key_str, $iv_str);
-                $decrypted_iv = $this->decrypt_data($sdata->iv, $method, $key_str, $iv_str);
-
-                // Decrypt the specified column (e.g., temperature, pH)
-                $decrypted_column = $this->decrypt_data($sdata->$column, $method, $decrypted_key, $decrypted_iv);
-
-                // Format timestamp and append the decrypted data
-                $formattedTimestamp = $sdata->created_at->format('Y-m-d H:i:s');
-
-                $decryptedData[] = [
-                    'value' => (float) $decrypted_column, // Ensure values are floats for consistency
-                    'timestamp' => $formattedTimestamp,
-                ];
-            }
-
-            return response()->json(['sensorData' => $decryptedData]);
-
-        } catch (\Exception $e) {
-            Log::error('Error fetching sensor data: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error'], 500);
-        }
-    }
-
     public function getPump($id)
     {
         try {
@@ -134,6 +95,7 @@ class SensorData extends Controller
             $method = "AES-128-CBC";
     
             \Log::info("Encryption method: {$method}");
+            \Log::info("Key: {$key_str}, IV: {$iv_str}"); // Be cautious with logging sensitive info in production
     
             // Fetch the sensor data from the database
             $sensorData = Pump::where('towerid', $id)
@@ -147,24 +109,29 @@ class SensorData extends Controller
             if ($sensorData->isNotEmpty()) {
                 foreach ($sensorData as $data) {
                     \Log::info("Processing record with ID: {$data->id}");
-                    \Log::info("Encrypted pump value: {$data->pump}");
+                    \Log::info("Encrypted pump value: {$data->status}");
     
                     // Decrypt the pump column
-                    $decrypted_pump = $this->decrypt_data($data->pump, $method, $key_str, $iv_str);
+                    $decrypted_pump = $this->decrypt_data($data->status, $method, $key_str, $iv_str);
+    
+                    \Log::info("Decrypted pump value: {$decrypted_pump}");
     
                     $formattedTimestamp = Carbon::parse($data->created_at)->format('D h:i A m/d/Y');
+                    \Log::info("Formatted timestamp: {$formattedTimestamp}");
     
                     // Normalize decrypted pump value to an integer (0 or 1)
-                    $decrypted_pump = (int) round(floatval($decrypted_pump));
+    
                     if ($decrypted_pump == 1) {
                         \Log::info("Detected start pumping event at timestamp: {$formattedTimestamp}");
                         $events[] = [
+                            'pump'=> $decrypted_pump,
                             'event' => 'Start Pumping',
                             'timestamp' => $formattedTimestamp,
                         ];
                     } else {
                         \Log::info("Detected stop pumping event at timestamp: {$formattedTimestamp}");
                         $events[] = [
+                            'pump'=> $decrypted_pump,
                             'event' => 'Stop Pumping',
                             'timestamp' => $formattedTimestamp,
                         ];
@@ -172,13 +139,15 @@ class SensorData extends Controller
     
                     \Log::info("Normalized decrypted pump value: {$decrypted_pump}");
                 }
+            } else {
+                \Log::info("No pump data found for tower ID: {$id}");
             }
     
             \Log::info('Pumping events processed successfully');
             return response()->json($events); // Return empty array if no events found
     
         } catch (\Exception $e) {
-            \Log::error('Failed to fetch pump data: ' . $e->getMessage());
+            \Log::error('Failed to fetch pump data for tower ID: ' . $id . '. Error: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to fetch pump data'], 500);
         }
     }
@@ -191,6 +160,7 @@ class SensorData extends Controller
         $key_str = "ISUHydroSec2024!";
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
+
         $response = [
             'status' => '',
             'phCondition' => '',
@@ -400,6 +370,46 @@ class SensorData extends Controller
             return response()->json(['error' => 'Failed to process request'], 500);
         }
     }
+
+    public function getdata($id, $column)
+    {
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+
+        try {
+            // Fetch all relevant sensor data for the specified tower ID
+            $sensorData = Sensor::where('towerid', $id)
+                ->orderBy('created_at', 'asc') // Order by time for graph plotting
+                ->get(['k', 'iv', $column, 'created_at']);
+
+            $decryptedData = [];
+
+            foreach ($sensorData as $sdata) {
+                // Decrypt the key and IV for each record
+                $decrypted_key = $this->decrypt_data($sdata->k, $method, $key_str, $iv_str);
+                $decrypted_iv = $this->decrypt_data($sdata->iv, $method, $key_str, $iv_str);
+
+                // Decrypt the specified column (e.g., temperature, pH)
+                $decrypted_column = $this->decrypt_data($sdata->$column, $method, $decrypted_key, $decrypted_iv);
+
+                // Format timestamp and append the decrypted data
+                $formattedTimestamp = $sdata->created_at->format('Y-m-d H:i:s');
+
+                $decryptedData[] = [
+                    'value' => (float) $decrypted_column, // Ensure values are floats for consistency
+                    'timestamp' => $formattedTimestamp,
+                ];
+            }
+
+            return response()->json(['sensorData' => $decryptedData]);
+
+        } catch (\Exception $e) {
+            Log::error('Error fetching sensor data: ' . $e->getMessage());
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
+    }
+
 
     private function getCondition($averageValue, $type)
     {

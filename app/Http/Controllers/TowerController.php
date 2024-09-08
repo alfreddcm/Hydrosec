@@ -182,6 +182,7 @@ class TowerController extends Controller
             'ID_tower' => $tow->id,
             'activity' => json_encode($activityLog), // If you are storing the activity log as a JSON string
         ]);
+        Sensor::truncate();
     
         return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
     }
@@ -191,7 +192,10 @@ class TowerController extends Controller
     $tower = Tower::find($request->tower_id);
 
     if ($tower) {
-        $tower->status =Crypt::encryptString('1');
+        $tower->startdate = null;
+        $tower->enddate = null;
+
+        $tower->status =Crypt::encryptString('0');
         $tower->save();
 
         return redirect()->back()->with('success', 'Tower cycle restarted successfully.');

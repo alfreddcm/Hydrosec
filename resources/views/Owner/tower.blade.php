@@ -267,6 +267,13 @@
                             START CYCLE
                         </button>
                     </form>
+                @elseif (Crypt::decryptString($towerinfo->status) == 4)
+                    <!-- Show Restart Button if status is 4 -->
+                    <form action="{{ route('tower.restart') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                        <button type="submit" class="btn btn-primary mb-1">Restart</button>
+                    </form>
                 @else
                     <!-- Show Update Dates Button and Modal if dates are not null -->
                     <form>
@@ -278,6 +285,7 @@
                         </button>
                     </form>
                 @endif
+
 
                 <!-- Start Cycle Modal -->
                 <div class="modal fade" id="startCycleModal" tabindex="-1" aria-labelledby="startCycleModalLabel"
@@ -344,10 +352,10 @@
 
                             <form action="{{ route('tower.stop') }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="tower_id" value="{{ $towerinfo->id  }}">
+                                <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                 <button type="submit" class="btn btn-danger mb-3">Stop Cycle</button>
                             </form>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -369,7 +377,9 @@
                                     </tr>
                                 </thead>
                                 <tbody id="sensor-data-body" class="table-group-divider">
-                                    <tr><td colspan="3" class="text-center">No records available.</td></tr>
+                                    <tr>
+                                        <td colspan="3" class="text-center">No records available.</td>
+                                    </tr>
                                 </tbody>
                                 <tfoot>
 
@@ -523,46 +533,47 @@
 
             // Fetch pump data
             function fetchPumpData() {
-    $.ajax({
-        url: `/pump-data/${towerId}`,
-        method: 'GET',
-        success: function(data) {
-            var tbody = $('#sensor-data-body');
-            tbody.empty();
+                $.ajax({
+                    url: `/pump-data/${towerId}`,
+                    method: 'GET',
+                    success: function(data) {
+                        var tbody = $('#sensor-data-body');
+                        tbody.empty();
 
-            if (data.length === 0) {
-                tbody.append('<tr><td colspan="3" class="text-center">No records available.</td></tr>');
-            } else {
-                $.each(data, function(index, item) {
-                    // Ensure item.pump is treated as a number
-                    var pumpStatus = parseInt(item.pump);
-                    var status;
-                    var textColor = '';
+                        if (data.length === 0) {
+                            tbody.append(
+                                '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
+                                );
+                        } else {
+                            $.each(data, function(index, item) {
+                                // Ensure item.pump is treated as a number
+                                var pumpStatus = parseInt(item.pump);
+                                var status;
+                                var textColor = '';
 
-                    if (pumpStatus === 1) {
-                        status = 'Pump';
-                    } else if (pumpStatus === 0) {
-                        status = 'Not Pump';
-                        textColor = 'style="color: red;"';
-                    } else {
-                        // In case there's an unexpected value
-                        status = 'Unknown';
-                    }
+                                if (pumpStatus === 1) {
+                                    status = 'Pump';
+                                } else if (pumpStatus === 0) {
+                                    status = 'Not Pump';
+                                    textColor = 'style="color: red;"';
+                                } else {
+                                    status = 'Unknown';
+                                }
 
-                    var row = `<tr class="table-light">
+                                var row = `<tr class="table-light">
                         <td>${index + 1}</td>
                         <td ${textColor}>${status}</td>
                         <td>${item.timestamp}</td>
                     </tr>`;
-                    tbody.append(row);
+                                tbody.append(row);
+                            });
+                        }
+                    },
+                    error: function() {
+                        console.error('Failed to fetch pump data');
+                    }
                 });
             }
-        },
-        error: function() {
-            console.error('Failed to fetch pump data');
-        }
-    });
-}
 
             function fetchModeStat() {
                 $.ajax({
