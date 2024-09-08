@@ -27,7 +27,6 @@ class AdminFactory extends Factory
             'email' => Crypt::encryptString('hydrosec1@gmail.com'),
             'password' => Hash::make('admin'),
             'status' => Crypt::encryptString('1'),
-
         ];
     }
 }

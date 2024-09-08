@@ -5,14 +5,14 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
-use App\Models\Owner;
+use App\Models\Owner; // Correct the model reference here
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Owner>
  */
-class Ownerfactory extends Factory
+class OwnerFactory extends Factory // Capitalize the class name correctly
 {
-    protected $model = Admin::class;
+    protected $model = Owner::class; // Reference the correct model
 
     /**
      * Define the model's default state.
@@ -26,8 +26,7 @@ class Ownerfactory extends Factory
             'username' => Crypt::encryptString('alfred45'),
             'email' => Crypt::encryptString('alfredmarcelino@gmail.com'),
             'password' => Hash::make('Alfred45!'),
-            'status' =>Crypt::encryptString('Alfred45!'),
-
+            'status' => Crypt::encryptString('active'), // Example status value
         ];
     }
 }

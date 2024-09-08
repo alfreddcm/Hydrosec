@@ -4719,3 +4719,1235 @@
   5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
 )  
 [2024-09-08 13:41:01] local.INFO: 104.26  
+[2024-09-08 13:41:16] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:16] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:16] local.INFO: 3.44  
+[2024-09-08 13:41:16] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:16] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:16] local.INFO: 144.7  
+[2024-09-08 13:41:16] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:41:16] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:16] local.INFO: 182.38  
+[2024-09-08 13:41:16] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:41:16] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:41:16.598177',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:41:16] local.INFO: 1.81  
+[2024-09-08 13:41:16] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:16] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774076,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:16] local.INFO: 3.16  
+[2024-09-08 13:41:17] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:17] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:17] local.INFO: 3.88  
+[2024-09-08 13:41:17] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:17] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:17] local.INFO: 0.66  
+[2024-09-08 13:41:17] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:41:17] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:17] local.INFO: 4.24  
+[2024-09-08 13:41:17] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:41:17] local.INFO: array (
+)  
+[2024-09-08 13:41:17] local.INFO: 0.94  
+[2024-09-08 13:41:17] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:17] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774077,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:17] local.INFO: 3.08  
+[2024-09-08 13:41:19] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:19] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:19] local.INFO: 2.83  
+[2024-09-08 13:41:19] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:19] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:19] local.INFO: 0.97  
+[2024-09-08 13:41:19] local.INFO: Fetching pump data for tower ID: 1  
+[2024-09-08 13:41:19] local.INFO: Encryption method: AES-128-CBC  
+[2024-09-08 13:41:19] local.INFO: Key: ISUHydroSec2024!, IV: HydroVertical143  
+[2024-09-08 13:41:19] local.INFO: select * from `pump` where `towerid` = ? order by `created_at` desc  
+[2024-09-08 13:41:19] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:19] local.INFO: 2.66  
+[2024-09-08 13:41:19] local.INFO: Fetched sensor data count: 5  
+[2024-09-08 13:41:19] local.INFO: Processing record with ID: 5  
+[2024-09-08 13:41:19] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:19] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Formatted timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Detected start pumping event at timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Processing record with ID: 4  
+[2024-09-08 13:41:19] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:19] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Formatted timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Detected start pumping event at timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Processing record with ID: 3  
+[2024-09-08 13:41:19] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:19] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Formatted timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Detected start pumping event at timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Processing record with ID: 2  
+[2024-09-08 13:41:19] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:19] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Processing record with ID: 1  
+[2024-09-08 13:41:19] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:19] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:19] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:19] local.INFO: Pumping events processed successfully  
+[2024-09-08 13:41:19] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:19] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774079,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:19] local.INFO: 2.18  
+[2024-09-08 13:41:21] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:21] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:21] local.INFO: 3.41  
+[2024-09-08 13:41:21] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:21] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:21] local.INFO: 0.79  
+[2024-09-08 13:41:21] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:41:21] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:21] local.INFO: 0.74  
+[2024-09-08 13:41:21] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:41:21] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:41:21.847641',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:41:21] local.INFO: 4.53  
+[2024-09-08 13:41:21] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:21] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774081,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:21] local.INFO: 3.16  
+[2024-09-08 13:41:22] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:22] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:22] local.INFO: 5.16  
+[2024-09-08 13:41:22] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:22] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:22] local.INFO: 0.66  
+[2024-09-08 13:41:22] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:41:22] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:22] local.INFO: 0.67  
+[2024-09-08 13:41:22] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:41:22] local.INFO: array (
+)  
+[2024-09-08 13:41:22] local.INFO: 0.36  
+[2024-09-08 13:41:22] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:22] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774082,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:22] local.INFO: 3.14  
+[2024-09-08 13:41:23] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:23] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:23] local.INFO: 4.76  
+[2024-09-08 13:41:23] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:23] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:23] local.INFO: 7.19  
+[2024-09-08 13:41:23] local.INFO: Fetching pump data for tower ID: 1  
+[2024-09-08 13:41:23] local.INFO: Encryption method: AES-128-CBC  
+[2024-09-08 13:41:23] local.INFO: Key: ISUHydroSec2024!, IV: HydroVertical143  
+[2024-09-08 13:41:23] local.INFO: select * from `pump` where `towerid` = ? order by `created_at` desc  
+[2024-09-08 13:41:23] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:23] local.INFO: 1.23  
+[2024-09-08 13:41:23] local.INFO: Fetched sensor data count: 5  
+[2024-09-08 13:41:23] local.INFO: Processing record with ID: 5  
+[2024-09-08 13:41:23] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:23] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Formatted timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Detected start pumping event at timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Processing record with ID: 4  
+[2024-09-08 13:41:23] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:23] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Formatted timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Detected start pumping event at timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Processing record with ID: 3  
+[2024-09-08 13:41:23] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:23] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Formatted timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Detected start pumping event at timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Processing record with ID: 2  
+[2024-09-08 13:41:23] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:23] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Processing record with ID: 1  
+[2024-09-08 13:41:23] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:23] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:23] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:23] local.INFO: Pumping events processed successfully  
+[2024-09-08 13:41:23] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:23] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774083,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:23] local.INFO: 25.75  
+[2024-09-08 13:41:30] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:30] local.INFO: 3.23  
+[2024-09-08 13:41:30] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:30] local.INFO: 0.68  
+[2024-09-08 13:41:30] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:30] local.INFO: 0.65  
+[2024-09-08 13:41:30] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:41:30.275695',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:41:30] local.INFO: 0.81  
+[2024-09-08 13:41:30] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774090,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:30] local.INFO: 2.91  
+[2024-09-08 13:41:30] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:30] local.INFO: 3.28  
+[2024-09-08 13:41:30] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:30] local.INFO: 0.68  
+[2024-09-08 13:41:30] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:30] local.INFO: 0.67  
+[2024-09-08 13:41:30] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:41:30] local.INFO: array (
+)  
+[2024-09-08 13:41:30] local.INFO: 1.62  
+[2024-09-08 13:41:30] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:30] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774090,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:30] local.INFO: 2.5  
+[2024-09-08 13:41:31] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:41:31] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:31] local.INFO: 3  
+[2024-09-08 13:41:31] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:41:31] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:41:31] local.INFO: 0.7  
+[2024-09-08 13:41:31] local.INFO: Fetching pump data for tower ID: 1  
+[2024-09-08 13:41:31] local.INFO: Encryption method: AES-128-CBC  
+[2024-09-08 13:41:31] local.INFO: Key: ISUHydroSec2024!, IV: HydroVertical143  
+[2024-09-08 13:41:31] local.INFO: select * from `pump` where `towerid` = ? order by `created_at` desc  
+[2024-09-08 13:41:31] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:41:31] local.INFO: 0.73  
+[2024-09-08 13:41:31] local.INFO: Fetched sensor data count: 5  
+[2024-09-08 13:41:31] local.INFO: Processing record with ID: 5  
+[2024-09-08 13:41:31] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:31] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Formatted timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Detected start pumping event at timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Processing record with ID: 4  
+[2024-09-08 13:41:31] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:31] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Formatted timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Detected start pumping event at timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Processing record with ID: 3  
+[2024-09-08 13:41:31] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:31] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Formatted timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Detected start pumping event at timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Processing record with ID: 2  
+[2024-09-08 13:41:31] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:31] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Processing record with ID: 1  
+[2024-09-08 13:41:31] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:41:31] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:41:31] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:41:31] local.INFO: Pumping events processed successfully  
+[2024-09-08 13:41:31] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:41:31] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774091,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:41:31] local.INFO: 2.88  
+[2024-09-08 13:42:37] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:42:37] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:37] local.INFO: 4.59  
+[2024-09-08 13:42:37] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:42:37] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:42:37] local.INFO: 0.66  
+[2024-09-08 13:42:37] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:42:37] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:42:37] local.INFO: 6.73  
+[2024-09-08 13:42:37] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:42:37] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:42:37.756829',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:42:37] local.INFO: 1.94  
+[2024-09-08 13:42:37] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:42:37] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774157,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:37] local.INFO: 3.89  
+[2024-09-08 13:42:38] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:42:38] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:38] local.INFO: 3.26  
+[2024-09-08 13:42:38] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:42:38] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:42:38] local.INFO: 27.88  
+[2024-09-08 13:42:38] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:42:38] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:42:38] local.INFO: 0.71  
+[2024-09-08 13:42:38] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:42:38] local.INFO: array (
+)  
+[2024-09-08 13:42:38] local.INFO: 0.49  
+[2024-09-08 13:42:38] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:42:38] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774158,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:38] local.INFO: 3.28  
+[2024-09-08 13:42:39] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:39] local.INFO: 2.78  
+[2024-09-08 13:42:39] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:42:39] local.INFO: 0.66  
+[2024-09-08 13:42:39] local.INFO: Fetching pump data for tower ID: 1  
+[2024-09-08 13:42:39] local.INFO: Encryption method: AES-128-CBC  
+[2024-09-08 13:42:39] local.INFO: Key: ISUHydroSec2024!, IV: HydroVertical143  
+[2024-09-08 13:42:39] local.INFO: select * from `pump` where `towerid` = ? order by `created_at` desc  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:42:39] local.INFO: 0.71  
+[2024-09-08 13:42:39] local.INFO: Fetched sensor data count: 5  
+[2024-09-08 13:42:39] local.INFO: Processing record with ID: 5  
+[2024-09-08 13:42:39] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:42:39] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Formatted timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Detected start pumping event at timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Processing record with ID: 4  
+[2024-09-08 13:42:39] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:42:39] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Formatted timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Detected start pumping event at timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Processing record with ID: 3  
+[2024-09-08 13:42:39] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:42:39] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Formatted timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Detected start pumping event at timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Processing record with ID: 2  
+[2024-09-08 13:42:39] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:42:39] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Processing record with ID: 1  
+[2024-09-08 13:42:39] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:42:39] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:42:39] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:42:39] local.INFO: Pumping events processed successfully  
+[2024-09-08 13:42:39] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774159,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:39] local.INFO: 2.78  
+[2024-09-08 13:42:39] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:39] local.INFO: 2.9  
+[2024-09-08 13:42:39] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:42:39] local.INFO: 1.3  
+[2024-09-08 13:42:39] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:42:39] local.INFO: 0.71  
+[2024-09-08 13:42:39] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:42:39.943150',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:42:39] local.INFO: 0.83  
+[2024-09-08 13:42:39] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:42:39] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774159,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:39] local.INFO: 1.18  
+[2024-09-08 13:42:41] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:42:41] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:41] local.INFO: 3.31  
+[2024-09-08 13:42:41] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:42:41] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:42:41] local.INFO: 0.66  
+[2024-09-08 13:42:41] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:42:41] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:42:41] local.INFO: 0.65  
+[2024-09-08 13:42:41] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:42:41] local.INFO: array (
+)  
+[2024-09-08 13:42:41] local.INFO: 0.34  
+[2024-09-08 13:42:41] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:42:41] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774161,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:41] local.INFO: 2.79  
+[2024-09-08 13:42:50] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:42:50] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:50] local.INFO: 8.59  
+[2024-09-08 13:42:50] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:42:50] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:42:50] local.INFO: 0.74  
+[2024-09-08 13:42:50] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:42:50] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:42:50] local.INFO: 0.84  
+[2024-09-08 13:42:50] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:42:50] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:42:50.292648',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:42:50] local.INFO: 1.83  
+[2024-09-08 13:42:50] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:42:50] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774170,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:42:50] local.INFO: 2.62  
+[2024-09-08 13:43:31] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:43:31] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:43:31] local.INFO: 3.93  
+[2024-09-08 13:43:32] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:43:32] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:43:32] local.INFO: 89.67  
+[2024-09-08 13:43:32] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:43:32] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:43:32] local.INFO: 57.49  
+[2024-09-08 13:43:32] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:43:32] local.INFO: array (
+)  
+[2024-09-08 13:43:32] local.INFO: 94.94  
+[2024-09-08 13:43:32] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:43:32] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774212,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:43:32] local.INFO: 37.79  
+[2024-09-08 13:43:49] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:43:49] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:43:49] local.INFO: 2.96  
+[2024-09-08 13:43:49] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:43:49] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:43:49] local.INFO: 0.66  
+[2024-09-08 13:43:49] local.INFO: Fetching pump data for tower ID: 1  
+[2024-09-08 13:43:49] local.INFO: Encryption method: AES-128-CBC  
+[2024-09-08 13:43:49] local.INFO: Key: ISUHydroSec2024!, IV: HydroVertical143  
+[2024-09-08 13:43:49] local.INFO: select * from `pump` where `towerid` = ? order by `created_at` desc  
+[2024-09-08 13:43:49] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:43:49] local.INFO: 0.75  
+[2024-09-08 13:43:49] local.INFO: Fetched sensor data count: 5  
+[2024-09-08 13:43:49] local.INFO: Processing record with ID: 5  
+[2024-09-08 13:43:49] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:43:49] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Formatted timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Detected start pumping event at timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Processing record with ID: 4  
+[2024-09-08 13:43:49] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:43:49] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Formatted timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Detected start pumping event at timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Processing record with ID: 3  
+[2024-09-08 13:43:49] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:43:49] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Formatted timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Detected start pumping event at timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Processing record with ID: 2  
+[2024-09-08 13:43:49] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:43:49] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Processing record with ID: 1  
+[2024-09-08 13:43:49] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:43:49] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:43:49] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:43:49] local.INFO: Pumping events processed successfully  
+[2024-09-08 13:43:49] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:43:49] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774229,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:43:49] local.INFO: 2.5  
+[2024-09-08 13:43:50] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:43:50] local.INFO: 2.81  
+[2024-09-08 13:43:50] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:43:50] local.INFO: 0.77  
+[2024-09-08 13:43:50] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:43:50] local.INFO: 0.68  
+[2024-09-08 13:43:50] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:43:50.128024',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:43:50] local.INFO: 0.75  
+[2024-09-08 13:43:50] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774230,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:43:50] local.INFO: 2.51  
+[2024-09-08 13:43:50] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:43:50] local.INFO: 4.62  
+[2024-09-08 13:43:50] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:43:50] local.INFO: 0.79  
+[2024-09-08 13:43:50] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:43:50] local.INFO: 0.66  
+[2024-09-08 13:43:50] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:43:50] local.INFO: array (
+)  
+[2024-09-08 13:43:50] local.INFO: 0.37  
+[2024-09-08 13:43:50] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:43:50] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774230,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:43:50] local.INFO: 0.64  
+[2024-09-08 13:44:00] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:44:00] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:44:00] local.INFO: 3.31  
+[2024-09-08 13:44:00] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:44:00] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:44:00] local.INFO: 6.63  
+[2024-09-08 13:44:00] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:44:00] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:44:00] local.INFO: 0.68  
+[2024-09-08 13:44:00] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:44:00] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:44:00.251057',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:44:00] local.INFO: 0.87  
+[2024-09-08 13:44:00] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:44:00] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774240,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:44:00] local.INFO: 6.19  
+[2024-09-08 13:44:01] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:44:01] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:44:01] local.INFO: 169.82  
+[2024-09-08 13:44:01] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:44:01] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:44:01] local.INFO: 55.19  
+[2024-09-08 13:44:01] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:44:01] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:44:01] local.INFO: 97.15  
+[2024-09-08 13:44:01] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:44:01] local.INFO: array (
+)  
+[2024-09-08 13:44:01] local.INFO: 19.92  
+[2024-09-08 13:44:01] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:44:01] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774241,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:44:01] local.INFO: 4.27  
+[2024-09-08 13:46:09] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:46:09] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:46:09] local.INFO: 3.57  
+[2024-09-08 13:46:09] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:46:09] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:46:09] local.INFO: 0.72  
+[2024-09-08 13:46:09] local.INFO: Fetching pump data for tower ID: 1  
+[2024-09-08 13:46:09] local.INFO: Encryption method: AES-128-CBC  
+[2024-09-08 13:46:09] local.INFO: Key: ISUHydroSec2024!, IV: HydroVertical143  
+[2024-09-08 13:46:09] local.INFO: select * from `pump` where `towerid` = ? order by `created_at` desc  
+[2024-09-08 13:46:09] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:46:09] local.INFO: 0.75  
+[2024-09-08 13:46:09] local.INFO: Fetched sensor data count: 5  
+[2024-09-08 13:46:09] local.INFO: Processing record with ID: 5  
+[2024-09-08 13:46:09] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:46:09] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Formatted timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Detected start pumping event at timestamp: Sun 01:32 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Processing record with ID: 4  
+[2024-09-08 13:46:09] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:46:09] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Formatted timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Detected start pumping event at timestamp: Sun 01:31 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Processing record with ID: 3  
+[2024-09-08 13:46:09] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:46:09] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Formatted timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Detected start pumping event at timestamp: Sun 01:29 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Processing record with ID: 2  
+[2024-09-08 13:46:09] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:46:09] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Processing record with ID: 1  
+[2024-09-08 13:46:09] local.INFO: Encrypted pump value: cg4sXbCJGjeg4+kMmwZ6JQ==  
+[2024-09-08 13:46:09] local.INFO: Decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Formatted timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Detected start pumping event at timestamp: Sun 01:13 PM 09/08/2024  
+[2024-09-08 13:46:09] local.INFO: Normalized decrypted pump value: 1  
+[2024-09-08 13:46:09] local.INFO: Pumping events processed successfully  
+[2024-09-08 13:46:09] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:46:09] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774369,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:46:09] local.INFO: 2.23  
+[2024-09-08 13:46:10] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:46:10] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:46:10] local.INFO: 3.44  
+[2024-09-08 13:46:10] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:46:10] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:46:10] local.INFO: 2.99  
+[2024-09-08 13:46:10] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-08 13:46:10] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:46:10] local.INFO: 5.27  
+[2024-09-08 13:46:10] local.INFO: select * from `sensor` where `towerid` = ? and `created_at` >= ? order by `id` desc limit 1  
+[2024-09-08 13:46:10] local.INFO: array (
+  0 => '1',
+  1 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000001750000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-08 12:46:10.438264',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+)  
+[2024-09-08 13:46:10] local.INFO: 1.01  
+[2024-09-08 13:46:10] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:46:10] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774370,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:46:10] local.INFO: 4.4  
+[2024-09-08 13:46:11] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-08 13:46:11] local.INFO: array (
+  0 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:46:11] local.INFO: 5.67  
+[2024-09-08 13:46:11] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-08 13:46:11] local.INFO: array (
+  0 => 2,
+)  
+[2024-09-08 13:46:11] local.INFO: 1.27  
+[2024-09-08 13:46:11] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-08 13:46:11] local.INFO: array (
+  0 => '1',
+)  
+[2024-09-08 13:46:11] local.INFO: 1.02  
+[2024-09-08 13:46:11] local.INFO: select * from `tbl_tower` limit 1  
+[2024-09-08 13:46:11] local.INFO: array (
+)  
+[2024-09-08 13:46:11] local.INFO: 0.44  
+[2024-09-08 13:46:11] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-08 13:46:11] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZHo4SnFpVHpkeHpKSzY2eHJpdzZVMUI5RWR3WFlCS2h0R05oWXZYRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90b3dlcmRhdGEvMSI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9',
+  1 => 1725774371,
+  2 => 2,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'tCbbzEUYGh7Ti7HW7FKWWtRm38wj8hgFLpBThO6v',
+)  
+[2024-09-08 13:46:11] local.INFO: 3.02  
+[2024-09-08 13:48:09] local.INFO: insert into `tbl_adminaccounts` (`name`, `username`, `email`, `password`, `status`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)  
+[2024-09-08 13:48:09] local.INFO: array (
+  0 => 'eyJpdiI6InhSRWlVTFNuVC9qejRJK3FLWDYrWEE9PSIsInZhbHVlIjoiV2gxZ2lWNzBPMUIzbkR0Y0IyeVI2QT09IiwibWFjIjoiY2I0ZGZhNDE3ZTQzNDFjZDNlOTk3MjJmYWE1NGQ0NTFkYzJjOGQyYzViOGM5YmFlOTVlMmY5NDE2OTg1Yjk4NSIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6IjdyUEZoTDBSQU9rK3pJam9CbFBkL3c9PSIsInZhbHVlIjoiQTRCNVNxSWhlVzYyaTMwM2ZHRW4xZz09IiwibWFjIjoiM2QxMDg5OTMxNDc5NTZlNDUwMjUxNzUzMTYwMGEzYzdlMzAwMmU5MzdiYmQ2MTQ3ZmE0YzNiZjliYmJkOGMyMCIsInRhZyI6IiJ9',
+  2 => 'eyJpdiI6ImRZQ0hlN2RtUkY0ZWhDRy9wN0dZNWc9PSIsInZhbHVlIjoiMFpVM2FZcnFjN3hqa1lYQmozZjNWNmpCNzZQNUV0MTJEZW85TUYzbDBMUT0iLCJtYWMiOiJhNDIzNzEyZTZlYmEwNGU2MjQ4NDQ1NTZiOGNhNTljNjQ2NzUyMDc0ODY4MWY0NjZkNTFjMTFlZDU3M2FlZjYyIiwidGFnIjoiIn0=',
+  3 => '$2y$12$yxAekHC8I10JogfdZa/t.OitVtOZF.ll.2L8SsHeTeB6U8OErytQG',
+  4 => 'eyJpdiI6IlpHWGtyOWdVMUFVVnJWZXlENlRpckE9PSIsInZhbHVlIjoiVU9RZWZPS0tKMkgyeThVak0vUk56dz09IiwibWFjIjoiNGY0ZjEzZjY3ZDc3OTlhZmY4NWZkNzNhNzE3MjYyYzM0ZDljMDk3YTYwNTI0MzNhZGVlYjU1NGIzODkzMjIzNiIsInRhZyI6IiJ9',
+  5 => '2024-09-08 13:48:09',
+  6 => '2024-09-08 13:48:09',
+)  
+[2024-09-08 13:48:09] local.INFO: 5.54  
+[2024-09-08 13:48:09] local.ERROR: Class "Database\Factories\Admin" not found {"exception":"[object] (Error(code: 0): Class \"Database\\Factories\\Admin\" not found at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Factories\\Factory.php:772)
+[stacktrace]
+#0 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Factories\\Factory.php(417): Illuminate\\Database\\Eloquent\\Factories\\Factory->newModel(Array)
+#1 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Concerns\\GuardsAttributes.php(149): Illuminate\\Database\\Eloquent\\Factories\\Factory->Illuminate\\Database\\Eloquent\\Factories\\{closure}()
+#2 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Factories\\Factory.php(416): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))
+#3 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Factories\\Factory.php(390): Illuminate\\Database\\Eloquent\\Factories\\Factory->makeInstance(NULL)
+#4 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Factories\\Factory.php(284): Illuminate\\Database\\Eloquent\\Factories\\Factory->make(Array, NULL)
+#5 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\database\\seeders\\DatabaseSeeder.php(20): Illuminate\\Database\\Eloquent\\Factories\\Factory->create()
+#6 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Database\\Seeders\\DatabaseSeeder->run()
+#7 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#9 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#10 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(690): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#11 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Seeder.php(184): Illuminate\\Container\\Container->call(Array, Array)
+#12 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Seeder.php(193): Illuminate\\Database\\Seeder->Illuminate\\Database\\{closure}()
+#13 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Console\\Seeds\\SeedCommand.php(70): Illuminate\\Database\\Seeder->__invoke()
+#14 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Concerns\\GuardsAttributes.php(155): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()
+#15 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Console\\Seeds\\SeedCommand.php(69): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))
+#16 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()
+#17 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#18 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#19 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#20 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(690): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#21 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(213): Illuminate\\Container\\Container->call(Array)
+#22 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Command\\Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#23 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#24 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Application.php(1047): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Application.php(316): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Application.php(167): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#28 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1203): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#30 {main}
+"} 
+[2024-09-08 13:52:04] local.INFO: insert into `tbl_adminaccounts` (`name`, `username`, `email`, `password`, `status`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)  
+[2024-09-08 13:52:04] local.INFO: array (
+  0 => 'eyJpdiI6ImJhRFVxTU9YZVg2Y1AyQ3NPNWNjRkE9PSIsInZhbHVlIjoiek9yK0EybVlXdW9oYTkwM0JoM3pRQT09IiwibWFjIjoiYmUzM2M3ZmUxNWFiYzRkNWM2YTI0MmQ1MWI4ZTk2ZjRiNDY1N2MwNGI5NTRkY2I2NGU2NDYwNDk2ZDMwOGRmOSIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6ImQ0dnNNNjBFWkVSZG1PRXRRd1lBMnc9PSIsInZhbHVlIjoiRld1N3lKQ0ozTjF5MTh1TDNoZ2k0Zz09IiwibWFjIjoiYTk2ZDQ1M2QwNWYxYTk5OWQxMTczYzFhYzM4ZDE4OTZjNjRlNDczMWYxYmMyNTEyNjllNGUzZTA3ZTU0Njk4YSIsInRhZyI6IiJ9',
+  2 => 'eyJpdiI6IndyMDRtczVmY0RHVHlnTm05blE1YlE9PSIsInZhbHVlIjoiVWhXbmpTK29VNDR0MXA2SENHUFcxQkZIMEtadmpsRjVWYzRyRHloOUkyRT0iLCJtYWMiOiJmNjc0M2NlMDVkM2NmYTkyMWMwYzAzZmM4YmQ4NWJiMmVjMDIyNmExNTFlYTE1ZDY0NDg3Mjk4OTAxOGM2OTY5IiwidGFnIjoiIn0=',
+  3 => '$2y$12$U1UrEPqCBchXnjYYlP3bSuXTg.vBCpLrT59xzuSUiBsCrk9kkpQCG',
+  4 => 'eyJpdiI6InRWUWVQM1JCc3g3OENiWXRvK3VXUkE9PSIsInZhbHVlIjoiN0U3WHBjSE9QTWQ4cVVKeHoxN2Vndz09IiwibWFjIjoiZDYwY2ZjMTA1MmVlOGI3ZWExMGIyMTU0YmE1OTE3YWZlMjc1OTczMjRkMDc0MTQxNjkxNjRkMGJmZGY5OWY2YyIsInRhZyI6IiJ9',
+  5 => '2024-09-08 13:52:04',
+  6 => '2024-09-08 13:52:04',
+)  
+[2024-09-08 13:52:04] local.INFO: 14.43  
+[2024-09-08 13:52:04] local.INFO: insert into `tbl_useraccounts` (`name`, `username`, `email`, `password`, `status`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)  
+[2024-09-08 13:52:04] local.INFO: array (
+  0 => 'eyJpdiI6ImZHT1Z2WnNBSjZYN0tOUmVwbjBxWHc9PSIsInZhbHVlIjoicStGZXkrWEhGZXpIbkFtKzVUMi9SK3pnTjlQRzE2c1FUc0MzcTQwSGhHTT0iLCJtYWMiOiI5ZDI2NzJmMTViODUwZmY3ZTc1MGM0NmFkMTc4ZDU5N2QwYzk4ZTMyYWE5YWI0OGM4YjQ1ZmU0Y2Q0ODQ5MTNjIiwidGFnIjoiIn0=',
+  1 => 'eyJpdiI6ImtRUEF3aTNrSjNETFJFRFlNaGRQOVE9PSIsInZhbHVlIjoiL0RkdVdmZTJlSGFQZEpIQkZhTlR1Zz09IiwibWFjIjoiNmUzZDIzYjczMDViZTE4ZjU3Mzg4MmQ5MmY2NTA0NDI2ZmE0NzI1YTYzNDg1OWRlYzUyMDM0ODFlM2MyMjYyYiIsInRhZyI6IiJ9',
+  2 => 'eyJpdiI6IllkY25lNEY0NVdkbzFqWEhPd0FmbVE9PSIsInZhbHVlIjoiUTZadTBJeEx3VGdiOUJ4eHpEcFdTaFNQWmlGTHNpcDU5YVQvaGR1c1lPMD0iLCJtYWMiOiI1NTVlNTI0MGJlY2UyOTRmYTg1NGE4MDZhYTE1NzNlYjZhODQ5ZGIzZGJmYTM5MGNmZWU4ZDFkNzEyMDI1ZWVmIiwidGFnIjoiIn0=',
+  3 => '$2y$12$tTyrkN8GsN3MobMTc0jSBuFA42/lvlp0cK9jBgQ7m61Wm9.s1ozL2',
+  4 => 'eyJpdiI6IkIxbnlmaDVLTHd2c2ZWc1VZYWlxd0E9PSIsInZhbHVlIjoiVzZ1T01PUHNYRjU2UU9qOUhaY280Zz09IiwibWFjIjoiMDAyYzJiNGUyOTNkNmYzOWNjYzQ1OTU0MWFjZDk2MjQ2Y2I3MDdkMjdhNGEzYTk5NTY3MjNiYTRlNmE3ODE0OCIsInRhZyI6IiJ9',
+  5 => '2024-09-08 13:52:04',
+  6 => '2024-09-08 13:52:04',
+)  
+[2024-09-08 13:52:04] local.INFO: 2.93  
+[2024-09-08 13:52:46] local.INFO: insert into `tbl_adminaccounts` (`name`, `username`, `email`, `password`, `status`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)  
+[2024-09-08 13:52:46] local.INFO: array (
+  0 => 'eyJpdiI6IkltanMyNnZsZWFOWWJ5QnE2RE1LUWc9PSIsInZhbHVlIjoidEdUYk5xVzE1Z3JsRmJVakVqeFdlZz09IiwibWFjIjoiMTNmZTdkMDZjZDIwM2FhZDVkOTczNzk3NDE4MGZmOTQ5NjQ0ZjhiNjIyMjJkOWZhMGNiZGQzNDAwZTI5ODA3YyIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6InBRRUFuZnI4OTNkLy9iVWRzSWJ5Zmc9PSIsInZhbHVlIjoiNXdtV202WGFWNHA5R0o1R0lYcFhzUT09IiwibWFjIjoiZWIzMTNlMjE3MmRiZGI4NTY1ZTI0YzdjOTkwZjk0OWM1YzA3MjgxNmYyMGQ0MzkwZmIwYzE3NjdjNTFmNTVhMCIsInRhZyI6IiJ9',
+  2 => 'eyJpdiI6IjVJVHdERlBrUHBYcUt3SExLaW5VbFE9PSIsInZhbHVlIjoiV2U2cCtyTXJJWmhmYmZXZWxaZFBJOXVRRkRZd2FzaHJVWVc4MHJaOFpzbz0iLCJtYWMiOiJlMjA2NzBjYTA0YTkzYzA0NmFkY2UyOGQ4MTU0YWQ3OWI0OTI5ZmE3NTE5M2VhODcwYTY4ODk4NjNkMTRiMTgzIiwidGFnIjoiIn0=',
+  3 => '$2y$12$vd62GLucriI28.1YINbTTuDuhjSkRKJRBSgVjBd6MMwTn2H6iCFwG',
+  4 => 'eyJpdiI6Im5SaHI3WTJEVElTekZpWG1QYm1yelE9PSIsInZhbHVlIjoiaE4zNkVIblBFTmZzZ1gyaXZqMmYrUT09IiwibWFjIjoiY2I2M2U4ZDZiM2U2MDhlMWE4NTA3N2FmZWM5MGQzNzY5ZmFkMTFhMzJjOWY0MDBmMThhODllZGZhNWI0OTgwNiIsInRhZyI6IiJ9',
+  5 => '2024-09-08 13:52:46',
+  6 => '2024-09-08 13:52:46',
+)  
+[2024-09-08 13:52:46] local.INFO: 6.94  
+[2024-09-08 13:52:47] local.INFO: insert into `tbl_useraccounts` (`name`, `username`, `email`, `password`, `status`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)  
+[2024-09-08 13:52:47] local.INFO: array (
+  0 => 'eyJpdiI6ImNVVGdEeHR2d0VKcE5UY04zT1dZanc9PSIsInZhbHVlIjoiYTN3WUF1eERCUHFya0J5UHJtRmhvT2JwSGdtdHBXN1dWcHhvYUZnZTBwVT0iLCJtYWMiOiJkMjQ4ZGE5YTY5NjI3MDc2Mjg3M2MyMTdiMTUzM2VhNjYzYmZkMzVhYTVmMGI0Y2ExN2YwZWIxZGJjNmI1ZTQxIiwidGFnIjoiIn0=',
+  1 => 'eyJpdiI6Im9uWU5pTjVUOFRvcGtkRnk4c2JYSHc9PSIsInZhbHVlIjoiUnNNSVNIZHFKMzlRMkI5SklhK2w4dz09IiwibWFjIjoiZTNlMWYyMmJkYjJlOGI4MjNiOTc1NTA1MWJiZWU3MmYwZDA2NzhjYzUwNTlhOWU5YWZhYTNhMDQyZGFmNDU3YyIsInRhZyI6IiJ9',
+  2 => 'eyJpdiI6InlOM285NEQ3VDJJbzFZWEZ2aTF6UFE9PSIsInZhbHVlIjoiUjZzVjI1SWh4eC9zQVZ6a0ZuYUhGSHNpNFJDVW9VVS9ZUitxMmdySzF5bz0iLCJtYWMiOiJjNjQ2YTVlNTA0ODBkNDc3ODA4OTliYzg4NDA3MTVkYmNkOTc3ZDYwZTVhYTAxNDk2OTgwYmQ3MGRiY2Q5YTQzIiwidGFnIjoiIn0=',
+  3 => '$2y$12$DYZ.3ul1qPmWjf9uMYrFDOEpmmLQXN2JIDjY87w1fEGGhS8up..vS',
+  4 => 'eyJpdiI6IjBrTitjaldNQVRSTnhoUTVETkIrc3c9PSIsInZhbHVlIjoiUFByMnNNTnRzcUxRTW9ZRS9LUWFzUT09IiwibWFjIjoiZTc3NmRlNDA4ZTFjYzVmMWU2YTYzN2NkMmVhZmI1ZmQ5YmQ1NDEzZGZlNWRjNjUzMzJkZmFlODgxY2NlZWM1ZCIsInRhZyI6IiJ9',
+  5 => '2024-09-08 13:52:47',
+  6 => '2024-09-08 13:52:47',
+)  
+[2024-09-08 13:52:47] local.INFO: 2.77  
