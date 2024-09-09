@@ -36,6 +36,7 @@ class ApiController extends Controller
         $decryptedMacAddress = $this->decrypt_data($validatedData['macAddress'], $method, $key_str, $iv_str);
         $decryptedTowercode = $this->decrypt_data($validatedData['towercode'], $method, $key_str, $iv_str);
 
+
         Log::info('Decrypted data', [
             'decryptedPump' => $decryptedPump,
             'decryptedIpAddress' => $decryptedIpAddress,
@@ -52,6 +53,7 @@ class ApiController extends Controller
                 'currentTowerCode' => $towercode,
                 'decryptedTowercode' => $decryptedTowercode,
             ]);
+
 
             if ($towercode == $decryptedTowercode) {
                 $ipmac = Tower::where('id', $tower->id)->first();
@@ -184,6 +186,7 @@ class ApiController extends Controller
                         Log::info('Encrypted mode and status', [
                             'mode' => $encryptedMode,
                             'status' => $encryptedStatus,
+                            'aweee'=>Crypt::encryptString('2'),
                         ]);
 
                         $modestatus_data = [
@@ -261,6 +264,7 @@ class ApiController extends Controller
             return null;
         }
     }
+
 
     private function decrypt_data($encrypted_data, $method, $key, $iv)
     {

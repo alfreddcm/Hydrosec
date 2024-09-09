@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Http;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
 class Kernel extends HttpKernel
 {
+
     protected $middleware = [
         // Other middleware
         \App\Http\Middleware\HandleDecryptionErrors::class,
@@ -24,7 +28,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\Singlesession::class,
         ],
         'api' => [
-            
-    ],
+
+        ],
     ];
+
 }

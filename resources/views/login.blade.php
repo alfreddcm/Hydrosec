@@ -38,7 +38,7 @@
                                     <div class="col-12">
                                         <label for="yourUsername" class="form-label">Username</label>
                                         <input type="username" class="form-control @error('username') is-invalid @enderror"
-                                            id="username" name="username" value="{{ old('email') }}">
+                                            id="username" name="username">
                                     
                                     </div>
 

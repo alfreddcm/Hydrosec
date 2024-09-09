@@ -597,10 +597,10 @@
             // Start intervals
             function startIntervals() {
                 if (!sensorDataInterval) {
-                    sensorDataInterval = setInterval(fetchSensorData2, 10000);
+                    sensorDataInterval = setInterval(fetchSensorData2, 5000);
                 }
                 if (!modeStatInterval) {
-                    modeStatInterval = setInterval(fetchModeStat, 10000);
+                    modeStatInterval = setInterval(fetchModeStat, 5000);
                 }
             }
 
@@ -615,7 +615,7 @@
             startIntervals();
 
             // Refresh pump data every 30 seconds
-            setInterval(fetchPumpData, 10000);
+            setInterval(fetchPumpData, 5000);
         });
 
         function updateNutrientImage(nutrientVolume) {
@@ -671,8 +671,8 @@
                     volumeValueElement.style.color = 'orange';
                 } else {
                     nutrientImage.src = '{{ asset('images/Water/10.png') }}';
-                    statusText.textContent = "Empty";
-                    statusText.style.color = 'gray';
+                    statusText.textContent = "Low";
+                    statusText.style.color = 'green';
                     volumeValueElement.style.color = 'gray';
                 }
             }
@@ -731,8 +731,8 @@
             } else if (temperature > 18 && temperature <= 25) {
                 thermometer.src = '{{ asset('images/Temp/normal.png') }}';
                 statusText.textContent = "Normal (Optimal)";
-                statusText.style.color = 'gray';
-                tempValueElement.style.color = 'gray';
+                statusText.style.color = 'green';
+                tempValueElement.style.color = 'green';
                 tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
 
             } else if (temperature > 25 && temperature <= 30) {
@@ -779,7 +779,7 @@
 
             switch (mode) {
                 case 0:
-                    modeText.textContent = 'Inactive';
+                    modeText.textContent = 'Off';
                     modeCircle.style.backgroundColor = 'gray';
                     break;
                 case 1:

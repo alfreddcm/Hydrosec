@@ -698,8 +698,8 @@
         } else if (temperature > 18 && temperature <= 25) {
             thermometer.src = '{{ asset('images/Temp/normal.png') }}';
             statusText.textContent = "Normal (Optimal)";
-            statusText.style.color = 'gray';
-            tempValueElement.style.color = 'gray';
+            statusText.style.color = 'green';
+            tempValueElement.style.color = 'green';
             tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
 
         } else if (temperature > 25 && temperature <= 30) {

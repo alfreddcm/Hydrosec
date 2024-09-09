@@ -180,7 +180,7 @@ class TowerController extends Controller
         // Insert log into TowerLogs
         TowerLogs::create([
             'ID_tower' => $tow->id,
-            'activity' => json_encode($activityLog), // If you are storing the activity log as a JSON string
+            'activity' => Crypt::encryptString($activityLog), // If you are storing the activity log as a JSON string
         ]);
         Sensor::truncate();
     
