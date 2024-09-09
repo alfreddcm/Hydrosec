@@ -1,4 +1,18 @@
+# <IfModule mod_rewrite.c>
+# RewriteEngine On
+# RewriteRule ^(.*)$ public/$1 [L]
+# </IfModule>
+
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteRule ^(.*)$ public/$1 [L]
+    RewriteEngine On
+
+    # Allow direct access to files and directories
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Redirect all other requests to the public directory
+    RewriteRule ^(.*)$ public/$1 [L]
+
+    # Ensure API requests are not affected
+    RewriteRule ^api/(.*)$ - [L,QSA]
 </IfModule>
