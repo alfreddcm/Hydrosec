@@ -4,10 +4,9 @@ use App\Http\Controllers\Admin\admincontroller;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\PHPMailerController;
+use App\Http\Controllers\Auth\ResetPassword;
 use App\Http\Controllers\SensorData;
 use App\Http\Controllers\Towercontroller;
-use App\Http\Controllers\ResetPasswordController as Reset;
-
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -28,13 +27,13 @@ Route::middleware('guest')->group(function () {
     Route::get('/cancel', [PHPMailerController::class, 'cancel'])->name('cancel');
     Route::get('/resend-otp', [PHPMailerController::class, 'resendOtp'])->name('resendotp');
 
-    Route::post('/forgot-password', [PHPMailerController::class, 'resendOtp']);
+    Route::post('/forgot-password', [ResetPassword::class, 'reset'])->name('forgot-password');
 
-    Route::get('verify-otp', [PHPMailerController::class, 'resendOtp'])->name('password.otp');
-    Route::post('verify-otp', [PHPMailerController::class, 'resendOtp']);
-
-    Route::get('reset-password', [PHPMailerController::class, 'resendOtp'])->name('password.reset');
-    Route::post('reset-password', [PHPMailerController::class, 'resendOtp']);
+    Route::get('/verify-otp-forgot', [ResetPassword::class, 'showOtpForgotForm'])->name('verifyotpforgot');
+    Route::post('/verify-otp-forgot', [ResetPassword::class, 'verifyOtpForgot'])->name('verifyotpforgotpost');
+    Route::get('/reset-password', [ResetPassword::class, 'showResetPasswordForm'])->name('reset-password-form');
+    Route::post('/reset-password', [ResetPassword::class, 'resetPassword']);
+    Route::get('/resend-otp2', [ResetPassword::class, 'resendOtp'])->name('resendotp2');
 
 });
 
@@ -74,7 +73,7 @@ Route::middleware('auth:owner')->group(function () {
     Route::get('/Owner/edit/{id}', [OwnerProfile::class, 'edit'])->name('ownerworker.edit');
     Route::post('/Owner/update/{id}', [OwnerProfile::class, 'workerupdate'])->name('ownerworker.update');
 
-    Route::post('/Owner/update-password/{id}', [OwnerProfile::class, 'workerPassword'])->name('owner.workerupdatePassword');
+    Route::post('/Owner/update-password', [OwnerProfile::class, 'workerPassword'])->name('owner.workerupdatePassword');
 
     Route::post('/Owner/worker-dis/{id}', [OwnerProfile::class, 'workerdis'])->name('ownerworker.dis');
     Route::post('/Owner/worker-en/{id}', [OwnerProfile::class, 'workeren'])->name('ownerworker.en');
@@ -133,8 +132,8 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/Admin/update/{id}', [admincontroller::class, 'update'])->name('admin.update');
     Route::post('/Admin/update2/{id}', [admincontroller::class, 'update2'])->name('admin.update2');
 
-    Route::post('/Admin/update-password/{id}', [admincontroller::class, 'adminupdatePassword'])->name('admin.updatePassword');
-    Route::post('/Admin/update-password2/{id}', [admincontroller::class, 'adminupdatePassword2'])->name('admin.updatePassword2');
+    Route::post('/Admin/update-password', [admincontroller::class, 'adminupdatePassword'])->name('admin.updatePassword');
+    Route::post('/Admin/update-password2', [admincontroller::class, 'adminupdatePassword2'])->name('admin.updatePassword2');
 
     Route::post('/Admin/worker-dis/{id}', [admincontroller::class, 'disableOwner'])->name('admin.dis');
     Route::post('/Admin/worker-en/{id}', [admincontroller::class, 'en'])->name('admin.en');

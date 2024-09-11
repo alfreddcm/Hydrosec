@@ -22,9 +22,9 @@
                                 <div class="pt-4 pb-2">
                                     <h5 class="card-title text-center pb-0 fs-4">Email Verfication</h5>
                                     <p class="text-center small">Please enter the 6 Digit One time PIN snt to your email:
-                                        {{ $email }}</p>
+                                        {{ session('email') }}</p>
                                 </div>
-                                <form action="{{ route('verifyOtpPost') }}"
+                                <form action="{{ route('verifyotpforgot') }}"
                                       method="POST">
                                     @csrf
                                     @if (session('error'))
@@ -46,7 +46,7 @@
                                                class="form-control text-center"
                                                id="otp"
                                                name="email"
-                                               value="{{ $email }}">
+                                               value="{{ session('email') }}">
                                         <input type="text"
                                                class="form-control text-center"
                                                id="otp"

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+
 
 class OwnerProfile extends Controller
 {
@@ -88,6 +90,7 @@ class OwnerProfile extends Controller
     public function addworker(Request $request)
     {
         $credentials = $request->validate([
+            'tower' => 'required',
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:8',
@@ -107,6 +110,7 @@ class OwnerProfile extends Controller
         } else {
 
             Worker::create([
+                'tower' => $request->tower,
                 'username' => Crypt::encryptString($request->username),
                 'name' => Crypt::encryptString($request->name),
                 'password' => Hash::make($request->password),
@@ -149,34 +153,33 @@ class OwnerProfile extends Controller
 
     public function workerupdate(Request $request, $id)
     {
+    
         $request->validate([
+            'tower'=> 'required',
             'name' => 'required|string|max:255',
             'username' => 'required',
-            'towerid' => 'required',
-
         ]);
 
         $user = Worker::find($id);
+        $user->towerid=$request->tower;
         $user->name = Crypt::encryptString($request->input('name'));
         $user->username = Crypt::encryptString($request->input('username'));
-        $user->OwnerID = Auth::id();
-        $user->towerid = $request->input('towerid');
-
         $user->save();
-
+    
         return redirect()->route('ownerworkeraccount')->with('success', 'User updated successfully.');
     }
 
     public function workerPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id'=> 'required',
             'password' => 'required',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $user = Worker::find(auth()->user()->id);
+        $user = Worker::where('id'->$request->id);
 
         if (!$user) {
             return redirect()->back()->with('error', 'User not found');

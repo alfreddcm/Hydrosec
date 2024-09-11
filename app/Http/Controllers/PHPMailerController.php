@@ -37,9 +37,9 @@ class PHPMailerController extends Controller
             try {
                 $emailStored = Crypt::decryptString($user->email);
                 if ($email === $emailStored) {
-                    if ($user->status == '0') {
+                    if (Crypt::decryptString($user->status) == '0') {
                         return Redirect::back()->with('deact', 'Account is deactivated. Contact support.');
-                    } elseif ($user->status == '1') {
+                    } elseif (Crypt::decryptString($user->status) == '1') {
                         return Redirect::back()->with('error', 'Email already in use');
                     }
                 }
@@ -59,17 +59,17 @@ class PHPMailerController extends Controller
 
     public function store(Request $request)
     {
-
-        //ranbytes
         $receiver = $request->email;
+
+
         $otp = random_int(100000, 999999);
 
         Session::put('otp', $otp);
         Session::put('otp_email', $receiver);
 
         try {
-            Mail::to($receiver)->send(new OtpMail($otp));
 
+            Mail::to($receiver)->send(new OtpMail($otp));
             return redirect()->route('otp.show')->with(['email' => $receiver, 'success' => 'OTP has been sent to your email.']);
         } catch (TransportExceptionInterface $e) {
             return back()->with('error', 'Failed to connect to the SMTP server. Please try again later.');
@@ -172,13 +172,11 @@ class PHPMailerController extends Controller
     public function verifyOTPforgot(Request $request)
     {
         $request->validate(['otp' => 'required|numeric']);
-
         $user = User::where('email', session('email'))->where('otp', $request->otp)->first();
         if (!$user) {
             return back()->with('error', 'Invalid OTP.');
         }
 
-        // OTP is correct, redirect to reset password page
         return redirect()->route('password.reset')->with('email', $user->email);
     }
 }

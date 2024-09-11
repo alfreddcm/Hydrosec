@@ -81,7 +81,8 @@
         .card-body img {
             height: 100px;
         }
-        a{
+
+        a {
             text-decoration: none;
         }
     </style>
@@ -122,11 +123,12 @@
                                  alt="towericon">
 
                         </div>
-                    </div>
+                    </div>            </a>
+
             </div>
-            </a>
-            <a href="{{ route('ownerworkeraccount') }}">
-                <div class="col-md-3 mb-4">
+            <div class="col-md-3 mb-4">
+                <a href="{{ route('ownerworkeraccount') }}">
+
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title">Workers</h5>
@@ -139,8 +141,9 @@
 
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+
+            </div>
 
             <!-- Worker Count Card -->
 

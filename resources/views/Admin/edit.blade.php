@@ -18,6 +18,15 @@
                                 Edit User
                             </div>
                             <div class="panel-body">
+                                @if ($errors->any())
+                                <div class="alert alert-danger mt-3 mb-0">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                                 <form action="{{ route('admin.update', $user->id) }}" method="POST">
                                     @csrf
                                     <div class="form-group">
@@ -33,7 +42,7 @@
                                         <input type="email" class="form-control" name="email" value="{{ $user->email }}" required>
                                     </div>
                                     <a href="javascript:void(0);" onclick="openPasswordModal({{ $user->id }})" class="btn btn-success">Update Password</a>
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary sub">Update</button>
                                     <a href="{{ route('UserAccounts') }}" class="btn btn-secondary">Cancel</a>
                                 </form>
                             </div>
@@ -55,7 +64,7 @@
         </button>
       </div>
       <div class="modal-body">
-      <form id="passwordForm" action="{{ route('admin.updatePassword', ['id' => $user->id]) }}" method="post">
+      <form id="passwordForm" action="{{ route('admin.updatePassword')}}" method="post">
       @csrf
           <div class="form-group">
             <label for="password">New Password</label>
@@ -65,8 +74,8 @@
             <label for="password_confirmation">Confirm Password</label>
             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
           </div>
-          <input type="hidden" id="userId">
-          <button type="submit" class="btn btn-primary">Update</button>
+          <input type="hidden" id="" name="idd" value=" {{$user->id}}">
+          <button type="submit" class="btn btn-primary sub">Update</button>
         </form>
       </div>
     </div>
@@ -79,6 +88,40 @@
         $('#userId').val(userId);
         $('#passwordModal').modal('show');
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '{{ session('error') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+        });
+        const showLoading = function() {
+            Swal.fire({
+                title: '',
+                html: '<b>Be patient.</b><br/>Checking Email.',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        };
+        // Attach event listener to the button
+        document.getElementById('sub').addEventListener('click', showLoading);
+
 
 </script>
 

@@ -2,10 +2,9 @@
 @section('title', 'Login')
 @section('content')
     <style>
-        .forgot:hover{
+        .forgot:hover {
             text-decoration: underline solid black;
         }
-
     </style>
     <script async
             src="https://www.google.com/recaptcha/api.js"></script>
@@ -32,7 +31,7 @@
 
                                 <form action="{{ route('login.post') }}"
                                       method="POST"
-                                      class="row g-3        needs-validation">
+                                      class="row g-3 needs-validation">
                                     @csrf
                                     @if (session('error'))
                                         <div class="alert alert-danger">
@@ -80,12 +79,12 @@
                                 <div class="col-12">
                                     <center>
                                         <a type="button"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#modalId">
-                                    <p class="small forgot mb-2 mt-2">Forgot Password?</p>
-                                </a>
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#modalId">
+                                            <p class="small forgot mb-2 mt-2">Forgot Password?</p>
+                                        </a>
                                     </center>
-                                    
+
                                     <p class="small mb-0">Don't have an account? <a href="/">Create an account</a></p>
                                 </div>
 
@@ -94,7 +93,6 @@
                     </div>
                 </div>
             </div>
-
 
         </section>
     </div>
@@ -116,30 +114,33 @@
                         id="modalTitleId">
                         Forgot Password
                     </h5>
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                  
                 </div>
-                <div class="modal-body">
+                <center>
 
-                    <form method="POST" action="{{ url('forgot-password') }}">
-                        @csrf
-                        <label for="email">Enter your email:</label>
-                        <input type="email" name="email" required>
-                        <button type="submit">Send OTP</button>
-                    </form>
-                    
+                    <div class="modal-body">
+                        <form method="POST"
+                              action="{{ route('forgot-password') }}">
+                            @csrf
+                            <label for="email">Enter your email:</label><br>
+                            <input type="email"
+                                   name="email"
+                                   class="from-group"
+                                   required> <br>
+                            <button class="btn btn-info mt-2"
+                                    type="submit" id="sub">Send OTP</button>
+                        </form>
 
-                </div>
+                    </div>
+                </center>
+
                 <div class="modal-footer">
                     <button type="button"
                             class="btn btn-secondary"
                             data-bs-dismiss="modal">
-                        Close
+                        Cancel
                     </button>
-                    <button type="button"
-                            class="btn btn-primary">Save</button>
+
                 </div>
             </div>
         </div>
@@ -149,16 +150,43 @@
         var modalId = document.getElementById('modalId');
 
         modalId.addEventListener('show.bs.modal', function(event) {
-            // Button that triggered the modal
             let button = event.relatedTarget;
-            // Extract info from data-bs-* attributes
             let recipient = button.getAttribute('data-bs-whatever');
-
-            // Use above variables to manipulate the DOM
         });
-    </script>
 
-    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '{{ session('error') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+        });
+        const showLoading = function() {
+            Swal.fire({
+                title: '',
+                html: '<b>Be patient.</b><br/>Checking Email.',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        };
+        // Attach event listener to the button
+        document.getElementById('sub').addEventListener('click', showLoading);
+
         document.addEventListener('DOMContentLoaded', function() {
             // Display success message if present
             @if (session('success'))

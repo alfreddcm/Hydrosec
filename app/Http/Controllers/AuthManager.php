@@ -39,7 +39,6 @@ class AuthManager extends Controller
     public function loginPost(Request $request)
     {
 
-        // Validate reCAPTCHA response
         $request->validate([
             'g-recaptcha-response' => 'required',
         ]);
