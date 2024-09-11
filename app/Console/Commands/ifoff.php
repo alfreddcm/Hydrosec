@@ -35,7 +35,7 @@ class IfOff extends Command
 
                 $towerId = $tower->id;
 
-                if (!$latestSensor || Carbon::parse($latestSensor->created_at)->diffInMinutes($now) > 30) {
+                if (!$latestSensor || Carbon::parse($latestSensor->created_at)->diffInMinutes($now) > 1) {
                     // Check if cooldown period has elapsed
                     if ($tower->last_email_sensor_off) {
                         $lastEmailTime = Carbon::parse($tower->last_email_sensor_off);

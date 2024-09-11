@@ -42,6 +42,8 @@ class UpdateTowerMode extends Command
             $tower->save();
 
             $this->info("Tower ID {$tower->id} mode updated to {$newMode}");
+            Log::info("Tower ID {$tower->id} mode updated to {$newMode}");
+
         }
 
         Log::info('Tower modes updated at ' . now());

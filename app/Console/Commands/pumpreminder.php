@@ -84,9 +84,9 @@ class pumpreminder extends Command
 
                     Log::info('Consecutive pump status 0 detected', ['tower_id' => $towerId]);
 
-                    // Ensure last_email_sent_at is a Carbon instance
-                    if ($data->last_email_sent_at) {
-                        $lastEmailSentAt = Carbon::parse($data->last_email_sent_at);
+                    // Ensure last_pumping_email_sent_at is a Carbon instance
+                    if ($data->last_pumping_email_sent_at) {
+                        $lastEmailSentAt = Carbon::parse($data->last_pumping_email_sent_at);
                         if ($lastEmailSentAt->diffInMinutes($now) < $emailCooldown) {
                             $remainingTime = $emailCooldown - $lastEmailSentAt->diffInMinutes($now);
                             Log::info('Skipping email, recently sent', ['tower_id' => $towerId, 'remaining_time' => $remainingTime]);
@@ -111,7 +111,7 @@ class pumpreminder extends Command
                             $mailStatus = 'Sent';
                             Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $towerId]);
 
-                            $data->last_email_sent_at = $now;
+                            $data->last_pumping_email_sent_at = $now;
                             $data->save();
                         } catch (\Exception $e) {
                             $mailStatus = 'Failed';

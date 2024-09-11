@@ -72,7 +72,6 @@
             width: 25px;
             height: 25px;
             font-size: 100px;
-
         }
 
         .card-text {
@@ -80,8 +79,10 @@
         }
 
         .card-body img {
-
             height: 100px;
+        }
+        a{
+            text-decoration: none;
         }
     </style>
     <div class="container">
@@ -109,33 +110,40 @@
 
             <br>
             <div class="col-md-3 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Tower</h5>
+                <a href="{{ route('ownermanagetower') }}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Tower</h5>
+                        </div>
+                        <div class="card-body text-start">
+                            <span class="card-text count">{{ $towerCount }}</span>
+
+                            <img src="{{ asset('images/icon/towericon.png') }}"
+                                 alt="towericon">
+
+                        </div>
                     </div>
-                    <div class="card-body text-start">
-                        <span class="card-text count">{{ $towerCount }}</span>
+            </div>
+            </a>
+            <a href="{{ route('ownerworkeraccount') }}">
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Workers</h5>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-text count">{{ $enabledWorkerCount }}</span>
 
-                        <img src="{{ asset('images/icon/towericon.png') }}" alt="towericon">
+                            <img src="{{ asset('images/icon/workericon.png') }}"
+                                 alt="towericon">
 
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Worker Count Card -->
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Workers</h5>
-                    </div>
-                    <div class="card-body">
-                        <span class="card-text count">{{ $enabledWorkerCount }}</span>
 
-                        <img src="{{ asset('images/icon/workericon.png') }}" alt="towericon">
-
-                    </div>
-                </div>
-            </div>
         </div>
 
         </tbody>
