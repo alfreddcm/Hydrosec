@@ -2,7 +2,16 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\Alert;
+use App\Models\Owner;
+use App\Models\Pump;
+use App\Models\Tower;
+use App\Models\TowerLogs;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class pumpreminder extends Command
 {
@@ -11,6 +20,7 @@ class pumpreminder extends Command
      *
      * @var string
      */
+
     protected $signature = 'app:pumpreminder';
 
     /**
@@ -18,86 +28,128 @@ class pumpreminder extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Pumping Remainder';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        // check houly
-        // Get the current time and the next hour
-       
+        // $nextHour = $now->copy()->addHour();
+        // $hoursBefore = 1;
+
+        // $allTowers = Tower::pluck('id');
+
+        // $towersWithData = Tower::whereNotNull('enddate')
+        //     ->where(function ($query) use ($now, $nextHour, $hoursBefore) {
+        //         $query->whereBetween('enddate', [$now->copy()->subHours($hoursBefore), $nextHour])
+        //             ->orWhereBetween('enddate', [$nextHour, $nextHour]);
+        //     })
+        //     ->pluck('id');
+
+        // $towersWithoutData = $allTowers->diff($towersWithData);
+
+        // foreach ($towersWithoutData as $towerId) {
+        //     $tower = Tower::find($towerId);
+        //     if (!$tower) {
+        //         Log::error("Tower not found with ID $towerId.");
+        //         continue;
+        //     }
+
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+
         $now = Carbon::now();
-        $nextHour = $now->copy()->addHour();
-        $hoursBefore = 1;
-        
-        $allTowers = Tower::pluck('id');
-        
-        $towersWithData = Tower::whereNotNull('enddate')
-            ->where(function ($query) use ($now, $nextHour, $hoursBefore) {
-                $query->whereBetween('enddate', [$now->copy()->subHours($hoursBefore), $nextHour])
-                    ->orWhereBetween('enddate', [$nextHour, $nextHour]);
-            })
-            ->pluck('id');
-        
-        $towersWithoutData = $allTowers->diff($towersWithData);
-        
-        foreach ($towersWithoutData as $towerId) {
-            $tower = Tower::find($towerId); // Make sure to use the correct tower instance
-            if (!$tower) {
-                Log::error("Tower not found with ID $towerId.");
-                continue;
-            }
-        
-            // Check for two consecutive statuses of 0
-            $recentStatuses = Tower::where('id', $towerId)
-                ->orderBy('created_at', 'desc')
-                ->limit(2)
-                ->pluck('status');
-        
-            if (count($recentStatuses) === 2 && 
-                Crypt::decryptString($recentStatuses[0]) == 0 && 
-                Crypt::decryptString($recentStatuses[1]) == 0) {
-        
-                $owner = Owner::find($tower->OwnerID);
-                if ($owner) {
-                    $subject = "Pump Reminder";
-                    $body = "Dear Owner,
-                    \n\nTower did not pump \n\n
-                    Best regards,\nYour Team";
-        
-                    $ownerEmail = Crypt::decryptString($owner->email);
-                    try {
-                        // Your email sending logic here
-                        $mailStatus = 'Sent';
-                        Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
-                    } catch (\Exception $e) {
-                        $mailStatus = 'Failed';
-                        Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
-                    } finally {
-                        // Encrypt and log the activity, regardless of email success or failure
-                        $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
-        
-                        $tow = Tower::find($tower->id);
-                        $tow->status = Crypt::encryptString('4');
-                        $tow->save();
-        
-                        TowerLogs::create([
-                            'ID_tower' => $tower->id,
-                            'activity' => $activityLog,
-                        ]);
-        
-                        Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
+        $emailCooldown = 5; // Time in minutes to wait before sending another email
+
+        $towers = Tower::get();
+        foreach ($towers as $data) {
+            if (Crypt::decryptString($data->status) == '1') {
+                $towerId = $data->id;
+                Log::info('Processing tower', ['tower_id' => $towerId]);
+
+                $now = Carbon::now();
+                $emailCooldown = 5; 
+                $timeLimit = Carbon::now()->subMinutes(5);
+
+                $recentStatuses = Pump::where('towerid', $towerId)
+                    ->orderBy('created_at', 'desc')
+                    ->limit(2)
+                    ->get();
+
+                if (count($recentStatuses) === 2 &&
+                    $this->decrypt_data($recentStatuses[0]->status, $method, $key_str, $iv_str) == '0' &&
+                    $this->decrypt_data($recentStatuses[1]->status, $method, $key_str, $iv_str) == '0') {
+
+                    Log::info('Consecutive pump status 0 detected', ['tower_id' => $towerId]);
+
+                    // Ensure last_email_sent_at is a Carbon instance
+                    if ($data->last_email_sent_at) {
+                        $lastEmailSentAt = Carbon::parse($data->last_email_sent_at);
+                        if ($lastEmailSentAt->diffInMinutes($now) < $emailCooldown) {
+                            $remainingTime = $emailCooldown - $lastEmailSentAt->diffInMinutes($now);
+                            Log::info('Skipping email, recently sent', ['tower_id' => $towerId, 'remaining_time' => $remainingTime]);
+                            continue;
+                        }
                     }
-        
+
+                    $owner = Owner::where('id', $data->OwnerID)->first();
+                    if ($owner) {
+                        $body = "The Tower '" . Crypt::decryptString($data->name) . "' did not pump at " . $now . "  Please check the plug.";
+
+                        $details = [
+                            'title' => 'Pumping stopped.',
+                            'body' => $body,
+                        ];
+
+                        $ownerEmail = Crypt::decryptString($owner->email);
+                        $mailStatus = 'Failed';
+
+                        try {
+                            Mail::to($ownerEmail)->send(new Alert($details));
+                            $mailStatus = 'Sent';
+                            Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $towerId]);
+
+                            $data->last_email_sent_at = $now;
+                            $data->save();
+                        } catch (\Exception $e) {
+                            $mailStatus = 'Failed';
+                            Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
+                        } finally {
+                            $activityLog = Crypt::encryptString("Alert: "  . json_encode($details['body']) ." Mail Status: " . $mailStatus);
+
+                            TowerLogs::create([
+                                'ID_tower' => $towerId,
+                                'activity' => $activityLog,
+                            ]);
+
+                            Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => $body]);
+                        }
+                    } else {
+                        Log::error("Owner not found for tower ID {$towerId}.");
+                    }
                 } else {
-                    $this->error("Owner not found for tower ID {$tower->id}.");
+                    Log::info("No consecutive pump status 0 for tower ID $towerId.");
                 }
-            } else {
-                Log::info("No consecutive pump status 0 for tower ID $towerId.");
             }
         }
-        
+
     }
+
+    private function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
+            return null;
+        }
+    }
+
 }

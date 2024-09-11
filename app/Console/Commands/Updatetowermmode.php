@@ -19,6 +19,21 @@ class UpdateTowerMode extends Command
 
     public function handle()
     {
+
+        
+        // $tower = Tower::find($towerId);
+
+        // $hour = now()->hour;
+
+        // if ($hour >= 6 && $hour < 18) {
+        //     $mode = 1;
+        // } elseif ($hour >= 18 && $hour < 22) {
+        //     $mode = 2;
+        // } else {
+        //     $mode = 0;
+        // }
+
+
         $towers = Tower::all();
         foreach ($towers as $tower) {
             $currentMode = Crypt::decryptString($tower->mode);

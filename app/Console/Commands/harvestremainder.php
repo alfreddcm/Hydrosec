@@ -38,15 +38,15 @@ class harvestremainder extends Command
                 $ownerEmail = Crypt::decryptString($owner->email);
                 if ($tower->enddate->isSameDay($oneDayLater)) {
                     $subject = "Reminder: Tower Harvest Date Today";
-                    $body = "Dear Owner,\n\nThis is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.\n\nBest regards,\nHydrosec";
-                    
+                    $body = "Dear Owner,  This is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.  Best regards, Hydrosec";
+
                     $mode = '4';
                     $encryptedMode = Crypt::encryptString($mode);
                     Tower::query()->update(['mode' => $encryptedMode]);
 
                 } elseif ($tower->enddate->isSameDay($oneDayLater->addDay())) {
                     $subject = "Reminder: Tower Harvest Date Tomorrow";
-                    $body = "Dear Owner,\n\nThis is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.\n\nBest regards,\nYour Team";
+                    $body = "Dear Owner,  This is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.  Best regards, Your Team";
                 } else {
                     continue;
                 }

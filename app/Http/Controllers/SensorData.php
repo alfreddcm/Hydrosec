@@ -120,8 +120,6 @@ class SensorData extends Controller
                             'timestamp' => $formattedTimestamp,
                         ];
                     }
-
-                    \Log::info("Normalized decrypted pump value: {$decrypted_pump}");
                 }
             } else {
                 \Log::info("No pump data found for tower ID: {$id}");
@@ -245,7 +243,8 @@ class SensorData extends Controller
                                     'body' => $body,
                                 ];
 
-                                $this->sendAlertEmail($details, $tower->id);
+                                $statusType = 'sensor_error';
+                                $this->sendAlertEmail($details, $tower->id, $statusType);
 
                                 return response()->json(['errors' => $alertMessages], 422);
                             } else {
@@ -267,13 +266,14 @@ class SensorData extends Controller
                                         ];
 
                                         foreach ($_SESSION['sensor_data'] as $data) {
-                                            $phCondition = $this->getCondition($data['pH'], 'pH');
-                                            $tempCondition = $this->getCondition($data['temp'], 'temp');
-                                            $volumeCondition = $this->getCondition($data['volume'], 'nutrient');
+
+                                            $phCondition = $this->getCondition((float) $data['pH'], 'pH');
+                                            $tempCondition = $this->getCondition((float) $data['temp'], 'temp');
+                                            $volumeCondition = $this->getCondition((float) $data['volume'], 'nutrient');
 
                                             $triggerConditions = [
                                                 'phCondition' => ['Too acidic', 'Too basic', 'basic', 'acidic'],
-                                                'volumeCondition' => ['35%', '25%', 'Empty'],
+                                                'volumeCondition' => ['25%', '15%', 'Empty'],
                                                 'tempCondition' => ['Too Hot', 'hot'],
                                             ];
 
@@ -297,19 +297,26 @@ class SensorData extends Controller
                                                 'Temperature' => $tempCondition,
                                                 'Nutrient Volume' => $volumeCondition,
                                             ]);
+
+                                            Log::info('Trigger counts:', [
+                                                'pH Triggers' => $triggerCounts['ph'],
+                                                'Temperature Triggers' => $triggerCounts['temp'],
+                                                'Nutrient Volume Triggers' => $triggerCounts['nut'],
+                                            ]);
+
                                         }
 
                                         $alertMessages = [];
 
-                                        if ($triggerCounts['ph'] > 3) {
+                                        if ($triggerCounts['ph'] >= 3) {
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
                                         }
 
-                                        if ($triggerCounts['temp'] > 3) {
+                                        if ($triggerCounts['temp'] >= 3) {
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
                                         }
 
-                                        if ($triggerCounts['nut'] > 3) {
+                                        if ($triggerCounts['nut'] >= 3) {
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
                                         }
 
@@ -323,10 +330,12 @@ class SensorData extends Controller
                                             ];
 
                                             Log::info('Sending alert email with conditions:', ['conditions' => implode(", ", $alertMessages)]);
+                                            $statusType = 'critical_condition';
 
-                                            $this->sendAlertEmail($details, $tower->id);
-                                            unset($_SESSION['sensor_data']);
+                                            $this->sendAlertEmail($details, $tower->id, $statusType);
                                         }
+                                        unset($_SESSION['sensor_data']);
+
                                     }
 
                                     Sensor::create([
@@ -347,14 +356,7 @@ class SensorData extends Controller
 
                             return response()->json(['status' => 'success', 'message' => 'Sensor data successfully stored']);
                         } else {
-                            $body = "The Tower '" . Crypt::decryptString($ipmac->name) . "' used incorrect IP and MAC addresses";
 
-                            $details = [
-                                'title' => 'Alert: Incorrect IP/MAC Addresses',
-                                'body' => $body,
-                            ];
-
-                            $this->sendAlertEmail($details, $tower->id);
                             return response()->json(['errors' => 'IP or MAC addresses do not match'], 422);
                         }
                     } else {
@@ -413,7 +415,7 @@ class SensorData extends Controller
 
     private function getCondition($averageValue, $type)
     {
-        $condition = 'Unknown';
+        $condition = '';
 
         switch ($type) {
             case 'pH':
@@ -431,7 +433,7 @@ class SensorData extends Controller
                 break;
 
             case 'nutrient':
-                if ($averageValue >= 20) {
+                if ($averageValue >= 25) {
                     $condition = 'Full';
                 } elseif ($averageValue >= 17) {
                     $condition = '85%';
@@ -445,9 +447,12 @@ class SensorData extends Controller
                     $condition = '35%';
                 } elseif ($averageValue >= 5) {
                     $condition = '25%';
-                } elseif ($averageValue < 2) {
+                } elseif ($averageValue >= 2) {
+                    $condition = '15%';
+                } else {
                     $condition = 'Empty';
                 }
+
                 break;
 
             case 'temp':
@@ -466,41 +471,77 @@ class SensorData extends Controller
         return $condition;
     }
 
-    private function sendAlertEmail($details, $towerId)
+    private function sendAlertEmail($details, $towerId, $statusType)
     {
-
         if ($towerId) {
             $tower = Tower::find($towerId);
-
+    
             if ($tower && $tower->OwnerID) {
                 $owner = Owner::find($tower->OwnerID);
-
+    
                 if ($owner && $owner->email) {
                     $email = Crypt::decryptString($owner->email);
                     $decryptedTowerName = Crypt::decryptString($tower->name);
-
+    
+                    // Define cooldown period in minutes
+                    $emailCooldown = 5; 
+    
+                    // Check last email sent timestamp based on status type
+                    switch ($statusType) {
+                        case 'sensor_error':
+                            $lastEmailSentAt = $tower->last_sensor_error_email_sent_at;
+                            break;
+                        case 'critical_condition':
+                            $lastEmailSentAt = $tower->last_critical_condition_email_sent_at;
+                            break;
+                        default:
+                            $lastEmailSentAt = null;
+                            break;
+                    }
+    
+                    $now = Carbon::now();
+    
+                    // Convert lastEmailSentAt to Carbon instance if it's not null
+                    if ($lastEmailSentAt) {
+                        $lastEmailSentAt = Carbon::parse($lastEmailSentAt);
+                    }
+    
+                    if ($lastEmailSentAt && $lastEmailSentAt->diffInMinutes($now) < $emailCooldown) {
+                        $remainingTime = $emailCooldown - $lastEmailSentAt->diffInMinutes($now);
+                        Log::info('Skipping email for ' . $statusType . ', cooldown remaining: ' . $remainingTime . ' minutes', ['tower_id' => $towerId]);
+                        return;
+                    }
+    
                     $mailStatus = 'Not Sent';
-
+    
                     try {
                         Mail::to($email)->send(new Alert($details));
                         $mailStatus = 'Sent';
                         Log::info('Alert email sent to', ['email' => $email, 'tower_id' => $towerId]);
                     } catch (\Exception $e) {
                         $mailStatus = 'Failed';
-
                         Log::error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                     } finally {
-
                         TowerLogs::create([
                             'ID_tower' => $towerId,
                             'activity' => Crypt::encryptString(
                                 "Alert: Conditions detected - " . json_encode($details['body']) . " Mail Status: " . $mailStatus
                             ),
                         ]);
-
+    
                         Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => json_encode($details['body'])]);
+    
+                        // Update the last email sent timestamp based on status type
+                        switch ($statusType) {
+                            case 'sensor_error':
+                                $tower->last_sensor_error_email_sent_at = $now;
+                                break;
+                            case 'critical_condition':
+                                $tower->last_critical_condition_email_sent_at = $now;
+                                break;
+                        }
+                        $tower->save();
                     }
-
                 } else {
                     Log::warning('Owner not found or email not available for Tower ID', ['tower_id' => $towerId]);
                 }
@@ -511,6 +552,8 @@ class SensorData extends Controller
             Log::warning('Tower ID not available in session.');
         }
     }
+    
+
 
     private function decrypt_data($encrypted_data, $method, $key, $iv)
     {

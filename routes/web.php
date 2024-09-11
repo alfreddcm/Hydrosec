@@ -6,6 +6,8 @@ use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\SensorData;
 use App\Http\Controllers\Towercontroller;
+use App\Http\Controllers\ResetPasswordController as Reset;
+
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -25,6 +27,14 @@ Route::middleware('guest')->group(function () {
     Route::get('/verifyotp', [PHPMailerController::class, 'verifyOtp'])->name('otp.show');
     Route::get('/cancel', [PHPMailerController::class, 'cancel'])->name('cancel');
     Route::get('/resend-otp', [PHPMailerController::class, 'resendOtp'])->name('resendotp');
+
+    Route::post('/forgot-password', [PHPMailerController::class, 'resendOtp']);
+
+    Route::get('verify-otp', [PHPMailerController::class, 'resendOtp'])->name('password.otp');
+    Route::post('verify-otp', [PHPMailerController::class, 'resendOtp']);
+
+    Route::get('reset-password', [PHPMailerController::class, 'resendOtp'])->name('password.reset');
+    Route::post('reset-password', [PHPMailerController::class, 'resendOtp']);
 
 });
 
@@ -125,7 +135,6 @@ Route::middleware('auth:admin')->group(function () {
 
     Route::post('/Admin/update-password/{id}', [admincontroller::class, 'adminupdatePassword'])->name('admin.updatePassword');
     Route::post('/Admin/update-password2/{id}', [admincontroller::class, 'adminupdatePassword2'])->name('admin.updatePassword2');
-
 
     Route::post('/Admin/worker-dis/{id}', [admincontroller::class, 'disableOwner'])->name('admin.dis');
     Route::post('/Admin/worker-en/{id}', [admincontroller::class, 'en'])->name('admin.en');
