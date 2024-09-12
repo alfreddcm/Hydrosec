@@ -19,8 +19,35 @@ class UpdateTowerMode extends Command
 
     public function handle()
     {
-
         
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+
+   
+        $decrypted_key = $this->decrypt_data('swzntOuSjKl+rAReDbop8VTQbiL1IgK00sJzPRPBLDQ=', $method, $key_str, $iv_str);
+        $decrypted_iv = $this->decrypt_data('rOGXBDvza0/L+iOKdqhPnZNkbvtTM5OOQCVKeNaaHtg=', $method, $key_str, $iv_str);
+
+        $decrypted_ph = (float) $this->decrypt_data('8J1nzZVod0z1JJzTxT9gSw==', $method, $decrypted_key, $decrypted_iv);
+        $decrypted_temp = (float) $this->decrypt_data('DI7ablQ+9XKj2xzS+m0IOw==', $method, $decrypted_key, $decrypted_iv);
+        $decrypted_nutrient = (float) $this->decrypt_data('fewyK8HNilBsqEEWMd0tzg==', $method, $decrypted_key, $decrypted_iv);
+        $decrypted_light = $this->decrypt_data('/Ne4IqGeZC7r91EdxPIZCQ==', $method, $decrypted_key, $decrypted_iv);
+        $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtA==', $method, $key_str, $iv_str);
+        $decrypted_mac =$this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtA==","macAddress', $method, $key_str, $iv_str);
+        $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
+
+        Log::info('Decrypted Data from tower:', [
+            'key' => $decrypted_key,
+            'iv' => $decrypted_iv,
+            'phValue' => $decrypted_ph,
+            'temp' => $decrypted_temp,
+            'waterLevel' => $decrypted_nutrient,
+            'light' => $decrypted_light,
+            'ipAddress' => $decrypted_ip,
+            'macAddress' => $decrypted_mac,
+            'towercode' => $decrypted_towercode,
+        ]);
+
         // $tower = Tower::find($towerId);
 
         // $hour = now()->hour;
@@ -48,6 +75,21 @@ class UpdateTowerMode extends Command
 
         Log::info('Tower modes updated at ' . now());
         $this->info('Tower modes updated.');
+    }
+
+    public function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
+            return null;
+        }
     }
 
 }

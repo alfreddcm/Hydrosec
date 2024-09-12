@@ -20,7 +20,9 @@
         $towers = Tower::all()->keyBy('id');
 
     @endphp
+    <style>
 
+    </style>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
@@ -85,32 +87,38 @@
                                                                             <th>Worker Name</th>
                                                                             <th>Worker Username</th>
                                                                             <th>Tower assigned</th>
-                                                                            
+
                                                                             <th>Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         @php $counter2 = 1; @endphp
-                                                                        
+
                                                                         @foreach ($workers as $worker)
-                                                                        @if ($worker->OwnerID == $owner->id && Crypt::decryptString($worker->status) == '1')
-                                                                            @php
-                                                                                // Get the tower corresponding to the worker's towerid
-                                                                                $tower = $towers->get($worker->towerid);
-                                                                            @endphp
-                                                                            <tr>
-                                                                                <td>{{ $counter2++ }}</td>
-                                                                                <td>{{ Crypt::decryptString($worker->name) }}</td>
-                                                                                <td>{{ Crypt::decryptString($worker->username) }}</td>
-                                                                                <td>{{ $tower ? Crypt::decryptString($tower->name) : 'N/A' }}</td>
-                                                                                <td>
-                                                                                    <div class="btn-group">
-                                                                                        <a href="{{ route('admin.edit2', $worker->id) }}" class="btn btn-success">Edit</a>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        @endif
-                                                                    @endforeach
+                                                                            @if ($worker->OwnerID == $owner->id && Crypt::decryptString($worker->status) == '1')
+                                                                                @php
+                                                                                    // Get the tower corresponding to the worker's towerid
+                                                                                    $tower = $towers->get(
+                                                                                        $worker->towerid,
+                                                                                    );
+                                                                                @endphp
+                                                                                <tr>
+                                                                                    <td>{{ $counter2++ }}</td>
+                                                                                    <td>{{ Crypt::decryptString($worker->name) }}
+                                                                                    </td>
+                                                                                    <td>{{ Crypt::decryptString($worker->username) }}
+                                                                                    </td>
+                                                                                    <td>{{ $tower ? Crypt::decryptString($tower->name) : 'N/A' }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div class="btn-group">
+                                                                                            <a href="{{ route('admin.edit2', $worker->id) }}"
+                                                                                               class="btn btn-success">Edit</a>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
                                                                     </tbody>
                                                                 </table>
                                                             </td>
@@ -123,13 +131,14 @@
                                         <p>No active accounts available</p>
                                     @endif
                                 </div>
-                                <u>
-                                    <button id="toggleButton"
-                                    class="btn btn-primary">Show/Hide Disabled Accounts</button>
 
-                                </u>
+                                <button 
+                                 id="toggleButton" type="button"
+                                class="btn btn-primary">Show/Hide Disabled Accounts
+                        </button>
                                 <div class="dis"
-                                     id="dis" style="display:none;">
+                                     id="dis"
+                                     style="display:none;">
                                     <div class="panel-heading">
                                         Disabled Owner Accounts List
                                     </div>

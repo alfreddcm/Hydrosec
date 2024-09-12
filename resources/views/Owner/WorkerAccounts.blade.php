@@ -101,7 +101,8 @@
                                         <!-- Disabled Accounts Table -->
                                         <button onclick="toggleDisabledAccounts()"
                                                 class="btn btn-primary">Show/Hide Disabled Accounts</button>
-                                        <div id="disabledAccountsSection"
+                                        
+                                                <div id="disabledAccountsSection"
                                              style="display:none;">
 
                                             <h6>Disabled Accounts</h6>
