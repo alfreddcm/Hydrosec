@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Session;
 class AuthManager extends Controller
 {
 
+    public function __construct()
+{
+    $this->middleware(\App\Http\Middleware\SecureHeaders::class);
+}
+
+
     public function login()
     {
         if (Auth::guard('admin')->check()) {

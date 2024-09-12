@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware(\App\Http\Middleware\SecureHeaders::class);
+}
+
     public function pump(Request $request)
     {
         $key_str = "ISUHydroSec2024!";

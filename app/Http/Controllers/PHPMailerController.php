@@ -23,6 +23,13 @@ class PHPMailerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return View|ViewFactory
      */
+
+     public function __construct()
+{
+    $this->middleware(\App\Http\Middleware\SecureHeaders::class);
+}
+
+
     public function index(Request $request)
     {
         return view('sendEmail');

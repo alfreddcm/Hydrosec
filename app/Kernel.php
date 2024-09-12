@@ -26,6 +26,8 @@ class Kernel extends HttpKernel
         'web' => [
             // ...
             \App\Http\Middleware\Singlesession::class,
+            \App\Http\Middleware\SecureHeaders::class,
+
         ],
         'api' => [
 
