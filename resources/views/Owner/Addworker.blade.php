@@ -15,7 +15,6 @@ $towers = Tower::where('OwnerID', $userId)->get();
             <div class="card">
                 <div class="card-body">
 
-                    <a href="{{ route('ownerworkeraccount') }}">Back</a>
 
                     <h5 class="card-title">Woker Profile Information</h5>
                     <p class="card-text">Instructions</p>
@@ -58,6 +57,8 @@ $towers = Tower::where('OwnerID', $userId)->get();
                         
 
                         <div class="mb-2 text">
+                                                <a href="{{ route('ownerworkeraccount') }}" class="btn btn-dark">Back</a>
+
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>

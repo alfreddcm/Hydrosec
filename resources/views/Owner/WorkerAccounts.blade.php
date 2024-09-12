@@ -23,7 +23,7 @@
         .btn-group .btn {
             display: inline;
             height: fit-content;
-            font-size: 10px;
+            font-size: 1rem;
             margin: 0px;
         }
         table tr{

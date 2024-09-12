@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tower;
+use App\Models\Pump;
 use App\Models\Sensor;
-use App\Models\TowerLogs;
-
 use App\Models\SensorDataHistory;
-
+use App\Models\Tower;
+use App\Models\TowerLogs;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
-
 
 class TowerController extends Controller
 {
@@ -79,7 +77,6 @@ class TowerController extends Controller
             $mode = 0;
         }
 
-
         if ($tower) {
             if ($days > 0) {
 
@@ -102,12 +99,11 @@ class TowerController extends Controller
                     'date_started' => $startdate,
                     'date_end' => $enddate,
                 ]);
-                
+
                 TowerLogs::create([
                     'ID_tower' => $towerId,
                     'activity' => Crypt::encryptString("New cycle started. Tower ID: {$tower->id}, Start date: {$startdate}, End date: {$enddate}"),
                 ]);
-                
 
                 return redirect()->back()->with('success', 'Cycle started successfully!');
             } elseif ($newDays > 0) {
@@ -137,21 +133,64 @@ class TowerController extends Controller
         return redirect()->back()->with('error', 'Tower not found!');
     }
 
-
     public function stop(Request $request)
     {
+        \Log::info('Stop method called', ['request' => $request->all()]);
+
         $towerId = $request->input('tower_id');
-        $tow = Tower::find($towerId);
-    
-        // Encrypt the status to '4' (indicating "done" or "harvesting complete")
-        $tow->status = Crypt::encryptString('4');
-        $tow->save();
+        \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
+
+        $tow = Tower::where('id', $towerId)->first();
+        if (!$tow) {
+            \Log::error('Tower not found', ['towerId' => $towerId]);
+            return redirect()->back()->with('error', 'Tower not found.');
+        }
+
+        \Log::info('Tower retrieved', ['tow' => $tow]);
+
+        try {
+            $stat = Crypt::encryptString('4');
+            \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+
+            $tow->startdate = null;
+            $tow->enddate = null;
+            $tow->status = $stat;
+
+            $tow->save();
+
+            \Log::info('Tower status updated and saved', ['tow' => $tow]);
+        } catch (\Exception $e) {
+            \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Failed to update tower status.');
+        }
+
         $ownerID = $tow->OwnerID;
-    
+        \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
+
+        // Encrypt the default pump status value
+        $defaultPumpStatus = Crypt::encryptString('3');
+
+        // Retrieve sensor data
         $sensorData = Sensor::where('towerid', $towerId)
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-    
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
+
+        // Retrieve pump data
+        $pumps = Pump::where('towerid', $towerId)->get();
+
+        // Example: Format pump data
+        $pumpDataArray = $pumps->map(function ($pump) {
+            return [
+                'status' => $pump->status,
+                'created_at' => $pump->created_at->toDateTimeString(),
+            ];
+        })->toArray();
+
+        \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
+
+        // Format sensor data
         $sensorDataArray = $sensorData->map(function ($data) {
             return [
                 'pH' => $data->pH,
@@ -163,49 +202,179 @@ class TowerController extends Controller
                 'created_at' => $data->created_at->toDateTimeString(),
             ];
         })->toArray();
-    
-        SensorDataHistory::create([
-            'towerid' => $towerId,
-            'OwnerID' => $ownerID,
-            'sensor_data' => json_encode($sensorDataArray),
-            'created_at' => Carbon::now(),
-        ]);
-    
+
+        \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
+
+        // Save sensor data history
+        try {
+            SensorDataHistory::create([
+                'towerid' => $towerId,
+                'OwnerID' => $ownerID,
+                'sensor_data' => json_encode($sensorDataArray),
+                'pump_data' => json_encode($pumpDataArray), // Save pump data to the new column
+                'created_at' => Carbon::now(),
+            ]);
+
+            \Log::info('Sensor and pump data saved');
+        } catch (\Exception $e) {
+            \Log::error('Error saving sensor or pump data', ['exception' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Failed to save data.');
+        }
+
         // Create the activity log
         $activityLog = [
             'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set to done cycle.',
             'Date' => Carbon::now()->toDateTimeString(),
         ];
-    
-        // Insert log into TowerLogs
-        TowerLogs::create([
-            'ID_tower' => $tow->id,
-            'activity' => Crypt::encryptString($activityLog), // If you are storing the activity log as a JSON string
-        ]);
+
+        \Log::info('Activity log created', ['activityLog' => $activityLog]);
+
+        try {
+            TowerLogs::create([
+                'ID_tower' => $tow->id,
+                'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
+            ]);
+
+            \Log::info('Activity log saved');
+        } catch (\Exception $e) {
+            \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+        }
+
         Sensor::truncate();
-    
+        \Log::info('Sensor table truncated');
+
         return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
     }
-    
-    public function restartCycle(Request $request)
-{
-    $tower = Tower::find($request->tower_id);
 
-    if ($tower) {
-        $tower->startdate = null;
-        $tower->enddate = null;
+    public function stopdis(Request $request)
+    {
+        \Log::info('Stop method called', ['request' => $request->all()]);
 
-        $tower->status =Crypt::encryptString('0');
-        $tower->save();
+        $towerId = $request->input('tower_id');
+        \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
 
-        return redirect()->back()->with('success', 'Tower cycle restarted successfully.');
+        $tow = Tower::where('id', $towerId)->first();
+        if (!$tow) {
+            \Log::error('Tower not found', ['towerId' => $towerId]);
+            return redirect()->back()->with('error', 'Tower not found.');
+        }
+
+        \Log::info('Tower retrieved', ['tow' => $tow]);
+
+        try {
+            $stat = Crypt::encryptString('0');
+            \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+
+            $tow->startdate = null;
+            $tow->enddate = null;
+            $tow->status = $stat;
+
+            $tow->save();
+
+            \Log::info('Tower status updated and saved', ['tow' => $tow]);
+        } catch (\Exception $e) {
+            \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Failed to update tower status.');
+        }
+
+        $ownerID = $tow->OwnerID;
+        \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
+
+        // Encrypt the default pump status value
+        $defaultPumpStatus = Crypt::encryptString('3');
+
+        // Retrieve sensor data
+        $sensorData = Sensor::where('towerid', $towerId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
+
+        // Retrieve pump data
+        $pumps = Pump::where('towerid', $towerId)->get();
+
+        // Example: Format pump data
+        $pumpDataArray = $pumps->map(function ($pump) {
+            return [
+                'status' => $pump->status,
+                'created_at' => $pump->created_at->toDateTimeString(),
+            ];
+        })->toArray();
+
+        \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
+
+        // Format sensor data
+        $sensorDataArray = $sensorData->map(function ($data) {
+            return [
+                'pH' => $data->pH,
+                'temperature' => $data->temperature,
+                'nutrientlevel' => $data->nutrientlevel,
+                'light' => $data->light,
+                'iv' => $data->iv,
+                'k' => $data->k,
+                'created_at' => $data->created_at->toDateTimeString(),
+            ];
+        })->toArray();
+
+        \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
+
+        // Save sensor data history
+        try {
+            SensorDataHistory::create([
+                'towerid' => $towerId,
+                'OwnerID' => $ownerID,
+                'sensor_data' => json_encode($sensorDataArray),
+                'pump_data' => json_encode($pumpDataArray), // Save pump data to the new column
+                'created_at' => Carbon::now(),
+            ]);
+
+            \Log::info('Sensor and pump data saved');
+        } catch (\Exception $e) {
+            \Log::error('Error saving sensor or pump data', ['exception' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Failed to save data.');
+        }
+
+        // Create the activity log
+        $activityLog = [
+            'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set to done cycle.',
+            'Date' => Carbon::now()->toDateTimeString(),
+        ];
+
+        \Log::info('Activity log created', ['activityLog' => $activityLog]);
+
+        try {
+            TowerLogs::create([
+                'ID_tower' => $tow->id,
+                'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
+            ]);
+
+            \Log::info('Activity log saved');
+        } catch (\Exception $e) {
+            \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+        }
+
+        Sensor::truncate();
+        \Log::info('Sensor table truncated');
+
+        return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
     }
 
-    return redirect()->back()->with('error', 'Failed to restart the tower cycle.');
-}
+    public function restartCycle(Request $request)
+    {
+        $tower = Tower::find($request->tower_id);
 
+        if ($tower) {
+            $tower->startdate = null;
+            $tower->enddate = null;
 
-  
+            $tower->status = Crypt::encryptString('0');
+            $tower->save();
+
+            return redirect()->back()->with('success', 'Tower cycle restarted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Failed to restart the tower cycle.');
+    }
 
     public function modestat(Request $request, $id)
     {
@@ -217,5 +386,29 @@ class TowerController extends Controller
         ];
 
         return response()->json(['modestat' => $decrypted_data]);
+    }
+
+    private function encrypt_data($data)
+    {
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+
+        try {
+            $data = base64_encode($data);
+            $str_padded = $data;
+            $pad = 16 - strlen($str_padded) % 16;
+            if (strlen($str_padded) % 16) {
+                $str_padded = str_pad($str_padded, strlen($str_padded) + $pad, "\0");
+            }
+
+            $result = openssl_encrypt($str_padded, $method, $key_str, OPENSSL_NO_PADDING, $iv_str);
+            $result = base64_encode($result);
+
+            return $result;
+        } catch (\Exception $e) {
+            Log::error('Encryption error: ' . $e->getMessage());
+            return null;
+        }
     }
 }

@@ -115,8 +115,6 @@
             border: 1px solid #ddd;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -126,8 +124,7 @@
                 <div class="card-title">
 
                     <h2 class="title">
-                        <a href="{{ route('ownermanagetower') }}"
-                           class="previous">&laquo;</a>
+                        <a href="{{ route('ownermanagetower') }}" class="previous">&laquo;</a>
 
                         {{ Crypt::decryptString($towerinfo->name) }}
                     </h2>
@@ -146,19 +143,16 @@
 
                     <div class="row justify-content-center g-1">
                         <div class="col-sm-3">
-                            <h5>Mode: <span id="modeCircle"
-                                      class="circle"></span><span id="modeText"
-                                      class="status-text">N/a</span></h5>
+                            <h5>Mode: <span id="modeCircle" class="circle"></span><span id="modeText"
+                                    class="status-text">N/a</span></h5>
                         </div>
                         <div class="col-sm-3">
-                            <h5>Status: <span id="statusCircle1"
-                                      class="circle"></span><span id="statusText1"
-                                      class="status-text">Inactive</span></h5>
+                            <h5>Status: <span id="statusCircle1" class="circle"></span><span id="statusText1"
+                                    class="status-text">Inactive</span></h5>
                         </div>
                         <div class="col-sm-3">
-                            <h5>Grow Lights : <span id="statusCircle"
-                                      class="circle"></span><span id="statusText"
-                                      class="status-text">Inactive</span></h5>
+                            <h5>Grow Lights : <span id="statusCircle" class="circle"></span><span id="statusText"
+                                    class="status-text">Inactive</span></h5>
                         </div>
                     </div>
 
@@ -170,26 +164,19 @@
                                 <center>
                                     <h3 class="mt-3">Temperature</h3>
 
-                                    <button type="button"
-                                            class="btn btnpop"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#tempmodal"
-                                            data-tower-id="{{ $towerinfo->id }}"
-                                            data-column="temperature">
+                                    <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                        data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
+                                        data-column="temperature">
 
-                                        <img src="{{ asset('images/icon/graph.png') }}"
-                                             class="img-fluid rounded-top"
-                                             alt=""
-                                             style="height:30px"
-                                             ; />
+                                        <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
+                                            alt="" style="height:30px" ; />
                                     </button>
 
                                     <div class="card-body justify-content-center g-4">
                                         <div class="icon ">
                                             <i class="bi bi-thermometer-half">
-                                                <img id="thermometer"
-                                                     src="{{ asset('images/Temp/normal.png') }}"
-                                                     alt="Thermometer">
+                                                <img id="thermometer" src="{{ asset('images/Temp/normal.png') }}"
+                                                    alt="Thermometer">
                                             </i>
                                         </div>
                                         <div class="value">
@@ -206,23 +193,14 @@
                             <div class="card sensor-card">
                                 <center>
                                     <h3 class="mt-3">pH Level</h3>
-                                    <button type="button"
-                                            class="btn btnpop"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#tempmodal"
-                                            data-tower-id="{{ $towerinfo->id }}"
-                                            data-column="pH">
+                                    <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                        data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}" data-column="pH">
 
-                                        <img src="{{ asset('images/icon/graph.png') }}"
-                                             class="img-fluid rounded-top"
-                                             alt=""
-                                             style="height:30px"
-                                             ; />
+                                        <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
+                                            alt="" style="height:30px" ; />
                                     </button>
                                     <div class="icon ">
-                                        <img id="ph-scale"
-                                             src="{{ asset('images/ph/8.png') }}"
-                                             alt="ph-scale">
+                                        <img id="ph-scale" src="{{ asset('images/ph/8.png') }}" alt="ph-scale">
                                     </div>
 
                                     <div class="value">
@@ -239,25 +217,18 @@
                             <div class="card sensor-card">
                                 <center>
                                     <h3 class="mt-3">Nutrient Level</h3>
-                                    <button type="button"
-                                            class="btn btnpop"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#tempmodal"
-                                            data-tower-id="{{ $towerinfo->id }}"
-                                            data-column="nutrientlevel">
+                                    <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                        data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
+                                        data-column="nutrientlevel">
 
-                                        <img src="{{ asset('images/icon/graph.png') }}"
-                                             class="img-fluid rounded-top"
-                                             alt=""
-                                             style="height:30px"
-                                             ; />
+                                        <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
+                                            alt="" style="height:30px" ; />
                                     </button>
 
                                     <div class="card-body justify-content-center g-4">
                                         <div class="icon ">
-                                            <img id="nutrient-image"
-                                                 src="{{ asset('images/Water/100.png') }}"
-                                                 alt="Nutient_volume">
+                                            <img id="nutrient-image" src="{{ asset('images/Water/100.png') }}"
+                                                alt="Nutient_volume">
                                         </div>
                                         <div class="value">
                                             <h4 class="mt-3"><span id="nutrient-value">n/a</span></h4>
@@ -289,71 +260,48 @@
                     <!-- Show Start Cycle Button and Modal if dates are null -->
                     <form>
                         @csrf
-                        <input type="hidden"
-                               name="tower_id"
-                               value="{{ $towerinfo->id }}">
-                        <button type="button"
-                                class="btn btn-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#startCycleModal">
+                        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#startCycleModal">
                             START CYCLE
                         </button>
                     </form>
                 @elseif (Crypt::decryptString($towerinfo->status) == 4)
                     <!-- Show Restart Button if status is 4 -->
-                    <form action="{{ route('tower.restart') }}"
-                          method="POST">
+                    <form action="{{ route('tower.restart') }}" method="POST">
                         @csrf
-                        <input type="hidden"
-                               name="tower_id"
-                               value="{{ $towerinfo->id }}">
-                        <button type="submit"
-                                class="btn btn-primary mb-1">Restart</button>
+                        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                        <button type="submit" class="btn btn-primary mb-1">Restart</button>
                     </form>
                 @else
                     <!-- Show Update Dates Button and Modal if dates are not null -->
                     <form>
                         @csrf
-                        <input type="hidden"
-                               name="tower_id"
-                               value="{{ $towerinfo->id }}">
-                        <button type="button"
-                                class="btn btn-warning"
-                                data-bs-toggle="modal"
-                                data-bs-target="#updateCycleModal">
+                        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                            data-bs-target="#updateCycleModal">
                             UPDATE CYCLE
                         </button>
                     </form>
                 @endif
 
                 <!-- Start Cycle Modal -->
-                <div class="modal fade"
-                     id="startCycleModal"
-                     tabindex="-1"
-                     aria-labelledby="startCycleModalLabel"
-                     aria-hidden="true">
+                <div class="modal fade" id="startCycleModal" tabindex="-1" aria-labelledby="startCycleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form action="{{ route('cycle') }}"
-                                  method="POST">
+                            <form action="{{ route('cycle') }}" method="POST">
                                 @csrf
-                                <input type="hidden"
-                                       name="tower_id"
-                                       value="{{ $towerinfo->id }}">
+                                <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                 <div class="modal-header">
-                                    <h5 class="modal-title"
-                                        id="startCycleModalLabel">Start New Cycle</h5>
-                                    <button type="button"
-                                            class="btn-close"
-                                            data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                    <h5 class="modal-title" id="startCycleModalLabel">Start New Cycle</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label for="days">Select Number of Days:</label>
-                                        <select name="days"
-                                                id="days"
-                                                class="form-control">
+                                        <select name="days" id="days" class="form-control">
                                             @for ($i = 15; $i <= 50; $i++)
                                                 <option value="{{ $i }}">{{ $i }} days</option>
                                             @endfor
@@ -361,11 +309,9 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button"
-                                            class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                    <button type="submit"
-                                            class="btn btn-primary">Start Cycle</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Start Cycle</button>
                                 </div>
                             </form>
                         </div>
@@ -373,60 +319,55 @@
                 </div>
 
                 <!-- Update Cycle Modal -->
-                <div class="modal fade"
-                     id="updateCycleModal"
-                     tabindex="-1"
-                     aria-labelledby="updateCycleModalLabel"
-                     aria-hidden="true">
+                <div class="modal fade" id="updateCycleModal" tabindex="-1" aria-labelledby="updateCycleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form action="{{ route('cycle') }}"
-                                  method="POST">
+                            <form action="{{ route('cycle') }}" method="POST">
                                 @csrf
-                                <input type="hidden"
-                                       name="tower_id"
-                                       value="{{ $towerinfo->id }}">
+                                <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                 <div class="modal-header">
-                                    <h5 class="modal-title"
-                                        id="updateCycleModalLabel">Update Cycle Dates</h5>
-                                    <button type="button"
-                                            class="btn-close"
-                                            data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                    <h5 class="modal-title" id="updateCycleModalLabel">Update Cycle Dates</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label for="newDays">Select New Number of Days:</label>
-                                        <select name="newDays"
-                                                id="newDays"
-                                                class="form-control">
+                                        <select name="newDays" id="newDays" class="form-control">
                                             @for ($i = 1; $i <= 50; $i++)
                                                 <option value="{{ $i }}">{{ $i }} days</option>
                                             @endfor
                                         </select>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button"
-                                            class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                    <button type="submit"
-                                            class="btn btn-warning">Update Dates</button>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="submit" class="btn btn-warning">Update Dates</button>
                                 </div>
                             </form>
+                            <hr>
+                            <!-- Separate the action buttons from the main form footer -->
+                            <div class="d-flex justify-content-center mt-1 mb-2">
+                                <form action="{{ route('tower.stop') }}" method="POST" class="me-2">
+                                    @csrf
+                                    <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to stop the cycle?');">Stop
+                                        Cycle</button>
 
-                            <form action="{{ route('tower.stop') }}"
-                                  method="POST">
-                                @csrf
-                                <input type="hidden"
-                                       name="tower_id"
-                                       value="{{ $towerinfo->id }}">
-                                <button type="submit"
-                                        class="btn btn-danger mb-3">Stop Cycle</button>
-                            </form>
+                                </form>
+                                <form action="{{ route('tower.stopdis') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to disable the tower?');">Disable
+                                        Tower</button>
 
+                                </form>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -445,11 +386,9 @@
                                         <th>Timestamps</th>
                                     </tr>
                                 </thead>
-                                <tbody id="sensor-data-body"
-                                       class="table-group-divider">
+                                <tbody id="sensor-data-body" class="table-group-divider">
                                     <tr>
-                                        <td colspan="3"
-                                            class="text-center">No records available.</td>
+                                        <td colspan="3" class="text-center">No records available.</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
@@ -465,31 +404,20 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade "
-         id="tempmodal"
-         tabindex="-1"
-         role="dialog"
-         aria-labelledby="modalTitleId"
-         aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered"
-             role="document">
+    <div class="modal fade " id="tempmodal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center"
-                        id="modalTitleId">
+                    <h5 class="modal-title text-center" id="modalTitleId">
                         Graph
                     </h5>
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <canvas id="tempChart"> ><img src="{{ asset('images/loading.svg') }}"
-                                 alt=""
-                                 style="height:30px"
-                                 ; /></canvas>
+                        <canvas id="tempChart"> ><img src="{{ asset('images/loading.svg') }}" alt=""
+                                style="height:30px" ; /></canvas>
                     </div>
                 </div>
             </div>

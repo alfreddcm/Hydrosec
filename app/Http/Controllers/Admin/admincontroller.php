@@ -141,8 +141,16 @@ class admincontroller extends Controller
         // Validate the request
         $validator = Validator::make($request->all(), [
             'idd' => 'required',
-            'password' => 'required|min:8|confirmed',
-        ]);
+'password' => [
+        'required',
+        'string',
+        'min:8',
+        'regex:/[a-z]/',
+        'regex:/[A-Z]/',
+        'regex:/[0-9]/',
+        'regex:/[@$!%*?&#]/', 
+        'confirmed',
+    ],        ]);
 
         if ($validator->fails()) {
             Log::warning('Password update failed validation.', ['errors' => $validator->errors(), 'input' => $request->all()]);
@@ -181,8 +189,16 @@ class admincontroller extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'password' => 'required|min:8|confirmed',
-        ]);
+'password' => [
+        'required',
+        'string',
+        'min:8',
+        'regex:/[a-z]/',
+        'regex:/[A-Z]/',
+        'regex:/[0-9]/',
+        'regex:/[@$!%*?&#]/', 
+        'confirmed',
+    ],           ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();

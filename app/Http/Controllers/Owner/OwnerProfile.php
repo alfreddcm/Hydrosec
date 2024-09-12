@@ -10,16 +10,12 @@ use App\Models\Worker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
-
 
 class OwnerProfile extends Controller
 {
-  
 
     //
     public function update(Request $request)
@@ -93,15 +89,23 @@ class OwnerProfile extends Controller
             'tower' => 'required',
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
-        ]);
-    
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&#]/',
+                'confirmed',
+            ]]);
+
         $usernameExists = $this->checkUsernameWorker('username', $request->username);
-    
+
         if ($usernameExists) {
-            $workerCheck2=Worker::get();
+            $workerCheck2 = Worker::get();
             foreach ($workerCheck2 as $data) {
-                if(Crypt::decryptString($data->username) == $credentials->username && Crypt::decryptString($data->status)== '0'){
+                if (Crypt::decryptString($data->username) == $credentials->username && Crypt::decryptString($data->status) == '0') {
                     return back()->withErrors(['error' => 'The this user has disable.']);
                 }
             }
@@ -118,12 +122,11 @@ class OwnerProfile extends Controller
                 'status' => Crypt::encryptString('1'),
 
             ]);
-    
+
             // Redirect with a success message
             return redirect()->route('ownerworkeraccount')->with('success', 'Account successfully created.');
         }
     }
-    
 
     public function checkUsernameWorker($field, $value)
     {
@@ -153,28 +156,36 @@ class OwnerProfile extends Controller
 
     public function workerupdate(Request $request, $id)
     {
-    
+
         $request->validate([
-            'tower'=> 'required',
+            'tower' => 'required',
             'name' => 'required|string|max:255',
             'username' => 'required',
         ]);
 
         $user = Worker::find($id);
-        $user->towerid=$request->tower;
+        $user->towerid = $request->tower;
         $user->name = Crypt::encryptString($request->input('name'));
         $user->username = Crypt::encryptString($request->input('username'));
         $user->save();
-    
+
         return redirect()->route('ownerworkeraccount')->with('success', 'User updated successfully.');
     }
 
     public function workerPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'=> 'required',
-            'password' => 'required',
-        ]);
+            'id' => 'required',
+'password' => [
+        'required',
+        'string',
+        'min:8',
+        'regex:/[a-z]/',
+        'regex:/[A-Z]/',
+        'regex:/[0-9]/',
+        'regex:/[@$!%*?&#]/', 
+        'confirmed',
+    ],           ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -192,11 +203,9 @@ class OwnerProfile extends Controller
         return redirect()->back()->with('success', 'Password updated successfully');
     }
 
-
-    
     public function workerdis(Request $request, $id)
     {
-       
+
         $user = Worker::find($id);
         $user->status = crypt::encryptString('0');
         $user->save();
@@ -205,7 +214,7 @@ class OwnerProfile extends Controller
     }
     public function workeren(Request $request, $id)
     {
-       
+
         $user = Worker::find($id);
         $user->status = crypt::encryptString('1');
         $user->save();

@@ -24,10 +24,6 @@ class PHPMailerController extends Controller
      * @return View|ViewFactory
      */
 
-     public function __construct()
-{
-    $this->middleware(\App\Http\Middleware\SecureHeaders::class);
-}
 
 
     public function index(Request $request)

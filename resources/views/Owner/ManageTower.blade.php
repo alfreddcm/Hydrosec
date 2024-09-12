@@ -112,12 +112,9 @@
                                             <a href="">
 
                                                 <h5 class="card-title text-uppercase text-success">
-                                                    Tower {{ Crypt::decryptString($data->name) }} ready for harvesting!
-                                                    <p class="card-text">
-                                                        <span class="text-muted">Code:</span>
-                                                        <span
-                                                              class="font-weight-bold">{{ Crypt::decryptString($data->towercode) }}</span>
-                                                    </p>
+                                                    Tower {{ Crypt::decryptString($data->name) }} <br>
+                                                    ready for harvesting!
+                                                   
                                                     <center>
                                                         <form action="{{ route('tower.restart') }}"
                                                               method="POST">
@@ -126,7 +123,7 @@
                                                                    name="tower_id"
                                                                    value="{{ $data->id }}">
                                                             <button type="submit"
-                                                                    class="btn btn-primary mb-1">Restart</button>
+                                                                    class="btn btn-primary mt-2 mb-1">Start Cycle Again</button>
                                                         </form>
                                                     </center>
 

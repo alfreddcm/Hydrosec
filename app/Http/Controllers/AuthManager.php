@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Session;
 class AuthManager extends Controller
 {
 
-    public function __construct()
-{
-    $this->middleware(\App\Http\Middleware\SecureHeaders::class);
-}
 
 
     public function login()
@@ -184,8 +180,16 @@ class AuthManager extends Controller
             'username' => 'required|string|max:255',
             'name' => 'required|string|max:250',
             'email' => 'required|email|max:250',
-            'password' => 'required|min:8|confirmed',
-        ]);
+'password' => [
+        'required',
+        'string',
+        'min:8',
+        'regex:/[a-z]/', 
+        'regex:/[A-Z]/', 
+        'regex:/[0-9]/', 
+        'regex:/[@$!%*?&#]/', 
+        'confirmed', 
+    ],        ]);
 
         $username = $request->username;
         $usernameExists = $this->checkUsername('username', $username);
