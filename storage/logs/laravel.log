@@ -31816,3 +31816,146 @@ Did you mean one of these?
 )  
 [2024-09-12 08:35:15] local.INFO: 0.78  
 [2024-09-12 08:35:15] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"C4:D8:D5:02:3E:3F"} 
+[2024-09-12 09:42:21] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:42:21] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:42:21] local.INFO: 14.13  
+[2024-09-12 09:42:25] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:42:25] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:42:25] local.INFO: 0.72  
+[2024-09-12 09:42:25] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-12 09:42:25] local.INFO: array (
+  0 => 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiVzE3NkpvRmRXUTh6ejFRbDdIeTNtaEFyVHlUNWh0SnhqNVN6M2dXViI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1726105345,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:42:25] local.INFO: 3.78  
+[2024-09-12 09:42:30] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:42:30] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:42:30] local.INFO: 3.24  
+[2024-09-12 09:42:31] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-12 09:42:31] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVzE3NkpvRmRXUTh6ejFRbDdIeTNtaEFyVHlUNWh0SnhqNVN6M2dXViI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=',
+  1 => 1726105351,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:42:31] local.INFO: 4.04  
+[2024-09-12 09:42:38] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:42:38] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:42:38] local.INFO: 9.14  
+[2024-09-12 09:42:38] local.INFO: Reset process started. {"email":"alfredmarcelinoii45@gmail.com"} 
+[2024-09-12 09:42:39] local.INFO: select * from `tbl_useraccounts`  
+[2024-09-12 09:42:39] local.INFO: array (
+)  
+[2024-09-12 09:42:39] local.INFO: 3.06  
+[2024-09-12 09:42:39] local.INFO: Email matched with a user. {"email":"alfredmarcelinoii45@gmail.com"} 
+[2024-09-12 09:42:59] local.INFO: OTP sent successfully. {"email":"alfredmarcelinoii45@gmail.com"} 
+[2024-09-12 09:42:59] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-12 09:42:59] local.INFO: array (
+  0 => 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiVzE3NkpvRmRXUTh6ejFRbDdIeTNtaEFyVHlUNWh0SnhqNVN6M2dXViI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6Mjp7aTowO3M6NToiZW1haWwiO2k6MTtzOjc6InN1Y2Nlc3MiO31zOjM6Im5ldyI7YTowOnt9fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvbG9naW4iO31zOjM6Im90cCI7aTo3OTQ3MTk7czo5OiJvdHBfZW1haWwiO3M6Mjk6ImFsZnJlZG1hcmNlbGlub2lpNDVAZ21haWwuY29tIjtzOjU6ImVtYWlsIjtzOjI5OiJhbGZyZWRtYXJjZWxpbm9paTQ1QGdtYWlsLmNvbSI7czo3OiJzdWNjZXNzIjtzOjMyOiJPVFAgaGFzIGJlZW4gc2VudCB0byB5b3VyIGVtYWlsLiI7fQ==',
+  1 => 1726105379,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:42:59] local.INFO: 5.5  
+[2024-09-12 09:43:00] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:43:00] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:00] local.INFO: 3.39  
+[2024-09-12 09:43:01] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-12 09:43:01] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiVzE3NkpvRmRXUTh6ejFRbDdIeTNtaEFyVHlUNWh0SnhqNVN6M2dXViI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC92ZXJpZnktb3RwLWZvcmdvdCI7fXM6Mzoib3RwIjtpOjc5NDcxOTtzOjk6Im90cF9lbWFpbCI7czoyOToiYWxmcmVkbWFyY2VsaW5vaWk0NUBnbWFpbC5jb20iO30=',
+  1 => 1726105381,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:01] local.INFO: 3.88  
+[2024-09-12 09:43:27] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:43:27] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:27] local.INFO: 3.28  
+[2024-09-12 09:43:27] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-12 09:43:27] local.INFO: array (
+  0 => 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiVzE3NkpvRmRXUTh6ejFRbDdIeTNtaEFyVHlUNWh0SnhqNVN6M2dXViI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6NToiZW1haWwiO31zOjM6Im5ldyI7YTowOnt9fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM5OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvdmVyaWZ5LW90cC1mb3Jnb3QiO31zOjM6Im90cCI7aTo3OTQ3MTk7czo5OiJvdHBfZW1haWwiO3M6Mjk6ImFsZnJlZG1hcmNlbGlub2lpNDVAZ21haWwuY29tIjtzOjU6ImVtYWlsIjtzOjI5OiJhbGZyZWRtYXJjZWxpbm9paTQ1QGdtYWlsLmNvbSI7fQ==',
+  1 => 1726105407,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:27] local.INFO: 6.41  
+[2024-09-12 09:43:28] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:43:28] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:28] local.INFO: 3.79  
+[2024-09-12 09:43:28] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-12 09:43:28] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiVzE3NkpvRmRXUTh6ejFRbDdIeTNtaEFyVHlUNWh0SnhqNVN6M2dXViI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9yZXNldC1wYXNzd29yZCI7fXM6Mzoib3RwIjtpOjc5NDcxOTtzOjk6Im90cF9lbWFpbCI7czoyOToiYWxmcmVkbWFyY2VsaW5vaWk0NUBnbWFpbC5jb20iO30=',
+  1 => 1726105408,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:28] local.INFO: 3.69  
+[2024-09-12 09:43:38] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:43:38] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:38] local.INFO: 3.72  
+[2024-09-12 09:43:38] local.INFO: select * from `tbl_useraccounts`  
+[2024-09-12 09:43:38] local.INFO: array (
+)  
+[2024-09-12 09:43:38] local.INFO: 0.78  
+[2024-09-12 09:43:38] local.INFO: update `tbl_useraccounts` set `password` = ?, `tbl_useraccounts`.`updated_at` = ? where `id` = ?  
+[2024-09-12 09:43:38] local.INFO: array (
+  0 => '$2y$12$R0xElp.M9nRw//QM5tIQv.ktvDwKgq6da/yIhUivg517.YgtHzBnG',
+  1 => '2024-09-12 09:43:38',
+  2 => 1,
+)  
+[2024-09-12 09:43:38] local.INFO: 24.52  
+[2024-09-12 09:43:43] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-12 09:43:43] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiVzE3NkpvRmRXUTh6ejFRbDdIeTNtaEFyVHlUNWh0SnhqNVN6M2dXViI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6Nzoic3VjY2VzcyI7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9yZXNldC1wYXNzd29yZCI7fXM6Nzoic3VjY2VzcyI7czozNzoiUGFzc3dvcmQgaGFzIGJlZW4gcmVzZXQgc3VjY2Vzc2Z1bGx5LiI7fQ==',
+  1 => 1726105423,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:43] local.INFO: 9.35  
+[2024-09-12 09:43:44] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-12 09:43:44] local.INFO: array (
+  0 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:44] local.INFO: 5.01  
+[2024-09-12 09:43:44] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-12 09:43:44] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVzE3NkpvRmRXUTh6ejFRbDdIeTNtaEFyVHlUNWh0SnhqNVN6M2dXViI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=',
+  1 => 1726105424,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '9PbTcsPpMDM8HYfaGAtjgE5x4splcvhS5c1NHV53',
+)  
+[2024-09-12 09:43:44] local.INFO: 4.44  
