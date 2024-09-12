@@ -44,20 +44,20 @@
                                 </div>
 
                                 <div class="panel-body">
-                                    @if ($activeOwners->isNotEmpty())
-                                        <div class="dataTable_wrapper">
-                                            <table class="table table-striped table-bordered table-hover"
-                                                   id="dataTables-example">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Name</th>
-                                                        <th>Username</th>
-                                                        <th>Email</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                    <div class="dataTable_wrapper">
+                                        <table class="table table-striped table-bordered table-hover"
+                                               id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Username</th>
+                                                    <th>Email</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($activeOwners->isNotEmpty())
                                                     @foreach ($activeOwners as $owner)
                                                         <tr class="odd gradeX owner-row">
                                                             <td>{{ $owner->id }}</td>
@@ -124,191 +124,159 @@
                                                             </td>
                                                         </tr>
                                                     @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    @else
-                                        <p>No active accounts available</p>
-                                    @endif
-                                </div>
-
-                                <button 
-                                 id="toggleButton" type="button"
-                                class="btn btn-primary">Show/Hide Disabled Accounts
-                        </button>
-                                <div class="dis"
-                                     id="dis"
-                                     style="display:none;">
-                                    <div class="panel-heading">
-                                        Disabled Owner Accounts List
-                                    </div>
-                                    <div class="panel-body">
-                                        @if ($deactivatedOwners->isNotEmpty())
-                                            <div class="dataTable_wrapper">
-                                                <table class="table table-striped table-bordered table-hover"
-                                                       id="dataTables-example">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                            <th>Username</th>
-                                                            <th>Email</th>
-                                                            <th>Action</th>
+                                                @elseif ($deactivatedOwners->isNotEmpty())
+                                                    @foreach ($deactivatedOwners as $owner)
+                                                        <tr class="odd gradeX owner-row">
+                                                            <td>{{ $owner->id }}</td>
+                                                            <td>{{ Crypt::decryptString($owner->name) }}</td>
+                                                            <td>{{ Crypt::decryptString($owner->username) }}</td>
+                                                            <td>{{ Crypt::decryptString($owner->email) }}</td>
+                                                            <td>
+                                                                <form action="{{ route('admin.en', $owner->id) }}"
+                                                                      method="post">
+                                                                    @csrf
+                                                                    <button onclick="return confirm('Are you sure you want to enable this?')"
+                                                                            type="submit"
+                                                                            class="btn btn-info ti-trash btn-rounded">Enable</button>
+                                                                </form>
+                                                            </td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($deactivatedOwners as $owner)
-                                                            <tr class="odd gradeX owner-row">
-                                                                <td>{{ $owner->id }}</td>
-                                                                <td>{{ Crypt::decryptString($owner->name) }}</td>
-                                                                <td>{{ Crypt::decryptString($owner->username) }}</td>
-                                                                <td>{{ Crypt::decryptString($owner->email) }}</td>
-                                                                <td>
-                                                                    <form action="{{ route('admin.en', $owner->id) }}"
-                                                                          method="post">
-                                                                        @csrf
-                                                                        <button onclick="return confirm('Are you sure you want to enable this?')"
-                                                                                type="submit"
-                                                                                class="btn btn-info ti-trash btn-rounded">Enable</button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        @else
-                                            <p>No deactivated accounts available</p>
-                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <p>No active accounts available</p>
+                                                @endif
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-
-                                <button type="button"
-                                        class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#addAccountModal">
-                                    Add Account
-                                </button>
                             </div>
+
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addAccountModal">
+                                Add Account
+                            </button>
                         </div>
                     </div>
                 </div>
-            </nav>
         </div>
+        </nav>
+    </div>
 
-        <!-- Add Account Modal -->
-        <div class="modal fade"
-             id="addAccountModal"
-             tabindex="-1"
-             aria-labelledby="addAccountModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"
-                            id="addAccountModalLabel">Add Account</h5>
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('PUserAccounts') }}"
-                              id="addAccountForm"
-                              method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="name"
-                                       class="form-label">Name</label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="name"
-                                       name="name"
-                                       required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="username"
-                                       class="form-label">Username</label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="username"
-                                       name="username"
-                                       required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email"
-                                       class="form-label">Email</label>
-                                <input type="email"
-                                       class="form-control"
-                                       id="email"
-                                       name="email"
-                                       required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password"
-                                       class="form-label">Password</label>
-                                <input type="password"
-                                       class="form-control"
-                                       id="password"
-                                       name="password"
-                                       required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal">Close</button>
-                        <button type="submit"
-                                class="btn btn-primary"
-                                form="addAccountForm">Add Account</button>
-                    </div>
+    <!-- Add Account Modal -->
+    <div class="modal fade"
+         id="addAccountModal"
+         tabindex="-1"
+         aria-labelledby="addAccountModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"
+                        id="addAccountModalLabel">Add Account</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('PUserAccounts') }}"
+                          id="addAccountForm"
+                          method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name"
+                                   class="form-label">Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="name"
+                                   name="name"
+                                   required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username"
+                                   class="form-label">Username</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="username"
+                                   name="username"
+                                   required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email"
+                                   class="form-label">Email</label>
+                            <input type="email"
+                                   class="form-control"
+                                   id="email"
+                                   name="email"
+                                   required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password"
+                                   class="form-label">Password</label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="password"
+                                   name="password"
+                                   required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                    <button type="submit"
+                            class="btn btn-primary"
+                            form="addAccountForm">Add Account</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Styles for Worker List Display -->
-        <style>
-            #toggleButton {
-                border: none;
-                background: none;
-            }
+    <!-- Styles for Worker List Display -->
+    <style>
+        #toggleButton {
+            border: none;
+            background: none;
+        }
 
-            #toggleButton:hover {
-                text-decoration: underline;
-                color: rgb(0, 0, 0);
-            }
+        #toggleButton:hover {
+            text-decoration: underline;
+            color: rgb(0, 0, 0);
+        }
 
-            .dis {
-                display: none;
-                /* Initially hide the div */
-            }
+        .dis {
+            display: none;
+            /* Initially hide the div */
+        }
 
-            .workerlist {
-                display: none;
-            }
+        .workerlist {
+            display: none;
+        }
 
-            .owner-row:hover+.workerlist,
-            .workerlist:hover {
-                display: table-row;
-            }
+        .owner-row:hover+.workerlist,
+        .workerlist:hover {
+            display: table-row;
+        }
 
-            .workerlist td {
-                padding: 3px;
-                border-top: none;
-            }
+        .workerlist td {
+            padding: 3px;
+            border-top: none;
+        }
 
-            .worker-table {
-                margin: 2px;
-                width: 100%;
-            }
+        .worker-table {
+            margin: 2px;
+            width: 100%;
+        }
 
-            .worker-table th,
-            .worker-table td {
-                padding: 5px;
-                text-align: left;
-            }
-        </style>
+        .worker-table th,
+        .worker-table td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
     </div>
 
     <script>

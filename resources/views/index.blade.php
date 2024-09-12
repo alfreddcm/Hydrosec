@@ -34,10 +34,12 @@
                                 @csrf
                                 <input type="email"
                                        name="email"
+                                       id="emailInput"
                                        placeholder="Enter email to have access"
                                        class="form-control bg-white border-1 rounded-4 shadow-none px-4 py-3 w-100"
                                        required>
                                 <button id="registerBtn"
+                                        type="submit"
                                         class="btn btn-primary rounded-4 px-3 py-2 position-absolute align-items-center m-1 end-0">Register</button>
                             </form>
                         </div>
@@ -92,8 +94,10 @@
                     }
                 });
             };
-            // Attach event listener to the button
-            document.getElementById('registerBtn').addEventListener('click', showLoading);
+            document.getElementById('form').addEventListener('submit', function(event) {
+                showLoading(); // Call the loading function when form is submitted
+
+            });
         </script>
     </body>
     <footer class="fixed-bottom">

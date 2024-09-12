@@ -9,7 +9,7 @@
         use Illuminate\Support\Facades\Crypt;
 
         $towerinfo = Tower::where('OwnerID', Auth::id())->first();
-        $wokername = Worker::where('towerid', $towerinfo->id)->first();
+        $wokername = Worker::where('towerid', $towerinfo->id)->get();
     @endphp
     <style>
         canvas {
@@ -110,11 +110,13 @@
         .nutcard {
             margin: 10px;
             width: 90%;
-            height: 200px;
+            height: max-content;
             border-radius: 10px;
             border: 1px solid #ddd;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -131,9 +133,9 @@
                     </h2>
                     @if ($wokername)
                         <p class="card-text">
-                            Assgned User:
+                            Assigned User: <br>
                             @foreach ($wokername as $item)
-                                {{ Crypt::decryptString($item->name) }} ,
+                                {{ Crypt::decryptString($item->name) }} &nbsp;
                             @endforeach
                         </p>
                     @else
@@ -436,7 +438,7 @@
                     <div class="table-container">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-borderless table-primary align-middle">
-                                <thead class="table-light sticky-top">
+                                <thead class="table-light sticky-top ">
                                     <tr>
                                         <th>No.</th>
                                         <th>Status</th>
@@ -637,10 +639,10 @@
                                 }
 
                                 var row = `<tr class="table-light">
-                        <td>${index + 1}</td>
-                        <td ${textColor}>${status}</td>
-                        <td>${item.timestamp}</td>
-                    </tr>`;
+                                            <td>${index + 1}</td>
+                                            <td ${textColor}>${status}</td>
+                                            <td>${item.timestamp}</td>
+                                                                 </tr>`;
                                 tbody.append(row);
                             });
                         }

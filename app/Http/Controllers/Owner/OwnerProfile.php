@@ -110,7 +110,7 @@ class OwnerProfile extends Controller
         } else {
 
             Worker::create([
-                'tower' => $request->tower,
+                'towerid' => $request->tower,
                 'username' => Crypt::encryptString($request->username),
                 'name' => Crypt::encryptString($request->name),
                 'password' => Hash::make($request->password),

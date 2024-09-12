@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Mail\Alert;
 use App\Mail\OtpMail;
-use App\Models\Owner; 
+use App\Models\Owner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -21,9 +21,8 @@ class ResetPassword extends Controller
 
     public function reset(Request $request)
     {
-        // Log the start of the reset process
+        try{
         Log::info('Reset process started.', ['email' => $request->email]);
-
         $request->validate([
             'email' => 'required|email',
         ]);
@@ -65,7 +64,11 @@ class ResetPassword extends Controller
 
         Log::warning('No user found with the provided email.', ['email' => $inputEmail]);
         return back()->with('error', 'User not found.');
+    }catch (ThrottleRequestsException $e) {
+        Log::warning('Too many OTP requests.', ['email' => $request->email]);
+        return back()->with('error', 'Too many requests. Please wait a while before trying again.');
     }
+}
     public function showOtpForgotForm()
     {
         return view('Reset.verifyotp');

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
@@ -38,7 +39,20 @@ class AuthManager extends Controller
 
     public function loginPost(Request $request)
     {
+        // Throttle the login attempts based on the username and IP address
+        $maxAttempts = 5; // Max attempts before lockout
+        $decayMinutes = 15; // Lockout time in minutes
+        $throttleKey = strtolower($request->input('username')) . '|' . $request->ip();
 
+        // Check if the user has exceeded the max login attempts
+        if (RateLimiter::tooManyAttempts($throttleKey, $maxAttempts)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            return back()->withErrors([
+                'username' => 'Too many login attempts. Please try again in ' . $seconds . ' seconds.',
+            ]);
+        }
+
+        // Validate CAPTCHA
         $request->validate([
             'g-recaptcha-response' => 'required',
         ]);
@@ -57,7 +71,6 @@ class AuthManager extends Controller
             return Redirect::back()->with('error', 'CAPTCHA verification failed.');
         }
 
-        // Validate username and password
         $credentials = $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -66,66 +79,94 @@ class AuthManager extends Controller
         $username = $credentials['username'];
         $password = $credentials['password'];
 
-            // Check Worker credentials
-            $workers = Worker::all();
-            foreach ($workers as $user) {
-                try {
-                    if (Crypt::decryptString($user->status) == '1') {
-                        $storedUsername = Crypt::decryptString($user->username);
-                        $storedPassword = $user->password;
-        
-                        if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                            Auth::guard('worker')->loginUsingId($user->id);
-                            $request->session()->regenerate();
-                            return redirect()->route('workerdashboard')
-                            ->with('success', 'You have successfully logged in as Worker!');                        }
+        // Check Worker credentials
+        $workers = Worker::all();
+        foreach ($workers as $user) {
+            try {
+                if (Crypt::decryptString($user->status) == '1') {
+                    $storedUsername = Crypt::decryptString($user->username);
+                    $storedPassword = $user->password;
+
+                    if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                        Auth::guard('worker')->loginUsingId($user->id);
+                        $request->session()->regenerate();
+                        RateLimiter::clear($throttleKey);
+
+                        return redirect()->route('workerdashboard')->with('success', 'You have successfully logged in as Worker!');
                     }
-                } catch (DecryptException $e) {
-                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
-                }
-            }
-        
-            // Check Admin credentials
-            $admins = Admin::all();
-            foreach ($admins as $user) {
-                try {
-                    if (Crypt::decryptString($user->status) == '1') {
-                        $storedUsername = Crypt::decryptString($user->username);
-                        $storedPassword = $user->password;
-        
-                        if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                            Auth::guard('admin')->loginUsingId($user->id);
-                            $request->session()->regenerate();
-                            return redirect()->route('admindashboard')
-                            ->with('success', 'You have successfully logged in as Admin!');                        }
+                    RateLimiter::hit($throttleKey);
+
+                } else {
+                    if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+
+                        return Redirect::back()->with('error', 'Account is not enable. Contact admin.');
+
                     }
-                } catch (DecryptException $e) {
-                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
                 }
+            } catch (DecryptException $e) {
+                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
             }
-        
-            // Check Owner credentials
-            $owners = Owner::all();
-            foreach ($owners as $user) {
-                try {
-                    if (Crypt::decryptString($user->status) == '1') {
-                        $storedUsername = Crypt::decryptString($user->username);
-                        $storedPassword = $user->password;
-        
-                        if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
-                            Auth::guard('owner')->loginUsingId($user->id);
-                            $request->session()->regenerate();
-                            return redirect()->route('ownerdashboard')
-                            ->with('success', 'You have successfully logged in as Owner!');                        }
+        }
+
+        // Check Admin credentials
+        $admins = Admin::all();
+        foreach ($admins as $user) {
+            try {
+                if (Crypt::decryptString($user->status) == '1') {
+                    $storedUsername = Crypt::decryptString($user->username);
+                    $storedPassword = $user->password;
+
+                    if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                        Auth::guard('admin')->loginUsingId($user->id);
+                        $request->session()->regenerate();
+                        RateLimiter::clear($throttleKey);
+
+                        return redirect()->route('admindashboard')->with('success', 'You have successfully logged in as Admin!');
                     }
-                } catch (DecryptException $e) {
-                    return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
+                    RateLimiter::hit($throttleKey);
+
+                } else {
+                    if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+
+                        return Redirect::back()->with('error', 'Account is not enable. Contact admin.');
+
+                    }
                 }
+            } catch (DecryptException $e) {
+                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
             }
-                
-        
+        }
+
+        // Check Owner credentials
+        $owners = Owner::all();
+        foreach ($owners as $user) {
+            try {
+                if (Crypt::decryptString($user->status) == '1') {
+                    $storedUsername = Crypt::decryptString($user->username);
+                    $storedPassword = $user->password;
+
+                    if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+                        Auth::guard('owner')->loginUsingId($user->id);
+                        $request->session()->regenerate();
+                        RateLimiter::clear($throttleKey);
+
+                        return redirect()->route('ownerdashboard')->with('success', 'You have successfully logged in as Owner!');
+                    }
+                    RateLimiter::hit($throttleKey);
+                } else {
+                    if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
+
+                        return Redirect::back()->with('error', 'Account is not enable. Contact admin.');
+
+                    }
+                }
+            } catch (DecryptException $e) {
+                return Redirect::back()->with('error', 'Invalid encryption key. Please contact support.');
+            }
+        }
+
         return back()->withErrors([
-            'username' => 'Your provided credentials do not match in our records.',
+            'username' => 'Your provided credentials do not match our records.',
             'password' => 'The password you entered is incorrect.',
         ]);
     }
@@ -203,22 +244,22 @@ class AuthManager extends Controller
     {
         $ownerCheck = Owner::get()->contains(function ($owner) use ($field, $value) {
             return Crypt::decryptString($owner->status) === '0' &&
-                   Crypt::decryptString($owner->$field) === $value;
+            Crypt::decryptString($owner->$field) === $value;
         });
-    
+
         $adminCheck = Admin::get()->contains(function ($admin) use ($field, $value) {
             return Crypt::decryptString($admin->status) === '0' &&
-                   Crypt::decryptString($admin->$field) === $value;
+            Crypt::decryptString($admin->$field) === $value;
         });
-    
+
         $workerCheck = Worker::get()->contains(function ($worker) use ($field, $value) {
             return Crypt::decryptString($worker->status) === '0' &&
-                   Crypt::decryptString($worker->$field) === $value;
+            Crypt::decryptString($worker->$field) === $value;
         });
-    
+
         return $ownerCheck || $adminCheck || $workerCheck;
     }
-    
+
 }
 
 // $subject=table::where('scuriculim','1','strand_id','1')->get();

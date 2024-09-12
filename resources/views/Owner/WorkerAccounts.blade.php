@@ -20,10 +20,19 @@
 
     @endphp
     <style>
-        .btn-group .btn{
-            margin: 2px;
+        .btn-group .btn {
             display: inline;
             height: fit-content;
+            font-size: 10px;
+            margin: 0px;
+        }
+        table tr{
+            height: 10%;
+        }
+        .btnpop {
+            position: absolute;
+            bottom: 1%;
+            right: 1%;
         }
     </style>
     <div class="container">
@@ -48,14 +57,10 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="panel-heading">
-                                    Owner Worker Accounts List
-                                </div>
 
                                 <div class="panel-body">
                                     <div class="dataTable_wrapper">
                                         <!-- Active Accounts Table -->
-                                        <h6>Active Accounts</h6>
                                         <table class="table table-striped table-bordered table-hover"
                                                id="dataTables-example-active">
                                             <thead>
@@ -78,15 +83,35 @@
                                                             <td>
                                                                 <div class="btn-group">
                                                                     <a href="{{ route('ownerworker.edit', $user->id) }}"c1
-                                                                        class="btn btn-primary btn-rounded">Edit</a>
+                                                                       class="btn btn-primary btn-rounded">Edit</a>
                                                                     <form action="{{ route('ownerworker.dis', $user->id) }}"
-                                                                        method="POST">
+                                                                          method="POST">
                                                                         @csrf
-                                                                        <button
-                                                                            onclick="return confirm('Are you sure you want to delete this?')"
-                                                                            type="submit"
-                                                                            class="btn btn-danger btn-rounded">
+                                                                        <button onclick="return confirm('Are you sure you want to delete this?')"
+                                                                                type="submit"
+                                                                                class="btn btn-danger btn-rounded">
                                                                             Disable
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                    @if (Crypt::decryptString($user->status) == '0')
+                                                        <tr class="odd gradeX">
+                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ Crypt::decryptString($user->name) }}</td>
+                                                            <td>{{ Crypt::decryptString($user->username) }}</td>
+                                                            <td>{{ Crypt::decryptString($user->tower_name) }}</td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <form action="{{ route('ownerworker.en', $user->id) }}"
+                                                                          method="POST">
+                                                                        @csrf
+                                                                        <button onclick="return confirm('Are you sure you want to enable this?')"
+                                                                                type="submit"
+                                                                                class="btn btn-secondary ti-trash btn-rounded">
+                                                                            Enable
                                                                         </button>
                                                                     </form>
                                                                 </div>
@@ -99,51 +124,7 @@
                                         </table>
 
                                         <!-- Disabled Accounts Table -->
-                                        <button onclick="toggleDisabledAccounts()"
-                                                class="btn btn-primary">Show/Hide Disabled Accounts</button>
-                                        
-                                                <div id="disabledAccountsSection"
-                                             style="display:none;">
 
-                                            <h6>Disabled Accounts</h6>
-                                            <table class="table table-striped table-bordered table-hover"
-                                                   id="dataTables-example-disabled">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Name</th>
-                                                        <th>Username</th>
-                                                        <th>Tower</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($accs as $user)
-                                                        @if (Crypt::decryptString($user->status) == '0')
-                                                            <tr class="odd gradeX">
-                                                                <td>{{ $loop->iteration }}</td>
-                                                                <td>{{ Crypt::decryptString($user->name) }}</td>
-                                                                <td>{{ Crypt::decryptString($user->username) }}</td>
-                                                                <td>{{ Crypt::decryptString($user->tower_name) }}</td>
-                                                                <td>
-                                                                    <div class="btn-group">
-                                                                        <form action="{{ route('ownerworker.en', $user->id) }}"
-                                                                              method="POST">
-                                                                            @csrf
-                                                                            <button onclick="return confirm('Are you sure you want to enable this?')"
-                                                                                    type="submit"
-                                                                                    class="btn btn-secondary ti-trash btn-rounded">
-                                                                                Enable
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +135,7 @@
             </div>
         </div>
         <a href="{{ route('addworker') }}"
-           class="btn btn-success mt-1">
+           class="btn btn-success mt-1 btnpop">
             Add Worker Account
         </a>
     </div>

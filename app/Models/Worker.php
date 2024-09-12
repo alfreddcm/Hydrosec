@@ -19,11 +19,12 @@ class Worker extends Authenticatable
     protected $table = 'tbl_workeraccounts'; // Specify the table name
 
     protected $fillable = [
+        'towerid',
         'username',
         'name',
         'password',
         'status',
-        'OwnerID'
+        'OwnerID',
     ];
 
     /**

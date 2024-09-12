@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Admin\admincontroller;
 use App\Http\Controllers\AuthManager;
+use App\Http\Controllers\Auth\ResetPassword;
 use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\PHPMailerController;
-use App\Http\Controllers\Auth\ResetPassword;
 use App\Http\Controllers\SensorData;
 use App\Http\Controllers\Towercontroller;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +27,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/cancel', [PHPMailerController::class, 'cancel'])->name('cancel');
     Route::get('/resend-otp', [PHPMailerController::class, 'resendOtp'])->name('resendotp');
 
-    Route::post('/forgot-password', [ResetPassword::class, 'reset'])->name('forgot-password');
+    Route::post('/forgot-password', [ResetPassword::class, 'reset'])->name('forgot-password')->middleware('throttle:5,1');;
 
     Route::get('/verify-otp-forgot', [ResetPassword::class, 'showOtpForgotForm'])->name('verifyotpforgot');
     Route::post('/verify-otp-forgot', [ResetPassword::class, 'verifyOtpForgot'])->name('verifyotpforgotpost');
@@ -43,31 +43,17 @@ Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 // Route::middleware(['auth:owner', 'singlesession'])->group(function () {
 
 Route::middleware('auth:owner')->group(function () {
-    Route::get('/Owner/dashboard', function () {
-        return view('Owner.dashboard');
-    })->name('ownerdashboard');
-
-    Route::get('/Owner/ManageTower', function () {
-        return view('Owner.ManageTower');
-    })->name('ownermanagetower');
-    Route::get('/Owner/WorkerAccounts', function () {
-        return view('Owner.WorkerAccounts');
-    })->name('ownerworkeraccount');
-    Route::get('/Owner/Manageprofile', function () {
-        return view('Owner.Manageprofile');
-    })->name('ownermanageprofile');
+    Route::get('/Owner/dashboard', function () { return view('Owner.dashboard'); })->name('ownerdashboard');
+    Route::get('/Owner/ManageTower', function () { return view('Owner.ManageTower'); })->name('ownermanagetower');
+    Route::get('/Owner/WorkerAccounts', function () { return view('Owner.WorkerAccounts'); })->name('ownerworkeraccount');
+   
+    Route::get('/Owner/Manageprofile', function () { return view('Owner.Manageprofile'); })->name('ownermanageprofile');
     Route::post('/Owner/Manageprofile', [OwnerProfile::class, 'update'])->name('owner.profile.update');
 
-    Route::get('/Owner/Updatepassword', function () {
-        return view('Owner.Updatepassword');
-    })->name('updatepassword');
-    Route::get('/Owner/Addworker', function () {
-        return view('Owner.Addworker');
-    })->name('addworker');
+    Route::get('/Owner/Updatepassword', function () { return view('Owner.Updatepassword'); })->name('updatepassword');
+    Route::get('/Owner/Addworker', function () { return view('Owner.Addworker'); })->name('addworker');
 
-    Route::post('/Owner/Addworker', function () {
-        return view('Owner.Addworker');
-    })->name('addworkerpost');
+    Route::post('/Owner/Addworker', function () { return view('Owner.Addworker'); })->name('addworkerpost');
     Route::post('/Owner/Addworker', [OwnerProfile::class, 'addworker'])->name('addownerworkeraccount');
 
     Route::get('/Owner/edit/{id}', [OwnerProfile::class, 'edit'])->name('ownerworker.edit');
@@ -81,9 +67,7 @@ Route::middleware('auth:owner')->group(function () {
     Route::get('/startcycle', [SensorData::class, 'startcycle'])->name('startcycle');
 
     Route::post('/addtower', [Towercontroller::class, 'store'])->name('posttower');
-    Route::get('/towerdata/{id}', function () {
-        return view('Owner.tower');
-    })->name('towerdata');
+    Route::get('/towerdata/{id}', function () { return view('Owner.tower'); })->name('towerdata');
     Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/pump-data/{id}', [SensorData::class, 'getPump']);
@@ -97,17 +81,12 @@ Route::middleware('auth:owner')->group(function () {
 });
 
 Route::middleware('auth:worker')->group(function () {
-    Route::get('/Worker/dashboard', function () {
-        return view('Worker.dashboard');
-    })->name('workerdashboard');
-    Route::get('/Worker/Nutrient', function () {
-        return view('Worker.Nutrient');
-    })->name('workernutrient');
+    Route::get('/Worker/dashboard', function () { return view('Worker.dashboard'); })->name('workerdashboard');
+    Route::get('/Worker/Nutrient', function () { return view('Worker.Nutrient'); })->name('workernutrient');
 
     Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);
-
     Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);

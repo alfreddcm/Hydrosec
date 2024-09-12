@@ -32,6 +32,7 @@
             ->orderBy('tbl_towerlogs.created_at', 'desc')
             ->get();
         $tower = Tower::where('OwnerID', Auth::id());
+        $count=0;
     @endphp
     <style>
         .table-responsive {
@@ -158,6 +159,7 @@
                 <table class="table table-striped">
                     <thead class="thead-light">
                         <tr>
+                            <th>No.</th>
                             <th>Tower Name</th>
                             <th>Tower Code</th>
                             <th>Alert Activity</th>
@@ -167,6 +169,7 @@
                     <tbody>
                         @foreach ($towerLogs as $log)
                             <tr>
+                                <td>{{$count=$count+1}}</td>
                                 <td>{{ Crypt::decryptString($log->tower_name) }}</td>
                                 <td>{{ Crypt::decryptString($log->tower_code) }}</td>
                                 <td>{{ Crypt::decryptString($log->activity) }}</td>
