@@ -34,7 +34,8 @@
                                 
                                 <form method="POST" action="{{ route('reset-password-form') }}">
                                     @csrf
-                                    
+                                                        <span>Password must be have atleast one uppercase and lowercase letter, number and a special character. </span>
+
                                     <div class="mb-3">
                                         <label for="password" class="form-label">New Password:</label>
                                         <input type="password" class="form-control" id="password" name="password" required>

@@ -66,6 +66,8 @@
       <div class="modal-body">
       <form id="passwordForm" action="{{ route('admin.updatePassword')}}" method="post">
       @csrf
+                          <span>Password must be have atleast one uppercase and lowercase letter, number and a special character. </span>
+
           <div class="form-group">
             <label for="password">New Password</label>
             <input type="password" class="form-control" id="password" name="password" required>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\Alert;
 use App\Models\Admin;
-use App\Models\Owner;
+use App\Models\Owner; 
 use App\Models\Worker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;

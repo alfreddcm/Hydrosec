@@ -55,23 +55,23 @@ class AuthManager extends Controller
         }
 
         // Validate CAPTCHA
-        $request->validate([
-            'g-recaptcha-response' => 'required',
-        ]);
+        // $request->validate([
+        //     'g-recaptcha-response' => 'required',
+        // ]);
 
-        $recaptchaResponse = $request->input('g-recaptcha-response');
-        $recaptchaSecret = env('RECAPTCHA_SECRET_KEY');
+        // $recaptchaResponse = $request->input('g-recaptcha-response');
+        // $recaptchaSecret = env('RECAPTCHA_SECRET_KEY');
 
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => $recaptchaSecret,
-            'response' => $recaptchaResponse,
-        ]);
+        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        //     'secret' => $recaptchaSecret,
+        //     'response' => $recaptchaResponse,
+        // ]);
 
-        $responseBody = $response->json();
+        // $responseBody = $response->json();
 
-        if (!$responseBody['success']) {
-            return Redirect::back()->with('error', 'CAPTCHA verification failed.');
-        }
+        // if (!$responseBody['success']) {
+        //     return Redirect::back()->with('error', 'CAPTCHA verification failed.');
+        // }
 
         $credentials = $request->validate([
             'username' => 'required',

@@ -97,7 +97,6 @@ class OwnerProfile extends Controller
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
                 'regex:/[@$!%*?&#]/',
-                'confirmed',
             ]]);
 
         $usernameExists = $this->checkUsernameWorker('username', $request->username);
@@ -151,7 +150,7 @@ class OwnerProfile extends Controller
         $user->name = Crypt::decryptString($user->name);
         $user->username = Crypt::decryptString($user->username);
 
-        return view('owner.edit', compact('user'));
+        return view('Owner.edit', compact('user'));
     }
 
     public function workerupdate(Request $request, $id)

@@ -112,6 +112,8 @@
                           method="post">
                         @csrf
                         <div class="form-group">
+                                                <span>Password must be have atleast one uppercase and lowercase letter, number and a special character. </span>
+
                             <label for="password">New Password</label>
                             <input type="password"
                                    class="form-control"

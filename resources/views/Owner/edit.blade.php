@@ -104,6 +104,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <span>Password must be have atleast one uppercase and lowercase letter, number and a special character. </span>
                     <form id="passwordForm"
                           action="{{ route('owner.workerupdatePassword', ['id' => $user->id]) }}"
                           method="post">
