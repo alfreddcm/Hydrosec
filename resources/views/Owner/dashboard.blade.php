@@ -1,6 +1,7 @@
 @extends('Owner/sidebar')
 @section('title', 'Dashboard')
 @section('content')
+
     @php
 
         use App\Models\Owner;
@@ -32,7 +33,7 @@
             ->orderBy('tbl_towerlogs.created_at', 'desc')
             ->get();
         $tower = Tower::where('OwnerID', Auth::id());
-        $count=0;
+        $count = 0;
     @endphp
     <style>
         .table-responsive {
@@ -86,6 +87,36 @@
         a {
             text-decoration: none;
         }
+
+        canvas {
+            width: 20%;
+            !important
+        }
+
+        .data .card {
+            min-height: 300px;
+            /* Set the minimum height for the card */
+            margin-bottom: 20px;
+            /* Add some spacing below each card */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            /* Add a slight shadow for visual depth */
+            border-radius: 10px;
+            /* Round the corners of the card */
+            overflow: hidden;
+            /* Ensure content doesn't overflow */
+        }
+
+        .data .card-body {
+            padding: 20px;
+            /* Add some padding inside the card */
+        }
+
+        .data .card-body canvas {
+            height: 200px;
+            /* Set a fixed height for the charts */
+            width: 100% !important;
+            /* Ensure the charts stretch the full width */
+        }
     </style>
     <div class="container">
         <div class="row">
@@ -120,11 +151,11 @@
                         <div class="card-body text-start">
                             <span class="card-text count">{{ $towerCount }}</span>
 
-                            <img src="{{ asset('images/icon/towericon.png') }}"
-                                 alt="towericon">
+                            <img src="{{ asset('images/icon/towericon.png') }}" alt="towericon">
 
                         </div>
-                    </div>            </a>
+                    </div>
+                </a>
 
             </div>
             <div class="col-md-3 mb-4">
@@ -137,8 +168,7 @@
                         <div class="card-body">
                             <span class="card-text count">{{ $enabledWorkerCount }}</span>
 
-                            <img src="{{ asset('images/icon/workericon.png') }}"
-                                 alt="towericon">
+                            <img src="{{ asset('images/icon/workericon.png') }}" alt="towericon">
 
                         </div>
                     </div>
@@ -149,12 +179,54 @@
             <!-- Worker Count Card -->
 
         </div>
+       <div class="container data">
+         {{--@ if($allDecryptedData)  --}}
+   @foreach ($allDecryptedData as $towerCode => $towerData)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Sensor Data for Tower {{ $towerCode }} 
+                    <br>
+                    <small>From: {{ $towerData['startDate'] }} To: {{ $towerData['endDate'] }}</small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- pH Graph Column -->
+                        <div class="col-md-3">
+                            <h5>pH Level</h5>
+                            <canvas id="pHGraph-{{ $towerCode }}"></canvas>
+                        </div>
 
-        </tbody>
-        </table>
+                        <!-- Temperature Graph Column -->
+                        <div class="col-md-3">
+                            <h5>Temperature</h5>
+                            <canvas id="temperatureGraph-{{ $towerCode }}"></canvas>
+                        </div>
+
+                        <!-- Nutrient Level Graph Column -->
+                        <div class="col-md-3">
+                            <h5>Nutrient Level</h5>
+                            <canvas id="nutrientGraph-{{ $towerCode }}"></canvas>
+                        </div>
+
+                        <!-- Light Graph Column -->
+                        <div class="col-md-3">
+                            <h5>Light Level</h5>
+                            <canvas id="lightGraph-{{ $towerCode }}"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+    {{-- @ endif --}}
+</div>
 
         <div class="mb-4">
-            <h2>Tower Alert Logs</h2>
+            <h4>Tower Alert Logs</h4>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="thead-light">
@@ -169,7 +241,7 @@
                     <tbody>
                         @foreach ($towerLogs as $log)
                             <tr>
-                                <td>{{$count=$count+1}}</td>
+                                <td>{{ $count = $count + 1 }}</td>
                                 <td>{{ Crypt::decryptString($log->tower_name) }}</td>
                                 <td>{{ Crypt::decryptString($log->tower_code) }}</td>
                                 <td>{{ Crypt::decryptString($log->activity) }}</td>
@@ -181,5 +253,11 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
+    <script>
+   
+</script>
 
 @endsection

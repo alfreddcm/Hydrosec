@@ -25,27 +25,20 @@ class UpdateTowerMode extends Command
         $method = "AES-128-CBC";
 
    
-        $decrypted_key = $this->decrypt_data('swzntOuSjKl+rAReDbop8VTQbiL1IgK00sJzPRPBLDQ=', $method, $key_str, $iv_str);
-        $decrypted_iv = $this->decrypt_data('rOGXBDvza0/L+iOKdqhPnZNkbvtTM5OOQCVKeNaaHtg=', $method, $key_str, $iv_str);
+        $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp', $method, $key_str, $iv_str);
+        $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);
+        // $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
 
-        $decrypted_ph = (float) $this->decrypt_data('8J1nzZVod0z1JJzTxT9gSw==', $method, $decrypted_key, $decrypted_iv);
-        $decrypted_temp = (float) $this->decrypt_data('DI7ablQ+9XKj2xzS+m0IOw==', $method, $decrypted_key, $decrypted_iv);
-        $decrypted_nutrient = (float) $this->decrypt_data('fewyK8HNilBsqEEWMd0tzg==', $method, $decrypted_key, $decrypted_iv);
-        $decrypted_light = $this->decrypt_data('/Ne4IqGeZC7r91EdxPIZCQ==', $method, $decrypted_key, $decrypted_iv);
-        $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtA==', $method, $key_str, $iv_str);
-        $decrypted_mac =$this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtA==","macAddress', $method, $key_str, $iv_str);
-        $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
-
-        Log::info('Decrypted Data from tower:', [
-            'key' => $decrypted_key,
-            'iv' => $decrypted_iv,
-            'phValue' => $decrypted_ph,
-            'temp' => $decrypted_temp,
-            'waterLevel' => $decrypted_nutrient,
-            'light' => $decrypted_light,
+        Log::info('loglog:', [
+            // 'key' => $decrypted_key,
+            // 'iv' => $decrypted_iv,
+            // 'phValue' => $decrypted_ph,
+            // 'temp' => $decrypted_temp,
+            // 'waterLevel' => $decrypted_nutrient,
+            // 'light' => $decrypted_light,
             'ipAddress' => $decrypted_ip,
             'macAddress' => $decrypted_mac,
-            'towercode' => $decrypted_towercode,
+            // 'towercode' => $decrypted_towercode,
         ]);
 
         // $tower = Tower::find($towerId);

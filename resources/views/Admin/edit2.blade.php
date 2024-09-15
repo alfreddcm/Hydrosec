@@ -16,8 +16,8 @@
                             <div class="panel panel-default">
 
                                 <div class="panel-body">
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger mt-3 mb-0">
+                                     @if ($errors->any())
+                                        <div class="alert alert-danger">
                                             <ul>
                                                 @foreach ($errors->all() as $error)
                                                     <li>{{ $error }}</li>

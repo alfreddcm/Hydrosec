@@ -23,22 +23,21 @@ class ApiController extends Controller
         ]);
 
         $validatedData = $request->validate([
-            'Pumped' => 'required',
+            'pumped' => 'required',
+            'ipAddress' => 'required',
+            'macAddress' => 'required',
+            'towercode' => 'required',
         ]);
-
-        $ippp = $this->decrypt_data($validatedData['Pumped'], $method, $key_str, $iv_str);
-
-        
-
-        $op = explode(',', $ippp);
-        $decryptedPump=$op[0];
-        $decryptedIpAddress = $op[1];
-        $decryptedMacAddress = $op[2];
-        $decryptedTowercode = $op[3];
 
         Log::info('Validated data', [
             'validatedData' => $validatedData,
         ]);
+
+        $decryptedPump = $this->decrypt_data($validatedData['pumped'], $method, $key_str, $iv_str);
+        $decryptedIpAddress = $this->decrypt_data($validatedData['ipAddress'], $method, $key_str, $iv_str);
+        $decryptedMacAddress = $this->decrypt_data($validatedData['macAddress'], $method, $key_str, $iv_str);
+        $decryptedTowercode = $this->decrypt_data($validatedData['towercode'], $method, $key_str, $iv_str);
+
 
         Log::info('Decrypted data', [
             'decryptedPump' => $decryptedPump,
@@ -77,11 +76,10 @@ class ApiController extends Controller
                             'pump' => $decryptedPump,
                             'towercode' => $decryptedTowercode,
                         ]);
-                        $pumpstat=$this->encrypt_data($decryptedPump, $method, $key_str, $iv_str);
 
                         Pump::create([
                             'towerid' => $tower->id,
-                            'status' => $pumpstat,
+                            'status' => $validatedData['pumped'],
                         ]);
 
                         Log::info('Pump data processed successfully', [
@@ -128,27 +126,20 @@ class ApiController extends Controller
 
         // Validate incoming request data
         $validatedData = $request->validate([
-            'Credentials' => 'required',
-            // 'macAddress' => 'required',
-            // 'towercode' => 'required',
+            'ipAddress' => 'required',
+            'macAddress' => 'required',
+            'towercode' => 'required',
         ]);
 
         // Decrypt the incoming request data
-        $ippp = $this->decrypt_data($validatedData['Credentials'], $method, $key_str, $iv_str);
-        // $decryptedMacAddress = $this->decrypt_data($validatedData['macAddress'], $method, $key_str, $iv_str);
-        // $decryptedTowercode = $this->decrypt_data($validatedData['towercode'], $method, $key_str, $iv_str);
-
-
-        $op = explode(',', $ippp); 
-
-        $decryptedIpAddress=$op[0];
-        $decryptedMacAddress=$op[1];
-         $decryptedTowercode=$op[2];
+        $decryptedIpAddress = $this->decrypt_data($validatedData['ipAddress'], $method, $key_str, $iv_str);
+        $decryptedMacAddress = $this->decrypt_data($validatedData['macAddress'], $method, $key_str, $iv_str);
+        $decryptedTowercode = $this->decrypt_data($validatedData['towercode'], $method, $key_str, $iv_str);
 
         Log::info('Decrypted request data', [
             'decryptedIpAddress' => $decryptedIpAddress,
             'decryptedMacAddress' => $decryptedMacAddress,
-             'decryptedTowercode' => $decryptedTowercode,
+            'decryptedTowercode' => $decryptedTowercode,
         ]);
 
         $towerData = Tower::all();

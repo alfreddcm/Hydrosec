@@ -205,7 +205,6 @@ class TowerController extends Controller
 
         \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
 
-        // Save sensor data history
         try {
             SensorDataHistory::create([
                 'towerid' => $towerId,
@@ -408,6 +407,67 @@ class TowerController extends Controller
             return $result;
         } catch (\Exception $e) {
             Log::error('Encryption error: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function decryptSensorData()
+    {
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+
+        // Retrieve towers owned by the authenticated user
+        $towers = Tower::where('OwnerID', Auth::id())->get();
+        $allDecryptedData = [];
+
+        foreach ($towers as $tower) {
+
+            $sensorDataHistory = SensorDataHistory::where('towerid', $tower->id)->get();
+
+            if ($sensorDataHistory->isEmpty()) {
+                continue; // Skip towers with no data
+            }
+
+            $decryptedSensorDataArray = $sensorDataHistory->map(function ($history) use ($method, $key_str, $iv_str) {
+                $sensorData = json_decode($history->sensor_data, true);
+
+                $decrypted_key = $this->decrypt_data($sensorData['key'], $method, $key_str, $iv_str);
+                $decrypted_iv = $this->decrypt_data($sensorData['iv'], $method, $key_str, $iv_str);
+
+                return [
+                    'pH' => (float) $this->decrypt_data($sensorData['pH'], $method, $decrypted_key, $decrypted_iv),
+                    'temperature' => (float) $this->decrypt_data($sensorData['temperature'], $method, $decrypted_key, $decrypted_iv),
+                    'nutrientlevel' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $decrypted_key, $decrypted_iv),
+                    'light' => (float) $this->decrypt_data($sensorData['light'], $method, $decrypted_key, $decrypted_iv),
+                    'created_at' => $history->created_at->format('m/d/Y H:i A'), 
+                        ];
+            });
+
+            $startDate = $sensorDataHistory->first()->created_at->format('m/d/Y');
+            $endDate = $sensorDataHistory->last()->created_at->format('m/d/Y');
+
+            $allDecryptedData[$tower->towercode] = [
+                'data' => $decryptedSensorDataArray->toArray(),
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ];
+        }
+
+        return view('Owner.dashboard', ['allDecryptedData' => $allDecryptedData]);
+    }
+
+    private function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
             return null;
         }
     }

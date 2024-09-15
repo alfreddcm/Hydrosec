@@ -172,35 +172,45 @@ class OwnerProfile extends Controller
     }
 
     public function workerPassword(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required',
-'password' => [
+{
+    // Validate the request
+    $validator = Validator::make($request->all(), [
+        'id' => 'required|integer',
+         'password' => [
         'required',
         'string',
         'min:8',
-        'regex:/[a-z]/',
-        'regex:/[A-Z]/',
-        'regex:/[0-9]/',
-        'regex:/[@$!%*?&#]/', 
-        'confirmed',
-    ],           ]);
+        'regex:/[a-z]/',        // Lowercase letter
+        'regex:/[A-Z]/',        // Uppercase letter
+        'regex:/[0-9]/',        // Digit
+        'regex:/[@$!%*?&#]/',   // Special character
+        'confirmed',            // Password confirmation
+], [
+    'password.required' => 'Password is required.',
+    'password.min' => 'Password must be at least 8 characters.',
+    'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
+    'password.confirmed' => 'Password confirmation does not match.',
+]
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        $user = Worker::where('id'->$request->id);
-
-        if (!$user) {
-            return redirect()->back()->with('error', 'User not found');
-        }
-
-        // Update the user's password
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return redirect()->back()->with('success', 'Password updated successfully');
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
     }
+
+    // Fetch the worker by ID
+    $user = Worker::where('id', $request->id)->first();
+
+    // Check if the user exists
+    if (!$user) {
+        return redirect()->back()->with('error', 'User not found');
+    }
+
+    // Update the worker's password
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return redirect()->back()->with('success', 'Password updated successfully');
+}
 
     public function workerdis(Request $request, $id)
     {

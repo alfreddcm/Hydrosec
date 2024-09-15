@@ -101,17 +101,22 @@ class ResetPassword extends Controller
     public function resetPassword(Request $request)
     {
         $request->validate([
-            'password' => [
+           'password' => [
         'required',
         'string',
-        'min:8', 
-        'regex:/[a-z]/', 
-        'regex:/[A-Z]/', 
-        'regex:/[0-9]/',
-        'regex:/[@$!%*?&#]/', 
-        'confirmed',
+        'min:8',
+        'regex:/[a-z]/',        
+        'regex:/[A-Z]/',         
+        'regex:/[0-9]/',        
+        'regex:/[@$!%*?&#]/',   
+        'confirmed',             
     ],
-        ]);
+], [
+     'password.required' => 'Password is required.',
+    'password.min' => 'Password must be at least 8 characters.',
+    'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
+    'password.confirmed' => 'Password confirmation does not match.',
+]);
 
         $email = $request->session()->get('otp_email');
 

@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\Alert;
 use App\Models\Admin;
-use App\Models\Owner; 
+use App\Models\Owner;
 use App\Models\Worker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-
 use Illuminate\Support\Facades\Validator;
 
 class admincontroller extends Controller
@@ -30,7 +29,12 @@ class admincontroller extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[@$!%*?&]/'],
+                'regex:/[@$!%*?&#]/',
+            ],
+        ], [
+            'password.required' => 'Password is required.',
+            'password.min' => 'Password must be at least 8 characters.',
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
         ]);
 
         $username = $request->username;
@@ -120,13 +124,13 @@ class admincontroller extends Controller
     public function update2(Request $request, $id)
     {
         $request->validate([
-            'tower'=> 'required',
+            'tower' => 'required',
             'name' => 'required|string|max:255',
             'username' => 'required',
         ]);
 
         $user = Worker::find($id);
-        $user->towerid=$request->tower;
+        $user->towerid = $request->tower;
         $user->name = Crypt::encryptString($request->input('name'));
         $user->username = Crypt::encryptString($request->input('username'));
         $user->save();
@@ -141,16 +145,16 @@ class admincontroller extends Controller
         // Validate the request
         $validator = Validator::make($request->all(), [
             'idd' => 'required',
-'password' => [
-        'required',
-        'string',
-        'min:8',
-        'regex:/[a-z]/',
-        'regex:/[A-Z]/',
-        'regex:/[0-9]/',
-        'regex:/[@$!%*?&#]/', 
-        'confirmed',
-    ],        ]);
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&#]/',
+                'confirmed',
+            ]]);
 
         if ($validator->fails()) {
             Log::warning('Password update failed validation.', ['errors' => $validator->errors(), 'input' => $request->all()]);
@@ -189,16 +193,16 @@ class admincontroller extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-'password' => [
-        'required',
-        'string',
-        'min:8',
-        'regex:/[a-z]/',
-        'regex:/[A-Z]/',
-        'regex:/[0-9]/',
-        'regex:/[@$!%*?&#]/', 
-        'confirmed',
-    ],           ]);
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&#]/',
+                'confirmed',
+            ]]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
