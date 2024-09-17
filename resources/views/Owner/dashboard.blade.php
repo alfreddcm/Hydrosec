@@ -112,9 +112,9 @@
         }
 
         .data .card-body canvas {
-            height: 200px;
+            height: 400px;
             /* Set a fixed height for the charts */
-            width: 100% !important;
+            width: auto !important;
             /* Ensure the charts stretch the full width */
         }
     </style>
@@ -179,85 +179,130 @@
             <!-- Worker Count Card -->
 
         </div>
-       <div class="container data">
-         {{--@ if($allDecryptedData)  --}}
-   @foreach ($allDecryptedData as $towerCode => $towerData)
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    Sensor Data for Tower {{ $towerCode }} 
-                    <br>
-                    <small>From: {{ $towerData['startDate'] }} To: {{ $towerData['endDate'] }}</small>
-                </div>
-                <div class="card-body">
+        <div class="contain data">
+            @if ($allDecryptedData)
+                @foreach ($allDecryptedData as $id => $data)
+                    @php
+            $code = $data['towercode'];
+
+                    @endphp
                     <div class="row">
-                        <!-- pH Graph Column -->
-                        <div class="col-md-3">
-                            <h5>pH Level</h5>
-                            <canvas id="pHGraph-{{ $towerCode }}"></canvas>
-                        </div>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header mb-0">
+                                    <h3>Tower Code: {{$code}}</h3>
+                                    <br>
+                                    <small>From: {{ $data['startDate'] }} To: {{ $data['endDate'] }}</small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        {{--  --}}
+                  {{--  --}}
+                                        <!-- pH Graph Column -->
+                                        <div class="col-md-3">
+                                            <canvas id="phChart-{{ $code }}"></canvas>
+                                        </div>
 
-                        <!-- Temperature Graph Column -->
-                        <div class="col-md-3">
-                            <h5>Temperature</h5>
-                            <canvas id="temperatureGraph-{{ $towerCode }}"></canvas>
-                        </div>
+                                        <!-- Temperature Graph Column -->
+                                        <div class="col-md-3">
+                                            <canvas id="tempChart-{{ $code }}"></canvas>
+                                        </div>
 
-                        <!-- Nutrient Level Graph Column -->
-                        <div class="col-md-3">
-                            <h5>Nutrient Level</h5>
-                            <canvas id="nutrientGraph-{{ $towerCode }}"></canvas>
-                        </div>
+                                        <!-- Nutrient Level Graph Column -->
+                                        <div class="col-md-3">
+                                            <canvas id="waterChart-{{ $code }}"></canvas>
+                                        </div>
 
-                        <!-- Light Graph Column -->
-                        <div class="col-md-3">
-                            <h5>Light Level</h5>
-                            <canvas id="lightGraph-{{ $towerCode }}"></canvas>
+                                        <!-- Light Graph Column -->
+                                        <div class="col-md-3">
+                                            <canvas id="lightChart-{{ $code }}"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+                    <script>
+                        // Data for each tower
+                        const data = @json($data['data']);
+
+                        function createChart(ctx, label, dataKey) {
+                            new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: data.map(item => item.created_at),
+                                    datasets: [{
+                                        label: label,
+                                        data: data.map(item => item[dataKey]),
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            display: true,
+                                            position: 'top'
+                                        },
+                                        tooltip: {
+                                            callbacks: {
+                                                label: function(tooltipItem) {
+                                                    return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
+                        // Create the charts
+                        createChart(document.getElementById('phChart-{{ $code }}').getContext('2d'), 'pH Levels', 'pH');
+                        createChart(document.getElementById('tempChart-{{ $code }}').getContext('2d'), 'Temperature',
+                            'temperature');
+                        createChart(document.getElementById('waterChart-{{ $code }}').getContext('2d'), 'Nutrient Level',
+                            'nutrientlevel');
+                        createChart(document.getElementById('lightChart-{{ $code }}').getContext('2d'), 'Light Level', 'light');
+                    </script>
+                @endforeach
+        </div>
+        @endif
+    </div>
+
+    <div class="mb-4">
+        <h4>Tower Alert Logs</h4>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>No.</th>
+                        <th>Tower Name</th>
+                        <th>Tower Code</th>
+                        <th>Alert Activity</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($towerLogs as $log)
+                        <tr>
+                            <td>{{ $count = $count + 1 }}</td>
+                            <td>{{ Crypt::decryptString($log->tower_name) }}</td>
+                            <td>{{ Crypt::decryptString($log->tower_code) }}</td>
+                            <td>{{ Crypt::decryptString($log->activity) }}</td>
+                            <td>{{ \Carbon\Carbon::parse($log->created_at)->format('g:i A D m/d/Y') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
-@endforeach
-
-    {{-- @ endif --}}
-</div>
-
-        <div class="mb-4">
-            <h4>Tower Alert Logs</h4>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>No.</th>
-                            <th>Tower Name</th>
-                            <th>Tower Code</th>
-                            <th>Alert Activity</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($towerLogs as $log)
-                            <tr>
-                                <td>{{ $count = $count + 1 }}</td>
-                                <td>{{ Crypt::decryptString($log->tower_name) }}</td>
-                                <td>{{ Crypt::decryptString($log->tower_code) }}</td>
-                                <td>{{ Crypt::decryptString($log->activity) }}</td>
-                                <td>{{ \Carbon\Carbon::parse($log->created_at)->format('g:i A D m/d/Y') }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 
-    <script>
-   
-</script>
+    <script></script>
 
 @endsection

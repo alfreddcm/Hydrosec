@@ -24,22 +24,16 @@ class UpdateTowerMode extends Command
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
 
+        //testing
    
-        $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp', $method, $key_str, $iv_str);
-        $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);
-        // $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
+        // $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp', $method, $key_str, $iv_str);
+        // $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);
+        //  $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
 
-        Log::info('loglog:', [
-            // 'key' => $decrypted_key,
-            // 'iv' => $decrypted_iv,
-            // 'phValue' => $decrypted_ph,
-            // 'temp' => $decrypted_temp,
-            // 'waterLevel' => $decrypted_nutrient,
-            // 'light' => $decrypted_light,
-            'ipAddress' => $decrypted_ip,
-            'macAddress' => $decrypted_mac,
-            // 'towercode' => $decrypted_towercode,
-        ]);
+        // Log::info('loglog:', [
+        //     'ipAddress' => $decrypted_ip,
+        //     'macAddress' => $decrypted_mac,
+        // ]);
 
         // $tower = Tower::find($towerId);
 

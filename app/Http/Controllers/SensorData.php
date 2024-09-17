@@ -37,17 +37,12 @@ class SensorData extends Controller
                     ->first();
 
                 if ($sdata) {
-                    $key = $sdata->k;
-                    $iv = $sdata->iv;
 
-                    $decrypted_key = $this->decrypt_data($key, $method, $key_str, $iv_str);
-                    $decrypted_iv = $this->decrypt_data($iv, $method, $key_str, $iv_str);
-
-                    $ph = $this->decrypt_data($sdata->pH, $method, $decrypted_key, $decrypted_iv);
-                    $temp = $this->decrypt_data($sdata->temperature, $method, $decrypted_key, $decrypted_iv);
-                    $volume = $this->decrypt_data($sdata->nutrientlevel, $method, $decrypted_key, $decrypted_iv);
-                    $status = $this->decrypt_data($sdata->status, $method, $decrypted_key, $decrypted_iv);
-                    $light = $this->decrypt_data($sdata->light, $method, $decrypted_key, $decrypted_iv);
+                    $ph = $this->decrypt_data($sdata->pH, $method,$key_str, $iv_str);
+                    $temp = $this->decrypt_data($sdata->temperature, $method, $key_str, $iv_str);
+                    $volume = $this->decrypt_data($sdata->nutrientlevel, $method, $key_str, $iv_str);
+                    $status = $this->decrypt_data($sdata->status, $method, $key_str, $iv_str);
+                    $light = $this->decrypt_data($sdata->light, $method, $key_str, $iv_str);
 
                     $decrypted_data = [
                         'pH' => $ph,
@@ -134,65 +129,66 @@ class SensorData extends Controller
         }
     }
 
- 
-    
     public function storedata(Request $request)
     {
         $alertMessages = [];
-    
+
         $key_str = "ISUHydroSec2024!";
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
-    
+
         $response = [
             'status' => '',
             'phCondition' => '',
             'tempCondition' => '',
             'volumeCondition' => '',
         ];
-    
-        // Use Laravel session handling
+
+
         if (!session()->has('sensor_data')) {
             session(['sensor_data' => []]);
         }
         if (!session()->has('sensor_data_count')) {
             session(['sensor_data_count' => []]);
         }
-    
+
         try {
             Log::info('Request received:', $request->all());
-    
+
             $validatedData = $request->validate([
-                'phValue' => 'required',
-                'temp' => 'required',
-                'waterLevel' => 'required',
-                'key' => 'required',
-                'iv' => 'required',
-                'light' => 'required',
-                'ipAddress' => 'required',
-                'macAddress' => 'required',
-                'towercode' => 'required',
+                'sensorData' => 'required',
+                'Credentials' => 'required',
             ]);
-    
+
+            $keys = $this->decrypt_data($validatedData['Credentials'], $method, $key_str, $iv_str);
+            $keyss = explode(',', $keys);
+            $decrypted_ip = $keyss[0];
+            $decrypted_mac = $keyss[1];
+            $decrypted_towercode = $keyss[2];
+
+
             Log::info('Validated data:', $validatedData);
-    
-            $decrypted_key = $this->decrypt_data($validatedData['key'], $method, $key_str, $iv_str);
-            $decrypted_iv = $this->decrypt_data($validatedData['iv'], $method, $key_str, $iv_str);
-    
-            $decrypted_ph = (float) $this->decrypt_data($validatedData['phValue'], $method, $decrypted_key, $decrypted_iv);
-            $decrypted_temp = (float) $this->decrypt_data($validatedData['temp'], $method, $decrypted_key, $decrypted_iv);
-            $decrypted_nutrient = (float) $this->decrypt_data($validatedData['waterLevel'], $method, $decrypted_key, $decrypted_iv);
-            $decrypted_light = $this->decrypt_data($validatedData['light'], $method, $decrypted_key, $decrypted_iv);
-            $decrypted_ip = $this->decrypt_data($validatedData['ipAddress'], $method, $key_str, $iv_str);
-            $decrypted_mac = $this->decrypt_data($validatedData['macAddress'], $method, $key_str, $iv_str);
-            $decrypted_towercode = $this->decrypt_data($validatedData['towercode'], $method, $key_str, $iv_str);
-    
-            
+            Log::info(' keys:', [
+                'key' => $keys,
+            ]);
+
+            $data = $this->decrypt_data($validatedData['sensorData'], $method, $key_str, $iv_str);
+
+            Log::info('Data:', [
+                'data' => $data,
+            ]);
+
+            $eplo = explode(',', $data);
+
+            $decrypted_ph = $eplo[0];
+            $decrypted_temp = $eplo[1];
+            $decrypted_nutrient = $eplo[2];
+            $decrypted_light = $eplo[3];
+
             $towers = Tower::all(['id', 'name', 'towercode']);
-    
-            Log::info('Decrypted Data from tower:', [
-                'key' => $decrypted_key,
-                'iv' => $decrypted_iv,
+
+            Log::info('from tower:', [
+       
                 'phValue' => $decrypted_ph,
                 'temp' => $decrypted_temp,
                 'waterLevel' => $decrypted_nutrient,
@@ -201,13 +197,13 @@ class SensorData extends Controller
                 'macAddress' => $decrypted_mac,
                 'towercode' => $decrypted_towercode,
             ]);
-    
+
             foreach ($towers as $tower) {
                 $towercode = Crypt::decryptString($tower->towercode);
-    
+
                 if ($towercode == $decrypted_towercode) {
                     $ipmac = Tower::where('id', $tower->id)->first();
-    
+
                     if ($ipmac && !is_null($ipmac->ipAdd)) {
                         $ip = Crypt::decryptString($ipmac->ipAdd);
                         $mac = Crypt::decryptString($ipmac->macAdd);
@@ -215,155 +211,209 @@ class SensorData extends Controller
                             'ipAddress' => $ip,
                             'macAddress' => $mac,
                         ]);
-    
+
                         if ($ip == $decrypted_ip && $mac == $decrypted_mac) {
-    
-    
+
                             if ($decrypted_ph < 1 || $decrypted_ph > 14 || is_nan($decrypted_ph)) {
-                                $alertMessages[] = "pH value is invalid or out of range (1-14),";
+                                $alertMessages[] = "pH value is invalid or out of range (1-14)";
                             }
-    
+
                             if ($decrypted_temp < -16 || $decrypted_temp > 60 || is_nan($decrypted_temp)) {
-                                $alertMessages[] = "Temperature value is invalid or out of range (-16°C to 60°C),";
+                                $alertMessages[] = "Temperature value is invalid or out of range (-16°C to 60°C)";
                             }
                             if ($decrypted_nutrient < 0 || $decrypted_nutrient > 23 || is_nan($decrypted_nutrient)) {
-                                $alertMessages[] = "Nutrient level is invalid or out of range (1-20),";
+                                $alertMessages[] = "Nutrient level is invalid or out of range (1-20)";
                             }
-    
+
                             if (!empty($alertMessages)) {
                                 $body = "The following conditions have been detected at Tower '" . Crypt::decryptString($ipmac->name) . "': ";
                                 $body .= implode(", ", $alertMessages);
-    
+
                                 $details = [
                                     'title' => 'Alert: Sensor not Working please check the sensors',
                                     'body' => $body,
                                 ];
-    
+
                                 $statusType = 'sensor_error';
                                 $this->sendAlertEmail($details, $tower->id, $statusType);
-    
+
                                 return response()->json(['errors' => $alertMessages], 422);
                             } else {
                                 $alertMessages[] = '';
-    
+
                                 try {
-                                        $triggerCounts = [
-                                            'ph' => 0,
-                                            'temp' => 0,
-                                            'nut' => 0,
+                                    $triggerCounts = [
+                                        'ph' => 0,
+                                        'temp' => 0,
+                                        'nut' => 0,
+                                    ];
+
+                                    $alerts = [];
+                                    $triggeredConditions = [
+                                        'ph' => [],
+                                        'temp' => [],
+                                        'nut' => [],
+                                    ];
+
+                                    $phCondition = $this->getCondition((float) $decrypted_ph, 'pH');
+                                    $tempCondition = $this->getCondition((float) $decrypted_temp, 'temp');
+                                    $volumeCondition = $this->getCondition((float) $decrypted_nutrient, 'nutrient');
+
+                                    $triggerConditions = [
+                                        'phCondition' => ['Too acidic', 'Too basic', 'basic', 'acidic'],
+                                        'volumeCondition' => ['25%', '15%', ' critical low'],
+                                        'tempCondition' => ['Too Hot', 'hot'],
+                                    ];
+
+                                    if (in_array($phCondition, $triggerConditions['phCondition'])) {
+                                        $triggerCounts['ph']++;
+                                        $triggeredConditions['ph'][] = "pH: {$decrypted_ph} - $phCondition";
+                                    }
+
+                                    if (in_array($tempCondition, $triggerConditions['tempCondition'])) {
+                                        $triggerCounts['temp']++;
+                                        $triggeredConditions['temp'][] = "Temperature: {$decrypted_temp} - $tempCondition";
+                                    }
+
+                                    if (in_array($volumeCondition, $triggerConditions['volumeCondition'])) {
+                                        $triggerCounts['nut']++;
+                                        $triggeredConditions['nut'][] = "Nutrient Volume: {$decrypted_nutrient} - $volumeCondition";
+                                    }
+
+                                    Log::info('Sensor data condition check:', [
+                                        'pH' => $phCondition,
+                                        'Temperature' => $tempCondition,
+                                        'Nutrient Volume' => $volumeCondition,
+                                    ]);
+
+                                    Log::info('Trigger counts:', [
+                                        'pH Triggers' => $triggerCounts['ph'],
+                                        'Temperature Triggers' => $triggerCounts['temp'],
+                                        'Nutrient Volume Triggers' => $triggerCounts['nut'],
+                                    ]);
+
+                                    $alertMessages = [];
+
+                                    if ($triggerCounts['ph']) {
+                                        $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
+                                    }
+
+                                    if ($triggerCounts['temp']) {
+                                        $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
+                                    }
+
+                                    if ($triggerCounts['nut']) {
+                                        $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
+                                    }
+
+                                    if (!empty($alertMessages)) {
+                                        $body = "The following conditions have been detected at Tower '" . Crypt::decryptString($ipmac->name) . "': ";
+                                        $body .= implode(", ", $alertMessages);
+
+                                        $details = [
+                                            'title' => 'Alert: Conditions Detected',
+                                            'body' => $body,
                                         ];
-    
-                                        $alerts = [];
-                                        $triggeredConditions = [
-                                            'ph' => [],
-                                            'temp' => [],
-                                            'nut' => [],
-                                        ];
-    
-    
-                                            $phCondition = $this->getCondition((float) $decrypted_ph, 'pH');
-                                            $tempCondition = $this->getCondition((float) $decrypted_temp, 'temp');
-                                            $volumeCondition = $this->getCondition((float) $decrypted_nutrient, 'nutrient');
-    
-                                            $triggerConditions = [
-                                                'phCondition' => ['Too acidic', 'Too basic', 'basic', 'acidic'],
-                                                'volumeCondition' => ['25%', '15%', ' critical low'],
-                                                'tempCondition' => ['Too Hot', 'hot'],
-                                            ];
-    
-                                            if (in_array($phCondition, $triggerConditions['phCondition'])) {
-                                                $triggerCounts['ph']++;
-                                                $triggeredConditions['ph'][] = "pH: {$decrypted_ph} - $phCondition";
-                                            }
-    
-                                            if (in_array($tempCondition, $triggerConditions['tempCondition'])) {
-                                                $triggerCounts['temp']++;
-                                                $triggeredConditions['temp'][] = "Temperature: {$decrypted_temp} - $tempCondition";
-                                            }
-    
-                                            if (in_array($volumeCondition, $triggerConditions['volumeCondition'])) {
-                                                $triggerCounts['nut']++;
-                                                $triggeredConditions['nut'][] = "Nutrient Volume: {$decrypted_nutrient} - $volumeCondition";
-                                            }
-    
-                                            Log::info('Sensor data condition check:', [
-                                                'pH' => $phCondition,
-                                                'Temperature' => $tempCondition,
-                                                'Nutrient Volume' => $volumeCondition,
-                                            ]);
-    
-                                            Log::info('Trigger counts:', [
-                                                'pH Triggers' => $triggerCounts['ph'],
-                                                'Temperature Triggers' => $triggerCounts['temp'],
-                                                'Nutrient Volume Triggers' => $triggerCounts['nut'],
-                                            ]);
-    
-                                        
-    
-                                        $alertMessages = [];
-    
-                                        if ($triggerCounts['ph'] ) {
-                                            $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
-                                        }
-    
-                                        if ($triggerCounts['temp'] ) {
-                                            $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
-                                        }
-    
-                                        if ($triggerCounts['nut'] ) {
-                                            $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
-                                        }
-    
-                                        if (!empty($alertMessages)) {
-                                            $body = "The following conditions have been detected at Tower '" . Crypt::decryptString($ipmac->name) . "': ";
-                                            $body .= implode(", ", $alertMessages);
-    
-                                            $details = [
-                                                'title' => 'Alert: Conditions Detected',
-                                                'body' => $body,
-                                            ];
-    
-                                            Log::info('Sending alert email with conditions:', ['conditions' => implode(", ", $alertMessages)]);
-                                            $statusType = 'critical_condition';
-    
-                                            $this->sendAlertEmail($details, $tower->id, $statusType);
-                                        }
-                                    
-    
+
+                                        Log::info('Sending alert email with conditions:', ['conditions' => implode(", ", $alertMessages)]);
+                                        $statusType = 'critical_condition';
+
+                                        $this->sendAlertEmail($details, $tower->id, $statusType);
+                                    }
+
+                                    $enph = $this->encrypt_data($decrypted_ph,  $key_str, $iv_str, $method);
+                                    $entemp = $this->encrypt_data($decrypted_temp,  $key_str, $iv_str, $method);
+                                    $ennut = $this->encrypt_data($decrypted_nutrient,  $key_str, $iv_str, $method);
+                                    $enlight = $this->encrypt_data($decrypted_light,  $key_str, $iv_str, $method);
+                                   
                                     Sensor::create([
                                         'towerid' => $tower->id,
-                                        'pH' => $validatedData['phValue'],
-                                        'temperature' => $validatedData['temp'],
-                                        'nutrientlevel' => $validatedData['waterLevel'],
-                                        'light' => $validatedData['light'],
-                                        'k' => $validatedData['key'],
-                                        'iv' => $validatedData['iv'],
+                                        'pH' => $enph,
+                                        'temperature' => $entemp,
+                                        'nutrientlevel' => $ennut,
+                                        'light' => $enlight,
                                         'status' => '1',
                                     ]);
-    
+
                                     return response()->json([
                                         'status' => 'success',
                                         'message' => 'Data stored successfully.',
                                     ]);
                                 } catch (\Exception $e) {
                                     Log::error('Error storing data:', ['error' => $e->getMessage()]);
-    
+
                                     return response()->json(['error' => 'Error storing data.'], 500);
                                 }
                             }
-                        }
+                        }else{
+                            Log::warning('IP or MAC address mismatch', [
+                            'expectedIp' => $decrypted_ip,
+                            'actualIp' => $ip,
+                            'expectedMac' => $decrypted_mac,
+                            'actualMac' => $mac,
+                        ]);
+
+                        $failedAttempts++;
+                        Cache::put($failedAttemptsKey, $failedAttempts, 3600); 
+                        return response()->json(['error' => 'IP or MAC address mismatch'], 400);
                     }
+
+                    }else {
+                    Log::warning('No matching IP/MAC data found for tower', [
+                        'towerId' => $tower->id,
+                    ]);
+                }
                 }
             }
             return response()->json(['error' => 'Tower not found.'], 404);
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+
+            $failedAttempts++;
+        Cache::put($failedAttemptsKey, $failedAttempts, 3600); // Store attempts for 1 hour
+        Log::warning('Validation failed', [
+            'ipAddress' => $request->ip(),
+            'failedAttempts' => $failedAttempts,
+            'errors' => $e->errors(),
+        ]);
+
+        return response()->json(['error' => 'Invalid data provided', 'details' => $e->errors()], 422);
+     } catch (\Exception $e) {
             Log::error('Exception occurred:', ['error' => $e->getMessage()]);
-    
+
             return response()->json(['error' => 'Error processing request.'], 500);
+        } catch (\Exception $e) {
+        Log::error('Error processing request', ['error' => $e->getMessage()]);
+        return response()->json(['error' => 'An error occurred while processing the request'], 500);
+    } finally {
+
+        if ($failedAttempts >= $attemptThreshold) {
+            Log::alert('Intrusion detection: multiple failed validation attempts from IP ' . $request->ip(), [
+                'failedAttempts' => $failedAttempts,
+                'ipAddress' => $request->ip(),
+            ]);
+
+            IntrusionRecord::create([
+                'ip_address' => Crypt::encryptString($request->ip()),
+                'failed_attempts' => Crypt::encryptString((string) $failedAttempts),
+            ]);
+
+            $details = [
+                'subject' => 'Intrusion Alert: Multiple Failed Attempts',
+                'body' => 'There have been ' . $failedAttempts . ' failed attempts from IP ' . $request->ip() . '.',
+            ];
+
+            try {
+                Mail::to($adminEmail)->send(new Alert($details));
+                Log::info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
+
+            } catch (\Exception $e) {
+                Log::error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
+            }
         }
     }
-    
+    }
 
+//ph,temp,nut
     public function getdata($id, $column)
     {
         $key_str = "ISUHydroSec2024!";
@@ -380,11 +430,7 @@ class SensorData extends Controller
 
             foreach ($sensorData as $sdata) {
 
-                $decrypted_key = $this->decrypt_data($sdata->k, $method, $key_str, $iv_str);
-                $decrypted_iv = $this->decrypt_data($sdata->iv, $method, $key_str, $iv_str);
-
-                $decrypted_column = $this->decrypt_data($sdata->$column, $method, $decrypted_key, $decrypted_iv);
-
+                $decrypted_column = $this->decrypt_data($sdata->$column, $method, $key_str, $iv_str);
                 $formattedTimestamp = $sdata->created_at->format('Y-m-d H:i:s');
 
                 $decryptedData[] = [
@@ -463,17 +509,17 @@ class SensorData extends Controller
     {
         if ($towerId) {
             $tower = Tower::find($towerId);
-    
+
             if ($tower && $tower->OwnerID) {
                 $owner = Owner::find($tower->OwnerID);
-    
+
                 if ($owner && $owner->email) {
                     $email = Crypt::decryptString($owner->email);
                     $decryptedTowerName = Crypt::decryptString($tower->name);
-    
+
                     // Define cooldown period in minutes
-                    $emailCooldown = 1; 
-    
+                    $emailCooldown = 1;
+
                     // Check last email sent timestamp based on status type
                     switch ($statusType) {
                         case 'sensor_error':
@@ -486,22 +532,22 @@ class SensorData extends Controller
                             $lastEmailSentAt = null;
                             break;
                     }
-    
+
                     $now = Carbon::now();
-    
+
                     // Convert lastEmailSentAt to Carbon instance if it's not null
                     if ($lastEmailSentAt) {
                         $lastEmailSentAt = Carbon::parse($lastEmailSentAt);
                     }
-    
+
                     if ($lastEmailSentAt && $lastEmailSentAt->diffInMinutes($now) < $emailCooldown) {
                         $remainingTime = $emailCooldown - $lastEmailSentAt->diffInMinutes($now);
                         Log::info('Skipping email for ' . $statusType . ', cooldown remaining: ' . $remainingTime . ' minutes', ['tower_id' => $towerId]);
                         return;
                     }
-    
+
                     $mailStatus = 'Not Sent';
-    
+
                     try {
                         Mail::to($email)->send(new Alert($details));
                         $mailStatus = 'Sent';
@@ -516,9 +562,9 @@ class SensorData extends Controller
                                 "Alert: Conditions detected - " . json_encode($details['body']) . " Mail Status: " . $mailStatus
                             ),
                         ]);
-    
+
                         Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => json_encode($details['body'])]);
-    
+
                         // Update the last email sent timestamp based on status type
                         switch ($statusType) {
                             case 'sensor_error':
@@ -540,8 +586,6 @@ class SensorData extends Controller
             Log::warning('Tower ID not available in session.');
         }
     }
-    
-
 
     private function decrypt_data($encrypted_data, $method, $key, $iv)
     {
@@ -554,6 +598,27 @@ class SensorData extends Controller
             return $decoded_msg;
         } catch (\Exception $e) {
             Log::error('Decryption error: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    private function encrypt_data($data, $key, $iv, $method)
+    {
+
+        try {
+            $data = base64_encode($data);
+            $str_padded = $data;
+            $pad = 16 - strlen($str_padded) % 16;
+            if (strlen($str_padded) % 16) {
+                $str_padded = str_pad($str_padded, strlen($str_padded) + $pad, "\0");
+            }
+
+            $result = openssl_encrypt($str_padded, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $result = base64_encode($result);
+
+            return $result;
+        } catch (\Exception $e) {
+            Log::error('Encryption error: ' . $e->getMessage());
             return null;
         }
     }

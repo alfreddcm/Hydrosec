@@ -193,6 +193,8 @@ class TowerController extends Controller
                 'temperature' => $data->temperature,
                 'nutrientlevel' => $data->nutrientlevel,
                 'light' => $data->light,
+                'iv' => $data->iv,
+                'k' => $data->k,
                 'created_at' => $data->created_at->toDateTimeString(),
             ];
         })->toArray();
@@ -234,8 +236,6 @@ class TowerController extends Controller
         }
 
         Sensor::truncate();
-        Pump::truncate();
-
         \Log::info('Sensor table truncated');
 
         return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
@@ -265,8 +265,8 @@ class TowerController extends Controller
             $tow->status = $stat;
 
             $tow->save();
-            \Log::info('Tower status updated and saved', ['tow' => $tow]);
 
+            \Log::info('Tower status updated and saved', ['tow' => $tow]);
         } catch (\Exception $e) {
             \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
             return redirect()->back()->with('error', 'Failed to update tower status.');
@@ -274,6 +274,9 @@ class TowerController extends Controller
 
         $ownerID = $tow->OwnerID;
         \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
+
+        // Encrypt the default pump status value
+        $defaultPumpStatus = Crypt::encryptString('3');
 
         // Retrieve sensor data
         $sensorData = Sensor::where('towerid', $towerId)
@@ -302,6 +305,8 @@ class TowerController extends Controller
                 'temperature' => $data->temperature,
                 'nutrientlevel' => $data->nutrientlevel,
                 'light' => $data->light,
+                'iv' => $data->iv,
+                'k' => $data->k,
                 'created_at' => $data->created_at->toDateTimeString(),
             ];
         })->toArray();
@@ -344,7 +349,6 @@ class TowerController extends Controller
         }
 
         Sensor::truncate();
-        Pump::truncate();
         \Log::info('Sensor table truncated');
 
         return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
@@ -403,70 +407,51 @@ class TowerController extends Controller
         }
     }
 
-    //for sensory hisstory data
-public function decryptSensorData()
-{
-    $key_str = "ISUHydroSec2024!";
-    $iv_str = "HydroVertical143";
-    $method = "AES-128-CBC";
+    public function decryptSensorData()
+    {
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
 
-    // Retrieve towers owned by the authenticated user
-    $towers = Tower::where('OwnerID', Auth::id())->get();
-    $allDecryptedData = [];
+        // Retrieve towers owned by the authenticated user
+        $towers = Tower::where('OwnerID', Auth::id())->get();
+        $allDecryptedData = [];
 
-    foreach ($towers as $tower) {
-     
+        foreach ($towers as $tower) {
 
-        $sensorDataHistory = SensorDataHistory::where('towerid', $tower->id)->get();
-        
+            $sensorDataHistory = SensorDataHistory::where('towerid', $tower->id)->get();
 
-        if ($sensorDataHistory->isEmpty()) {
-            continue;
-        }
-
-        foreach ($sensorDataHistory as $data) {
-               $code = Crypt::decryptString($tower->towercode);
-            $sensorDataArray = json_decode($data->sensor_data, true);
-            // \Log::info("Decoded sensor data: ", $sensorDataArray);
-
-            $decryptedEntries = []; // Initialize the array for decrypted entries
-
-            if (is_array($sensorDataArray)) {
-                foreach ($sensorDataArray as $sensorData) {
-                    if (isset($sensorData['pH'], $sensorData['temperature'], $sensorData['nutrientlevel'], $sensorData['light'])) {
-                        $decryptedEntry = [
-                            'pH' => (float) $this->decrypt_data($sensorData['pH'], $method, $key_str, $iv_str),
-                            'temperature' => (float) $this->decrypt_data($sensorData['temperature'], $method, $key_str, $iv_str),
-                            'nutrientlevel' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $key_str, $iv_str),
-                            'light' => (float) $this->decrypt_data($sensorData['light'], $method, $key_str, $iv_str),
-                            'created_at' => date('m/d/Y H:i A', strtotime($sensorData['created_at'])),
-                        ];
-
-                        $decryptedEntries[] = $decryptedEntry;
-                    } else {
-                        \Log::error("Missing required sensor data keys: ", $sensorData);
-                    }
-                }
-
-                // Use $data->id as the key for decrypted data
-                $startDate = Carbon::parse($data->created_at)->format('m/d/Y');
-                $endDate = Carbon::parse($data->created_at)->format('m/d/Y');
-
-                $allDecryptedData[$data->id] = [
-                   'towercode' => $code, 
-                    'data' => $decryptedEntries,
-                    'startDate' => $startDate,
-                    'endDate' => $endDate,
-                ];
-            } else {
-                \Log::error("Invalid sensor data format: ", $sensorDataArray);
+            if ($sensorDataHistory->isEmpty()) {
+                continue; // Skip towers with no data
             }
+
+            $decryptedSensorDataArray = $sensorDataHistory->map(function ($history) use ($method, $key_str, $iv_str) {
+                $sensorData = json_decode($history->sensor_data, true);
+
+                $decrypted_key = $this->decrypt_data($sensorData['key'], $method, $key_str, $iv_str);
+                $decrypted_iv = $this->decrypt_data($sensorData['iv'], $method, $key_str, $iv_str);
+
+                return [
+                    'pH' => (float) $this->decrypt_data($sensorData['pH'], $method, $decrypted_key, $decrypted_iv),
+                    'temperature' => (float) $this->decrypt_data($sensorData['temperature'], $method, $decrypted_key, $decrypted_iv),
+                    'nutrientlevel' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $decrypted_key, $decrypted_iv),
+                    'light' => (float) $this->decrypt_data($sensorData['light'], $method, $decrypted_key, $decrypted_iv),
+                    'created_at' => $history->created_at->format('m/d/Y H:i A'), 
+                        ];
+            });
+
+            $startDate = $sensorDataHistory->first()->created_at->format('m/d/Y');
+            $endDate = $sensorDataHistory->last()->created_at->format('m/d/Y');
+
+            $allDecryptedData[$tower->towercode] = [
+                'data' => $decryptedSensorDataArray->toArray(),
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ];
         }
+
+        return view('Owner.dashboard', ['allDecryptedData' => $allDecryptedData]);
     }
-
-    return view('Owner.dashboard', ['allDecryptedData' => $allDecryptedData]);
-}
-
 
     private function decrypt_data($encrypted_data, $method, $key, $iv)
     {

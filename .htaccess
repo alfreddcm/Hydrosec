@@ -8,6 +8,9 @@
 #   RewriteRule ^api/(.*)$ - [L,QSA]
 #   RewriteRule ^(.*)$ public/$1 [L]
 # </IfModule>
+
+
+
 <IfModule mod_rewrite.c>
 Headers unset X-Powered-By
 	Header set X-XSS-Protection "1; mode=block"
