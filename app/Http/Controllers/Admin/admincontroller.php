@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\IntrusionDetection;
+use Carbon\Carbon;
 use App\Mail\Alert;
 use App\Models\Admin;
 use App\Models\Owner;
 use App\Models\Worker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -62,29 +64,49 @@ class admincontroller extends Controller
 
     }
 
-    public function showCounts()
-    {
-        $ownerCount = 0;
-        $workerCount = 0;
+public function showCounts()
+{
+    // Count owners with decrypted status of 1
+    $ownerCount = Owner::all()->filter(function ($owner) {
+        $status = Crypt::decryptString($owner->status);
+        Log::info('Owner status decrypted:', ['status' => $status]);
+        return $status == '1';
+    })->count();
 
-        // Count owners with decrypted status of 1
-        $owners = Owner::all();
-        foreach ($owners as $owner) {
-            if (Crypt::decryptString($owner->status) == '1') {
-                $ownerCount++;
-            }
-        }
+    // Log the count of owners
+    Log::info('Owner Count:', ['count' => $ownerCount]);
 
-        // Count workers with decrypted status of 1
-        $workers = Worker::all();
-        foreach ($workers as $worker) {
-            if (Crypt::decryptString($worker->status) == '1') {
-                $workerCount++;
-            }
-        }
+    // Count workers with decrypted status of 1
+    $workerCount = Worker::all()->filter(function ($worker) {
+        $status = Crypt::decryptString($worker->status);
+        Log::info('Worker status decrypted:', ['status' => $status]);
+        return $status == '1';
+    })->count();
 
-        return view('Admin.dashboard', compact('ownerCount', 'workerCount'));
-    }
+    // Log the count of workers
+    Log::info('Worker Count:', ['count' => $workerCount]);
+
+    // Fetch intrusion data and format date
+    $intrusions = IntrusionDetection::all()->map(function ($intrusion) {
+        $intrusion->formatted_detected_at = Carbon::parse($intrusion->detected_at)->format('h:i A d,m,Y');
+        $intrusion->ip_address = Crypt::decryptString($intrusion->ip_address);
+        $intrusion->user_agent = Crypt::decryptString($intrusion->user_agent);
+        $intrusion->failed_attempts = Crypt::decryptString($intrusion->failed_attempts);
+
+        // Log each intrusion entry
+        Log::info('Intrusion Detection Entry:', [
+            'ip_address' => $intrusion->ip_address,
+            'user_agent' => $intrusion->user_agent,
+            'failed_attempts' => $intrusion->failed_attempts,
+            'formatted_detected_at' => $intrusion->formatted_detected_at,
+        ]);
+
+        return $intrusion;
+    });
+
+    // Return all data to the view
+    return view('Admin.dashboard', compact('ownerCount', 'workerCount', 'intrusions'));
+}
 
     public function edit($id)
     {

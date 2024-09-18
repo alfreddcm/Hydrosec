@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Alert;
+use App\Models\IntrusionDetection;
 use App\Models\Pump;
 use App\Models\Tower;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 
 class ApiController extends Controller
 {
-
 
     public function pump(Request $request)
     {
@@ -18,100 +22,155 @@ class ApiController extends Controller
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
 
+        $failedAttemptsKey = 'intrusion_failed_attempts_pump' . $request->ip();
+        $failedAttempts = Cache::get($failedAttemptsKey, 0);
+        $attemptThreshold = 5;
+        $adminEmail = 'hydrosec1@gmail.com';
+
         Log::info('Pump request received', [
             'input' => $request->all(),
         ]);
 
-        $validatedData = $request->validate([
-            'pumped' => 'required',
-            'ipAddress' => 'required',
-            'macAddress' => 'required',
-            'towercode' => 'required',
-        ]);
+        try {
 
-        Log::info('Validated data', [
-            'validatedData' => $validatedData,
-        ]);
+            $validatedData = $request->validate([
+                'Pumped' => 'required',
+            ]);
 
-        $decryptedPump = $this->decrypt_data($validatedData['pumped'], $method, $key_str, $iv_str);
-        $decryptedIpAddress = $this->decrypt_data($validatedData['ipAddress'], $method, $key_str, $iv_str);
-        $decryptedMacAddress = $this->decrypt_data($validatedData['macAddress'], $method, $key_str, $iv_str);
-        $decryptedTowercode = $this->decrypt_data($validatedData['towercode'], $method, $key_str, $iv_str);
+            Cache::forget($failedAttemptsKey);
 
+            $pumpi = $this->decrypt_data($validatedData['Pumped'], $method, $key_str, $iv_str);
+            $pumi = explode(',', $pumpi);
+            $decryptedPump = $pumi[0];
+            $decryptedIpAddress = $pumi[1];
+            $decryptedMacAddress = $pumi[2];
+            $decryptedTowercode = $pumi[3];
 
-        Log::info('Decrypted data', [
-            'decryptedPump' => $decryptedPump,
-            'decryptedIpAddress' => $decryptedIpAddress,
-            'decryptedMacAddress' => $decryptedMacAddress,
-            'decryptedTowercode' => $decryptedTowercode,
-        ]);
-
-        $towerData = Tower::all();
-
-        foreach ($towerData as $tower) {
-            $towercode = Crypt::decryptString($tower->towercode);
-
-            Log::info('Checking tower code', [
-                'currentTowerCode' => $towercode,
+            Log::info('Decrypted data', [
+                'decryptedPump' => $decryptedPump,
+                'decryptedIpAddress' => $decryptedIpAddress,
+                'decryptedMacAddress' => $decryptedMacAddress,
                 'decryptedTowercode' => $decryptedTowercode,
             ]);
 
+            $towerData = Tower::all();
 
-            if ($towercode == $decryptedTowercode) {
-                $ipmac = Tower::where('id', $tower->id)->first();
+            foreach ($towerData as $tower) {
+                $towercode = Crypt::decryptString($tower->towercode);
 
-                if ($ipmac) {
-                    $ip = Crypt::decryptString($ipmac->ipAdd);
-                    $mac = Crypt::decryptString($ipmac->macAdd);
+                Log::info('Checking tower code', [
+                    'currentTowerCode' => $towercode,
+                    'decryptedTowercode' => $decryptedTowercode,
+                ]);
 
-                    Log::info('Decrypted IP and MAC addresses from DB', [
-                        'ipAddress' => $ip,
-                        'macAddress' => $mac,
-                    ]);
+                if ($towercode == $decryptedTowercode) {
+                    $ipmac = Tower::where('id', $tower->id)->first();
 
-                    if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
-                        session(['tower_id' => $ipmac->id]);
+                    if ($ipmac) {
+                        $ip = Crypt::decryptString($ipmac->ipAdd);
+                        $mac = Crypt::decryptString($ipmac->macAdd);
 
-                        session()->push('pump_data', [
-                            'pump' => $decryptedPump,
-                            'towercode' => $decryptedTowercode,
+                        Log::info('Decrypted IP and MAC addresses from DB', [
+                            'ipAddress' => $ip,
+                            'macAddress' => $mac,
                         ]);
 
-                        Pump::create([
-                            'towerid' => $tower->id,
-                            'status' => $validatedData['pumped'],
-                        ]);
+                        if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
+                            session(['tower_id' => $ipmac->id]);
 
-                        Log::info('Pump data processed successfully', [
-                            'towerId' => $ipmac->id,
-                            'pump' => $decryptedPump,
-                            'towercode' => $decryptedTowercode,
-                        ]);
+                            session()->push('pump_data', [
+                                'pump' => $decryptedPump,
+                                'towercode' => $decryptedTowercode,
+                            ]);
 
-                        return response()->json(['success' => 'Data processed successfully'], 200);
+                            $pump = $this->encrypt_data($decryptedPump, $method, $key_str, $iv_str);
+
+                            Pump::create([
+                                'towerid' => $tower->id,
+                                'status' => $pump,
+                            ]);
+
+                            Log::info('Pump data processed successfully', [
+                                'towerId' => $ipmac->id,
+                                'pump' => $decryptedPump,
+                                'towercode' => $decryptedTowercode,
+                            ]);
+
+                            return response()->json(['success' => 'Data processed successfully'], 200);
+                        } else {
+                            Log::warning('IP or MAC address mismatch', [
+                                'expectedIp' => $decryptedIpAddress,
+                                'actualIp' => $ip,
+                                'expectedMac' => $decryptedMacAddress,
+                                'actualMac' => $mac,
+                            ]);
+
+                            // Increment failed attempts
+                            $failedAttempts++;
+                            Cache::put($failedAttemptsKey, $failedAttempts, 3600); // Store attempts for 1 hour
+
+                            return response()->json(['error' => 'IP or MAC address mismatch'], 400);
+                        }
                     } else {
-                        Log::warning('IP or MAC address mismatch', [
-                            'expectedIp' => $decryptedIpAddress,
-                            'actualIp' => $ip,
-                            'expectedMac' => $decryptedMacAddress,
-                            'actualMac' => $mac,
+                        Log::warning('No matching IP/MAC data found for tower', [
+                            'towerId' => $tower->id,
                         ]);
-
-                        return response()->json(['error' => 'IP or MAC address mismatch'], 400);
                     }
-                } else {
-                    Log::warning('No matching IP/MAC data found for tower', [
-                        'towerId' => $tower->id,
-                    ]);
+                }
+            }
+
+            Log::warning('Tower code not found', [
+                'decryptedTowercode' => $decryptedTowercode,
+            ]);
+
+            return response()->json(['error' => 'Tower code not found'], 404);
+
+        } catch (ValidationException $e) {
+            // Increment failed attempts on validation failure
+            $failedAttempts++;
+            Cache::put($failedAttemptsKey, $failedAttempts, 3600); // Store attempts for 1 hour
+            Log::warning('Validation failed', [
+                'ipAddress' => $request->ip(),
+                'failedAttempts' => $failedAttempts,
+                'errors' => $e->errors(),
+            ]);
+
+            return response()->json(['error' => 'Invalid data provided', 'details' => $e->errors()], 422);
+
+        } catch (\Exception $e) {
+            Log::error('Error processing request', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'An error occurred while processing the request'], 500);
+        } finally {
+            if ($failedAttempts >= $attemptThreshold) {
+                Log::alert('Intrusion detection: multiple failed attempts detected from IP ' . $request->ip(), [
+                    'failedAttempts' => $failedAttempts,
+                    'ipAddress' => $request->ip(),
+                    'device' => $request->header('User-Agent'),
+                ]);
+
+                IntrusionDetection::create([
+                    'ip_address' => Crypt::encryptString($request->ip()),
+                    'user_agent' => Crypt::encryptString($request->header('User-Agent')),
+                    'failed_attempts' => Crypt::encryptString(' Pump Status'),
+                ]);
+
+                $details = [
+                    'title' => 'Intrusion Alert: Multiple Failed Attempts',
+                    'body' => 'There have been attempts on retrieving Pump Status from IP ' . $request->ip() . ', Device: ' . $request->header('User-Agent'),
+                ];
+
+                try {
+                    Mail::to($adminEmail)->send(new Alert($details));
+                    Log::info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
+
+                } catch (\Exception $e) {
+                    Log::error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
+
+                } finally {
+                    Cache::forget($failedAttemptsKey);
                 }
             }
         }
-
-        Log::warning('Tower code not found', [
-            'decryptedTowercode' => $decryptedTowercode,
-        ]);
-
-        return response()->json(['error' => 'Tower code not found'], 404);
     }
 
     public function getmode(Request $request)
@@ -119,132 +178,127 @@ class ApiController extends Controller
         $key_str = "ISUHydroSec2024!";
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
+        $failedAttemptsKey = 'intrusion_failed_attempts_mode' . $request->ip();
+        $failedAttempts = Cache::get($failedAttemptsKey, 0);
+        $attemptThreshold = 5;
+        $adminEmail = "hydrosec1@gmail.com";
+        Log::info('Mode request received', ['input' => $request->all()]);
 
-        Log::info('Mode request received', [
-            'input' => $request->all(),
-        ]);
+        try {
 
-        // Validate incoming request data
-        $validatedData = $request->validate([
-            'ipAddress' => 'required',
-            'macAddress' => 'required',
-            'towercode' => 'required',
-        ]);
+            $validatedData = $request->validate(['Credentials' => 'required']);
+            $cred = $this->decrypt_data($validatedData['Credentials'], $method, $key_str, $iv_str);
+            $info = explode(',', $cred);
+            $decryptedIpAddress = $info[0];
+            $decryptedMacAddress = $info[1];
+            $decryptedTowercode = $info[2];
 
-        // Decrypt the incoming request data
-        $decryptedIpAddress = $this->decrypt_data($validatedData['ipAddress'], $method, $key_str, $iv_str);
-        $decryptedMacAddress = $this->decrypt_data($validatedData['macAddress'], $method, $key_str, $iv_str);
-        $decryptedTowercode = $this->decrypt_data($validatedData['towercode'], $method, $key_str, $iv_str);
-
-        Log::info('Decrypted request data', [
-            'decryptedIpAddress' => $decryptedIpAddress,
-            'decryptedMacAddress' => $decryptedMacAddress,
-            'decryptedTowercode' => $decryptedTowercode,
-        ]);
-
-        $towerData = Tower::all();
-        Log::info('Retrieved tower data', [
-            'towerData' => $towerData->toArray(),
-        ]);
-
-        foreach ($towerData as $tower) {
-            $towercode = Crypt::decryptString($tower->towercode);
-            Log::info('Checking tower code', [
-                'currentTowerCode' => $towercode,
+            Log::info('Decrypted request data', [
+                'decryptedIpAddress' => $decryptedIpAddress,
+                'decryptedMacAddress' => $decryptedMacAddress,
                 'decryptedTowercode' => $decryptedTowercode,
             ]);
 
-            $mode = Crypt::decryptString($tower->mode);
-            $status = Crypt::decryptString($tower->status);
-            Log::info('Decrypted mode and status', [
-                'mode' => $mode,
-                'status' => $status,
-            ]);
+            $towerData = Tower::all();
+            foreach ($towerData as $tower) {
+                $towercode = Crypt::decryptString($tower->towercode);
+                $mode = Crypt::decryptString($tower->mode);
+                $status = Crypt::decryptString($tower->status);
 
-            if ($towercode == $decryptedTowercode) {
+                if ($towercode == $decryptedTowercode) {
+                    $ipmac = Tower::where('id', $tower->id)->first();
 
-                $ipmac = Tower::where('id', $tower->id)->first();
+                    if ($ipmac && !is_null($ipmac->ipAdd)) {
+                        $ip = Crypt::decryptString($ipmac->ipAdd);
+                        $mac = Crypt::decryptString($tower->macAdd);
 
-                if ($ipmac && !is_null($ipmac->ipAdd)) {
-                    $ip = Crypt::decryptString($ipmac->ipAdd);
-                    $mac = Crypt::decryptString($tower->macAdd);
+                        if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
+                            Cache::forget($failedAttemptsKey);
 
-                    Log::info('Decrypted IP and MAC addresses from DB', [
-                        'ipAddress' => $ip,
-                        'macAddress' => $mac,
-                    ]);
+                            $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
+                            $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
 
-                    if ($ip == $decryptedIpAddress && $mac == $decryptedMacAddress) {
-                        Log::info('IP and MAC address match', [
-                            'ip' => $ip,
-                            'decryptedIpAddress' => $decryptedIpAddress,
-                            'mac' => $mac,
-                            'decryptedMacAddress' => $decryptedMacAddress,
-                        ]);
+                            return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
+                        } else {
 
-                        $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
-                        $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
+                            $failedAttempts++;
+                            Cache::put($failedAttemptsKey, $failedAttempts, 3600); // Store attempts for 1 hour
+                            Log::warning('IP or MAC address mismatch', [
+                                'expectedIp' => $decryptedIpAddress,
+                                'actualIp' => $ip,
+                                'expectedMac' => $decryptedMacAddress,
+                                'actualMac' => $mac,
+                            ]);
 
-                        Log::info('Encrypted mode and status', [
-                            'mode' => $encryptedMode,
-                            'status' => $encryptedStatus,
-                            'aweee'=>Crypt::encryptString('2'),
-                        ]);
-
-                        $modestatus_data = [
-                            'mode' => $encryptedMode,
-                            'status' => $encryptedStatus,
-                        ];
-
-                        return response()->json(['modestat' => $modestatus_data]);
+                            return response()->json(['error' => 'IP or MAC address mismatch'], 400);
+                        }
                     } else {
-                        Log::warning('IP or MAC address mismatch', [
-                            'expectedIp' => $decryptedIpAddress,
-                            'actualIp' => $ip,
-                            'expectedMac' => $decryptedMacAddress,
-                            'actualMac' => $mac,
-                        ]);
 
-                        return response()->json(['error' => 'IP or MAC address mismatch'], 400);
+                        $ipmac->ipAdd = Crypt::encryptString($decryptedIpAddress);
+                        $ipmac->macAdd = Crypt::encryptString($decryptedMacAddress);
+                        $ipmac->save();
+
+                        Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
+                        return response()->json(['success' => 'Tower IP and MAC updated'], 201);
                     }
                 } else {
 
-                    $ipmac->ipAdd = Crypt::encryptString($decryptedIpAddress);
-                    $ipmac->macAdd = Crypt::encryptString($decryptedMacAddress);
-                    $ipmac->save();
-
-                    Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
-                    return response()->json(['success' => 'success'], 201);
-
-                    $mode = 0;
-                    $status = 0;
-                    $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
-                    $encryptedStatus = $this->encrypt_data($status, $method, $key_str, $iv_str);
-
-                    Log::info('Encrypted mode and status when ipAdd is null', [
-                        'mode' => $encryptedMode,
-                        'status' => $encryptedStatus,
-                    ]);
-
-                    $modestatus_data = [
-                        'mode' => $encryptedMode,
-                        'status' => $encryptedStatus,
-                    ];
-
-                    return response()->json(['modestat' => $modestatus_data]);
+                    $failedAttempts++;
+                    Cache::put($failedAttemptsKey, $failedAttempts, 3600); // Store attempts for 1 hour
+                    return response()->json(['error' => 'Invalid tower code'], 400);
                 }
-
-            } else {
-                return response()->json(['error' => 'Invalid tower code'], 400);
             }
 
+            Log::warning('Tower code not found', ['decryptedTowercode' => $decryptedTowercode]);
+            return response()->json(['error' => 'Tower code not found'], 404);
+
+        } catch (ValidationException $e) {
+
+            $failedAttempts++;
+            Cache::put($failedAttemptsKey, $failedAttempts, 3600);
+            Log::warning('Validation failed', [
+                'ipAddress' => $request->ip(),
+                'failedAttempts' => $failedAttempts,
+                'errors' => $e->errors(),
+            ]);
+
+            return response()->json(['error' => 'Invalid data provided', 'details' => $e->errors()], 422);
+
+        } catch (\Exception $e) {
+
+            Log::error('Error processing mode request', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'An error occurred while processing the request'], 500);
+        } finally {
+            if ($failedAttempts >= $attemptThreshold) {
+                Log::alert('Intrusion detection: multiple failed attempts detected from IP ' . $request->ip(), [
+                    'failedAttempts' => $failedAttempts,
+                    'ipAddress' => $request->ip(),
+                    'device' => $request->header('User-Agent'),
+                ]);
+
+                IntrusionDetection::create([
+                    'ip_address' => Crypt::encryptString($request->ip()),
+                    'user_agent' => Crypt::encryptString($request->header('User-Agent')),
+                    'failed_attempts' => Crypt::encryptString(' on Mode/Status'),
+                ]);
+
+                $details = [
+                    'title' => 'Intrusion Alert: Multiple Failed Attempts',
+                    'body' => 'There have been  attempts on retrieving Mode and Status from IP ' . $request->ip() . ', Device: ' . $request->header('User-Agent'),
+                ];
+
+                try {
+                    Mail::to($adminEmail)->send(new Alert($details));
+                    Log::info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
+
+                } catch (\Exception $e) {
+                    Log::error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
+
+                } finally {
+                    Cache::forget($failedAttemptsKey);
+                }
+            }
         }
-
-        Log::warning('Tower code not found', [
-            'decryptedTowercode' => $decryptedTowercode,
-        ]);
-
-        return response()->json(['error' => 'Tower code not found'], 404);
     }
 
     private function encrypt_data($data, $method, $key, $iv)
@@ -266,7 +320,6 @@ class ApiController extends Controller
             return null;
         }
     }
-
 
     private function decrypt_data($encrypted_data, $method, $key, $iv)
     {

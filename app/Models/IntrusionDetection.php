@@ -12,6 +12,7 @@ class IntrusionDetection extends Model
 
     protected $fillable = [
         'ip_address',
+        'user_agent',
         'failed_attempts',
         'detected_at',
     ];

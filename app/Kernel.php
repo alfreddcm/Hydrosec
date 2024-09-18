@@ -18,7 +18,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\Admin::class,
         'owner' => \App\Http\Middleware\User::class,
         'worker' => \App\Http\Middleware\Admin::class,
-        'singlesession' => \App\Http\Middleware\Singlesession::class,
+        //'singlesession' => \App\Http\Middleware\Singlesession::class,
 
     ];
 
