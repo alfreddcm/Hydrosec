@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
-class TowerController extends Controller
+class Towercontroller extends Controller
 {
     /**
      * Store a newly created tower in storage.
