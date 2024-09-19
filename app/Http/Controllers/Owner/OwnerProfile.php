@@ -7,6 +7,8 @@ use App\Models\Admin;
 use App\Models\Owner;
 use App\Models\Tower;
 use App\Models\Worker;
+use App\Models\SensorDataHistory;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -229,5 +231,67 @@ class OwnerProfile extends Controller
         $user->save();
 
         return redirect()->route('ownerworkeraccount')->with('success', 'User enable successfully.');
+    }
+
+        public function decryptSensorData()
+    {
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+
+        // Retrieve towers owned by the authenticated user
+        $towers = Tower::where('OwnerID', Auth::id())->get();
+        $allDecryptedData = [];
+
+        foreach ($towers as $tower) {
+
+            $sensorDataHistory = SensorDataHistory::where('towerid', $tower->id)->get();
+
+            if ($sensorDataHistory->isEmpty()) {
+                continue;
+            }
+
+            foreach ($sensorDataHistory as $data) {
+                $code = Crypt::decryptString($tower->towercode);
+                $sensorDataArray = json_decode($data->sensor_data, true);
+                // \Log::info("Decoded sensor data: ", $sensorDataArray);
+
+                $decryptedEntries = [];
+
+                if (is_array($sensorDataArray)) {
+                    foreach ($sensorDataArray as $sensorData) {
+                        if (isset($sensorData['pH'], $sensorData['temperature'], $sensorData['nutrientlevel'], $sensorData['light'])) {
+                            $decryptedEntry = [
+                                'pH' => (float) $this->decrypt_data($sensorData['pH'], $method, $key_str, $iv_str),
+                                'temperature' => (float) $this->decrypt_data($sensorData['temperature'], $method, $key_str, $iv_str),
+                                'nutrientlevel' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $key_str, $iv_str),
+                                'light' => (float) $this->decrypt_data($sensorData['light'], $method, $key_str, $iv_str),
+                                'created_at' => Carbon::parse($data->created_at),
+
+                            ];
+
+                            $decryptedEntries[] = $decryptedEntry;
+                        } else {
+                            \Log::error("Missing required sensor data keys: ", $sensorData);
+                        }
+                    }
+
+                    // Use $data->id as the key for decrypted data
+                    $startDate = Carbon::parse($data->created_at)->format('m/d/Y');
+                    $endDate = Carbon::parse($data->created_at)->format('m/d/Y');
+
+                    $allDecryptedData[$data->id] = [
+                        'towercode' => $code,
+                        'data' => $decryptedEntries,
+                        'startDate' => $startDate,
+                        'endDate' => $endDate,
+                    ];
+                } else {
+                    \Log::error("Invalid sensor data format: ", $sensorDataArray);
+                }
+            }
+        }
+
+        return view('Owner.dashboard', ['allDecryptedData' => $allDecryptedData]);
     }
 }

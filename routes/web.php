@@ -43,7 +43,7 @@ Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 // Route::middleware(['auth:owner', 'singlesession'])->group(function () {
 
 Route::middleware('auth:owner')->group(function () {
-Route::get('/Owner/dashboard', [Towercontroller::class, 'decryptSensorData'])->name('ownerdashboard');
+Route::get('/Owner/dashboard', [OwnerProfile::class, 'decryptSensorData'])->name('ownerdashboard');
     Route::get('/Owner/ManageTower', function () { return view('Owner.ManageTower'); })->name('ownermanagetower');
     Route::get('/Owner/WorkerAccounts', function () { return view('Owner.WorkerAccounts'); })->name('ownerworkeraccount');
    

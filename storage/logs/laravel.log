@@ -13058,3 +13058,724 @@
   5 => '9hYjUuMZigxNS2NtVDw8kDkPetlTDjX6JS5BvZhK',
 )  
 [2024-09-19 09:59:29] local.INFO: 438.12  
+[2024-09-19 20:42:27] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:42:27] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:42:27] local.INFO: 1501.66  
+[2024-09-19 20:42:28] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:42:28] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:42:28] local.INFO: 1046.73  
+[2024-09-19 20:42:28] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-19 20:42:28] local.INFO: array (
+  0 => 'YToyOntzOjY6Il90b2tlbiI7czo0MDoid1FqTnZubGcxWHRhNnAzTTJtSXJGVHR6NDB2MmtCWHFlNVR1dTJ2ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1726749747,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:42:28] local.INFO: 414.1  
+[2024-09-19 20:42:33] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:42:33] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:42:33] local.INFO: 1559.84  
+[2024-09-19 20:42:34] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:42:34] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoid1FqTnZubGcxWHRhNnAzTTJtSXJGVHR6NDB2MmtCWHFlNVR1dTJ2ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=',
+  1 => 1726749753,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:42:34] local.INFO: 413.34  
+[2024-09-19 20:42:49] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:42:49] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:42:49] local.INFO: 1479.3  
+[2024-09-19 20:42:49] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:42:49] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:49] local.INFO: 414.24  
+[2024-09-19 20:42:50] local.INFO: select * from `tbl_workeraccounts`  
+[2024-09-19 20:42:50] local.INFO: array (
+)  
+[2024-09-19 20:42:50] local.INFO: 414.26  
+[2024-09-19 20:42:50] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:42:50] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1:timer',
+)  
+[2024-09-19 20:42:50] local.INFO: 415.01  
+[2024-09-19 20:42:51] local.INFO: insert ignore into `cache` (`key`, `value`, `expiration`) values (?, ?, ?)  
+[2024-09-19 20:42:51] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1:timer',
+  1 => 'i:1726749830;',
+  2 => 1726749830,
+)  
+[2024-09-19 20:42:51] local.INFO: 414.49  
+[2024-09-19 20:42:51] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:42:51] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:51] local.INFO: 415.48  
+[2024-09-19 20:42:52] local.INFO: insert ignore into `cache` (`key`, `value`, `expiration`) values (?, ?, ?)  
+[2024-09-19 20:42:52] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1',
+  1 => 'i:0;',
+  2 => 1726749831,
+)  
+[2024-09-19 20:42:52] local.INFO: 435.86  
+[2024-09-19 20:42:52] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:42:52] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:52] local.INFO: 437.3  
+[2024-09-19 20:42:53] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:42:53] local.INFO: array (
+  0 => 'i:1;',
+  1 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:53] local.INFO: 472.94  
+[2024-09-19 20:42:53] local.INFO: select * from `tbl_adminaccounts`  
+[2024-09-19 20:42:53] local.INFO: array (
+)  
+[2024-09-19 20:42:53] local.INFO: 414.52  
+[2024-09-19 20:42:54] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:42:54] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1:timer',
+)  
+[2024-09-19 20:42:54] local.INFO: 414.65  
+[2024-09-19 20:42:54] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:42:54] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:54] local.INFO: 414.62  
+[2024-09-19 20:42:55] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:42:55] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:55] local.INFO: 417.33  
+[2024-09-19 20:42:55] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:42:55] local.INFO: array (
+  0 => 'i:2;',
+  1 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:55] local.INFO: 415.64  
+[2024-09-19 20:42:56] local.INFO: select * from `tbl_useraccounts`  
+[2024-09-19 20:42:56] local.INFO: array (
+)  
+[2024-09-19 20:42:56] local.INFO: 414.61  
+[2024-09-19 20:42:56] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:42:56] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1:timer',
+)  
+[2024-09-19 20:42:56] local.INFO: 414.82  
+[2024-09-19 20:42:57] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:42:57] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:57] local.INFO: 498.08  
+[2024-09-19 20:42:58] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:42:58] local.INFO: array (
+  0 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:58] local.INFO: 413.89  
+[2024-09-19 20:42:58] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:42:58] local.INFO: array (
+  0 => 'i:3;',
+  1 => 'alfred45!|127.0.0.1',
+)  
+[2024-09-19 20:42:58] local.INFO: 415.17  
+[2024-09-19 20:42:59] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:42:59] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoid1FqTnZubGcxWHRhNnAzTTJtSXJGVHR6NDB2MmtCWHFlNVR1dTJ2ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6NjoiZXJyb3JzIjt9czozOiJuZXciO2E6MDp7fX1zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2xvZ2luIjt9czo2OiJlcnJvcnMiO086MzE6IklsbHVtaW5hdGVcU3VwcG9ydFxWaWV3RXJyb3JCYWciOjE6e3M6NzoiACoAYmFncyI7YToxOntzOjc6ImRlZmF1bHQiO086Mjk6IklsbHVtaW5hdGVcU3VwcG9ydFxNZXNzYWdlQmFnIjoyOntzOjExOiIAKgBtZXNzYWdlcyI7YToyOntzOjg6InVzZXJuYW1lIjthOjE6e2k6MDtzOjUxOiJZb3VyIHByb3ZpZGVkIGNyZWRlbnRpYWxzIGRvIG5vdCBtYXRjaCBvdXIgcmVjb3Jkcy4iO31zOjg6InBhc3N3b3JkIjthOjE6e2k6MDtzOjM4OiJUaGUgcGFzc3dvcmQgeW91IGVudGVyZWQgaXMgaW5jb3JyZWN0LiI7fX1zOjk6IgAqAGZvcm1hdCI7czo4OiI6bWVzc2FnZSI7fX19fQ==',
+  1 => 1726749778,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:42:59] local.INFO: 414.67  
+[2024-09-19 20:43:01] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:43:01] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:43:01] local.INFO: 1450.82  
+[2024-09-19 20:43:01] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:43:01] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoid1FqTnZubGcxWHRhNnAzTTJtSXJGVHR6NDB2MmtCWHFlNVR1dTJ2ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=',
+  1 => 1726749781,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:43:01] local.INFO: 417.94  
+[2024-09-19 20:43:27] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:43:27] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:43:27] local.INFO: 1477.1  
+[2024-09-19 20:43:27] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:43:27] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:27] local.INFO: 520.14  
+[2024-09-19 20:43:28] local.INFO: select * from `tbl_workeraccounts`  
+[2024-09-19 20:43:28] local.INFO: array (
+)  
+[2024-09-19 20:43:28] local.INFO: 481.7  
+[2024-09-19 20:43:28] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:43:28] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:43:28] local.INFO: 485.29  
+[2024-09-19 20:43:29] local.INFO: insert ignore into `cache` (`key`, `value`, `expiration`) values (?, ?, ?)  
+[2024-09-19 20:43:29] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+  1 => 'i:1726749868;',
+  2 => 1726749868,
+)  
+[2024-09-19 20:43:29] local.INFO: 417.95  
+[2024-09-19 20:43:29] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:43:29] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:29] local.INFO: 412.84  
+[2024-09-19 20:43:29] local.INFO: insert ignore into `cache` (`key`, `value`, `expiration`) values (?, ?, ?)  
+[2024-09-19 20:43:29] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+  1 => 'i:0;',
+  2 => 1726749869,
+)  
+[2024-09-19 20:43:29] local.INFO: 412.89  
+[2024-09-19 20:43:30] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:43:30] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:30] local.INFO: 412.29  
+[2024-09-19 20:43:31] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:43:31] local.INFO: array (
+  0 => 'i:1;',
+  1 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:31] local.INFO: 412.13  
+[2024-09-19 20:43:31] local.INFO: select * from `tbl_adminaccounts`  
+[2024-09-19 20:43:31] local.INFO: array (
+)  
+[2024-09-19 20:43:31] local.INFO: 412.08  
+[2024-09-19 20:43:32] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:43:32] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:43:32] local.INFO: 431.76  
+[2024-09-19 20:43:32] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:43:32] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:32] local.INFO: 579.61  
+[2024-09-19 20:43:33] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:43:33] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:33] local.INFO: 412.29  
+[2024-09-19 20:43:33] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:43:33] local.INFO: array (
+  0 => 'i:2;',
+  1 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:33] local.INFO: 411.47  
+[2024-09-19 20:43:34] local.INFO: select * from `tbl_useraccounts`  
+[2024-09-19 20:43:34] local.INFO: array (
+)  
+[2024-09-19 20:43:34] local.INFO: 412.08  
+[2024-09-19 20:43:35] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:43:35] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:43:35] local.INFO: 412.34  
+[2024-09-19 20:43:35] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:43:35] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:35] local.INFO: 412.28  
+[2024-09-19 20:43:36] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:43:36] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:36] local.INFO: 411.8  
+[2024-09-19 20:43:36] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:43:36] local.INFO: array (
+  0 => 'i:3;',
+  1 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:43:36] local.INFO: 411.26  
+[2024-09-19 20:43:37] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:43:37] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoid1FqTnZubGcxWHRhNnAzTTJtSXJGVHR6NDB2MmtCWHFlNVR1dTJ2ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6NjoiZXJyb3JzIjt9czozOiJuZXciO2E6MDp7fX1zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2xvZ2luIjt9czo2OiJlcnJvcnMiO086MzE6IklsbHVtaW5hdGVcU3VwcG9ydFxWaWV3RXJyb3JCYWciOjE6e3M6NzoiACoAYmFncyI7YToxOntzOjc6ImRlZmF1bHQiO086Mjk6IklsbHVtaW5hdGVcU3VwcG9ydFxNZXNzYWdlQmFnIjoyOntzOjExOiIAKgBtZXNzYWdlcyI7YToyOntzOjg6InVzZXJuYW1lIjthOjE6e2k6MDtzOjUxOiJZb3VyIHByb3ZpZGVkIGNyZWRlbnRpYWxzIGRvIG5vdCBtYXRjaCBvdXIgcmVjb3Jkcy4iO31zOjg6InBhc3N3b3JkIjthOjE6e2k6MDtzOjM4OiJUaGUgcGFzc3dvcmQgeW91IGVudGVyZWQgaXMgaW5jb3JyZWN0LiI7fX1zOjk6IgAqAGZvcm1hdCI7czo4OiI6bWVzc2FnZSI7fX19fQ==',
+  1 => 1726749816,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:43:37] local.INFO: 461.23  
+[2024-09-19 20:43:39] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:43:39] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:43:39] local.INFO: 1741.4  
+[2024-09-19 20:43:39] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:43:39] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoid1FqTnZubGcxWHRhNnAzTTJtSXJGVHR6NDB2MmtCWHFlNVR1dTJ2ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=',
+  1 => 1726749819,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:43:39] local.INFO: 413.91  
+[2024-09-19 20:50:52] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:50:53] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:50:53] local.INFO: 1587.6  
+[2024-09-19 20:50:57] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:50:57] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:50:57] local.INFO: 506.73  
+[2024-09-19 20:50:58] local.INFO: delete from `cache` where `key` = ? and `expiration` <= ?  
+[2024-09-19 20:50:58] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+  1 => 1726750257,
+)  
+[2024-09-19 20:50:58] local.INFO: 879.76  
+[2024-09-19 20:51:00] local.INFO: select * from `tbl_workeraccounts`  
+[2024-09-19 20:51:00] local.INFO: array (
+)  
+[2024-09-19 20:51:00] local.INFO: 424.34  
+[2024-09-19 20:51:00] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:51:00] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:51:00] local.INFO: 419.37  
+[2024-09-19 20:51:01] local.INFO: delete from `cache` where `key` = ? and `expiration` <= ?  
+[2024-09-19 20:51:01] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+  1 => 1726750260,
+)  
+[2024-09-19 20:51:01] local.INFO: 423.9  
+[2024-09-19 20:51:01] local.INFO: insert ignore into `cache` (`key`, `value`, `expiration`) values (?, ?, ?)  
+[2024-09-19 20:51:01] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+  1 => 'i:1726750320;',
+  2 => 1726750321,
+)  
+[2024-09-19 20:51:01] local.INFO: 439.16  
+[2024-09-19 20:51:02] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:51:02] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:51:02] local.INFO: 548.6  
+[2024-09-19 20:51:02] local.INFO: insert ignore into `cache` (`key`, `value`, `expiration`) values (?, ?, ?)  
+[2024-09-19 20:51:02] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+  1 => 'i:0;',
+  2 => 1726750322,
+)  
+[2024-09-19 20:51:02] local.INFO: 416.5  
+[2024-09-19 20:51:03] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:51:03] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:51:03] local.INFO: 430.54  
+[2024-09-19 20:51:03] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:51:03] local.INFO: array (
+  0 => 'i:1;',
+  1 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:51:03] local.INFO: 436.3  
+[2024-09-19 20:51:04] local.INFO: select * from `tbl_adminaccounts`  
+[2024-09-19 20:51:04] local.INFO: array (
+)  
+[2024-09-19 20:51:04] local.INFO: 441.57  
+[2024-09-19 20:51:05] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:51:05] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:51:05] local.INFO: 414.9  
+[2024-09-19 20:51:05] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:51:05] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:51:05] local.INFO: 416.41  
+[2024-09-19 20:51:06] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:51:06] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:51:06] local.INFO: 426.52  
+[2024-09-19 20:51:06] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:51:06] local.INFO: array (
+  0 => 'i:2;',
+  1 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:51:06] local.INFO: 420.15  
+[2024-09-19 20:51:07] local.INFO: select * from `tbl_useraccounts`  
+[2024-09-19 20:51:07] local.INFO: array (
+)  
+[2024-09-19 20:51:07] local.INFO: 428.1  
+[2024-09-19 20:51:08] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-19 20:51:08] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:08] local.INFO: 419.34  
+[2024-09-19 20:51:08] local.INFO: delete from `sessions` where `id` = ?  
+[2024-09-19 20:51:08] local.INFO: array (
+  0 => 'MGrh13apM8oBSFPhEmlNjNaSW0zdNHPAHoGjLhiC',
+)  
+[2024-09-19 20:51:08] local.INFO: 413.5  
+[2024-09-19 20:51:09] local.INFO: delete from `cache` where `key` = ?  
+[2024-09-19 20:51:09] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:51:09] local.INFO: 418.88  
+[2024-09-19 20:51:09] local.INFO: delete from `cache` where `key` = ?  
+[2024-09-19 20:51:09] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:51:09] local.INFO: 415.75  
+[2024-09-19 20:51:12] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:51:12] local.INFO: array (
+  0 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:12] local.INFO: 560.73  
+[2024-09-19 20:51:12] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-19 20:51:12] local.INFO: array (
+  0 => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiQnBzYTNWWUFCNXYyNXFOSTNpSEtlZzFHYUU4VWVHN0FNbFVaQ0thcCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6Nzoic3VjY2VzcyI7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjc6InN1Y2Nlc3MiO3M6NDE6IllvdSBoYXZlIHN1Y2Nlc3NmdWxseSBsb2dnZWQgaW4gYXMgT3duZXIhIjt9',
+  1 => 1726750272,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:12] local.INFO: 421.66  
+[2024-09-19 20:51:15] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:51:15] local.INFO: array (
+  0 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:15] local.INFO: 1480.7  
+[2024-09-19 20:51:15] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-19 20:51:15] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:15] local.INFO: 430.55  
+[2024-09-19 20:51:16] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-09-19 20:51:16] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:16] local.INFO: 414.9  
+[2024-09-19 20:51:16] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-09-19 20:51:16] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:16] local.INFO: 415.07  
+[2024-09-19 20:51:20] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-09-19 20:51:20] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:20] local.INFO: 413.76  
+[2024-09-19 20:51:20] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-09-19 20:51:20] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:20] local.INFO: 414.03  
+[2024-09-19 20:51:21] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-09-19 20:51:21] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:21] local.INFO: 414.21  
+[2024-09-19 20:51:21] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-09-19 20:51:21] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:21] local.INFO: 415.55  
+[2024-09-19 20:51:23] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-09-19 20:51:23] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:23] local.INFO: 1347.71  
+[2024-09-19 20:51:23] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-19 20:51:23] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:51:23] local.INFO: 420.11  
+[2024-09-19 20:51:24] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:51:24] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQnBzYTNWWUFCNXYyNXFOSTNpSEtlZzFHYUU4VWVHN0FNbFVaQ0thcCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1726750283,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:24] local.INFO: 418.78  
+[2024-09-19 20:51:35] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:51:35] local.INFO: array (
+  0 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:35] local.INFO: 1468.22  
+[2024-09-19 20:51:35] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:51:35] local.INFO: array (
+  0 => 'YToyOntzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyODoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2xvZ291dCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=',
+  1 => 1726750295,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:35] local.INFO: 417.45  
+[2024-09-19 20:51:37] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:51:37] local.INFO: array (
+  0 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:37] local.INFO: 1608.49  
+[2024-09-19 20:51:38] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:51:38] local.INFO: array (
+  0 => 'YTozOntzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo2OiJfdG9rZW4iO3M6NDA6InRYeXlVOFVTSW0xb0hCdjFYYkJiR0R5bk5ManR0alFySnpCMHFid1kiO30=',
+  1 => 1726750298,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:38] local.INFO: 416.73  
+[2024-09-19 20:51:44] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:51:44] local.INFO: array (
+  0 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:44] local.INFO: 1507.83  
+[2024-09-19 20:51:44] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:51:44] local.INFO: array (
+  0 => 'YTozOntzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo2OiJfdG9rZW4iO3M6NDA6InRYeXlVOFVTSW0xb0hCdjFYYkJiR0R5bk5ManR0alFySnpCMHFid1kiO30=',
+  1 => 1726750304,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:51:44] local.INFO: 414.27  
+[2024-09-19 20:52:03] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:52:03] local.INFO: array (
+  0 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:52:03] local.INFO: 1498.54  
+[2024-09-19 20:52:03] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:52:03] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:52:03] local.INFO: 417.57  
+[2024-09-19 20:52:04] local.INFO: select * from `tbl_workeraccounts`  
+[2024-09-19 20:52:04] local.INFO: array (
+)  
+[2024-09-19 20:52:04] local.INFO: 418.07  
+[2024-09-19 20:52:04] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:52:04] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:52:04] local.INFO: 413.47  
+[2024-09-19 20:52:05] local.INFO: insert ignore into `cache` (`key`, `value`, `expiration`) values (?, ?, ?)  
+[2024-09-19 20:52:05] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+  1 => 'i:1726750384;',
+  2 => 1726750384,
+)  
+[2024-09-19 20:52:05] local.INFO: 416.08  
+[2024-09-19 20:52:05] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:52:05] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:52:05] local.INFO: 415.33  
+[2024-09-19 20:52:05] local.INFO: insert ignore into `cache` (`key`, `value`, `expiration`) values (?, ?, ?)  
+[2024-09-19 20:52:05] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+  1 => 'i:0;',
+  2 => 1726750385,
+)  
+[2024-09-19 20:52:05] local.INFO: 415.5  
+[2024-09-19 20:52:06] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:52:06] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:52:06] local.INFO: 414.24  
+[2024-09-19 20:52:07] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:52:07] local.INFO: array (
+  0 => 'i:1;',
+  1 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:52:07] local.INFO: 422.9  
+[2024-09-19 20:52:07] local.INFO: select * from `tbl_adminaccounts`  
+[2024-09-19 20:52:07] local.INFO: array (
+)  
+[2024-09-19 20:52:07] local.INFO: 421.3  
+[2024-09-19 20:52:08] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:52:08] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:52:08] local.INFO: 418.55  
+[2024-09-19 20:52:08] local.INFO: select * from `cache` where `key` = ? limit 1  
+[2024-09-19 20:52:08] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:52:08] local.INFO: 414.06  
+[2024-09-19 20:52:09] local.INFO: select * from `cache` where `key` = ? limit 1 for update  
+[2024-09-19 20:52:09] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:52:09] local.INFO: 418.12  
+[2024-09-19 20:52:09] local.INFO: update `cache` set `value` = ? where `key` = ?  
+[2024-09-19 20:52:09] local.INFO: array (
+  0 => 'i:2;',
+  1 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:52:09] local.INFO: 414.97  
+[2024-09-19 20:52:10] local.INFO: select * from `tbl_useraccounts`  
+[2024-09-19 20:52:10] local.INFO: array (
+)  
+[2024-09-19 20:52:10] local.INFO: 414.9  
+[2024-09-19 20:52:10] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-19 20:52:10] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:10] local.INFO: 414.94  
+[2024-09-19 20:52:11] local.INFO: delete from `sessions` where `id` = ?  
+[2024-09-19 20:52:11] local.INFO: array (
+  0 => '2HPX5wH4p0GuPzjlXbSLciIxdL9JkbVhW78H3g0A',
+)  
+[2024-09-19 20:52:11] local.INFO: 415.6  
+[2024-09-19 20:52:11] local.INFO: delete from `cache` where `key` = ?  
+[2024-09-19 20:52:11] local.INFO: array (
+  0 => 'alfred45|127.0.0.1',
+)  
+[2024-09-19 20:52:11] local.INFO: 413.41  
+[2024-09-19 20:52:12] local.INFO: delete from `cache` where `key` = ?  
+[2024-09-19 20:52:12] local.INFO: array (
+  0 => 'alfred45|127.0.0.1:timer',
+)  
+[2024-09-19 20:52:12] local.INFO: 442.41  
+[2024-09-19 20:52:12] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:52:12] local.INFO: array (
+  0 => 'T3ShIokLFXylnStWOVYMZFtZvlKVLS69ptLGvKFT',
+)  
+[2024-09-19 20:52:12] local.INFO: 435.92  
+[2024-09-19 20:52:13] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-19 20:52:13] local.INFO: array (
+  0 => 'YTo1OntzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MTp7aTowO3M6Nzoic3VjY2VzcyI7fXM6MzoibmV3IjthOjA6e319czo2OiJfdG9rZW4iO3M6NDA6InhiamFIWjZqV291Zkd3RTI3cm9BTERKT0tqOVEwaGJGNE1MOUhEY0MiO3M6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjc6InN1Y2Nlc3MiO3M6NDE6IllvdSBoYXZlIHN1Y2Nlc3NmdWxseSBsb2dnZWQgaW4gYXMgT3duZXIhIjt9',
+  1 => 1726750332,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'T3ShIokLFXylnStWOVYMZFtZvlKVLS69ptLGvKFT',
+)  
+[2024-09-19 20:52:13] local.INFO: 414.82  
+[2024-09-19 20:52:14] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:52:14] local.INFO: array (
+  0 => 'T3ShIokLFXylnStWOVYMZFtZvlKVLS69ptLGvKFT',
+)  
+[2024-09-19 20:52:14] local.INFO: 1453.45  
+[2024-09-19 20:52:15] local.INFO: delete from `sessions` where `last_activity` <= ?  
+[2024-09-19 20:52:15] local.INFO: array (
+  0 => 1726743134,
+)  
+[2024-09-19 20:52:15] local.INFO: 417.99  
+[2024-09-19 20:52:15] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-19 20:52:15] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:15] local.INFO: 412.46  
+[2024-09-19 20:52:16] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-09-19 20:52:16] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:16] local.INFO: 423.18  
+[2024-09-19 20:52:16] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-09-19 20:52:16] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:16] local.INFO: 414.48  
+[2024-09-19 20:52:17] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-09-19 20:52:17] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:17] local.INFO: 443.62  
+[2024-09-19 20:52:17] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-09-19 20:52:17] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:17] local.INFO: 557.21  
+[2024-09-19 20:52:18] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-09-19 20:52:18] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:18] local.INFO: 422.8  
+[2024-09-19 20:52:18] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-09-19 20:52:18] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:18] local.INFO: 412.46  
+[2024-09-19 20:52:19] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-09-19 20:52:19] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:19] local.INFO: 1043.96  
+[2024-09-19 20:52:20] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-19 20:52:20] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:20] local.INFO: 415.41  
+[2024-09-19 20:52:20] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:52:20] local.INFO: array (
+  0 => 'YTo0OntzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL093bmVyL2Rhc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NjoiX3Rva2VuIjtzOjQwOiJ4YmphSFo2aldvdWZHd0UyN3JvQUxESk9LajlRMGhiRjRNTDlIRGNDIjtzOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1726750340,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'T3ShIokLFXylnStWOVYMZFtZvlKVLS69ptLGvKFT',
+)  
+[2024-09-19 20:52:20] local.INFO: 413.72  
+[2024-09-19 20:52:44] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-19 20:52:44] local.INFO: array (
+  0 => 'T3ShIokLFXylnStWOVYMZFtZvlKVLS69ptLGvKFT',
+)  
+[2024-09-19 20:52:44] local.INFO: 1474.32  
+[2024-09-19 20:52:45] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-19 20:52:45] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:45] local.INFO: 421.18  
+[2024-09-19 20:52:45] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-09-19 20:52:45] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:45] local.INFO: 421.18  
+[2024-09-19 20:52:46] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-09-19 20:52:46] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-19 20:52:46] local.INFO: 420.22  
+[2024-09-19 20:52:46] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-19 20:52:46] local.INFO: array (
+  0 => 'YTo0OntzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozOToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL093bmVyL01hbmFnZVRvd2VyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo2OiJfdG9rZW4iO3M6NDA6InhiamFIWjZqV291Zkd3RTI3cm9BTERKT0tqOVEwaGJGNE1MOUhEY0MiO3M6NTI6ImxvZ2luX293bmVyXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9',
+  1 => 1726750366,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'T3ShIokLFXylnStWOVYMZFtZvlKVLS69ptLGvKFT',
+)  
+[2024-09-19 20:52:46] local.INFO: 426.17  
