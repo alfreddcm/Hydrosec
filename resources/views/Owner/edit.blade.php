@@ -1,4 +1,4 @@
-@extends('Admin/sidebar')
+@extends('Owner/sidebar')
 @section('title', 'Edit User')
 @section('content')
 
