@@ -427,7 +427,7 @@ class TowerController extends Controller
                 $sensorDataArray = json_decode($data->sensor_data, true);
                 // \Log::info("Decoded sensor data: ", $sensorDataArray);
 
-                $decryptedEntries = []; // Initialize the array for decrypted entries
+                $decryptedEntries = []; 
 
                 if (is_array($sensorDataArray)) {
                     foreach ($sensorDataArray as $sensorData) {

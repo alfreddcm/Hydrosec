@@ -9,6 +9,8 @@ use App\Mail\Alert;
 use App\Models\Admin;
 use App\Models\Owner;
 use App\Models\Worker;
+use App\Models\Tower;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;

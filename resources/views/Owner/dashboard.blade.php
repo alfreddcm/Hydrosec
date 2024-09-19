@@ -110,30 +110,33 @@
             font-size: smaller
         }
 
+        .data .chart-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            /* Ensure the card height adapts to the content */
+            margin-bottom: 20px;
+            /* Add margin if needed */
+        }
 
-       .data .chart-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Ensure the card height adapts to the content */
-    margin-bottom: 20px; /* Add margin if needed */
-}
+        .data .card-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            /* Ensure the card body takes up remaining space */
+            padding: 0;
+        }
 
-.data .card-body {
-    display: flex;
-    flex-direction: column;
-    flex: 1; /* Ensure the card body takes up remaining space */
-    padding: 0;
-}
+        .data .chart-container {
+            flex: 1;
+            /* Ensure the chart container takes up remaining space */
+        }
 
-.data .chart-container {
-    flex: 1; /* Ensure the chart container takes up remaining space */
-}
-
-.data .chart {
-    width: 100%;
-    height: 300px; /* Set the height of the chart (adjust as needed) */
-}
-
+        .data .chart {
+            width: 100%;
+            height: 300px;
+            /* Set the height of the chart (adjust as needed) */
+        }
     </style>
 
     <div class="container">
@@ -315,7 +318,7 @@
                                 },
                                 categories: [0, 1],
                                 tickAmount: 2,
-                                                                tickInterval: 1
+                                tickInterval: 1
 
                             });
                         });
