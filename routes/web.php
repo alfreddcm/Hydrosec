@@ -88,9 +88,9 @@ Route::get('/Owner/dashboard', [OwnerProfile::class, 'decryptSensorData'])->name
     Route::post('/cycle', [Towercon::class, 'updateDates'])->name('cycle');
     Route::get('/modestat/{id}', [Towercon::class, 'modestat'])->name('modestat');
 
-    Route::post('/tower/stop', [TowerController::class, 'stop'])->name('tower.stop');
-    Route::post('/tower/stopdis', [TowerController::class, 'stopdis'])->name('tower.stopdis');
- Route::post('/tower/restart', [TowerController::class, 'restartCycle'])->name('tower.restart');
+    Route::post('/tower/stop', [Towercon::class, 'stop'])->name('tower.stop');
+    Route::post('/tower/stopdis', [Towercon::class, 'stopdis'])->name('tower.stopdis');
+ Route::post('/tower/restart', [Towercon::class, 'restartCycle'])->name('tower.restart');
 
 });
 
