@@ -187,12 +187,12 @@ class OwnerProfile extends Controller
         'regex:/[0-9]/',        // Digit
         'regex:/[@$!%*?&#]/',   // Special character
         'confirmed',            // Password confirmation
-], [
-    'password.required' => 'Password is required.',
-    'password.min' => 'Password must be at least 8 characters.',
-    'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
-    'password.confirmed' => 'Password confirmation does not match.',
-]
+    ], [
+        'password.required' => 'Password is required.',
+        'password.min' => 'Password must be at least 8 characters.',
+        'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
+        'password.confirmed' => 'Password confirmation does not match.',
+    ]
     ]);
 
     if ($validator->fails()) {
@@ -233,7 +233,7 @@ class OwnerProfile extends Controller
         return redirect()->route('ownerworkeraccount')->with('success', 'User enable successfully.');
     }
 
-        public function decryptSensorData()
+    public function decryptSensorData()
     {
         $key_str = "ISUHydroSec2024!";
         $iv_str = "HydroVertical143";

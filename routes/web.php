@@ -6,13 +6,26 @@ use App\Http\Controllers\Auth\ResetPassword;
 use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\SensorData;
-use App\Http\Controllers\Towercontroller;
+use App\Http\Controllers\Towercon;
 use Illuminate\Support\Facades\Route;
 
+Route::fallback(function (Request $request) {
+    if (auth()->check()) {
+        if (auth()->user()->hasRole('owner')) {
+            return redirect()->route('ownerdashboard');
+        } elseif (auth()->user()->hasRole('worker')) {
+            return redirect()->route('workerdashboard');
+        } elseif (auth()->user()->hasRole('admin')) {
+            return redirect()->route('admindashboard');
+        }
+    }
+
+    return redirect()->route('index');
+});
+
+
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return view('index');
-    })->name('index');
+    Route::get('/', function () { return view('index'); })->name('index');
 
     Route::get('/login', [AuthManager::class, 'login'])->name('login');
     Route::post('/login', [AuthManager::class, 'loginPost'])->name('login.post');
@@ -66,14 +79,14 @@ Route::get('/Owner/dashboard', [OwnerProfile::class, 'decryptSensorData'])->name
 
     Route::get('/startcycle', [SensorData::class, 'startcycle'])->name('startcycle');
 
-    Route::post('/addtower', [Towercontroller::class, 'store'])->name('posttower');
+    Route::post('/addtower', [Towercon::class, 'store'])->name('posttower');
     Route::get('/towerdata/{id}', function () { return view('Owner.tower'); })->name('towerdata');
     Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/pump-data/{id}', [SensorData::class, 'getPump']);
 
-    Route::post('/cycle', [Towercontroller::class, 'updateDates'])->name('cycle');
-    Route::get('/modestat/{id}', [Towercontroller::class, 'modestat'])->name('modestat');
+    Route::post('/cycle', [Towercon::class, 'updateDates'])->name('cycle');
+    Route::get('/modestat/{id}', [Towercon::class, 'modestat'])->name('modestat');
 
     Route::post('/tower/stop', [TowerController::class, 'stop'])->name('tower.stop');
     Route::post('/tower/stopdis', [TowerController::class, 'stopdis'])->name('tower.stopdis');
@@ -91,7 +104,7 @@ Route::middleware('auth:worker')->group(function () {
     Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);
-    Route::get('/Worker/modestat/{id}', [Towercontroller::class, 'modestat'])->name('modestat');
+    Route::get('/Worker/modestat/{id}', [Towercon::class, 'modestat'])->name('modestat');
 
 });
 

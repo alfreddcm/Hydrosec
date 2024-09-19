@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 
-class Towercontroller extends Controller
+class Towercon extends Controller
 {
     /**
      * Store a newly created tower in storage.
