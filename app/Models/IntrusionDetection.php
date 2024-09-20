@@ -8,7 +8,7 @@ class IntrusionDetection extends Model
 {
     use HasFactory;
 
-        protected $table = 'intruTbl'; // Specify the table name
+        protected $table = 'intrutbl'; // Specify the table name
 
     protected $fillable = [
         'ip_address',

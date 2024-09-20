@@ -52,24 +52,24 @@ class AuthManager extends Controller
             ]);
         }
 
-        // Validate CAPTCHA
-        // $request->validate([
-        //     'g-recaptcha-response' => 'required',
-        // ]);
+        //Validate CAPTCHA
+        $request->validate([
+            'g-recaptcha-response' => 'required',
+        ]);
 
-        // $recaptchaResponse = $request->input('g-recaptcha-response');
-        // $recaptchaSecret = env('RECAPTCHA_SECRET_KEY');
+        $recaptchaResponse = $request->input('g-recaptcha-response');
+        $recaptchaSecret = env('RECAPTCHA_SECRET_KEY');
 
-        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        //     'secret' => $recaptchaSecret,
-        //     'response' => $recaptchaResponse,
-        // ]);
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => $recaptchaSecret,
+            'response' => $recaptchaResponse,
+        ]);
 
-        // $responseBody = $response->json();
+        $responseBody = $response->json();
 
-        // if (!$responseBody['success']) {
-        //     return Redirect::back()->with('error', 'CAPTCHA verification failed.');
-        // }
+        if (!$responseBody['success']) {
+            return Redirect::back()->with('error', 'CAPTCHA verification failed.');
+        }
 
         $credentials = $request->validate([
             'username' => 'required',
@@ -178,16 +178,16 @@ class AuthManager extends Controller
             'username' => 'required|string|max:255',
             'name' => 'required|string|max:250',
             'email' => 'required|email|max:250',
-'password' => [
-        'required',
-        'string',
-        'min:8',
-        'regex:/[a-z]/', 
-        'regex:/[A-Z]/', 
-        'regex:/[0-9]/', 
-        'regex:/[@$!%*?&#]/', 
-        'confirmed', 
-    ],        ]);
+            'password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'regex:/[a-z]/', 
+                    'regex:/[A-Z]/', 
+                    'regex:/[0-9]/', 
+                    'regex:/[@$!%*?&#]/', 
+                    'confirmed', 
+                ],        ]);
 
         $username = $request->username;
         $usernameExists = $this->checkUsername('username', $username);
@@ -211,7 +211,6 @@ class AuthManager extends Controller
             'email' => Crypt::encryptString($request->email),
             'password' => Hash::make($request->password),
             'status' => Crypt::encryptString('1'),
-
         ]);
 
         return redirect()->route('index')

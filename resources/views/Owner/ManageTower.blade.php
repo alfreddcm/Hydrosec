@@ -95,7 +95,7 @@
                                                         <p class="card-text">
                                                             <b>Status:</b>
                                                             <span class="badge">
-                                                                {{ $decryptedStatus == '1' ? 'Active' : 'Pending' }}
+                                                                {{ $decryptedStatus == '1' ? 'Active' : 'Inactive' }}
                                                             </span>
                                                         </p>
                                                     </div>
@@ -113,7 +113,7 @@
 
                                                 <h5 class="card-title text-uppercase text-success">
                                                     Tower {{ Crypt::decryptString($data->name) }} <br>
-                                                    ready for harvesting!
+                                                    is for harvesting!
                                                    
                                                     <center>
                                                         <form action="{{ route('tower.restart') }}"
