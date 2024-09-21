@@ -53,6 +53,7 @@ class UpdateTowerMode extends Command
             $currentMode = Crypt::decryptString($tower->mode);
             $newMode = ($currentMode + 1) % 3;
             $tower->mode = Crypt::encryptString($newMode);
+          //  $tower->status = Crypt::encryptString($newMode);
             $tower->save();
 
             $this->info("Tower ID {$tower->id} mode updated to {$newMode}");

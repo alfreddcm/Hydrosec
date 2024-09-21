@@ -509,13 +509,13 @@ class SensorData extends Controller
 
             case 'temp':
                 if ($averageValue <= 18) {
-                    $condition = 'Cold';
+                    $condition = 'too Cold';
                 } elseif ($averageValue > 18 && $averageValue <= 25) {
-                    $condition = 'Good';
+                    $condition = 'cold';
                 } elseif ($averageValue > 25 && $averageValue <= 30) {
-                    $condition = 'Hot';
+                    $condition = 'Good';
                 } else {
-                    $condition = 'Too Hot';
+                    $condition = 'Hot';
                 }
 
                 break;

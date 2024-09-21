@@ -19,3 +19,47 @@
 [2024-09-21 10:58:42] local.INFO: 532.67  
 [2024-09-21 10:58:42] local.INFO: Tower ID 2 mode updated to 1  
 [2024-09-21 10:58:42] local.INFO: Tower modes updated at 2024-09-21 10:58:42  
+[2024-09-21 11:50:22] local.INFO: select * from `tbl_tower`  
+[2024-09-21 11:50:22] local.INFO: array (
+)  
+[2024-09-21 11:50:22] local.INFO: 811.44  
+[2024-09-21 11:50:22] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-21 11:50:22] local.INFO: array (
+  0 => 'eyJpdiI6IjAvTEdpc1Rvc0xNbTJyT2dkdFN0S1E9PSIsInZhbHVlIjoiU2RTV1dVZ3MwL2VSTzRzMjAwVGhWQT09IiwibWFjIjoiYWY5ZjlmNGEyZjljZDk0MTAxNjVjYmYyYzc1NmFlN2UxZTZiM2E0OTUyOWJjMjA4ZjkwNzdmYmI3MmQ2OTU4NSIsInRhZyI6IiJ9',
+  1 => '2024-09-21 11:50:22',
+  2 => 1,
+)  
+[2024-09-21 11:50:22] local.INFO: 158.26  
+[2024-09-21 11:50:22] local.INFO: Tower ID 1 mode updated to 2  
+[2024-09-21 11:50:22] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-21 11:50:22] local.INFO: array (
+  0 => 'eyJpdiI6IlpTNzQ3aHhKYkcrSXFHT0Rab29SZGc9PSIsInZhbHVlIjoiMDhqKzJuODV3ZXdDU1pnS1F5WWVzdz09IiwibWFjIjoiMjAzZTVjNDAyNzcyZTQ0NTE5MDczNzAyMTI2YzQ5ZGFmNzBhZTdjNGE5ZjI2NzgzN2JhNjU1NmViNDBjNDkxOCIsInRhZyI6IiJ9',
+  1 => '2024-09-21 11:50:22',
+  2 => 2,
+)  
+[2024-09-21 11:50:22] local.INFO: 150.97  
+[2024-09-21 11:50:22] local.INFO: Tower ID 2 mode updated to 2  
+[2024-09-21 11:50:22] local.INFO: Tower modes updated at 2024-09-21 11:50:22  
+[2024-09-21 11:50:39] local.INFO: select * from `tbl_tower`  
+[2024-09-21 11:50:39] local.INFO: array (
+)  
+[2024-09-21 11:50:39] local.INFO: 2619.57  
+[2024-09-21 11:50:39] local.INFO: update `tbl_tower` set `status` = ?, `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-21 11:50:39] local.INFO: array (
+  0 => 'eyJpdiI6ImFzajl0LzloZ1BTeHl3cW9aZlQ1VGc9PSIsInZhbHVlIjoic093b3V2SFFvb0IyMXc4R1FNT2xMZz09IiwibWFjIjoiNWJiNTAwZDUzOTk3OWM1ZmFmMDVhMjVhYzMyYjIzOGFjYWNlZjc1YTBjNTI4NGYwMDYxOTA1NmVkYmIxN2Q3MSIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6ImJyV3BJcnJGS1BZTGNqUmQ3V3NTS1E9PSIsInZhbHVlIjoiSnBNRldMQ2lDR29nOG80U3hFV0xjdz09IiwibWFjIjoiNGUzYTc3OWQwZDQxNDc5MDc4OTA4MWNiMDNkODlhOTI1MDM1OGYzMWNlOTg0YzExMmNjOGVkZmE1NWVmNjhiMyIsInRhZyI6IiJ9',
+  2 => '2024-09-21 11:50:39',
+  3 => 1,
+)  
+[2024-09-21 11:50:39] local.INFO: 753.38  
+[2024-09-21 11:50:39] local.INFO: Tower ID 1 mode updated to 2  
+[2024-09-21 11:50:40] local.INFO: update `tbl_tower` set `status` = ?, `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-21 11:50:40] local.INFO: array (
+  0 => 'eyJpdiI6IkFkUUZtSzlLVzV4dXoxa0MxMkJiWmc9PSIsInZhbHVlIjoiRTdKcnFnWHREU05GM3F5a2Q5bjkyUT09IiwibWFjIjoiNGQ5ZjA5ZWI0YWIzODBjZDMzMmI0N2JhN2ZkYWQzZjEyZDJiZjdiOWU2MTYwYTAzNzk3Nzc3NGVmNWNlZDU4YyIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6Inl1NjRVYks1VUxYMFRJeUJBVHdyVlE9PSIsInZhbHVlIjoidnNHckFYWkpLcDhWL2E1R2pPZUh5dz09IiwibWFjIjoiMGU5ZWY5MzM5MTQxMGM2MDQ3NzVmYTg0YzZiNTJlZTM4MmM1ZTY1NmVlN2I3YjQzZjdiZjJjNWFhZDk5OWU3OSIsInRhZyI6IiJ9',
+  2 => '2024-09-21 11:50:39',
+  3 => 2,
+)  
+[2024-09-21 11:50:40] local.INFO: 767.91  
+[2024-09-21 11:50:40] local.INFO: Tower ID 2 mode updated to 2  
+[2024-09-21 11:50:40] local.INFO: Tower modes updated at 2024-09-21 11:50:40  

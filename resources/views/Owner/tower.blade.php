@@ -694,29 +694,42 @@
 
             if (phValue >= 0 && phValue <= 14) {
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
-                if (phValue < 5.0) {
-                    statusText.textContent = "Acidic";
+
+                if (phValue < 5.5) {
+                    statusText.textContent = "Too Acidic";
                     statusText.style.color = 'red';
                     phValueElement.style.color = 'red';
                     phScale.style.filter = 'none';
-                } else if (phValue === 7) {
-                    statusText.textContent = "Neutral";
-                    statusText.style.color = 'green';
-                    phValueElement.style.color = 'green';
+                } else if (phValue < 6.0) {
+                    statusText.textContent = "Acidic";
+                    statusText.style.color = 'orange';
+                    phValueElement.style.color = 'orange';
                     phScale.style.filter = 'none';
-                } else {
-                    statusText.textContent = "Good";
+                } else if (phValue > 7.0) {
+                    statusText.textContent = "Too Basic";
+                    statusText.style.color = 'purple';
+                    phValueElement.style.color = 'purple';
+                    phScale.style.filter = 'none';
+                } else if (phValue > 6.5) {
+                    statusText.textContent = "Basic";
                     statusText.style.color = 'blue';
                     phValueElement.style.color = 'blue';
                     phScale.style.filter = 'none';
+                } else {
+                    statusText.textContent = "Good";
+                    statusText.style.color = 'green';
+                    phValueElement.style.color = 'green';
+                    phScale.style.filter = 'none';
                 }
-            } else {
-                phScale.src = `{{ asset('images/ph/7.png') }}`;
-                statusText.textContent = "N/A";
-                statusText.style.color = 'black';
-                phValueElement.style.color = 'black';
-                phScale.style.filter = 'grayscale(100%)';
-            }
+            
+
+        } else {
+            phScale.src = `{{ asset('images/ph/7.png') }}`;
+            statusText.textContent = "N/A";
+            statusText.style.color = 'black';
+            phValueElement.style.color = 'black';
+            phScale.style.filter = 'grayscale(100%)';
+        }
 
         }
 
@@ -736,17 +749,17 @@
                 tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
 
             } else if (temperature > 18 && temperature <= 25) {
-                thermometer.src = '{{ asset('images/Temp/normal.png') }}';
-                statusText.textContent = "Normal (Optimal)";
-                statusText.style.color = 'green';
-                tempValueElement.style.color = 'green';
+                thermometer.src = '{{ asset('images/Temp/cold.png') }}';
+                statusText.textContent = "Cold (Optimal)";
+                statusText.style.color = 'blue';
+                tempValueElement.style.color = 'blue';
                 tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
 
             } else if (temperature > 25 && temperature <= 30) {
-                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                statusText.textContent = "Hot";
-                statusText.style.color = 'red';
-                tempValueElement.style.color = 'red';
+                thermometer.src = '{{ asset('images/Temp/normal.png') }}';
+                statusText.textContent = "Good";
+                statusText.style.color = 'green';
+                tempValueElement.style.color = 'green';
                 tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
 
             } else if (temperature > 31) {
