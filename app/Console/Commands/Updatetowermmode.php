@@ -24,28 +24,7 @@ class UpdateTowerMode extends Command
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
 
-        //testing
-   
-        // $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp', $method, $key_str, $iv_str);
-        // $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);
-        //  $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
-
-        // Log::info('loglog:', [
-        //     'ipAddress' => $decrypted_ip,
-        //     'macAddress' => $decrypted_mac,
-        // ]);
-
-        // $tower = Tower::find($towerId);
-
-        // $hour = now()->hour;
-
-        // if ($hour >= 6 && $hour < 18) {
-        //     $mode = 1;
-        // } elseif ($hour >= 18 && $hour < 22) {
-        //     $mode = 2;
-        // } else {
-        //     $mode = 0;
-        // }
+    
 
 
         $towers = Tower::all();
@@ -80,7 +59,34 @@ class UpdateTowerMode extends Command
         }
     }
 
-}
+}    
+
+
+
+
+//testing
+   
+        // $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp', $method, $key_str, $iv_str);
+        // $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);
+        //  $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
+
+        // Log::info('loglog:', [
+        //     'ipAddress' => $decrypted_ip,
+        //     'macAddress' => $decrypted_mac,
+        // ]);
+
+        // $tower = Tower::find($towerId);
+
+        // $hour = now()->hour;
+
+        // if ($hour >= 6 && $hour < 18) {
+        //     $mode = 1;
+        // } elseif ($hour >= 18 && $hour < 22) {
+        //     $mode = 2;
+        // } else {
+        //     $mode = 0;
+        // }
+        ///////////////////////////////////////////////////////////////////////
 // public function handle()
 // {
 

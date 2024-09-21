@@ -150,13 +150,12 @@ class Towercon extends Controller
         \Log::info('Tower retrieved', ['tow' => $tow]);
 
         try {
-            $stat = Crypt::encryptString('4');
+            $stat = Crypt::encryptString('0');
             \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
 
             $tow->startdate = null;
             $tow->enddate = null;
             $tow->status = $stat;
-
             $tow->save();
 
             \Log::info('Tower status updated and saved', ['tow' => $tow]);
@@ -168,7 +167,6 @@ class Towercon extends Controller
         $ownerID = $tow->OwnerID;
         \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
 
-        $defaultPumpStatus = Crypt::encryptString('3');
 
         $sensorData = Sensor::where('towerid', $towerId)
             ->orderBy('created_at', 'desc')
