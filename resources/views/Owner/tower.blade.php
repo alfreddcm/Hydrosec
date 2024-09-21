@@ -511,7 +511,7 @@
             });
 
             // Fetch sensor data and update images
-            function fetchSensorData2() {
+            function fetchInitialSensorData() {
                 $.ajax({
                     url: '/sensor-data/' + towerId,
                     method: 'GET',

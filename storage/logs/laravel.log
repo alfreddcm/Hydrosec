@@ -1025,3 +1025,53 @@
 #8 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #9 {main}
 "} 
+[2024-09-21 22:13:41] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-21 22:13:41] local.INFO: array (
+  0 => 'wteHWs7V8sYMApejp8nMg20B3HS114pGKniFpkte',
+)  
+[2024-09-21 22:13:41] local.INFO: 2343.83  
+[2024-09-21 22:13:43] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-21 22:13:43] local.INFO: array (
+  0 => 'wteHWs7V8sYMApejp8nMg20B3HS114pGKniFpkte',
+)  
+[2024-09-21 22:13:43] local.INFO: 467.48  
+[2024-09-21 22:13:44] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-21 22:13:44] local.INFO: array (
+  0 => 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNGg4WTRmN0ZJYUJnY3BRSHpCOFYxaWdtWGJSUno0b1VmbmRBaFZEYSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1726928023,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'wteHWs7V8sYMApejp8nMg20B3HS114pGKniFpkte',
+)  
+[2024-09-21 22:13:44] local.INFO: 497.88  
+[2024-09-21 22:13:46] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-21 22:13:46] local.INFO: array (
+  0 => 'wteHWs7V8sYMApejp8nMg20B3HS114pGKniFpkte',
+)  
+[2024-09-21 22:13:46] local.INFO: 1231.46  
+[2024-09-21 22:13:47] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-21 22:13:47] local.INFO: array (
+  0 => 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNGg4WTRmN0ZJYUJnY3BRSHpCOFYxaWdtWGJSUno0b1VmbmRBaFZEYSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1726928026,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'wteHWs7V8sYMApejp8nMg20B3HS114pGKniFpkte',
+)  
+[2024-09-21 22:13:47] local.INFO: 450.22  
+[2024-09-21 22:13:48] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-21 22:13:48] local.INFO: array (
+  0 => 'wteHWs7V8sYMApejp8nMg20B3HS114pGKniFpkte',
+)  
+[2024-09-21 22:13:48] local.INFO: 1176.45  
+[2024-09-21 22:13:49] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-21 22:13:49] local.INFO: array (
+  0 => 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNGg4WTRmN0ZJYUJnY3BRSHpCOFYxaWdtWGJSUno0b1VmbmRBaFZEYSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',
+  1 => 1726928028,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+  5 => 'wteHWs7V8sYMApejp8nMg20B3HS114pGKniFpkte',
+)  
+[2024-09-21 22:13:49] local.INFO: 458.37  
