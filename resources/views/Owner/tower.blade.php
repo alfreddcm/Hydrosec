@@ -7,8 +7,8 @@
 
         use Illuminate\Support\Facades\Auth;
         use Illuminate\Support\Facades\Crypt;
-
-        $towerinfo = Tower::where('OwnerID', Auth::id())->first();
+ 
+        $towerinfo = Tower::where('id',  $id)->first();
         $wokername = Worker::where('towerid', $towerinfo->id)->get();
     @endphp
     <style>
