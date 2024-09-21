@@ -7,8 +7,8 @@
 
         use Illuminate\Support\Facades\Auth;
         use Illuminate\Support\Facades\Crypt;
- 
-        $towerinfo = Tower::where('id',  $id)->first();
+
+        $towerinfo = Tower::where('id', $id)->first();
         $wokername = Worker::where('towerid', $towerinfo->id)->get();
     @endphp
     <style>
@@ -535,8 +535,31 @@
                         console.error('AJAX Error: ' + status + ' ' + error);
                     }
                 });
-            }
 
+
+            }
+            // 2. Listen for Real-Time Updates via Pusher
+            function setupPusher() {
+                const pusher = new Pusher('1868615', {
+                    cluster: 'ap1',
+                    encrypted: true
+                });
+
+                const channel = pusher.subscribe('sensor-data-channel.' + towerId);
+                channel.bind('sensor-data-updated', function(data) {
+                    if (data.towerId === towerId) {
+                        const Temperature = parseFloat(data.temperature);
+                        const NutrientVolume = parseFloat(data.nutrient_level);
+                        const pHlevel = parseFloat(data.pH);
+                        const light = parseFloat(data.light);
+
+                        updateNutrientImage(NutrientVolume);
+                        updatePhScaleImage(pHlevel);
+                        updateLightStatus(light);
+                        updateThermometerImage(Temperature);
+                    }
+                });
+            }
             // Fetch pump data
             function fetchPumpData() {
                 $.ajax({
@@ -603,25 +626,21 @@
 
             // Start intervals
             function startIntervals() {
-                if (!sensorDataInterval) {
-                    sensorDataInterval = setInterval(fetchSensorData2, 5000);
-                }
                 if (!modeStatInterval) {
                     modeStatInterval = setInterval(fetchModeStat, 5000);
                 }
             }
 
-            // Stop intervals
             function stopIntervals() {
-                clearInterval(sensorDataInterval);
+
                 clearInterval(modeStatInterval);
                 sensorDataInterval = null;
                 modeStatInterval = null;
             }
+            fetchInitialSensorData();
             fetchPumpData();
             startIntervals();
 
-            // Refresh pump data every 30 seconds
             setInterval(fetchPumpData, 5000);
         });
 
@@ -721,15 +740,15 @@
                     phValueElement.style.color = 'green';
                     phScale.style.filter = 'none';
                 }
-            
 
-        } else {
-            phScale.src = `{{ asset('images/ph/7.png') }}`;
-            statusText.textContent = "N/A";
-            statusText.style.color = 'black';
-            phValueElement.style.color = 'black';
-            phScale.style.filter = 'grayscale(100%)';
-        }
+
+            } else {
+                phScale.src = `{{ asset('images/ph/7.png') }}`;
+                statusText.textContent = "N/A";
+                statusText.style.color = 'black';
+                phValueElement.style.color = 'black';
+                phScale.style.filter = 'grayscale(100%)';
+            }
 
         }
 

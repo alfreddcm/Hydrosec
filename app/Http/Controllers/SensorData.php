@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SensorDataUpdated;
 use App\Mail\Alert;
 use App\Models\IntrusionDetection;
 use App\Models\Owner;
@@ -325,6 +326,15 @@ class SensorData extends Controller
                                     $entemp = $this->encrypt_data($decrypted_temp, $key_str, $iv_str, $method);
                                     $ennut = $this->encrypt_data($decrypted_nutrient, $key_str, $iv_str, $method);
                                     $enlight = $this->encrypt_data($decrypted_light, $key_str, $iv_str, $method);
+
+                                    $sensorData = [
+                                        'ph' => $decrypted_ph,
+                                        'temperature' => $decrypted_ph,
+                                        'nutrient_level' => $decrypted_ph,
+                                        'light' => $decrypted_ph,
+                                    ];
+
+                                    event(new SensorDataUpdated($sensorData, $$tower->id));
 
                                     Sensor::create([
                                         'towerid' => $tower->id,

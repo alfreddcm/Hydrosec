@@ -142,6 +142,28 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
     }
 
     /**
+     * Collapse the collection of items into a single array while preserving its keys.
+     *
+     * @return static<mixed, mixed>
+     */
+    public function collapseWithKeys()
+    {
+        $results = [];
+
+        foreach ($this->items as $key => $values) {
+            if ($values instanceof Collection) {
+                $values = $values->all();
+            } elseif (! is_array($values)) {
+                continue;
+            }
+
+            $results[$key] = $values;
+        }
+
+        return new static(array_replace(...$results));
+    }
+
+    /**
      * Determine if an item exists in the collection.
      *
      * @param  (callable(TValue, TKey): bool)|TValue|string  $key
@@ -582,7 +604,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
     /**
      * Concatenate values of a given key as a string.
      *
-     * @param  callable|string  $value
+     * @param  callable|string|null  $value
      * @param  string|null  $glue
      * @return string
      */
@@ -665,7 +687,7 @@ class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerabl
      *
      * @phpstan-assert-if-true null $this->first()
      *
-     * @phpstan-assert-if-false !null $this->first()
+     * @phpstan-assert-if-false TValue $this->first()
      *
      * @return bool
      */

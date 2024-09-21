@@ -20,6 +20,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
+use JsonException;
 use JsonSerializable;
 use LogicException;
 use Stringable;
@@ -35,6 +36,8 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         Concerns\HidesAttributes,
         Concerns\GuardsAttributes,
         ForwardsCalls;
+    /** @use HasCollection<\Illuminate\Database\Eloquent\Collection<array-key, static>> */
+    use HasCollection;
 
     /**
      * The connection name for the model.
@@ -46,7 +49,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @var string|null
      */
     protected $table;
 
@@ -217,6 +220,13 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * @var class-string<\Illuminate\Database\Eloquent\Builder<*>>
      */
     protected static string $builder = Builder::class;
+
+    /**
+     * The Eloquent collection class to use for the model.
+     *
+     * @var class-string<\Illuminate\Database\Eloquent\Collection<*, *>>
+     */
+    protected static string $collectionClass = Collection::class;
 
     /**
      * The name of the "created at" column.
@@ -1465,6 +1475,19 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
+     * Force a hard destroy on a soft deleted model.
+     *
+     * This method protects developers from running forceDestroy when the trait is missing.
+     *
+     * @param  \Illuminate\Support\Collection|array|int|string  $ids
+     * @return bool|null
+     */
+    public static function forceDestroy($ids)
+    {
+        return static::destroy($ids);
+    }
+
+    /**
      * Perform the actual delete query on this model instance.
      *
      * @return void
@@ -1589,20 +1612,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
-     * Create a new Eloquent Collection instance.
-     *
-     * @template TKey of array-key
-     * @template TModel of \Illuminate\Database\Eloquent\Model
-     *
-     * @param  array<TKey, TModel>  $models
-     * @return \Illuminate\Database\Eloquent\Collection<TKey, TModel>
-     */
-    public function newCollection(array $models = [])
-    {
-        return new Collection($models);
-    }
-
-    /**
      * Create a new pivot model instance.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
@@ -1661,10 +1670,10 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function toJson($options = 0)
     {
-        $json = json_encode($this->jsonSerialize(), $options);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw JsonEncodingException::forModel($this, json_last_error_msg());
+        try {
+            $json = json_encode($this->jsonSerialize(), $options | JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw JsonEncodingException::forModel($this, $e->getMessage());
         }
 
         return $json;
@@ -2138,7 +2147,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     /**
      * Retrieve the model for a bound value.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\Relation  $query
+     * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Contracts\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation  $query
      * @param  mixed  $value
      * @param  string|null  $field
      * @return \Illuminate\Contracts\Database\Eloquent\Builder
