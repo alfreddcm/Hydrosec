@@ -574,7 +574,7 @@ class SensorData extends Controller
                         $mailStatus = 'Failed';
                         Log::error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                     } finally {
-                        TowerLogs::create([
+                        Towerlogs::create([
                             'ID_tower' => $towerId,
                             'activity' => Crypt::encryptString(
                                 "Alert: Conditions detected - " . json_encode($details['body']) . " Mail Status: " . $mailStatus

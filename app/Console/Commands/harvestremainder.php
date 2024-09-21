@@ -18,7 +18,7 @@ class harvestremainder extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Command';
 
     /**
      * Execute the console command.
@@ -38,16 +38,16 @@ class harvestremainder extends Command
                 $ownerEmail = Crypt::decryptString($owner->email);
                 if ($tower->enddate->isSameDay($oneDayLater)) {
                     $subject = "Reminder: Tower Harvest Date Today";
-                    $body = "Dear Owner,  This is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.  Best regards, Hydrosec";
-
+                    $body = "Dear Owner,  This is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.";
+         
                     $mode = '4';
                     $encryptedMode = Crypt::encryptString($mode);
                     Tower::query()->update(['mode' => $encryptedMode]);
 
                 } elseif ($tower->enddate->isSameDay($oneDayLater->addDay())) {
                     $subject = "Reminder: Tower Harvest Date Tomorrow";
-                    $body = "Dear Owner,  This is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.  Best regards, Your Team";
-                } else {
+                    $body = "Dear Owner,  This is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.";
+                } else { 
                     continue;
                 }
 
