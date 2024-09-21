@@ -30,6 +30,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@2.28.0/date-fns.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     </script>
 </head>
 
@@ -62,27 +66,19 @@
                             <a href="/Owner/dashboard"
                                 class="nav-link {{ request()->is('Owner/dashboard') ? 'active' : 'text-white' }}"
                                 aria-current="page">
-                                <svg class="bi me-2" width="16" height="16">
-                                    <use xlink:href="#home"></use>
-                                </svg>
+
                                 Dashboard
                             </a>
                         </li>
                         <li>
                             <a href="/Owner/ManageTower"
                                 class="nav-link {{ request()->is('Owner/ManageTower') ? 'active' : 'text-white' }}">
-                                <svg class="bi me-2" width="16" height="16">
-                                    <use xlink:href="#speedometer2"></use>
-                                </svg>
                                 Towers
                             </a>
                         </li>
                         <li>
                             <a href="/Owner/WorkerAccounts"
                                 class="nav-link {{ request()->is('Owner/WorkerAccounts') ? 'active' : 'text-white' }}">
-                                <svg class="bi me-2" width="16" height="16">
-                                    <use xlink:href="#table"></use>
-                                </svg>
                                 Worker Accounts
                             </a>
                         </li>

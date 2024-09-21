@@ -7,17 +7,17 @@ use App\Models\Admin;
 use App\Models\Owner;
 use App\Models\Tower;
 use App\Models\Worker;
+use App\Models\SensorDataHistory;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class OwnerProfile extends Controller
 {
-  
 
     //
     public function update(Request $request)
@@ -88,17 +88,25 @@ class OwnerProfile extends Controller
     public function addworker(Request $request)
     {
         $credentials = $request->validate([
+            'tower' => 'required',
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
-        ]);
-    
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&#]/',
+            ]]);
+
         $usernameExists = $this->checkUsernameWorker('username', $request->username);
-    
+
         if ($usernameExists) {
-            $workerCheck2=Worker::get();
+            $workerCheck2 = Worker::get();
             foreach ($workerCheck2 as $data) {
-                if(Crypt::decryptString($data->username) == $credentials->username && Crypt::decryptString($data->status)== '0'){
+                if (Crypt::decryptString($data->username) == $credentials->username && Crypt::decryptString($data->status) == '0') {
                     return back()->withErrors(['error' => 'The this user has disable.']);
                 }
             }
@@ -107,6 +115,7 @@ class OwnerProfile extends Controller
         } else {
 
             Worker::create([
+                'towerid' => $request->tower,
                 'username' => Crypt::encryptString($request->username),
                 'name' => Crypt::encryptString($request->name),
                 'password' => Hash::make($request->password),
@@ -114,12 +123,11 @@ class OwnerProfile extends Controller
                 'status' => Crypt::encryptString('1'),
 
             ]);
-    
+
             // Redirect with a success message
             return redirect()->route('ownerworkeraccount')->with('success', 'Account successfully created.');
         }
     }
-    
 
     public function checkUsernameWorker($field, $value)
     {
@@ -144,56 +152,71 @@ class OwnerProfile extends Controller
         $user->name = Crypt::decryptString($user->name);
         $user->username = Crypt::decryptString($user->username);
 
-        return view('owner.edit', compact('user'));
+        return view('Owner.edit', compact('user'));
     }
 
     public function workerupdate(Request $request, $id)
     {
+
         $request->validate([
+            'tower' => 'required',
             'name' => 'required|string|max:255',
             'username' => 'required',
-            'towerid' => 'required',
-
         ]);
 
         $user = Worker::find($id);
+        $user->towerid = $request->tower;
         $user->name = Crypt::encryptString($request->input('name'));
         $user->username = Crypt::encryptString($request->input('username'));
-        $user->OwnerID = Auth::id();
-        $user->towerid = $request->input('towerid');
-
         $user->save();
 
         return redirect()->route('ownerworkeraccount')->with('success', 'User updated successfully.');
     }
 
     public function workerPassword(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'password' => 'required',
-        ]);
+{
+    // Validate the request
+    $validator = Validator::make($request->all(), [
+        'id' => 'required|integer',
+         'password' => [
+        'required',
+        'string',
+        'min:8',
+        'regex:/[a-z]/',        // Lowercase letter
+        'regex:/[A-Z]/',        // Uppercase letter
+        'regex:/[0-9]/',        // Digit
+        'regex:/[@$!%*?&#]/',   // Special character
+        'confirmed',            // Password confirmation
+    ], [
+        'password.required' => 'Password is required.',
+        'password.min' => 'Password must be at least 8 characters.',
+        'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
+        'password.confirmed' => 'Password confirmation does not match.',
+    ]
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        $user = Worker::find(auth()->user()->id);
-
-        if (!$user) {
-            return redirect()->back()->with('error', 'User not found');
-        }
-
-        // Update the user's password
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return redirect()->back()->with('success', 'Password updated successfully');
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
+    // Fetch the worker by ID
+    $user = Worker::where('id', $request->id)->first();
 
-    
+    // Check if the user exists
+    if (!$user) {
+        return redirect()->back()->with('error', 'User not found');
+    }
+
+    // Update the worker's password
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return redirect()->back()->with('success', 'Password updated successfully');
+}
+
     public function workerdis(Request $request, $id)
     {
-       
+
         $user = Worker::find($id);
         $user->status = crypt::encryptString('0');
         $user->save();
@@ -202,11 +225,73 @@ class OwnerProfile extends Controller
     }
     public function workeren(Request $request, $id)
     {
-       
+
         $user = Worker::find($id);
         $user->status = crypt::encryptString('1');
         $user->save();
 
         return redirect()->route('ownerworkeraccount')->with('success', 'User enable successfully.');
+    }
+
+    public function decryptSensorData()
+    {
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+
+        // Retrieve towers owned by the authenticated user
+        $towers = Tower::where('OwnerID', Auth::id())->get();
+        $allDecryptedData = [];
+
+        foreach ($towers as $tower) {
+
+            $sensorDataHistory = SensorDataHistory::where('towerid', $tower->id)->get();
+
+            if ($sensorDataHistory->isEmpty()) {
+                continue;
+            }
+
+            foreach ($sensorDataHistory as $data) {
+                $code = Crypt::decryptString($tower->towercode);
+                $sensorDataArray = json_decode($data->sensor_data, true);
+                // \Log::info("Decoded sensor data: ", $sensorDataArray);
+
+                $decryptedEntries = [];
+
+                if (is_array($sensorDataArray)) {
+                    foreach ($sensorDataArray as $sensorData) {
+                        if (isset($sensorData['pH'], $sensorData['temperature'], $sensorData['nutrientlevel'], $sensorData['light'])) {
+                            $decryptedEntry = [
+                                'pH' => (float) $this->decrypt_data($sensorData['pH'], $method, $key_str, $iv_str),
+                                'temperature' => (float) $this->decrypt_data($sensorData['temperature'], $method, $key_str, $iv_str),
+                                'nutrientlevel' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $key_str, $iv_str),
+                                'light' => (float) $this->decrypt_data($sensorData['light'], $method, $key_str, $iv_str),
+                                'created_at' => Carbon::parse($data->created_at),
+
+                            ];
+
+                            $decryptedEntries[] = $decryptedEntry;
+                        } else {
+                            \Log::error("Missing required sensor data keys: ", $sensorData);
+                        }
+                    }
+
+                    // Use $data->id as the key for decrypted data
+                    $startDate = Carbon::parse($data->created_at)->format('m/d/Y');
+                    $endDate = Carbon::parse($data->created_at)->format('m/d/Y');
+
+                    $allDecryptedData[$data->id] = [
+                        'towercode' => $code,
+                        'data' => $decryptedEntries,
+                        'startDate' => $startDate,
+                        'endDate' => $endDate,
+                    ];
+                } else {
+                    \Log::error("Invalid sensor data format: ", $sensorDataArray);
+                }
+            }
+        }
+
+        return view('Owner.dashboard', ['allDecryptedData' => $allDecryptedData]);
     }
 }

@@ -163,7 +163,7 @@ class Builder implements BuilderContract
     /**
      * The number of records to skip.
      *
-     * @var int
+     * @var int|null
      */
     public $offset;
 
@@ -1119,6 +1119,71 @@ class Builder implements BuilderContract
     public function orWhereRaw($sql, $bindings = [])
     {
         return $this->whereRaw($sql, $bindings, 'or');
+    }
+
+    /**
+     * Add a "where like" clause to the query.
+     *
+     * @param  \Illuminate\Contracts\Database\Query\Expression|string  $column
+     * @param  string  $value
+     * @param  bool  $caseSensitive
+     * @param  string  $boolean
+     * @param  bool  $not
+     * @return $this
+     */
+    public function whereLike($column, $value, $caseSensitive = false, $boolean = 'and', $not = false)
+    {
+        $type = 'Like';
+
+        $this->wheres[] = compact('type', 'column', 'value', 'caseSensitive', 'boolean', 'not');
+
+        if (method_exists($this->grammar, 'prepareWhereLikeBinding')) {
+            $value = $this->grammar->prepareWhereLikeBinding($value, $caseSensitive);
+        }
+
+        $this->addBinding($value);
+
+        return $this;
+    }
+
+    /**
+     * Add an "or where like" clause to the query.
+     *
+     * @param  \Illuminate\Contracts\Database\Query\Expression|string  $column
+     * @param  string  $value
+     * @param  bool  $caseSensitive
+     * @return $this
+     */
+    public function orWhereLike($column, $value, $caseSensitive = false)
+    {
+        return $this->whereLike($column, $value, $caseSensitive, 'or', false);
+    }
+
+    /**
+     * Add a "where not like" clause to the query.
+     *
+     * @param  \Illuminate\Contracts\Database\Query\Expression|string  $column
+     * @param  string  $value
+     * @param  bool  $caseSensitive
+     * @param  string  $boolean
+     * @return $this
+     */
+    public function whereNotLike($column, $value, $caseSensitive = false, $boolean = 'and')
+    {
+        return $this->whereLike($column, $value, $caseSensitive, $boolean, true);
+    }
+
+    /**
+     * Add an "or where not like" clause to the query.
+     *
+     * @param  \Illuminate\Contracts\Database\Query\Expression|string  $column
+     * @param  string  $value
+     * @param  bool  $caseSensitive
+     * @return $this
+     */
+    public function orWhereNotLike($column, $value, $caseSensitive = false)
+    {
+        return $this->whereNotLike($column, $value, $caseSensitive, 'or');
     }
 
     /**
@@ -2173,7 +2238,7 @@ class Builder implements BuilderContract
     /**
      * Add a "where" clause to the query for multiple columns with "and" conditions between them.
      *
-     * @param  string[]  $columns
+     * @param  \Illuminate\Contracts\Database\Query\Expression[]|string[]  $columns
      * @param  mixed  $operator
      * @param  mixed  $value
      * @param  string  $boolean
@@ -2197,8 +2262,8 @@ class Builder implements BuilderContract
     /**
      * Add an "or where" clause to the query for multiple columns with "and" conditions between them.
      *
-     * @param  string[]  $columns
-     * @param  string  $operator
+     * @param  \Illuminate\Contracts\Database\Query\Expression[]|string[]  $columns
+     * @param  mixed  $operator
      * @param  mixed  $value
      * @return $this
      */
@@ -2208,10 +2273,10 @@ class Builder implements BuilderContract
     }
 
     /**
-     * Add an "where" clause to the query for multiple columns with "or" conditions between them.
+     * Add a "where" clause to the query for multiple columns with "or" conditions between them.
      *
-     * @param  string[]  $columns
-     * @param  string  $operator
+     * @param  \Illuminate\Contracts\Database\Query\Expression[]|string[]  $columns
+     * @param  mixed  $operator
      * @param  mixed  $value
      * @param  string  $boolean
      * @return $this
@@ -2234,14 +2299,41 @@ class Builder implements BuilderContract
     /**
      * Add an "or where" clause to the query for multiple columns with "or" conditions between them.
      *
-     * @param  string[]  $columns
-     * @param  string  $operator
+     * @param  \Illuminate\Contracts\Database\Query\Expression[]|string[]  $columns
+     * @param  mixed  $operator
      * @param  mixed  $value
      * @return $this
      */
     public function orWhereAny($columns, $operator = null, $value = null)
     {
         return $this->whereAny($columns, $operator, $value, 'or');
+    }
+
+    /**
+     * Add a "where not" clause to the query for multiple columns where none of the conditions should be true.
+     *
+     * @param  \Illuminate\Contracts\Database\Query\Expression[]|string[]  $columns
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @param  string  $boolean
+     * @return $this
+     */
+    public function whereNone($columns, $operator = null, $value = null, $boolean = 'and')
+    {
+        return $this->whereAny($columns, $operator, $value, $boolean.' not');
+    }
+
+    /**
+     * Add an "or where not" clause to the query for multiple columns where none of the conditions should be true.
+     *
+     * @param  \Illuminate\Contracts\Database\Query\Expression[]|string[]  $columns
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @return $this
+     */
+    public function orWhereNone($columns, $operator = null, $value = null)
+    {
+        return $this->whereNone($columns, $operator, $value, 'or');
     }
 
     /**
@@ -3167,10 +3259,10 @@ class Builder implements BuilderContract
                 ->get()->all();
         }
 
-        $without = $this->unions ? ['orders', 'limit', 'offset'] : ['columns', 'orders', 'limit', 'offset'];
+        $without = $this->unions ? ['unionOrders', 'unionLimit', 'unionOffset'] : ['columns', 'orders', 'limit', 'offset'];
 
         return $this->cloneWithout($without)
-                    ->cloneWithoutBindings($this->unions ? ['order'] : ['select', 'order'])
+                    ->cloneWithoutBindings($this->unions ? ['unionOrder'] : ['select', 'order'])
                     ->setAggregate('count', $this->withoutSelectAliases($columns))
                     ->get()->all();
     }
@@ -3239,7 +3331,7 @@ class Builder implements BuilderContract
      *
      * @param  \Illuminate\Contracts\Database\Query\Expression|string  $column
      * @param  string|null  $key
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<array-key, mixed>
      */
     public function pluck($column, $key = null)
     {

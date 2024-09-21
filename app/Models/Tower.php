@@ -3,7 +3,6 @@
 namespace App\Models;
 
 //use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -18,7 +17,6 @@ class Tower extends Authenticatable
      */
     protected $table = 'tbl_tower'; // Specify the table name
 
-   
     protected $primaryKey = 'id';
 
     public $timestamps = true;
@@ -33,13 +31,18 @@ class Tower extends Authenticatable
         'status',
         'startdate',
         'enddate',
+        'created_at',
+        'updated_at',
+        'last_sensor_error_email_sent_at',
+        'last_critical_condition_email_sent_at',
+        'last_pumping_email_sent_at',
+        'last_email_sensor_off'
     ];
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-
 
     /**
      * Get the attributes that should be cast.

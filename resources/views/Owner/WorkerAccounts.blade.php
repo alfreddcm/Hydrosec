@@ -1,5 +1,6 @@
 @extends('Owner/sidebar')
-<link href="{{ asset('css/owner/workeraccount.css') }}" rel="stylesheet">
+<link href="{{ asset('css/owner/workeraccount.css') }}"
+      rel="stylesheet">
 @section('title', 'Worker Account')
 @section('content')
 
@@ -18,6 +19,22 @@
         $counter = 1;
 
     @endphp
+    <style>
+        .btn-group .btn {
+            display: inline;
+            height: fit-content;
+            font-size: 1rem;
+            margin: 0px;
+        }
+        table tr{
+            height: 10%;
+        }
+        .btnpop {
+            position: absolute;
+            bottom: 1%;
+            right: 1%;
+        }
+    </style>
     <div class="container">
         <div class="row text-start">
             <div id="wrapper">
@@ -40,16 +57,12 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="panel-heading">
-                                    Owner Worker Accounts List
-                                </div>
 
                                 <div class="panel-body">
                                     <div class="dataTable_wrapper">
                                         <!-- Active Accounts Table -->
-                                        <h3>Active Accounts</h3>
                                         <table class="table table-striped table-bordered table-hover"
-                                            id="dataTables-example-active">
+                                               id="dataTables-example-active">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
@@ -70,14 +83,13 @@
                                                             <td>
                                                                 <div class="btn-group">
                                                                     <a href="{{ route('ownerworker.edit', $user->id) }}"c1
-                                                                        class="btn btn-primary btn-rounded">Edit</a>
+                                                                       class="btn btn-primary btn-rounded">Edit</a>
                                                                     <form action="{{ route('ownerworker.dis', $user->id) }}"
-                                                                        method="POST">
+                                                                          method="POST">
                                                                         @csrf
-                                                                        <button
-                                                                            onclick="return confirm('Are you sure you want to delete this?')"
-                                                                            type="submit"
-                                                                            class="btn btn-danger btn-rounded">
+                                                                        <button onclick="return confirm('Are you sure you want to delete this?')"
+                                                                                type="submit"
+                                                                                class="btn btn-danger btn-rounded">
                                                                             Disable
                                                                         </button>
                                                                     </form>
@@ -85,25 +97,6 @@
                                                             </td>
                                                         </tr>
                                                     @endif
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-
-                                        <!-- Disabled Accounts Table -->
-                                        <h3>Disabled Accounts</h3>
-                                        <table class="table table-striped table-bordered table-hover"
-                                            id="dataTables-example-disabled">
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Name</th>
-                                                    <th>Username</th>
-                                                    <th>Tower</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($accs as $user)
                                                     @if (Crypt::decryptString($user->status) == '0')
                                                         <tr class="odd gradeX">
                                                             <td>{{ $loop->iteration }}</td>
@@ -113,12 +106,11 @@
                                                             <td>
                                                                 <div class="btn-group">
                                                                     <form action="{{ route('ownerworker.en', $user->id) }}"
-                                                                        method="POST">
+                                                                          method="POST">
                                                                         @csrf
-                                                                        <button
-                                                                            onclick="return confirm('Are you sure you want to enable this?')"
-                                                                            type="submit"
-                                                                            class="btn btn-secondary ti-trash btn-rounded">
+                                                                        <button onclick="return confirm('Are you sure you want to enable this?')"
+                                                                                type="submit"
+                                                                                class="btn btn-secondary ti-trash btn-rounded">
                                                                             Enable
                                                                         </button>
                                                                     </form>
@@ -127,22 +119,35 @@
                                                         </tr>
                                                     @endif
                                                 @endforeach
+
                                             </tbody>
                                         </table>
+
+                                        <!-- Disabled Accounts Table -->
+
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-
                     </div>
 
             </div>
         </div>
-        <a href="{{ route('addworker') }}" class="btn btn-success mt-1">
+        <a href="{{ route('addworker') }}"
+           class="btn btn-success mt-1 btnpop">
             Add Worker Account
         </a>
     </div>
-
+    <script>
+        function toggleDisabledAccounts() {
+            var section = document.getElementById("disabledAccountsSection");
+            if (section.style.display === "none") {
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
+        }
+    </script>
 
 @endsection

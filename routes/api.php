@@ -11,6 +11,3 @@ Route::middleware('api')->group(function () {
     Route::post('/get-mode', [ApiController::class, 'getmode']);
 });
 
-// Route::post('/iba', [SensorData::class, 'storedata']);
-
-

@@ -1,3 +1,28 @@
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+
+#   RewriteCond %{REQUEST_FILENAME} !-f
+#   RewriteCond %{REQUEST_FILENAME} !-d
+
+#   # Prevent rewriting API requests
+#   RewriteRule ^api/(.*)$ - [L,QSA]
+#   RewriteRule ^(.*)$ public/$1 [L]
+# </IfModule>
+
+
+
+<IfModule mod_rewrite.c>
+Headers unset X-Powered-By
+	Header set X-XSS-Protection "1; mode=block"
+	Header set X-Frame-Options "SAMEORIGIN"
+	Header set X-Content-Type-Options "nosniff"
+	Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+	# Header set Content-Security-Policy ...
+	Header set Referrer-Policy "same-origin"
+  Header set Permissions-Policy "geolocation=(self), vibrate=(), accelerometer=(), camera=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+
+</IfModule>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
@@ -5,6 +30,21 @@
   RewriteCond %{REQUEST_FILENAME} !-d
 
   # Prevent rewriting API requests
-  RewriteRule ^api/(.*)$ - [L,QSA]
+  RewriteRule ^api/(.*)$ - [QSA]
   RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
+
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+
+#     # Handle API requests
+#     RewriteCond %{REQUEST_URI} ^/api/ [NC]
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteRule ^api/(.*)$ public/index.php [L]
+
+#     # Handle all other requests
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteRule ^(.*)$ public/$1 [L]
+# </IfModule>

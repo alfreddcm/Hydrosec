@@ -81,6 +81,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                                        <span>Password must be have atleast one uppercase and lowercase letter, number and a special character. </span>
+
                     <label for="password" class="col-sm-4 col-form-label">Password</label>
                     <div class="col-sm-8">
                         <input type="password" class="form-control" id="password" value="**********">

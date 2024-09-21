@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <a href="{{route('ownermanageprofile')}}">Back</a>
                     <h5 class="card-title">Update Password</h5>
-                    <p class="card-text">Ensure your account is using a long, random password to stay secure.</p>
+                    <span>Password must be have atleast one uppercase and lowercase letter, number and a special character. </span>
                     <form>
                         <div class="mb-3">
                             <label for="current-password" class="form-label">Current Password</label>

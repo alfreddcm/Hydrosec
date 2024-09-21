@@ -2,10 +2,14 @@
 
 Hello!
 
-You have received an OTP: {{ $otpcode }}
+You have received an OTP:
+<div style="text-align: center; font-size: 24px; font-weight: bold;">
+    @foreach(str_split($otpcode) as $digit)
+        <span style="margin: 0 5px;">{{ $digit }}</span>
+    @endforeach
+</div><br>
 
-If you did not create an account, no further action is required.
-
+If you did not request this OTP, no further action is required.
 
 Thanks,<br>
 {{ config('app.name') }}

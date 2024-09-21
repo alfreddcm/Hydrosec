@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\IntrusionDetection;
+use Carbon\Carbon;
+use App\Mail\Alert;
 use App\Models\Admin;
 use App\Models\Owner;
 use App\Models\Worker;
+use App\Models\Tower;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class admincontroller extends Controller
@@ -26,7 +33,12 @@ class admincontroller extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[@$!%*?&]/'],
+                'regex:/[@$!%*?&#]/',
+            ],
+        ], [
+            'password.required' => 'Password is required.',
+            'password.min' => 'Password must be at least 8 characters.',
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
         ]);
 
         $username = $request->username;
@@ -54,29 +66,49 @@ class admincontroller extends Controller
 
     }
 
-    public function showCounts()
-    {
-        $ownerCount = 0;
-        $workerCount = 0;
+public function showCounts()
+{
+    // Count owners with decrypted status of 1
+    $ownerCount = Owner::all()->filter(function ($owner) {
+        $status = Crypt::decryptString($owner->status);
+        Log::info('Owner status decrypted:', ['status' => $status]);
+        return $status == '1';
+    })->count();
 
-        // Count owners with decrypted status of 1
-        $owners = Owner::all();
-        foreach ($owners as $owner) {
-            if (Crypt::decryptString($owner->status) == '1') {
-                $ownerCount++;
-            }
-        }
+    // Log the count of owners
+    Log::info('Owner Count:', ['count' => $ownerCount]);
 
-        // Count workers with decrypted status of 1
-        $workers = Worker::all();
-        foreach ($workers as $worker) {
-            if (Crypt::decryptString($worker->status) == '1') {
-                $workerCount++;
-            }
-        }
+    // Count workers with decrypted status of 1
+    $workerCount = Worker::all()->filter(function ($worker) {
+        $status = Crypt::decryptString($worker->status);
+        Log::info('Worker status decrypted:', ['status' => $status]);
+        return $status == '1';
+    })->count();
 
-        return view('Admin.dashboard', compact('ownerCount', 'workerCount'));
-    }
+    // Log the count of workers
+    Log::info('Worker Count:', ['count' => $workerCount]);
+
+    // Fetch intrusion data and format date
+    $intrusions = IntrusionDetection::all()->map(function ($intrusion) {
+        $intrusion->formatted_detected_at = Carbon::parse($intrusion->detected_at)->format('h:i A d,m,Y');
+        $intrusion->ip_address = Crypt::decryptString($intrusion->ip_address);
+        $intrusion->user_agent = Crypt::decryptString($intrusion->user_agent);
+        $intrusion->failed_attempts = Crypt::decryptString($intrusion->failed_attempts);
+
+        // Log each intrusion entry
+        Log::info('Intrusion Detection Entry:', [
+            'ip_address' => $intrusion->ip_address,
+            'user_agent' => $intrusion->user_agent,
+            'failed_attempts' => $intrusion->failed_attempts,
+            'formatted_detected_at' => $intrusion->formatted_detected_at,
+        ]);
+
+        return $intrusion;
+    });
+
+    // Return all data to the view
+    return view('Admin.dashboard', compact('ownerCount', 'workerCount', 'intrusions'));
+}
 
     public function edit($id)
     {
@@ -116,11 +148,13 @@ class admincontroller extends Controller
     public function update2(Request $request, $id)
     {
         $request->validate([
+            'tower' => 'required',
             'name' => 'required|string|max:255',
             'username' => 'required',
         ]);
 
         $user = Worker::find($id);
+        $user->towerid = $request->tower;
         $user->name = Crypt::encryptString($request->input('name'));
         $user->username = Crypt::encryptString($request->input('username'));
         $user->save();
@@ -132,48 +166,67 @@ class admincontroller extends Controller
 
     public function adminupdatePassword(Request $request)
     {
+        // Validate the request
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
-            'password' => 'required|min:8|confirmed',
-        ]);
+            'idd' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&#]/',
+                'confirmed',
+            ]]);
 
         if ($validator->fails()) {
+            Log::warning('Password update failed validation.', ['errors' => $validator->errors(), 'input' => $request->all()]);
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         // Find the user by ID
-        $user = Owner::find($request->id);
+        $user = Owner::where('id', $request->idd)->first();
 
         if (!$user) {
+            Log::error('User not found during password update.', ['user_id' => $request->idd]);
             return redirect()->back()->with('error', 'User not found');
         }
 
-        // Update the user's password
         $user->password = Hash::make($request->password);
         $user->save();
+        Log::info('User password updated.', ['username' => Crypt::decryptString($user->username), 'email' => $user->email]);
 
-        // Prepare email details
-        $body = "Dear " . Crypt::decryptString($user->name) . ", your password has been changed to: " . $request->password;
-
+        $body = "Dear " . Crypt::decryptString($user->username) . ", your password has been changed to: " . $request->password;
         $details = [
             'title' => 'Alert: Password Change',
             'body' => $body,
         ];
 
-        // Send email to the user
+        // Send email notification
         $email = Crypt::decryptString($user->email);
         Mail::to($email)->send(new Alert($details));
 
+        // Log email sending
+        Log::info('Password change notification sent.', ['email' => $email]);
+
         return redirect()->back()->with('success', 'Password updated successfully');
     }
-
     //workerupdate pass
     public function adminupdatePassword2(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'password' => 'required|min:8|confirmed',
-        ]);
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&#]/',
+                'confirmed',
+            ]]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -205,8 +258,6 @@ class admincontroller extends Controller
         if (!$user) {
             return redirect()->back()->with('error', 'User not found');
         }
-
-        // Update the user's password
         $user->password = Hash::make($request->password);
         $user->save();
 
@@ -240,26 +291,23 @@ class admincontroller extends Controller
             if ($user) {
                 $user->status = Crypt::encryptString("0");
                 $user->save();
-    
+
                 // Retrieve all workers associated with the owner
                 $workers = Worker::where('OwnerID', $user->id)->get();
                 foreach ($workers as $worker) {
                     $worker->status = Crypt::encryptString("0");
                     $worker->save();
                 }
-    
+
                 return redirect()->route('UserAccounts')->with('status', 'Account disabled successfully.');
             } else {
                 return redirect()->route('UserAccounts')->withErrors(['error' => 'Owner not found.']);
             }
         } catch (\Exception $exception) {
-            // Optionally log the exception for further analysis
-            // Log::error('Failed to disable account: ' . $exception->getMessage());
-    
+
             return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to disable the account.']);
         }
     }
-    
 
     public function en()
     {
@@ -268,14 +316,12 @@ class admincontroller extends Controller
             if ($user) {
                 $user->status = Crypt::encryptString("1");
                 $user->save();
-    
-                // Retrieve all workers associated with the owner
                 $workers = Worker::where('OwnerID', $user->id)->get();
                 foreach ($workers as $worker) {
                     $worker->status = Crypt::encryptString("1");
                     $worker->save();
                 }
-    
+
                 return redirect()->route('UserAccounts')->with('status', 'Account enabled successfully.');
             } else {
                 return redirect()->route('UserAccounts')->withErrors(['error' => 'Owner not found.']);
@@ -283,9 +329,9 @@ class admincontroller extends Controller
         } catch (\Exception $exception) {
             // Optionally log the exception for further analysis
             // Log::error('Failed to enable account: ' . $exception->getMessage());
-    
+
             return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to enable the account.']);
         }
     }
-    
+
 }

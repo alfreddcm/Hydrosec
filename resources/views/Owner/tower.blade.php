@@ -8,8 +8,8 @@
         use Illuminate\Support\Facades\Auth;
         use Illuminate\Support\Facades\Crypt;
 
-        $towerinfo = Tower::where('OwnerID', Auth::id())->first();
-        $wokername = Worker::where('OwnerID', Auth::id())->first();
+        $towerinfo = Tower::where('id', $id)->first();
+        $wokername = Worker::where('towerid', $towerinfo->id)->get();
     @endphp
     <style>
         canvas {
@@ -35,7 +35,6 @@
             position: absolute;
             top: 0;
             left: 1%;
-
         }
 
         .title {
@@ -111,7 +110,7 @@
         .nutcard {
             margin: 10px;
             width: 90%;
-            height: 200px;
+            height: max-content;
             border-radius: 10px;
             border: 1px solid #ddd;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -131,7 +130,10 @@
                     </h2>
                     @if ($wokername)
                         <p class="card-text">
-                            Assgned User: {{ Crypt::decryptString($wokername->name) }}
+                            Assigned User: <br>
+                            @foreach ($wokername as $item)
+                                {{ Crypt::decryptString($item->name) }} &nbsp;
+                            @endforeach
                         </p>
                     @else
                         <p class="card-text">
@@ -153,7 +155,6 @@
                                     class="status-text">Inactive</span></h5>
                         </div>
                     </div>
-
 
                     <div class="row g-3">
 
@@ -202,7 +203,6 @@
                                         <img id="ph-scale" src="{{ asset('images/ph/8.png') }}" alt="ph-scale">
                                     </div>
 
-
                                     <div class="value">
                                         <h4 class="mt-3"><span id="ph-value">n/a</span> <span id="ph-status">n/a</span>
                                         </h4>
@@ -211,7 +211,6 @@
                                 </center>
                             </div>
                         </div>
-
 
                         {{-- ph --}}
                         <div class="col-sm-4">
@@ -286,7 +285,6 @@
                     </form>
                 @endif
 
-
                 <!-- Start Cycle Modal -->
                 <div class="modal fade" id="startCycleModal" tabindex="-1" aria-labelledby="startCycleModalLabel"
                     aria-hidden="true">
@@ -343,21 +341,33 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                <div class="modal-footer justify-content-center">
                                     <button type="submit" class="btn btn-warning">Update Dates</button>
                                 </div>
                             </form>
+                            <hr>
+                            <!-- Separate the action buttons from the main form footer -->
+                            <div class="d-flex justify-content-center mt-1 mb-2">
+                                <form action="{{ route('tower.stop') }}" method="POST" class="me-2">
+                                    @csrf
+                                    <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to stop the cycle?');">Stop
+                                        Cycle</button>
 
-                            <form action="{{ route('tower.stop') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
-                                <button type="submit" class="btn btn-danger mb-3">Stop Cycle</button>
-                            </form>
+                                </form>
+                                <form action="{{ route('tower.stopdis') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to disable the tower?');">Disable
+                                        Tower</button>
 
+                                </form>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -369,7 +379,7 @@
                     <div class="table-container">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-borderless table-primary align-middle">
-                                <thead class="table-light sticky-top">
+                                <thead class="table-light sticky-top ">
                                     <tr>
                                         <th>No.</th>
                                         <th>Status</th>
@@ -391,8 +401,6 @@
             </div>
         </center>
 
-
-
     </div>
 
     <!-- Modal -->
@@ -408,14 +416,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <canvas id="tempChart"> ><img src="{{ asset('images/loading.svg') }}" alt="" style="height:30px" ; /></canvas>
+                        <canvas id="tempChart"> ><img src="{{ asset('images/loading.svg') }}" alt=""
+                                style="height:30px" ; /></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <script>
         var towerId = @json($towerinfo->id);
@@ -528,8 +535,31 @@
                         console.error('AJAX Error: ' + status + ' ' + error);
                     }
                 });
-            }
 
+
+            }
+            // 2. Listen for Real-Time Updates via Pusher
+            function setupPusher() {
+                const pusher = new Pusher('1868615', {
+                    cluster: 'ap1',
+                    encrypted: true
+                });
+
+                const channel = pusher.subscribe('sensor-data-channel.' + towerId);
+                channel.bind('sensor-data-updated', function(data) {
+                    if (data.towerId === towerId) {
+                        const Temperature = parseFloat(data.temperature);
+                        const NutrientVolume = parseFloat(data.nutrient_level);
+                        const pHlevel = parseFloat(data.pH);
+                        const light = parseFloat(data.light);
+
+                        updateNutrientImage(NutrientVolume);
+                        updatePhScaleImage(pHlevel);
+                        updateLightStatus(light);
+                        updateThermometerImage(Temperature);
+                    }
+                });
+            }
             // Fetch pump data
             function fetchPumpData() {
                 $.ajax({
@@ -542,7 +572,7 @@
                         if (data.length === 0) {
                             tbody.append(
                                 '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
-                                );
+                            );
                         } else {
                             $.each(data, function(index, item) {
                                 // Ensure item.pump is treated as a number
@@ -560,10 +590,10 @@
                                 }
 
                                 var row = `<tr class="table-light">
-                        <td>${index + 1}</td>
-                        <td ${textColor}>${status}</td>
-                        <td>${item.timestamp}</td>
-                    </tr>`;
+                                            <td>${index + 1}</td>
+                                            <td ${textColor}>${status}</td>
+                                            <td>${item.timestamp}</td>
+                                                                 </tr>`;
                                 tbody.append(row);
                             });
                         }
@@ -596,26 +626,22 @@
 
             // Start intervals
             function startIntervals() {
-                if (!sensorDataInterval) {
-                    sensorDataInterval = setInterval(fetchSensorData2, 10000);
-                }
                 if (!modeStatInterval) {
-                    modeStatInterval = setInterval(fetchModeStat, 10000);
+                    modeStatInterval = setInterval(fetchModeStat, 5000);
                 }
             }
 
-            // Stop intervals
             function stopIntervals() {
-                clearInterval(sensorDataInterval);
+
                 clearInterval(modeStatInterval);
                 sensorDataInterval = null;
                 modeStatInterval = null;
             }
+            fetchInitialSensorData();
             fetchPumpData();
             startIntervals();
 
-            // Refresh pump data every 30 seconds
-            setInterval(fetchPumpData, 10000);
+            setInterval(fetchPumpData, 5000);
         });
 
         function updateNutrientImage(nutrientVolume) {
@@ -671,8 +697,8 @@
                     volumeValueElement.style.color = 'orange';
                 } else {
                     nutrientImage.src = '{{ asset('images/Water/10.png') }}';
-                    statusText.textContent = "Empty";
-                    statusText.style.color = 'gray';
+                    statusText.textContent = "Low";
+                    statusText.style.color = 'green';
                     volumeValueElement.style.color = 'gray';
                 }
             }
@@ -687,22 +713,35 @@
 
             if (phValue >= 0 && phValue <= 14) {
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
-                if (phValue < 5.0) {
-                    statusText.textContent = "Acidic";
+
+                if (phValue < 5.5) {
+                    statusText.textContent = "Too Acidic";
                     statusText.style.color = 'red';
                     phValueElement.style.color = 'red';
                     phScale.style.filter = 'none';
-                } else if (phValue === 7) {
-                    statusText.textContent = "Neutral";
-                    statusText.style.color = 'green';
-                    phValueElement.style.color = 'green';
+                } else if (phValue < 6.0) {
+                    statusText.textContent = "Acidic";
+                    statusText.style.color = 'orange';
+                    phValueElement.style.color = 'orange';
                     phScale.style.filter = 'none';
-                } else {
-                    statusText.textContent = "Good";
+                } else if (phValue > 7.0) {
+                    statusText.textContent = "Too Basic";
+                    statusText.style.color = 'purple';
+                    phValueElement.style.color = 'purple';
+                    phScale.style.filter = 'none';
+                } else if (phValue > 6.5) {
+                    statusText.textContent = "Basic";
                     statusText.style.color = 'blue';
                     phValueElement.style.color = 'blue';
                     phScale.style.filter = 'none';
+                } else {
+                    statusText.textContent = "Good";
+                    statusText.style.color = 'green';
+                    phValueElement.style.color = 'green';
+                    phScale.style.filter = 'none';
                 }
+
+
             } else {
                 phScale.src = `{{ asset('images/ph/7.png') }}`;
                 statusText.textContent = "N/A";
@@ -729,17 +768,17 @@
                 tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
 
             } else if (temperature > 18 && temperature <= 25) {
-                thermometer.src = '{{ asset('images/Temp/normal.png') }}';
-                statusText.textContent = "Normal (Optimal)";
-                statusText.style.color = 'gray';
-                tempValueElement.style.color = 'gray';
+                thermometer.src = '{{ asset('images/Temp/cold.png') }}';
+                statusText.textContent = "Cold (Optimal)";
+                statusText.style.color = 'blue';
+                tempValueElement.style.color = 'blue';
                 tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
 
             } else if (temperature > 25 && temperature <= 30) {
-                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                statusText.textContent = "Hot";
-                statusText.style.color = 'red';
-                tempValueElement.style.color = 'red';
+                thermometer.src = '{{ asset('images/Temp/normal.png') }}';
+                statusText.textContent = "Good";
+                statusText.style.color = 'green';
+                tempValueElement.style.color = 'green';
                 tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
 
             } else if (temperature > 31) {
@@ -779,7 +818,7 @@
 
             switch (mode) {
                 case 0:
-                    modeText.textContent = 'Inactive';
+                    modeText.textContent = 'Off';
                     modeCircle.style.backgroundColor = 'gray';
                     break;
                 case 1:

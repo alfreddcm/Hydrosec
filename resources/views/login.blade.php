@@ -1,10 +1,13 @@
 @extends('layout')
 @section('title', 'Login')
 @section('content')
-<style>
-
-</style>
-    <script async src="https://www.google.com/recaptcha/api.js"></script>
+    <style>
+        .forgot:hover {
+            text-decoration: underline solid black;
+        }
+    </style>
+    <script async
+            src="https://www.google.com/recaptcha/api.js"></script>
 
     <div class="container">
 
@@ -12,22 +15,23 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                       
+
                         <div class="card mb-2">
                             <div class="d-flex justify-content-center  pt-5">
                                 {{-- <img src="images/logo.png" alt="logo" class="img-fluid">
                                 <br> --}}
                                 <h4 class="">HYDROSEC</h4>
                             </div><!-- End Logo -->
-                            
+
                             <div class="card-body">
                                 <div class="pt-1 pb-2">
                                     <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
                                     <p class="text-center small">Enter your username & password to login</p>
                                 </div>
 
-                                <form action="{{ route('login.post') }}" method="POST"
-                                    class="row g-3        needs-validation">
+                                <form action="{{ route('login.post') }}"
+                                      method="POST"
+                                      class="row g-3 needs-validation">
                                     @csrf
                                     @if (session('error'))
                                         <div class="alert alert-danger">
@@ -36,47 +40,153 @@
                                     @endif
 
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Username</label>
-                                        <input type="username" class="form-control @error('username') is-invalid @enderror"
-                                            id="username" name="username" value="{{ old('email') }}">
-                                    
+                                        <label for="yourUsername"
+                                               class="form-label">Username</label>
+                                        <input type="username"
+                                               class="form-control @error('username') is-invalid @enderror"
+                                               id="username"
+                                               name="username">
+
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Password</label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                            id="password" name="password">
-                                     
+                                        <label for="yourPassword"
+                                               class="form-label">Password</label>
+                                        <input type="password"
+                                               class="form-control @error('password') is-invalid @enderror"
+                                               id="password"
+                                               name="password">
+
                                     </div>
 
                                     <div class="col-12">
                                         <div class="form-group form-check">
-                                            <div class="g-recaptcha" 
-         data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
-    @if ($errors->has('g-recaptcha-response'))
-        <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
-    @endif
+                                            <div class="g-recaptcha"
+                                                 data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+                                            @if ($errors->has('g-recaptcha-response'))
+                                                <span
+                                                      class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+                                            @endif
                                         </div>
 
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                                        <button class="btn btn-primary w-100"
+                                                type="submit">Login</button>
                                     </div>
                                 </form>
 
                                 <div class="col-12">
-                                    <p class="small mb-0">Don't have account? <a href="/">Create an account</a></p>
-                                </div>
+                                    <center>
+                                        <a type="button"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#modalId">
+                                            <p class="small forgot mb-2 mt-2">Forgot Password?</p>
+                                        </a>
+                                    </center>
 
+                                    <p class="small mb-0">Don't have an account? <a href="/">Create an account</a></p>
+                                </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </section>
     </div>
+
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+    <div class="modal fade"
+         id="modalId"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="modalTitleId"
+         aria-hidden="true">
+        <div class="modal-dialog"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"
+                        id="modalTitleId">
+                        Forgot Password
+                    </h5>
+                  
+                </div>
+                <center>
+
+                    <div class="modal-body">
+                        <form method="POST"
+                              action="{{ route('forgot-password') }}">
+                            @csrf
+                            <label for="email">Enter your email:</label><br>
+                            <input type="email"
+                                   name="email"
+                                   class="from-group"
+                                   required> <br>
+                            <button class="btn btn-info mt-2"
+                                    type="submit" id="sub">Send OTP</button>
+                        </form>
+
+                    </div>
+                </center>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        var modalId = document.getElementById('modalId');
+
+        modalId.addEventListener('show.bs.modal', function(event) {
+            let button = event.relatedTarget;
+            let recipient = button.getAttribute('data-bs-whatever');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '{{ session('error') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+        });
+        const showLoading = function() {
+            Swal.fire({
+                title: '',
+                html: '<b>Be patient.</b><br/>Checking Email.',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        };
+        // Attach event listener to the button
+        document.getElementById('sub').addEventListener('click', showLoading);
+
         document.addEventListener('DOMContentLoaded', function() {
             // Display success message if present
             @if (session('success'))
@@ -88,7 +198,7 @@
                     showConfirmButton: false
                 });
             @endif
-    
+
             // Display error messages if present
             @if ($errors->any())
                 var errors = @json($errors->all());
@@ -101,7 +211,7 @@
                     showConfirmButton: true
                 });
             @endif
-    
+
             // Display a timeout error alert if there's a timeout
             @if (session('timeout'))
                 Swal.fire({

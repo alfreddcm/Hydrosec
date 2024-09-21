@@ -20,7 +20,10 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->string('mode')->nullable();
             $table->timestamp('startdate')->nullable();
-            $table->timestamp('enddate')->nullable();   
+            $table->timestamp('enddate')->nullable(); 
+            $table->timestamp('last_sensor_error_email_sent_at')->nullable();
+            $table->timestamp('last_critical_condition_email_sent_at')->nullable();
+            $table->timestamp('last_pumping_email_sent_at')->nullable();  
             $table->timestamps();
         });
 
