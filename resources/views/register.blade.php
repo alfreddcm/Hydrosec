@@ -52,6 +52,7 @@
                                 <div class="mb-3 row">
                                     <label for="password"
                                         class="col-md-4 col-form-label text-md-end text-start">Password</label>
+                                         <span>Password must be have atleast one uppercase and lowercase letter, number and a special character. </span>
                                     <div class="col-md-6">
                                         <input type="password" class="form-control @error('password') is-invalid @enderror"
                                             id="password" name="password">

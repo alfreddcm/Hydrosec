@@ -203,16 +203,14 @@ public function showCounts()
             'body' => $body,
         ];
 
-        // Send email notification
         $email = Crypt::decryptString($user->email);
         Mail::to($email)->send(new Alert($details));
 
-        // Log email sending
         Log::info('Password change notification sent.', ['email' => $email]);
 
         return redirect()->back()->with('success', 'Password updated successfully');
     }
-    //workerupdate pass
+   
     public function adminupdatePassword2(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -226,7 +224,10 @@ public function showCounts()
                 'regex:/[0-9]/',
                 'regex:/[@$!%*?&#]/',
                 'confirmed',
-            ]]);
+            ],
+        ], [
+    'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();

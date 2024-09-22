@@ -429,11 +429,13 @@
 
         var id = {{ $towerinfo->id }};
         $(document).ready(function() {
-            var towerId = @json($towerinfo->id);
+            var towerId = @json($towerinfo->id); // Correctly set towerId from server-side.
+
             let tempChart = null;
             let sensorDataInterval = null;
             let modeStatInterval = null;
 
+            // Temperature modal on open
             $('#tempmodal').on('shown.bs.modal', function(event) {
                 let button = event.relatedTarget;
                 if (!button) {
@@ -445,7 +447,7 @@
                 let column = button.getAttribute('data-column');
 
                 if (tempChart) {
-                    tempChart.destroy();
+                    tempChart.destroy(); // Destroy the old chart before creating a new one.
                 }
 
                 $.ajax({
@@ -467,14 +469,7 @@
                             return;
                         }
 
-                        const chartCtx = ctx.getContext('2d');
-                        if (!chartCtx) {
-                            console.error('Unable to get canvas context.');
-                            return;
-                        }
-
-                        tempChart = new Chart(chartCtx, {
-                            labels: labels,
+                        tempChart = new Chart(ctx.getContext('2d'), {
                             type: 'line',
                             data: {
                                 labels: labels,
@@ -510,23 +505,23 @@
                 });
             });
 
-            // Fetch sensor data and update images
+            // Fetch initial sensor data
             function fetchInitialSensorData() {
                 $.ajax({
                     url: '/sensor-data/' + towerId,
                     method: 'GET',
                     success: function(response) {
                         if (response.sensorData) {
-                            const Temperature = parseFloat(response.sensorData.temperature);
-                            const NutrientVolume = parseFloat(response.sensorData.nutrient_level);
-                            const pHlevel = parseFloat(response.sensorData.pH);
-                            const light = parseFloat(response.sensorData.light);
-
-                            updateNutrientImage(NutrientVolume);
-                            updatePhScaleImage(pHlevel);
-                            updateLightStatus(light);
-                            updateThermometerImage(Temperature);
-
+                            const {
+                                temperature,
+                                nutrient_level,
+                                pH,
+                                light
+                            } = response.sensorData;
+                            updateNutrientImage(parseFloat(nutrient_level));
+                            updatePhScaleImage(parseFloat(pH));
+                            updateLightStatus(parseFloat(light));
+                            updateThermometerImage(parseFloat(temperature));
                         } else {
                             console.log('No data available');
                         }
@@ -535,31 +530,32 @@
                         console.error('AJAX Error: ' + status + ' ' + error);
                     }
                 });
-
-
             }
-            // 2. Listen for Real-Time Updates via Pusher
+
+            // Setup Pusher for real-time updates
             function setupPusher() {
                 const pusher = new Pusher('1868615', {
                     cluster: 'ap1',
                     encrypted: true
                 });
-
                 const channel = pusher.subscribe('sensor-data-channel.' + towerId);
+
                 channel.bind('sensor-data-updated', function(data) {
                     if (data.towerId === towerId) {
-                        const Temperature = parseFloat(data.temperature);
-                        const NutrientVolume = parseFloat(data.nutrient_level);
-                        const pHlevel = parseFloat(data.pH);
-                        const light = parseFloat(data.light);
-
-                        updateNutrientImage(NutrientVolume);
-                        updatePhScaleImage(pHlevel);
-                        updateLightStatus(light);
-                        updateThermometerImage(Temperature);
+                        const {
+                            temperature,
+                            nutrient_level,
+                            pH,
+                            light
+                        } = data;
+                        updateNutrientImage(parseFloat(nutrient_level));
+                        updatePhScaleImage(parseFloat(pH));
+                        updateLightStatus(parseFloat(light));
+                        updateThermometerImage(parseFloat(temperature));
                     }
                 });
             }
+
             // Fetch pump data
             function fetchPumpData() {
                 $.ajax({
@@ -572,29 +568,19 @@
                         if (data.length === 0) {
                             tbody.append(
                                 '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
-                            );
+                                );
                         } else {
-                            $.each(data, function(index, item) {
-                                // Ensure item.pump is treated as a number
-                                var pumpStatus = parseInt(item.pump);
-                                var status;
-                                var textColor = '';
+                            data.forEach((item, index) => {
+                                let pumpStatus = parseInt(item.pump);
+                                let status = pumpStatus === 1 ? 'Pump' : (pumpStatus === 0 ?
+                                    'Not Pump' : 'Unknown');
+                                let textColor = pumpStatus === 0 ? 'style="color: red;"' : '';
 
-                                if (pumpStatus === 1) {
-                                    status = 'Pump';
-                                } else if (pumpStatus === 0) {
-                                    status = 'Not Pump';
-                                    textColor = 'style="color: red;"';
-                                } else {
-                                    status = 'Unknown';
-                                }
-
-                                var row = `<tr class="table-light">
-                                            <td>${index + 1}</td>
-                                            <td ${textColor}>${status}</td>
-                                            <td>${item.timestamp}</td>
-                                                                 </tr>`;
-                                tbody.append(row);
+                                tbody.append(`<tr class="table-light">
+                                        <td>${index + 1}</td>
+                                        <td ${textColor}>${status}</td>
+                                        <td>${item.timestamp}</td>
+                                      </tr>`);
                             });
                         }
                     },
@@ -604,16 +590,19 @@
                 });
             }
 
+            // Fetch mode and status
             function fetchModeStat() {
                 $.ajax({
                     url: '/modestat/' + towerId,
                     method: 'GET',
                     success: function(response) {
                         if (response.modestat) {
-                            const mode = parseFloat(response.modestat.mode);
-                            const status = parseFloat(response.modestat.status);
-                            updatemode(mode);
-                            updatestatus(status);
+                            const {
+                                mode,
+                                status
+                            } = response.modestat;
+                            updatemode(parseFloat(mode));
+                            updatestatus(parseFloat(status));
                         } else {
                             console.log('No data available');
                         }
@@ -631,16 +620,17 @@
                 }
             }
 
+            // Stop intervals
             function stopIntervals() {
-
                 clearInterval(modeStatInterval);
                 sensorDataInterval = null;
                 modeStatInterval = null;
             }
+
+            // Initial fetching and setup
             fetchInitialSensorData();
             fetchPumpData();
             startIntervals();
-
             setInterval(fetchPumpData, 5000);
         });
 

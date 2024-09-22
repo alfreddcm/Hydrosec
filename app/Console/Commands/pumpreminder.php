@@ -61,9 +61,8 @@ class pumpreminder extends Command
         $method = "AES-128-CBC";
 
         $now = Carbon::now();
-        $emailCooldown = 5; // Time in minutes to wait before sending another email
-
-        $towers = Tower::get();
+        $emailCooldown = 5; 
+$towers = Tower::select('id', 'status', 'name', 'OwnerID', 'last_pumping_email_sent_at')->get();
         foreach ($towers as $data) {
             if (Crypt::decryptString($data->status) == '1') {
                 $towerId = $data->id;
@@ -94,7 +93,7 @@ class pumpreminder extends Command
                         }
                     }
 
-                    $owner = Owner::where('id', $data->OwnerID)->first();
+                    $owner = Owner::select('email')->where('id', $data->OwnerID)->first();
                     if ($owner) {
                         $body = "The Tower '" . Crypt::decryptString($data->name) . "' did not pump at " . $now . "  Please check the plug.";
 
