@@ -294,4 +294,18 @@ class OwnerProfile extends Controller
 
         return view('Owner.dashboard', ['allDecryptedData' => $allDecryptedData]);
     }
+    private function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
+            return null;
+        }
+    }
 }
