@@ -6,7 +6,7 @@ use App\Models\Pump;
 use App\Models\Sensor;
 use App\Models\SensorDataHistory;
 use App\Models\Tower;
-use App\Models\TowerLogs;
+use App\Models\Towerlogs;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -101,7 +101,7 @@ class Towercon extends Controller
                     'date_end' => $enddate,
                 ]);
 
-                TowerLogs::create([
+                Towerlogs::create([
                     'ID_tower' => $towerId,
                     'activity' => Crypt::encryptString("New cycle started. Tower ID: {$tower->id}, Start date: {$startdate}, End date: {$enddate}"),
                 ]);
@@ -203,7 +203,7 @@ class Towercon extends Controller
                 'towerid' => $towerId,
                 'OwnerID' => $ownerID,
                 'sensor_data' => json_encode($sensorDataArray),
-                'pump_data' => json_encode($pumpDataArray), // Save pump data to the new column
+                'pump' => json_encode($pumpDataArray), // Save pump data to the new column
                 'created_at' => Carbon::now(),
             ]);
 
@@ -222,7 +222,7 @@ class Towercon extends Controller
         \Log::info('Activity log created', ['activityLog' => $activityLog]);
 
         try {
-            TowerLogs::create([
+            Towerlogs::create([
                 'ID_tower' => $tow->id,
                 'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
             ]);
@@ -313,7 +313,7 @@ class Towercon extends Controller
                 'towerid' => $towerId,
                 'OwnerID' => $ownerID,
                 'sensor_data' => json_encode($sensorDataArray),
-                'pump_data' => json_encode($pumpDataArray), // Save pump data to the new column
+                'pump' => json_encode($pumpDataArray), // Save pump data to the new column
                 'created_at' => Carbon::now(),
             ]);
 
@@ -332,7 +332,7 @@ class Towercon extends Controller
         \Log::info('Activity log created', ['activityLog' => $activityLog]);
 
         try {
-            TowerLogs::create([
+            Towerlogs::create([
                 'ID_tower' => $tow->id,
                 'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
             ]);
