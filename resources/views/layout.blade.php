@@ -85,7 +85,6 @@
         }
 
         .login-link:hover {
-            text-decoration: underline;
             color: #00bcd4;
         }
 

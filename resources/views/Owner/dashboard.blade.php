@@ -248,11 +248,19 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <!-- Pump Status Graph Column -->
+                                        <div class="col-md-12 mb-4">
+                                            <div class="chart-container">
+                                                <div id="pumpChart-{{ $code }}" class="chart"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             const data = @json($data['data']);
@@ -260,8 +268,8 @@
                             function createChart(containerId, title, dataKey, yAxisOptions) {
                                 Highcharts.chart(containerId, {
                                     chart: {
-                                        type: 'line',
-                                        height: '300' // Ensure the chart takes up 100% of the container's height
+                                        type: 'bar',
+                                        height: '300'
                                     },
                                     title: {
                                         text: title
@@ -272,60 +280,107 @@
                                             format: '{value:%d-%m-%Y %H:%M}'
                                         }
                                     },
-                                    yAxis: yAxisOptions, // Custom y-axis options
+                                    yAxis: yAxisOptions,
                                     series: [{
                                         name: title,
                                         data: data.map(item => [new Date(item.created_at).getTime(), item[dataKey]])
                                     }],
                                     tooltip: {
-                                        pointFormat: '{series.name}: <b>{point.y:.2f}</b>'
+                                        pointFormat: `{series.name}: <b>{point.y:.2f}</b>`
                                     }
                                 });
                             }
 
-                            createChart('phChart-{{ $code }}', 'pH Levels', 'pH', {
-                                title: {
-                                    text: 'pH Levels'
+                            const charts = [{
+                                    id: 'phChart-{{ $code }}',
+                                    title: 'pH Levels',
+                                    key: 'pH',
+                                    yAxisOptions: {
+                                        min: 1,
+                                        max: 14,
+                                        tickAmount: 10
+                                    }
                                 },
-                                min: 1,
-                                max: 10,
-                                tickAmount: 10
+                                {
+                                    id: 'tempChart-{{ $code }}',
+                                    title: 'Temperature',
+                                    key: 'temperature',
+                                    yAxisOptions: {
+                                        min: 0,
+                                        max: 60,
+                                        tickAmount: 7,
+                                        tickInterval: 10
+                                    }
+                                },
+                                {
+                                    id: 'waterChart-{{ $code }}',
+                                    title: 'Nutrient Volume',
+                                    key: 'nutrientlevel',
+                                    yAxisOptions: {
+                                        min: 1,
+                                        max: 20,
+                                        tickAmount: 5,
+                                        tickInterval: 5
+                                    }
+                                },
+                                {
+                                    id: 'lightChart-{{ $code }}',
+                                    title: 'Light',
+                                    key: 'light',
+                                    yAxisOptions: {
+                                        categories: [0, 1],
+                                        tickAmount: 2,
+                                        tickInterval: 1
+                                    }
+                                }
+                            ];
+
+                            charts.forEach(chart => {
+                                createChart(chart.id, chart.title, chart.key, chart.yAxisOptions);
                             });
 
-                            createChart('tempChart-{{ $code }}', 'Temperature', 'temperature', {
-                                title: {
-                                    text: 'Temperature'
-                                },
-                                min: 0,
-                                max: 60,
-                                tickAmount: 7,
-                                tickInterval: 10
-                            });
-
-                            createChart('waterChart-{{ $code }}', 'Nutrient Volume', 'nutrientlevel', {
-                                title: {
-                                    text: 'Nutrient Volume'
-                                },
-                                min: 1,
-                                max: 20,
-                                tickAmount: 5,
-                                tickInterval: 5
-                            });
-
-                            createChart('lightChart-{{ $code }}', 'Light ', 'light', {
-                                title: {
-                                    text: 'Light '
-                                },
-                                categories: [0, 1],
-                                tickAmount: 2,
-                                tickInterval: 1
-
-                            });
+                            // Pump Chart
+                            if (data.some(item => item.pump_status !== undefined && item.pump_created_at !== undefined)) {
+        Highcharts.chart('pumpChart-{{ $code }}', {
+            chart: {
+                type: 'spline',
+                height: '300'
+            },
+            title: {
+                text: 'Pump'
+            },
+            xAxis: {
+                type: 'datetime',
+                labels: {
+                    format: '{value:%d-%m-%Y %H:%M}'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Pump Status'
+                },
+                min: 0,
+                max: 1, // Since the pump status is likely 0 or 1
+                tickInterval: 1
+            },
+            series: [{
+                name: 'Pump Status',
+                data: data.map(item => [new Date(item.pump_created_at).getTime(), item.pump_status]) // Map pump data
+            }],
+            tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:.0f}</b><br/>' // 0 or 1
+            }
+        });
+    } else {
+        console.log('Pump data is not available');
+    }
                         });
                     </script>
                 @endforeach
             @endif
         </div>
+
+    </div>
 
     </div>
 
