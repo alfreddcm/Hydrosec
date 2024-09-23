@@ -6,7 +6,7 @@ use App\Mail\Alert;
 use App\Models\Owner;
 use App\Models\Pump;
 use App\Models\Tower;
-use App\Models\TowerLogs;
+use App\Models\Towerlogs;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
@@ -61,15 +61,15 @@ class pumpreminder extends Command
         $method = "AES-128-CBC";
 
         $now = Carbon::now();
-        $emailCooldown = 5; 
-$towers = Tower::select('id', 'status', 'name', 'OwnerID', 'last_pumping_email_sent_at')->get();
+        $emailCooldown = 5;
+        $towers = Tower::select('id', 'status', 'name', 'OwnerID', 'last_pumping_email_sent_at')->get();
         foreach ($towers as $data) {
             if (Crypt::decryptString($data->status) == '1') {
                 $towerId = $data->id;
                 Log::info('Processing tower', ['tower_id' => $towerId]);
 
                 $now = Carbon::now();
-                $emailCooldown = 5; 
+                $emailCooldown = 5;
                 $timeLimit = Carbon::now()->subMinutes(5);
 
                 $recentStatuses = Pump::where('towerid', $towerId)
@@ -116,9 +116,9 @@ $towers = Tower::select('id', 'status', 'name', 'OwnerID', 'last_pumping_email_s
                             $mailStatus = 'Failed';
                             Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                         } finally {
-                            $activityLog = Crypt::encryptString("Alert: "  . json_encode($details['body']) ." Mail Status: " . $mailStatus);
+                            $activityLog = Crypt::encryptString("Alert: " . json_encode($details['body']) . " Mail Status: " . $mailStatus);
 
-                            TowerLogs::create([
+                            Towerlogs::create([
                                 'ID_tower' => $towerId,
                                 'activity' => $activityLog,
                             ]);

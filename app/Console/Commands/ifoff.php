@@ -6,7 +6,7 @@ use App\Mail\Alert;
 use App\Models\Owner;
 use App\Models\Sensor;
 use App\Models\Tower;
-use App\Models\TowerLogs; // Fixed the model name to match Laravel's naming conventions
+use App\Models\Towerlogs; // Fixed the model name to match Laravel's naming conventions
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
@@ -73,7 +73,7 @@ class IfOff extends Command
                         } finally {
                             $activityLog = Crypt::encryptString("Alert: "  . json_encode($details['body']) . " Mail Status: " . $mailStatus);
 
-                            TowerLogs::create([
+                            Towerlogs::create([
                                 'ID_tower' => $towerId,
                                 'activity' => $activityLog,
                             ]);

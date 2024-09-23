@@ -87,7 +87,7 @@
                                                                     <form action="{{ route('ownerworker.dis', $user->id) }}"
                                                                           method="POST">
                                                                         @csrf
-                                                                        <button onclick="return confirm('Are you sure you want to delete this?')"
+                                                                        <button onclick="return confirm('Are you sure you want to disable this?')"
                                                                                 type="submit"
                                                                                 class="btn btn-danger btn-rounded">
                                                                             Disable
