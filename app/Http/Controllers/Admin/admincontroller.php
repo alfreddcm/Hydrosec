@@ -341,7 +341,7 @@ public function showCounts()
         $user->status = crypt::encryptString('0');
         $user->save();
 
-        return redirect()->route('ownerworkeraccount')->with('success', 'User disable successfully.');
+        return redirect()->route('UserAccounts')->with('success', 'User disable successfully.');
     }
     public function workeren(Request $request, $id)
     {
@@ -350,7 +350,7 @@ public function showCounts()
         $user->status = crypt::encryptString('1');
         $user->save();
 
-        return redirect()->route('ownerworkeraccount')->with('success', 'User enable successfully.');
+        return redirect()->route('UserAccounts')->with('success', 'User enable successfully.');
     }
 
 }
