@@ -126,7 +126,8 @@
                     <h2 class="title">
                         <a href="{{ route('ownermanagetower') }}" class="previous">&laquo;</a>
 
-                        {{ Crypt::decryptString($towerinfo->name) }}
+                        {{ Crypt::decryptString($towerinfo->name) }} <div id="online-status" style="display: inline-block;"></div>
+
                     </h2>
                     @if ($wokername)
                         <p class="card-text">
@@ -435,6 +436,17 @@
             let sensorDataInterval = null;
             let modeStatInterval = null;
 
+            // Function to update the online status indicator
+            function updateOnlineStatus(isOnline) {
+                const statusIndicator = $('#online-status');
+                const color = isOnline ? 'green' : 'red';
+
+                statusIndicator.html(
+                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
+                );
+            }
+
+
             // Temperature modal on open
             $('#tempmodal').on('shown.bs.modal', function(event) {
                 let button = event.relatedTarget;
@@ -522,6 +534,7 @@
                             updatePhScaleImage(parseFloat(pH));
                             updateLightStatus(parseFloat(light));
                             updateThermometerImage(parseFloat(temperature));
+                            updateOnlineStatus(false); // Set online status to false initially
                         } else {
                             console.log('No data available');
                         }
@@ -552,9 +565,11 @@
                         updatePhScaleImage(parseFloat(pH));
                         updateLightStatus(parseFloat(light));
                         updateThermometerImage(parseFloat(temperature));
+                        updateOnlineStatus(true); // Set online status to true on update
                     }
                 });
             }
+
 
             // Fetch pump data
             function fetchPumpData() {
@@ -568,7 +583,7 @@
                         if (data.length === 0) {
                             tbody.append(
                                 '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
-                                );
+                            );
                         } else {
                             data.forEach((item, index) => {
                                 let pumpStatus = parseInt(item.pump);
@@ -577,10 +592,10 @@
                                 let textColor = pumpStatus === 0 ? 'style="color: red;"' : '';
 
                                 tbody.append(`<tr class="table-light">
-                                        <td>${index + 1}</td>
-                                        <td ${textColor}>${status}</td>
-                                        <td>${item.timestamp}</td>
-                                      </tr>`);
+                                <td>${index + 1}</td>
+                                <td ${textColor}>${status}</td>
+                                <td>${item.timestamp}</td>
+                              </tr>`);
                             });
                         }
                     },
@@ -630,9 +645,11 @@
             // Initial fetching and setup
             fetchInitialSensorData();
             fetchPumpData();
+            setupPusher(); // Ensure Pusher is set up
             startIntervals();
             setInterval(fetchPumpData, 5000);
         });
+
 
         function updateNutrientImage(nutrientVolume) {
             const nutrientImage = document.getElementById('nutrient-image');

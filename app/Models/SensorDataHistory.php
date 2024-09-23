@@ -12,8 +12,7 @@ class SensorDataHistory extends Model
         'towerid',
         'OwnerID',
         'sensor_data',
-        'pump_data',
-        'created_at',
+        'pump',
     ];
 
     public $timestamps = false;

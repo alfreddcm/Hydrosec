@@ -17,8 +17,7 @@ class Sensor extends Model
         'temperature',
         'nutrientlevel',
         'light',
-        'iv',
-        'k'
+
     ];
 
     // Optionally, specify the table name if it doesn't follow Laravel's naming convention

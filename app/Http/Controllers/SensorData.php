@@ -356,6 +356,7 @@ class SensorData extends Controller
                                 }
                             }
                         } else {
+
                             Log::warning('IP or MAC address mismatch', [
                                 'expectedIp' => $decrypted_ip,
                                 'actualIp' => $ip,
@@ -401,7 +402,8 @@ class SensorData extends Controller
             ]);
 
         } finally {
-            if ($failedAttempts >= $attemptThreshold) {
+            if($failedAttempts){
+                if ($failedAttempts >= $attemptThreshold) {
                 Log::alert('Intrusion detection: multiple failed attempts detected from IP ' . $request->ip(), [
                     'failedAttempts' => $failedAttempts,
                     'ipAddress' => $request->ip(),
@@ -438,6 +440,8 @@ class SensorData extends Controller
                     Cache::forget($towerinfocode);
                 }
             }
+            }
+            
         }
     }
 
