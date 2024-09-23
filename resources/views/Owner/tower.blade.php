@@ -425,436 +425,359 @@
         </div>
     </div>
 
-    <script>
-        var towerId = @json($towerinfo->id);
+  <script>
+    var towerId = @json($towerinfo->id);
 
-        var id = {{ $towerinfo->id }};
-        $(document).ready(function() {
-            var towerId = @json($towerinfo->id); // Correctly set towerId from server-side.
+    $(document).ready(function() {
+        let tempChart = null;
+        let modeStatInterval = null;
 
-            let tempChart = null;
-            let sensorDataInterval = null;
-            let modeStatInterval = null;
+        function updateOnlineStatus(isOnline) {
+            const statusIndicator = $('#online-status');
+            const color = isOnline ? 'green' : 'red';
+            statusIndicator.html(`<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`);
+        }
 
-            // Function to update the online status indicator
-            function updateOnlineStatus(isOnline) {
-                const statusIndicator = $('#online-status');
-                const color = isOnline ? 'green' : 'red';
-
-                statusIndicator.html(
-                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
-                );
+        $('#tempmodal').on('shown.bs.modal', function(event) {
+            let button = event.relatedTarget;
+            if (!button) {
+                console.error('No related target found. Unable to get data attributes.');
+                return;
             }
 
+            let towerId = button.getAttribute('data-tower-id');
+            let column = button.getAttribute('data-column');
 
-            // Temperature modal on open
-            $('#tempmodal').on('shown.bs.modal', function(event) {
-                let button = event.relatedTarget;
-                if (!button) {
-                    console.error('No related target found. Unable to get data attributes.');
-                    return;
-                }
+            if (tempChart) {
+                tempChart.destroy(); 
+            }
 
-                let towerId = button.getAttribute('data-tower-id');
-                let column = button.getAttribute('data-column');
+            $.ajax({
+                url: `/get-data/${towerId}/${column}`,
+                method: 'GET',
+                success: function(response) {
+                    if (response.error) {
+                        console.error('Error fetching data:', response.error);
+                        return;
+                    }
 
-                if (tempChart) {
-                    tempChart.destroy(); // Destroy the old chart before creating a new one.
-                }
+                    const data = response.sensorData;
+                    const labels = data.map(item => item.timestamp);
+                    const values = data.map(item => item.value);
+                    const ctx = document.getElementById('tempChart');
 
-                $.ajax({
-                    url: `/get-data/${towerId}/${column}`,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.error) {
-                            console.error('Error fetching data:', response.error);
-                            return;
-                        }
+                    if (!ctx) {
+                        console.error('Canvas element not found.');
+                        return;
+                    }
 
-                        const data = response.sensorData;
-                        const labels = data.map(item => item.timestamp);
-                        const values = data.map(item => item.value);
-
-                        const ctx = document.getElementById('tempChart');
-                        if (!ctx) {
-                            console.error('Canvas element not found.');
-                            return;
-                        }
-
-                        tempChart = new Chart(ctx.getContext('2d'), {
-                            type: 'line',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    data: values,
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    x: {
-                                        type: 'category',
-                                        title: {
-                                            display: true,
-                                            text: 'Time'
-                                        }
-                                    },
-                                    y: {
-                                        title: {
-                                            display: true,
-                                            text: 'Value'
-                                        }
+                    tempChart = new Chart(ctx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: values,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    type: 'category',
+                                    title: {
+                                        display: true,
+                                        text: 'Time'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Value'
                                     }
                                 }
                             }
-                        });
-                    },
-                    error: function(xhr) {
-                        console.error('An error occurred:', xhr.responseText);
-                    }
-                });
-            });
-
-            // Fetch initial sensor data
-            function fetchInitialSensorData() {
-                $.ajax({
-                    url: '/sensor-data/' + towerId,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.sensorData) {
-                            const {
-                                temperature,
-                                nutrient_level,
-                                pH,
-                                light
-                            } = response.sensorData;
-                            updateNutrientImage(parseFloat(nutrient_level));
-                            updatePhScaleImage(parseFloat(pH));
-                            updateLightStatus(parseFloat(light));
-                            updateThermometerImage(parseFloat(temperature));
-                            updateOnlineStatus(false); // Set online status to false initially
-                        } else {
-                            console.log('No data available');
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error: ' + status + ' ' + error);
-                    }
-                });
-            }
+                    });
+                },
+                error: function(xhr) {
+                    console.error('An error occurred:', xhr.responseText);
+                }
+            });
+        });
 
-            // Setup Pusher for real-time updates
-            function setupPusher() {
-                const pusher = new Pusher('1868615', {
-                    cluster: 'ap1',
-                    encrypted: true
-                });
-                const channel = pusher.subscribe('sensor-data-channel.' + towerId);
-
-                channel.bind('sensor-data-updated', function(data) {
-                    if (data.towerId === towerId) {
-                        const {
-                            temperature,
-                            nutrient_level,
-                            pH,
-                            light
-                        } = data;
+        function fetchInitialSensorData() {
+            $.ajax({
+                url: '/sensor-data/' + towerId,
+                method: 'GET',
+                success: function(response) {
+                    if (response.sensorData) {
+                        const { temperature, nutrient_level, pH, light } = response.sensorData;
                         updateNutrientImage(parseFloat(nutrient_level));
                         updatePhScaleImage(parseFloat(pH));
                         updateLightStatus(parseFloat(light));
                         updateThermometerImage(parseFloat(temperature));
-                        updateOnlineStatus(true); // Set online status to true on update
+                        updateOnlineStatus(false); 
+                    } else {
+                        console.log('No data available');
                     }
-                });
-            }
-
-
-            // Fetch pump data
-            function fetchPumpData() {
-                $.ajax({
-                    url: `/pump-data/${towerId}`,
-                    method: 'GET',
-                    success: function(data) {
-                        var tbody = $('#sensor-data-body');
-                        tbody.empty();
-
-                        if (data.length === 0) {
-                            tbody.append(
-                                '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
-                            );
-                        } else {
-                            data.forEach((item, index) => {
-                                let pumpStatus = parseInt(item.pump);
-                                let status = pumpStatus === 1 ? 'Pump' : (pumpStatus === 0 ?
-                                    'Not Pump' : 'Unknown');
-                                let textColor = pumpStatus === 0 ? 'style="color: red;"' : '';
-
-                                tbody.append(`<tr class="table-light">
-                                <td>${index + 1}</td>
-                                <td ${textColor}>${status}</td>
-                                <td>${item.timestamp}</td>
-                              </tr>`);
-                            });
-                        }
-                    },
-                    error: function() {
-                        console.error('Failed to fetch pump data');
-                    }
-                });
-            }
-
-            // Fetch mode and status
-            function fetchModeStat() {
-                $.ajax({
-                    url: '/modestat/' + towerId,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.modestat) {
-                            const {
-                                mode,
-                                status
-                            } = response.modestat;
-                            updatemode(parseFloat(mode));
-                            updatestatus(parseFloat(status));
-                        } else {
-                            console.log('No data available');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error: ' + status + ' ' + error);
-                    }
-                });
-            }
-
-            // Start intervals
-            function startIntervals() {
-                if (!modeStatInterval) {
-                    modeStatInterval = setInterval(fetchModeStat, 5000);
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + status + ' ' + error);
                 }
-            }
+            });
+        }
 
-            // Stop intervals
-            function stopIntervals() {
-                clearInterval(modeStatInterval);
-                sensorDataInterval = null;
-                modeStatInterval = null;
-            }
+        function setupPusher() {
+            const pusher = new Pusher('1868615', { cluster: 'ap1', encrypted: true });
+            const channel = pusher.subscribe('sensor-data-channel.' + towerId);
 
-            // Initial fetching and setup
-            fetchInitialSensorData();
-            fetchPumpData();
-            setupPusher(); // Ensure Pusher is set up
-            startIntervals();
-            setInterval(fetchPumpData, 5000);
-        });
-
-
-        function updateNutrientImage(nutrientVolume) {
-            const nutrientImage = document.getElementById('nutrient-image');
-            const statusText = document.getElementById('nutrient-status');
-            const volumeValueElement = document.getElementById('nutrient-value');
-
-            if (isNaN(nutrientVolume) || nutrientVolume === null) {
-                nutrientImage.src = '{{ asset('images/Water/10.png') }}'; // Grayscale image
-                statusText.textContent = "N/A";
-                statusText.style.color = 'gray';
-                volumeValueElement.style.color = 'gray';
-                nutrientImage.style.filter = 'grayscale(100%)';
-
-            } else {
-                nutrientImage.style.filter = 'none'; // Reset filter for valid nutrient values
-                volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
-
-                if (nutrientVolume >= 20) {
-                    nutrientImage.src = '{{ asset('images/Water/100.png') }}';
-                    statusText.textContent = "Full";
-                    statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
-                } else if (nutrientVolume >= 17) {
-                    nutrientImage.src = '{{ asset('images/Water/80.png') }}';
-                    statusText.textContent = "85%";
-                    statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
-                } else if (nutrientVolume >= 15) {
-                    nutrientImage.src = '{{ asset('images/Water/70.png') }}';
-                    statusText.textContent = "75%";
-                    statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
-                } else if (nutrientVolume >= 12) {
-                    nutrientImage.src = '{{ asset('images/Water/60.png') }}';
-                    statusText.textContent = "60%";
-                    statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
-                } else if (nutrientVolume >= 10) {
-                    nutrientImage.src = '{{ asset('images/Water/50.png') }}';
-                    statusText.textContent = "50%";
-                    statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
-                } else if (nutrientVolume >= 7) {
-                    nutrientImage.src = '{{ asset('images/Water/30.png') }}';
-                    statusText.textContent = "35%";
-                    statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
-                } else if (nutrientVolume >= 5) {
-                    nutrientImage.src = '{{ asset('images/Water/20.png') }}';
-                    statusText.textContent = "25%";
-                    statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
-                } else {
-                    nutrientImage.src = '{{ asset('images/Water/10.png') }}';
-                    statusText.textContent = "Low";
-                    statusText.style.color = 'green';
-                    volumeValueElement.style.color = 'gray';
+            channel.bind('sensor-data-updated', function(data) {
+                if (data.towerId === towerId) {
+                    const { temperature, nutrient_level, pH, light } = data;
+                    updateNutrientImage(parseFloat(nutrient_level));
+                    updatePhScaleImage(parseFloat(pH));
+                    updateLightStatus(parseFloat(light));
+                    updateThermometerImage(parseFloat(temperature));
+                    updateOnlineStatus(true);
                 }
+            });
+        }
+
+        function fetchPumpData() {
+            $.ajax({
+                url: `/pump-data/${towerId}`,
+                method: 'GET',
+                success: function(data) {
+                    var tbody = $('#sensor-data-body');
+                    tbody.empty();
+
+                    if (data.length === 0) {
+                        tbody.append('<tr><td colspan="3" class="text-center">No records available.</td></tr>');
+                    } else {
+                        // Construct HTML for pump data
+                        let rows = data.map((item, index) => {
+                            let pumpStatus = parseInt(item.pump);
+                            let status = pumpStatus === 1 ? 'Pump' : (pumpStatus === 0 ? 'Not Pump' : 'Unknown');
+                            let textColor = pumpStatus === 0 ? 'style="color: red;"' : '';
+                            return `<tr class="table-light"><td>${index + 1}</td><td ${textColor}>${status}</td><td>${item.timestamp}</td></tr>`;
+                        }).join('');
+                        tbody.append(rows);
+                    }
+                },
+                error: function() {
+                    console.error('Failed to fetch pump data');
+                }
+            });
+        }
+
+        function fetchModeStat() {
+            $.ajax({
+                url: '/modestat/' + towerId,
+                method: 'GET',
+                success: function(response) {
+                    if (response.modestat) {
+                        const { mode, status } = response.modestat;
+                        updatemode(parseFloat(mode));
+                        updatestatus(parseFloat(status));
+                    } else {
+                        console.log('No data available');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + status + ' ' + error);
+                }
+            });
+        }
+
+        function startIntervals() {
+            if (!modeStatInterval) {
+                modeStatInterval = setInterval(fetchModeStat, 5000);
             }
         }
 
-        function updatePhScaleImage(phValue) {
-            const phScale = document.getElementById('ph-scale');
-            const statusText = document.getElementById('ph-status');
-            const phValueElement = document.getElementById('ph-value');
+        fetchInitialSensorData();
+        fetchPumpData();
+        setupPusher(); 
+        startIntervals();
+        setInterval(fetchPumpData, 5000);
+    });
 
-            phValueElement.textContent = `${phValue.toFixed(2)}`;
+    function updateNutrientImage(nutrientVolume) {
+        const nutrientImage = document.getElementById('nutrient-image');
+        const statusText = document.getElementById('nutrient-status');
+        const volumeValueElement = document.getElementById('nutrient-value');
 
-            if (phValue >= 0 && phValue <= 14) {
-                phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
+        if (isNaN(nutrientVolume) || nutrientVolume === null) {
+            nutrientImage.src = '{{ asset('images/Water/10.png') }}'; // Grayscale image
+            statusText.textContent = "N/A";
+            statusText.style.color = 'gray';
+            volumeValueElement.style.color = 'gray';
+            nutrientImage.style.filter = 'grayscale(100%)';
+        } else {
+            nutrientImage.style.filter = 'none'; // Reset filter for valid nutrient values
+            volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
 
-                if (phValue < 5.5) {
-                    statusText.textContent = "Too Acidic";
-                    statusText.style.color = 'red';
-                    phValueElement.style.color = 'red';
-                    phScale.style.filter = 'none';
-                } else if (phValue < 6.0) {
-                    statusText.textContent = "Acidic";
-                    statusText.style.color = 'orange';
-                    phValueElement.style.color = 'orange';
-                    phScale.style.filter = 'none';
-                } else if (phValue > 7.0) {
-                    statusText.textContent = "Too Basic";
-                    statusText.style.color = 'purple';
-                    phValueElement.style.color = 'purple';
-                    phScale.style.filter = 'none';
-                } else if (phValue > 6.5) {
-                    statusText.textContent = "Basic";
-                    statusText.style.color = 'blue';
-                    phValueElement.style.color = 'blue';
-                    phScale.style.filter = 'none';
-                } else {
-                    statusText.textContent = "Good";
-                    statusText.style.color = 'green';
-                    phValueElement.style.color = 'green';
-                    phScale.style.filter = 'none';
-                }
-
-
+            // Update image and status based on nutrient volume
+            if (nutrientVolume >= 20) {
+                nutrientImage.src = '{{ asset('images/Water/100.png') }}';
+                statusText.textContent = "Full";
+                statusText.style.color = 'blue';
+            } else if (nutrientVolume >= 17) {
+                nutrientImage.src = '{{ asset('images/Water/80.png') }}';
+                statusText.textContent = "85%";
+                statusText.style.color = 'blue';
+            } else if (nutrientVolume >= 15) {
+                nutrientImage.src = '{{ asset('images/Water/70.png') }}';
+                statusText.textContent = "75%";
+                statusText.style.color = 'blue';
+            } else if (nutrientVolume >= 12) {
+                nutrientImage.src = '{{ asset('images/Water/60.png') }}';
+                statusText.textContent = "60%";
+                statusText.style.color = 'blue';
+            } else if (nutrientVolume >= 10) {
+                nutrientImage.src = '{{ asset('images/Water/50.png') }}';
+                statusText.textContent = "50%";
+                statusText.style.color = 'blue';
+            } else if (nutrientVolume >= 7) {
+                nutrientImage.src = '{{ asset('images/Water/30.png') }}';
+                statusText.textContent = "35%";
+                statusText.style.color = 'orange';
+            } else if (nutrientVolume >= 5) {
+                nutrientImage.src = '{{ asset('images/Water/20.png') }}';
+                statusText.textContent = "25%";
+                statusText.style.color = 'orange';
             } else {
-                phScale.src = `{{ asset('images/ph/7.png') }}`;
-                statusText.textContent = "N/A";
-                statusText.style.color = 'black';
-                phValueElement.style.color = 'black';
-                phScale.style.filter = 'grayscale(100%)';
+                nutrientImage.src = '{{ asset('images/Water/10.png') }}';
+                statusText.textContent = "Low";
+                statusText.style.color = 'green';
             }
-
         }
+    }
 
-        function updateThermometerImage(temperature) {
+    function updatePhScaleImage(phValue) {
+        const phScale = document.getElementById('ph-scale');
+        const statusText = document.getElementById('ph-status');
+        const phValueElement = document.getElementById('ph-value');
 
-            const thermometer = document.getElementById('thermometer');
-            const statusText = document.getElementById('temp-status');
-            const tempValueElement = document.getElementById('temp-value');
+        phValueElement.textContent = `${phValue.toFixed(2)}`;
 
-            thermometer.style.filter = 'none'; // Reset filter for valid temperature values
+        if (phValue >= 0 && phValue <= 14) {
+            phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
 
-            if (temperature <= 18) {
-                thermometer.src = '{{ asset('images/Temp/cold.png') }}';
-                statusText.textContent = "Cold";
+            // Update status based on pH value
+            if (phValue < 5.5) {
+                statusText.textContent = "Too Acidic";
+                statusText.style.color = 'red';
+            } else if (phValue < 6.0) {
+                statusText.textContent = "Acidic";
+                statusText.style.color = 'orange';
+            } else if (phValue > 7.0) {
+                statusText.textContent = "Too Basic";
+                statusText.style.color = 'purple';
+            } else if (phValue > 6.5) {
+                statusText.textContent = "Basic";
                 statusText.style.color = 'blue';
-                tempValueElement.style.color = 'blue';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-            } else if (temperature > 18 && temperature <= 25) {
-                thermometer.src = '{{ asset('images/Temp/cold.png') }}';
-                statusText.textContent = "Cold (Optimal)";
-                statusText.style.color = 'blue';
-                tempValueElement.style.color = 'blue';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-            } else if (temperature > 25 && temperature <= 30) {
-                thermometer.src = '{{ asset('images/Temp/normal.png') }}';
+            } else {
                 statusText.textContent = "Good";
                 statusText.style.color = 'green';
-                tempValueElement.style.color = 'green';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-            } else if (temperature > 31) {
-                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                statusText.textContent = "Too Hot";
-                statusText.style.color = 'darkred';
-                tempValueElement.style.color = 'darkred';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-            } else {
-                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                thermometer.style.filter = 'grayscale(100%)';
-                tempValueElement.textContent = "N/A";
-                statusText.style.color = 'gray';
-                tempValueElement.style.color = 'gray';
             }
+        } else {
+            phScale.src = `{{ asset('images/ph/7.png') }}`;
+            statusText.textContent = "N/A";
+            statusText.style.color = 'black';
+            phValueElement.style.color = 'black';
+            phScale.style.filter = 'grayscale(100%)';
         }
+    }
 
-        function updateLightStatus(status) {
-            const circle = document.getElementById('statusCircle');
-            const statusText = document.getElementById('statusText');
+    function updateThermometerImage(temperature) {
+        const thermometer = document.getElementById('thermometer');
+        const statusText = document.getElementById('temp-status');
+        const tempValueElement = document.getElementById('temp-value');
 
-            if (status === 1) {
-                circle.style.backgroundColor = 'green';
-                statusText.textContent = 'Active';
+        thermometer.style.filter = 'none'; // Reset filter for valid temperature values
 
-            } else {
-                circle.style.backgroundColor = 'gray';
-                statusText.textContent = 'Inactive';
-
-            }
+        // Update thermometer and status based on temperature
+        if (temperature <= 18) {
+            thermometer.src = '{{ asset('images/Temp/cold.png') }}';
+            statusText.textContent = "Cold";
+            statusText.style.color = 'blue';
+        } else if (temperature > 18 && temperature <= 25) {
+            thermometer.src = '{{ asset('images/Temp/cold.png') }}';
+            statusText.textContent = "Cold (Optimal)";
+            statusText.style.color = 'blue';
+        } else if (temperature > 25 && temperature <= 30) {
+            thermometer.src = '{{ asset('images/Temp/normal.png') }}';
+            statusText.textContent = "Good";
+            statusText.style.color = 'green';
+        } else if (temperature > 31) {
+            thermometer.src = '{{ asset('images/Temp/hot.png') }}';
+            statusText.textContent = "Too Hot";
+            statusText.style.color = 'darkred';
+        } else {
+            thermometer.src = '{{ asset('images/Temp/hot.png') }}';
+            thermometer.style.filter = 'grayscale(100%)';
+            tempValueElement.textContent = "N/A";
+            statusText.style.color = 'gray';
         }
+        tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+    }
 
-        function updatemode(mode) {
-            const modeText = document.getElementById('modeText');
-            const modeCircle = document.getElementById('modeCircle');
+    function updateLightStatus(status) {
+        const circle = document.getElementById('statusCircle');
+        const statusText = document.getElementById('statusText');
 
-            switch (mode) {
-                case 0:
-                    modeText.textContent = 'Off';
-                    modeCircle.style.backgroundColor = 'gray';
-                    break;
-                case 1:
-                    modeText.textContent = 'Day Mode';
-                    modeCircle.style.backgroundColor = 'yellow';
-                    break;
-                case 2:
-                    modeText.textContent = 'Night Mode';
-                    modeCircle.style.backgroundColor = 'blue';
-                    break;
-                default:
-                    modeText.textContent = 'Unknown';
-                    modeCircle.style.backgroundColor = 'red';
-                    break;
-            }
+        // Update light status based on the status value
+        if (status === 1) {
+            circle.style.backgroundColor = 'green';
+            statusText.textContent = 'Active';
+        } else {
+            circle.style.backgroundColor = 'gray';
+            statusText.textContent = 'Inactive';
         }
+    }
 
-        function updatestatus(status) {
-            const statusCircle = document.getElementById('statusCircle1');
-            const statusText = document.getElementById('statusText1');
+    function updatemode(mode) {
+        const modeText = document.getElementById('modeText');
+        const modeCircle = document.getElementById('modeCircle');
 
-            if (status === 1) {
-                statusCircle.style.backgroundColor = 'green';
-                statusText.textContent = 'Active';
-            } else {
-                statusCircle.style.backgroundColor = 'gray';
-                statusText.textContent = 'Inactive';
-            }
+        // Update mode display based on the mode value
+        switch (mode) {
+            case 0:
+                modeText.textContent = 'Off';
+                modeCircle.style.backgroundColor = 'gray';
+                break;
+            case 1:
+                modeText.textContent = 'Day Mode';
+                modeCircle.style.backgroundColor = 'yellow';
+                break;
+            case 2:
+                modeText.textContent = 'Night Mode';
+                modeCircle.style.backgroundColor = 'blue';
+                break;
+            default:
+                modeText.textContent = 'Unknown';
+                modeCircle.style.backgroundColor = 'red';
+                break;
         }
-    </script>
+    }
+
+    function updatestatus(status) {
+        const statusCircle = document.getElementById('statusCircle1');
+        const statusText = document.getElementById('statusText1');
+
+        // Update status display based on the status value
+        if (status === 1) {
+            statusCircle.style.backgroundColor = 'green';
+            statusText.textContent = 'Active';
+        } else {
+            statusCircle.style.backgroundColor = 'gray';
+            statusText.textContent = 'Inactive';
+        }
+    }
+</script>
+
 
 @endsection

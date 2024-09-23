@@ -285,6 +285,7 @@ public function showCounts()
 
         return false;
     }
+
     public function disableOwner()
     {
         try {
@@ -317,22 +318,39 @@ public function showCounts()
             if ($user) {
                 $user->status = Crypt::encryptString("1");
                 $user->save();
-                $workers = Worker::where('OwnerID', $user->id)->get();
-                foreach ($workers as $worker) {
-                    $worker->status = Crypt::encryptString("1");
-                    $worker->save();
-                }
+                // $workers = Worker::where('OwnerID', $user->id)->get();
+                // foreach ($workers as $worker) {
+                //     $worker->status = Crypt::encryptString("1");
+                //     $worker->save();
+                // }
 
                 return redirect()->route('UserAccounts')->with('status', 'Account enabled successfully.');
             } else {
                 return redirect()->route('UserAccounts')->withErrors(['error' => 'Owner not found.']);
             }
         } catch (\Exception $exception) {
-            // Optionally log the exception for further analysis
-            // Log::error('Failed to enable account: ' . $exception->getMessage());
-
+            
             return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to enable the account.']);
         }
+    }
+
+        public function workerdis(Request $request, $id)
+    {
+
+        $user = Worker::find($id);
+        $user->status = crypt::encryptString('0');
+        $user->save();
+
+        return redirect()->route('ownerworkeraccount')->with('success', 'User disable successfully.');
+    }
+    public function workeren(Request $request, $id)
+    {
+
+        $user = Worker::find($id);
+        $user->status = crypt::encryptString('1');
+        $user->save();
+
+        return redirect()->route('ownerworkeraccount')->with('success', 'User enable successfully.');
     }
 
 }

@@ -116,12 +116,21 @@
                                                                                                 <a href="{{ route('admin.edit2', $worker->id) }}"
                                                                                                     class="btn btn-success">Edit</a>
                                                                                             </div>
+
+                                                                                            <form action="{{ route('admin.dis2', $worker->id) }}"
+                                                                          method="POST">
+                                                                        @csrf
+                                                                        <button onclick="return confirm('Are you sure you want to disable this?')"
+                                                                                type="submit"
+                                                                                class="btn btn-danger btn-rounded">
+                                                                            Disable
+                                                                        </button>
+                                                                    </form>
                                                                                         </td>
                                                                                     </tr>
                                                                                 @endif
                                                                                 @if ($worker->OwnerID == $owner->id && Crypt::decryptString($worker->status) == '0')
                                                                                     @php
-                                                                                        // Get the tower corresponding to the worker's towerid
                                                                                         $tower = $towers->get(
                                                                                             $worker->towerid,
                                                                                         );
@@ -135,10 +144,16 @@
                                                                                         <td>{{ $tower ? Crypt::decryptString($tower->name) : 'N/A' }}
                                                                                         </td>
                                                                                         <td>
-                                                                                            <div class="btn-group">
-                                                                                                <a href="{{ route('admin.edit2', $worker->id) }}"
-                                                                                                    class="btn btn-success">Edit</a>
-                                                                                            </div>
+                                                                                            <form action="{{ route('admin.en2', $worker->id) }}"
+                                                                          method="POST">
+                                                                        @csrf
+                                                                        <button onclick="return confirm('Are you sure you want to enable this?')"
+                                                                                type="submit"
+                                                                                class="btn btn-secondary ti-trash btn-rounded">
+                                                                            Enable
+                                                                        </button>
+                                                                    </form>
+
                                                                                         </td>
                                                                                     </tr>
                                                                                 @endif
