@@ -175,6 +175,10 @@ class Towercon extends Controller
         \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
 
         $pumps = Pump::where('towerid', $towerId)->get();
+if ($sensorData->isEmpty() && $pumps->isEmpty()) {
+    \Log::info('No sensor or pump data available');
+    return redirect()->back()->with('success', 'No sensor or pump data to save.');
+}
 
         $pumpDataArray = $pumps->map(function ($pump) {
             return [
@@ -283,6 +287,10 @@ class Towercon extends Controller
 
         // Retrieve pump data
         $pumps = Pump::where('towerid', $towerId)->get();
+if ($sensorData->isEmpty() && $pumps->isEmpty()) {
+    \Log::info('No sensor or pump data available');
+    return redirect()->back()->with('success', 'No sensor or pump data to save.');
+}
 
         // Example: Format pump data
         $pumpDataArray = $pumps->map(function ($pump) {
@@ -294,7 +302,7 @@ class Towercon extends Controller
 
         \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
 
-        // Format sensor data
+
         $sensorDataArray = $sensorData->map(function ($data) {
             return [
                 'pH' => $data->pH,

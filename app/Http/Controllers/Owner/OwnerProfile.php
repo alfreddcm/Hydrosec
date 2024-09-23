@@ -8,7 +8,7 @@ use App\Models\Owner;
 use App\Models\Tower;
 use App\Models\Worker;
 use App\Models\SensorDataHistory;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
