@@ -9,7 +9,7 @@ use App\Models\Owner;
 use App\Models\Pump;
 use App\Models\Sensor;
 use App\Models\Tower;
-use App\Models\Towerlogs;
+use App\Models\Towerlog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -606,7 +606,7 @@ class SensorData extends Controller
                         $mailStatus = 'Failed';
                         Log::error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                     } finally {
-                        Towerlogs::create([
+                        Towerlog::create([
                             'ID_tower' => $towerId,
                             'activity' => Crypt::encryptString(
                                 "Alert: Conditions detected - " . json_encode($details['body']) . " Mail Status: " . $mailStatus
