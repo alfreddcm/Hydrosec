@@ -216,7 +216,7 @@
                         <div class="col-sm-4">
                             <div class="card sensor-card">
                                 <center>
-                                    <h3 class="mt-3">Nutrient Level</h3>
+                                    <h3 class="mt-3">Nutrient Volume</h3>
                                     <button type="button" class="btn btnpop" data-bs-toggle="modal"
                                         data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
                                         data-column="nutrientlevel">
