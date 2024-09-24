@@ -37,6 +37,7 @@ class SensorData extends Controller
                 $sdata = Sensor::where('towerid', $tid)
                     ->where('created_at', '>=', $oneHourAgo)
                     ->orderBy('id', 'desc')
+                    ->select('pH', 'temperature', 'nutrientlevel', 'status', 'light') // Specify required columns
                     ->first();
 
                 if ($sdata) {

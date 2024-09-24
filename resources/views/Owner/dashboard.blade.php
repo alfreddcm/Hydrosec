@@ -268,7 +268,7 @@
                             function createChart(containerId, title, dataKey, yAxisOptions) {
                                 Highcharts.chart(containerId, {
                                     chart: {
-                                        type: 'bar',
+                                        type: 'line',
                                         height: '300'
                                     },
                                     title: {
@@ -277,13 +277,15 @@
                                     xAxis: {
                                         type: 'datetime',
                                         labels: {
-                                            format: '{value:%d-%m-%Y %H:%M}'
+                                            format: '{value:%I:%M %p %b %e}'
                                         }
                                     },
                                     yAxis: yAxisOptions,
                                     series: [{
                                         name: title,
-                                        data: data.map(item => [new Date(item.created_at).getTime(), item[dataKey]])
+                                        data: data.map(item => [new Date(item.created_at).getTime(), item[
+                                            dataKey]]),
+                                        dashStyle: 'solid',
                                     }],
                                     tooltip: {
                                         pointFormat: `{series.name}: <b>{point.y:.2f}</b>`
@@ -341,39 +343,41 @@
 
                             // Pump Chart
                             if (data.some(item => item.pump_status !== undefined && item.pump_created_at !== undefined)) {
-        Highcharts.chart('pumpChart-{{ $code }}', {
-            chart: {
-                type: 'spline',
-                height: '300'
-            },
-            title: {
-                text: 'Pump'
-            },
-            xAxis: {
-                type: 'datetime',
-                labels: {
-                    format: '{value:%d-%m-%Y %H:%M}'
-                }
-            },
-            yAxis: {
-                title: {
-                    text: 'Pump Status'
-                },
-                min: 0,
-                max: 1, // Since the pump status is likely 0 or 1
-                tickInterval: 1
-            },
-            series: [{
-                name: 'Pump Status',
-                data: data.map(item => [new Date(item.pump_created_at).getTime(), item.pump_status]) // Map pump data
-            }],
-            tooltip: {
-                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:.0f}</b><br/>' // 0 or 1
-            }
-        });
-    } else {
-        console.log('Pump data is not available');
-    }
+                                Highcharts.chart('pumpChart-{{ $code }}', {
+                                    chart: {
+                                        type: 'spline',
+                                        height: '300'
+                                    },
+                                    title: {
+                                        text: 'Pump'
+                                    },
+                                    xAxis: {
+                                        type: 'datetime',
+                                        labels: {
+                                            format: '{value:%I:%M %p %b %e}'
+                                        }
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Pump Status'
+                                        },
+                                        min: 0,
+                                        max: 1, // Since the pump status is likely 0 or 1
+                                        tickInterval: 1
+                                    },
+                                    series: [{
+                                        name: 'Pump Status',
+                                        data: data.map(item => [new Date(item.pump_created_at).getTime(), item
+                                            .pump_status
+                                        ]) // Map pump data
+                                    }],
+                                    tooltip: {
+                                        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:.0f}</b><br/>' // 0 or 1
+                                    }
+                                });
+                            } else {
+                                console.log('Pump data is not available');
+                            }
                         });
                     </script>
                 @endforeach

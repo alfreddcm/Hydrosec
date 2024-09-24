@@ -355,16 +355,16 @@
                                     <button type="submit" class="btn btn-danger"
                                         onclick="return confirm('Are you sure you want to stop the cycle?');">Stop
                                         Cycle</button>
-
                                 </form>
+                                
                                 <form action="{{ route('tower.stopdis') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                     <button type="submit" class="btn btn-danger"
                                         onclick="return confirm('Are you sure you want to disable the tower?');">Disable
                                         Tower</button>
-
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -424,6 +424,8 @@
             </div>
         </div>
     </div>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+
 
   <script>
     var towerId = @json($towerinfo->id);
