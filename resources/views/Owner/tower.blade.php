@@ -536,9 +536,10 @@
                     }
                 });
             }
-
-         document.addEventListener('livewire:load', function() {
-    Livewire.on('sensorDataUpdated', (sensorData) => {
+            
+document.addEventListener('livewire:load', function() {
+    Livewire.on('sensorDataUpdated', (event) => { // Use 'event' for clarity
+        const { sensorData } = event; // Destructure the sensorData from the event
         if (sensorData) {
             updateNutrientImage(parseFloat(sensorData.nutrient_level));
             updatePhScaleImage(parseFloat(sensorData.ph));
