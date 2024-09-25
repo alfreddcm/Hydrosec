@@ -574,7 +574,7 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
         'App\\Models\\Sensor' => __DIR__ . '/../..' . '/app/Models/Sensor.php',
         'App\\Models\\SensorDataHistory' => __DIR__ . '/../..' . '/app/Models/SensorDataHistory.php',
         'App\\Models\\Tower' => __DIR__ . '/../..' . '/app/Models/Tower.php',
-        'App\\Models\\Towerlogs' => __DIR__ . '/../..' . '/app/Models/Towerlogs.php',
+        'App\\Models\\Towerlog' => __DIR__ . '/../..' . '/app/Models/Towerlog.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\Worker' => __DIR__ . '/../..' . '/app/Models/Worker.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

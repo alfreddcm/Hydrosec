@@ -144,6 +144,12 @@
                     @endif
 
                 </div>
+<div wire:poll.5s>
+                @livewire('sensor-dashboard', ['towerId' => $tower->id])
+
+</div>
+
+
                 <div class="addtowerb">
                     <a href="#" class="btn btn-success mt-1 addtowerbutton" data-bs-toggle="modal"
                         data-bs-target="#addTowerModal">

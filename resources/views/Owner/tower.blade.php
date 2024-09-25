@@ -430,43 +430,41 @@
     <script>
         var towerId = @json($towerinfo->id);
 
-
         $(document).ready(function() {
             let tempChart = null;
             let modeStatInterval = null;
 
-            
-        document.addEventListener('livewire:load', function() {
-            console.log('Livewire component has been loaded'); // Log on initial load
+            document.addEventListener('livewire:load', function() {
+                console.log('Livewire component has been loaded');
 
-            // Fetch the initial sensor data (if applicable)
-            fetchInitialSensorData();
+                // Fetch the initial sensor data
+                fetchInitialSensorData();
 
-            Livewire.on('sensorDataUpdated', (event) => {
-                console.log('sensorDataUpdated event received:', event); // Log the entire event
+                Livewire.on('sensorDataUpdated', (event) => {
+                    console.log('sensorDataUpdated event received:', event);
 
-                const {
-                    sensorData
-                } = event; // Destructure the sensorData from the event
-                if (sensorData) {
-                    console.log('Updating sensor data:', sensorData); // Log the sensor data being processed
-                    updateNutrientImage(parseFloat(sensorData.nutrient_level));
-                    updatePhScaleImage(parseFloat(sensorData.ph));
-                    updateLightStatus(parseFloat(sensorData.light));
-                    updateThermometerImage(parseFloat(sensorData.temperature));
-                    updateOnlineStatus(true);
-                } else {
-                    console.log('No data available');
-                }
+                    const {
+                        sensorData
+                    } = event;
+                    if (sensorData) {
+                        console.log('Updating sensor data:', sensorData);
+                        updateNutrientImage(parseFloat(sensorData.nutrient_level));
+                        updatePhScaleImage(parseFloat(sensorData.ph));
+                        updateLightStatus(parseFloat(sensorData.light));
+                        updateThermometerImage(parseFloat(sensorData.temperature));
+                        updateOnlineStatus(true);
+                    } else {
+                        console.log('No data available');
+                    }
+                });
             });
-        });
-        
 
             function updateOnlineStatus(isOnline) {
                 const statusIndicator = $('#online-status');
                 const color = isOnline ? 'green' : 'red';
                 statusIndicator.html(
-                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`);
+                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
+                );
             }
 
             $('#tempmodal').on('shown.bs.modal', function(event) {
@@ -540,7 +538,7 @@
 
             function fetchInitialSensorData() {
                 $.ajax({
-                    url: '/sensor-data/' + towerId,
+                    url: `/sensor-data/${towerId}`,
                     method: 'GET',
                     success: function(response) {
                         if (response.sensorData) {
@@ -565,9 +563,6 @@
                 });
             }
 
-
-
-
             function fetchPumpData() {
                 $.ajax({
                     url: `/pump-data/${towerId}`,
@@ -579,7 +574,7 @@
                         if (data.length === 0) {
                             tbody.append(
                                 '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
-                            );
+                                );
                         } else {
                             // Construct HTML for pump data
                             let rows = data.map((item, index) => {
@@ -600,7 +595,7 @@
 
             function fetchModeStat() {
                 $.ajax({
-                    url: '/modestat/' + towerId,
+                    url: `/modestat/${towerId}`,
                     method: 'GET',
                     success: function(response) {
                         if (response.modestat) {

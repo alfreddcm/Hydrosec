@@ -35,7 +35,7 @@ return array(
     'App\\Models\\Sensor' => $baseDir . '/app/Models/Sensor.php',
     'App\\Models\\SensorDataHistory' => $baseDir . '/app/Models/SensorDataHistory.php',
     'App\\Models\\Tower' => $baseDir . '/app/Models/Tower.php',
-    'App\\Models\\Towerlogs' => $baseDir . '/app/Models/Towerlogs.php',
+    'App\\Models\\Towerlog' => $baseDir . '/app/Models/Towerlog.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\Worker' => $baseDir . '/app/Models/Worker.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

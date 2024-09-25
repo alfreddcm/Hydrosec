@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SensorDataUpdated;
 use App\Mail\Alert;
 use App\Models\IntrusionDetection;
 use App\Models\Owner;
@@ -355,8 +354,7 @@ class SensorData extends Controller
                                         ];
 
                                         Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
-
-                                        event(new SensorDataUpdated($sd, $tower->id));
+                                        Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
                                         Log::info('Successfully broadcasted sensor data', [
                                             'sensorData' => $sd,
                                             'towerId' => $tower->id,
