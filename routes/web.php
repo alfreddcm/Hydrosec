@@ -9,19 +9,19 @@ use App\Http\Controllers\SensorData;
 use App\Http\Controllers\Towercon;
 use Illuminate\Support\Facades\Route;
 
-Route::fallback(function (Request $request) {
-    if (auth()->check()) {
-        if (auth()->user()->hasRole('owner')) {
-            return redirect()->route('ownerdashboard');
-        } elseif (auth()->user()->hasRole('worker')) {
-            return redirect()->route('workerdashboard');
-        } elseif (auth()->user()->hasRole('admin')) {
-            return redirect()->route('admindashboard');
-        }
-    }
+// Route::fallback(function (Request $request) {
+//     if (auth()->check()) {
+//         if (auth()->user()->hasRole('owner')) {
+//             return redirect()->route('ownerdashboard');
+//         } elseif (auth()->user()->hasRole('worker')) {
+//             return redirect()->route('workerdashboard');
+//         } elseif (auth()->user()->hasRole('admin')) {
+//             return redirect()->route('admindashboard');
+//         }
+//     }
 
-    return redirect()->route('index');
-});
+//     return redirect()->route('index');
+// });
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {return view('index');})->name('index');
