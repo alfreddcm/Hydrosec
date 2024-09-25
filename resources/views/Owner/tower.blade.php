@@ -591,8 +591,7 @@ function setupPusher(towerId) {
         }
     });
 }
-);
-    }
+
 
 
 
