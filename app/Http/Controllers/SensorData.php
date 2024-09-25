@@ -342,17 +342,18 @@ class SensorData extends Controller
                                         $ennut = $this->encrypt_data($decrypted_nutrient, $key_str, $iv_str, $method);
                                         $enlight = $this->encrypt_data($decrypted_light, $key_str, $iv_str, $method);
 
-                                        $sd = [
-                                            'ph' => $decrypted_ph,
-                                            'temperature' => $decrypted_temp,
-                                            'nutrient_level' => $decrypted_nutrient,
-                                            'light' => $decrypted_light,
-                                        ];
+                                    $sd = [
+    'ph' => $decrypted_ph,
+    'temperature' => $decrypted_temp,
+    'nutrient_level' => $decrypted_nutrient,
+    'light' => $decrypted_light,
+];
 
-                                        Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
+Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
 
-                                        // event(new SensorDataUpdated($sd, $tower->id));
-                                        Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
+// You can still use Laravel's event system to communicate with Livewire if needed.
+event(new SensorDataUpdated($sd, $tower->id));
+
 
                                         Sensor::create([
                                             'towerid' => $tower->id,

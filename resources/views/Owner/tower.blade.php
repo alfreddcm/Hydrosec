@@ -537,20 +537,20 @@
                 });
             }
 
-               document.addEventListener('livewire:load', function () {
-        Livewire.on('sensorDataUpdated', event => {
-            const { sensorData } = event;
-            if (sensorData) {
-                updateNutrientImage(parseFloat(sensorData.nutrient_level));
-                updatePhScaleImage(parseFloat(sensorData.ph));
-                updateLightStatus(parseFloat(sensorData.light));
-                updateThermometerImage(parseFloat(sensorData.temperature));
-                updateOnlineStatus(true);
-            } else {
-                console.log('No data available');
-            }
-        });
+         document.addEventListener('livewire:load', function() {
+    Livewire.on('sensorDataUpdated', (sensorData) => {
+        if (sensorData) {
+            updateNutrientImage(parseFloat(sensorData.nutrient_level));
+            updatePhScaleImage(parseFloat(sensorData.ph));
+            updateLightStatus(parseFloat(sensorData.light));
+            updateThermometerImage(parseFloat(sensorData.temperature));
+            updateOnlineStatus(true);
+        } else {
+            console.log('No data available');
+        }
     });
+});
+
 
 
 
