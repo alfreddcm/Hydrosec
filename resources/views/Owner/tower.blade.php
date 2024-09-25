@@ -430,6 +430,12 @@
     <script>
         var towerId = @json($towerinfo->id);
 
+
+        $(document).ready(function() {
+            let tempChart = null;
+            let modeStatInterval = null;
+
+            
         document.addEventListener('livewire:load', function() {
             console.log('Livewire component has been loaded'); // Log on initial load
 
@@ -454,10 +460,7 @@
                 }
             });
         });
-
-        $(document).ready(function() {
-            let tempChart = null;
-            let modeStatInterval = null;
+        
 
             function updateOnlineStatus(isOnline) {
                 const statusIndicator = $('#online-status');
