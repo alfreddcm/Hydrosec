@@ -543,13 +543,14 @@
 
     // Bind to connection errors
     pusher.connection.bind('error', function(err) {
-        console.error('Pusher connection error:', err);
+        console.error('Pusher connection error:', JSON.stringify(err)); // Log the full error object
     });
 
     // Subscribe to the channel
     const channel = pusher.subscribe('sensor-data-channel.' + towerId);
     console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
 
+    // Bind to the sensor-data-updated event
     channel.bind('sensor-data-updated', function(data) {
         console.log('Received Pusher data:', data); // Log the received data
 
@@ -574,6 +575,9 @@
         }
     });
 }
+
+// Call the function to set up Pusher
+setupPusher();
 
 
         function fetchPumpData() {
