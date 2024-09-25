@@ -536,6 +536,8 @@
             const channel = pusher.subscribe('sensor-data-channel.' + towerId);
 
             channel.bind('sensor-data-updated', function(data) {
+                        console.log('Received Pusher data:', data); // Log the received data
+
                 if (data.towerId === towerId) {
                     const { temperature, nutrient_level, pH, light } = data;
                     updateNutrientImage(parseFloat(nutrient_level));
