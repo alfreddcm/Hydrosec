@@ -538,43 +538,57 @@
             }
 
             function setupPusher() {
-    // Initialize Pusher with the correct app key and cluster
-    const pusher = new Pusher('3e52514a75529a62c062', { cluster: 'ap1', encrypted: true });
-    console.log('Pusher initialized');
+                // Initialize Pusher with the correct app key and cluster
+                const pusher = new Pusher('3e52514a75529a62c062', {
+                    cluster: 'ap1',
+                    encrypted: true
+                });
+                console.log('Pusher initialized');
 
-    // Check connection state
-    pusher.connection.bind('state_change', function(states) {
-        console.log('Pusher connection state changed:', states);
-    });
+                // Check connection state
+                pusher.connection.bind('state_change', function(states) {
+                    console.log('Pusher connection state changed:', states);
+                });
 
-    // Bind to connection errors
-    pusher.connection.bind('error', function(err) {
-        console.error('Pusher connection error:', JSON.stringify(err));
-    });
+                // Bind to connection errors
+                pusher.connection.bind('error', function(err) {
+                    console.error('Pusher connection error:', JSON.stringify(err));
+                });
 
-    // Subscribe to the channel
-    const channel = pusher.subscribe('sensor-data-channel.' + towerId);
-    console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
+                // Subscribe to the channel
+                const channel = pusher.subscribe('sensor-data-channel.' + towerId);
+                console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
 
-    // Bind to the sensor-data-updated event
-    channel.bind('sensor-data-updated', function(data) {
-        console.log('Received Pusher data:', data);
+                // Bind to the sensor-data-updated event
+                channel.bind('sensor-data-updated', function(data) {
+                    console.log('Received Pusher data:', data);
 
-        if (data.towerId === towerId) {
-            console.log('Data matches the towerId:', towerId);
-            const { temperature, nutrient_level, pH, light } = data;
-            console.log('Updating UI with data:', { temperature, nutrient_level, pH, light });
+                    if (data.towerId === towerId) {
+                        console.log('Data matches the towerId:', towerId);
+                        const {
+                            temperature,
+                            nutrient_level,
+                            pH,
+                            light
+                        } = data;
+                        console.log('Updating UI with data:', {
+                            temperature,
+                            nutrient_level,
+                            pH,
+                            light
+                        });
 
-            updateNutrientImage(parseFloat(nutrient_level));
-            updatePhScaleImage(parseFloat(pH));
-            updateLightStatus(parseFloat(light));
-            updateThermometerImage(parseFloat(temperature));
-            updateOnlineStatus(true);
-        } else {
-            console.warn('Received data for different towerId:', data.towerId);
-        }
-    });
-}
+                        updateNutrientImage(parseFloat(nutrient_level));
+                        updatePhScaleImage(parseFloat(pH));
+                        updateLightStatus(parseFloat(light));
+                        updateThermometerImage(parseFloat(temperature));
+                        updateOnlineStatus(true);
+                    } else {
+                        console.warn('Received data for different towerId:', data.towerId);
+                    }
+                });
+            }
+
             function fetchPumpData() {
                 $.ajax({
                     url: `/pump-data/${towerId}`,
@@ -586,7 +600,7 @@
                         if (data.length === 0) {
                             tbody.append(
                                 '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
-                                );
+                            );
                         } else {
                             // Construct HTML for pump data
                             let rows = data.map((item, index) => {
