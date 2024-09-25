@@ -343,9 +343,9 @@ class SensorData extends Controller
 
                                         $sensorData = [
                                             'ph' => $decrypted_ph,
-                                            'temperature' => $decrypted_ph,
-                                            'nutrient_level' => $decrypted_ph,
-                                            'light' => $decrypted_ph,
+                                            'temperature' => $decrypted_temp,
+                                            'nutrient_level' => $decrypted_nutrient,
+                                            'light' => $decrypted_light,
                                         ];
 
                                         event(new SensorDataUpdated($sensorData, $tower->id));
