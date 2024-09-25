@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Livewire\Livewire;
+
 
 class SensorData extends Controller
 {
@@ -227,7 +229,9 @@ class SensorData extends Controller
 
                                 Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
 
-                                event(new SensorDataUpdated($sd, $tower->id));
+                                // event(new SensorDataUpdated($sd, $tower->id));
+                                Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
+
 
                             } else {
 
@@ -479,7 +483,7 @@ class SensorData extends Controller
 
             $sensorData = Sensor::where('towerid', $id)
                 ->orderBy('created_at', 'asc')
-                ->get(['k', 'iv', $column, 'created_at']);
+                ->get([ $column, 'created_at']);
 
             $decryptedData = [];
 

@@ -526,7 +526,7 @@
                             updatePhScaleImage(parseFloat(pH));
                             updateLightStatus(parseFloat(light));
                             updateThermometerImage(parseFloat(temperature));
-                            updateOnlineStatus(false);
+                            updateOnlineStatus(true);
                         } else {
                             console.log('No data available');
                         }
@@ -537,64 +537,26 @@
                 });
             }
 
-            function setupPusher() {
-                const pusher = new Pusher('3e52514a75529a62c062', {
-                    cluster: 'ap1',
-                    encrypted: true
-                });
-                console.log('Pusher initialized');
-                pusher.connection.bind('state_change', function(states) {
-                    console.log('Pusher connection state changed:', states);
-                });
-
-                // Bind to connection errors
-                pusher.connection.bind('error', function(err) {
-                    console.error('Pusher connection error:', JSON.stringify(err));
-                });
-
-                // Subscribe to the correct channel using the dynamic towerId
-                const channel = pusher.subscribe('sensor-data-channel.' + towerId);
-                console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
-
-                // Bind to the sensor-data-updated event (use exact event name matching the backend broadcast)
-                channel.bind('App\\Events\\SensorDataUpdated', function(data) {
-                    console.log('Received Pusher data:', data);
-
-                    // Log the structure of the received data for debugging
-                    console.log('Structure of received data:', JSON.stringify(data, null, 2));
-
-                    // Check if the data structure contains the expected sensorData object
-                    if (data && data.sensorData) {
-                        console.log('Data structure is valid.');
-
-                        // Destructure the sensorData object to extract relevant fields
-                        const {
-                            temperature,
-                            nutrient_level,
-                            ph,
-                            light
-                        } = data.sensorData; // Make sure "ph" matches backend casing
-
-                        console.log('Updating UI with data:', {
-                            temperature,
-                            nutrient_level,
-                            ph,
-                            light
-                        });
-
-                        // Update the UI components with the received data (assuming these functions exist)
-                        updateNutrientImage(parseFloat(nutrient_level));
-                        updatePhScaleImage(parseFloat(
-                        ph)); // Corrected 'pH' to 'ph' for consistency with backend
-                        updateLightStatus(parseFloat(light));
-                        updateThermometerImage(parseFloat(temperature));
-                        updateOnlineStatus(true);
-                    } else {
-                        console.error('Invalid data structure received:', data);
-                    }
-                });
-            }
-
+            document.addEventListener('sensorDataUpdated', event => {
+                const {
+                    sensorData
+                } = event.detail;
+                if (sensorData) {
+                    const {
+                        temperature,
+                        nutrient_level,
+                        pH,
+                        light
+                    } = sensorData;
+                    updateNutrientImage(parseFloat(nutrient_level));
+                    updatePhScaleImage(parseFloat(pH));
+                    updateLightStatus(parseFloat(light));
+                    updateThermometerImage(parseFloat(temperature));
+                    updateOnlineStatus(true);
+                } else {
+                    console.log('No data available');
+                }
+            });
 
 
 
