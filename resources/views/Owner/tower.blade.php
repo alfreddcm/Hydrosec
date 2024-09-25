@@ -620,7 +620,6 @@
 
             fetchInitialSensorData();
             fetchPumpData();
-            setupPusher();
             startIntervals();
             setInterval(fetchPumpData, 5000);
         });
