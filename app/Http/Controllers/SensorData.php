@@ -354,7 +354,7 @@ class SensorData extends Controller
                                         ];
 
                                         Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
-                                        event(new SensorDataUpdated($sd, $towerId));
+                                        event(new SensorDataUpdated($sd, $tower->id));
                                         Log::info('Successfully broadcasted sensor data', [
                                             'sensorData' => $sd,
                                             'towerId' => $tower->id,

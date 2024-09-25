@@ -446,7 +446,27 @@
                     encrypted: true
                 });
 
+                // Log when Pusher is connected
+                pusher.connection.bind('connected', function() {
+                    console.log('Pusher connection established');
+                });
+
+                // Log if the connection is disconnected
+                pusher.connection.bind('disconnected', function() {
+                    console.log('Pusher connection disconnected');
+                });
+
+                // Log if the connection is failed
+                pusher.connection.bind('failed', function() {
+                    console.log('Pusher connection failed');
+                });
+
                 const channel = pusher.subscribe('tower.' + towerId);
+
+                // Log when subscribing to the channel
+                channel.bind('pusher:subscription_succeeded', function() {
+                    console.log('Successfully subscribed to channel:', 'tower.' + towerId);
+                });
 
                 channel.bind('App\\Events\\SensorDataUpdated', function(data) {
                     console.log('Real-time sensor data received:', data.sensorData);
@@ -454,7 +474,7 @@
                     const sensorData = data.sensorData;
 
                     if (sensorData) {
-                        // Update the UI with the new sensor data
+                        // Log the received sensor data
                         console.log('Updating sensor data:', sensorData);
                         updateNutrientImage(parseFloat(sensorData.nutrient_level));
                         updatePhScaleImage(parseFloat(sensorData.ph));
@@ -466,6 +486,7 @@
                     }
                 });
             });
+
 
 
 
