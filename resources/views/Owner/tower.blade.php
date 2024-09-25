@@ -436,13 +436,15 @@
             let modeStatInterval = null;
 
 
-            document.addEventListener('DOMContentLoaded', function() {
+            function load() {
+
+
                 console.log('Livewire component has been loaded');
 
                 fetchInitialSensorData();
 
-                const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-                    cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+                const pusher = new Pusher('3e52514a75529a62c062', {
+                    cluster: 'ap1',
                     encrypted: true
                 });
 
@@ -485,7 +487,7 @@
                         console.log('No data available');
                     }
                 });
-            });
+            }
 
 
 
@@ -651,6 +653,7 @@
                     modeStatInterval = setInterval(fetchModeStat, 5000);
                 }
             }
+            load();
 
             fetchPumpData();
             startIntervals();
