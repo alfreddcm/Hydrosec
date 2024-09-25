@@ -14707,3 +14707,30 @@
   5 => 'KVTMe5ats1CPRKkfAEAW0GdFUQxS2MWtnj3W4VyN',
 )  
 [2024-09-24 22:06:27] local.INFO: 449.01  
+[2024-09-25 10:51:32] local.ERROR: Too many arguments to "cache:clear" command, expected arguments "store". {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): Too many arguments to \"cache:clear\" command, expected arguments \"store\". at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Input\\ArgvInput.php:193)
+[stacktrace]
+#0 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Input\\ArgvInput.php(86): Symfony\\Component\\Console\\Input\\ArgvInput->parseArgument('artisan')
+#1 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Input\\ArgvInput.php(71): Symfony\\Component\\Console\\Input\\ArgvInput->parseToken('artisan', true)
+#2 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Input\\Input.php(53): Symfony\\Component\\Console\\Input\\ArgvInput->parse()
+#3 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Command\\Command.php(238): Symfony\\Component\\Console\\Input\\Input->bind(Object(Symfony\\Component\\Console\\Input\\InputDefinition))
+#4 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#5 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Application.php(1047): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Application.php(316): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Cache\\Console\\ClearCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\symfony\\console\\Application.php(167): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(197): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1203): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#11 {main}
+"} 
+[2024-09-25 10:52:29] local.INFO: delete from `cache`  
+[2024-09-25 10:52:29] local.INFO: array (
+)  
+[2024-09-25 10:52:29] local.INFO: 2817.66  
+[2024-09-25 10:52:35] local.ERROR: Cannot declare class App\Console\Commands\UpdateTowerMode, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Console\\Commands\\UpdateTowerMode, because the name is already in use at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\app\\Console\\Commands\\Updatetowermmode.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2024-09-25 10:52:36] local.ERROR: Cannot declare class App\Console\Commands\UpdateTowerMode, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Console\\Commands\\UpdateTowerMode, because the name is already in use at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\app\\Console\\Commands\\Updatetowermmode.php:10)
+[stacktrace]
+#0 {main}
+"} 

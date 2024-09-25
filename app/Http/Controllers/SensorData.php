@@ -348,7 +348,7 @@ class SensorData extends Controller
                                             'light' => $decrypted_ph,
                                         ];
 
-                                        event(new SensorDataUpdated($sensorData, $$tower->id));
+                                        event(new SensorDataUpdated($sensorData, $tower->id));
 
                                         Sensor::create([
                                             'towerid' => $tower->id,
@@ -607,6 +607,7 @@ class SensorData extends Controller
                         $mailStatus = 'Failed';
                         Log::error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                     } finally {
+
                         Towerlog::create([
                             'ID_tower' => $towerId,
                             'activity' => Crypt::encryptString(
