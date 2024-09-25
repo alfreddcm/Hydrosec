@@ -430,6 +430,31 @@
     <script>
         var towerId = @json($towerinfo->id);
 
+        document.addEventListener('livewire:load', function() {
+            console.log('Livewire component has been loaded'); // Log on initial load
+
+            // Fetch the initial sensor data (if applicable)
+            fetchInitialSensorData();
+
+            Livewire.on('sensorDataUpdated', (event) => {
+                console.log('sensorDataUpdated event received:', event); // Log the entire event
+
+                const {
+                    sensorData
+                } = event; // Destructure the sensorData from the event
+                if (sensorData) {
+                    console.log('Updating sensor data:', sensorData); // Log the sensor data being processed
+                    updateNutrientImage(parseFloat(sensorData.nutrient_level));
+                    updatePhScaleImage(parseFloat(sensorData.ph));
+                    updateLightStatus(parseFloat(sensorData.light));
+                    updateThermometerImage(parseFloat(sensorData.temperature));
+                    updateOnlineStatus(true);
+                } else {
+                    console.log('No data available');
+                }
+            });
+        });
+
         $(document).ready(function() {
             let tempChart = null;
             let modeStatInterval = null;
@@ -537,25 +562,6 @@
                 });
             }
 
-document.addEventListener('livewire:load', function() {
-    Livewire.on('sensorDataUpdated', (event) => {
-        console.log('sensorDataUpdated event received:', event); // Log the entire event
-
-        const { sensorData } = event; // Destructure the sensorData from the event
-        if (sensorData) {
-            console.log('Updating sensor data:', sensorData); // Log the sensor data being processed
-            updateNutrientImage(parseFloat(sensorData.nutrient_level));
-            updatePhScaleImage(parseFloat(sensorData.ph));
-            updateLightStatus(parseFloat(sensorData.light));
-            updateThermometerImage(parseFloat(sensorData.temperature));
-            updateOnlineStatus(true);
-        } else {
-            console.log('No data available');
-        }
-    });
-});
-
-
 
 
 
@@ -617,7 +623,6 @@ document.addEventListener('livewire:load', function() {
                 }
             }
 
-            fetchInitialSensorData();
             fetchPumpData();
             startIntervals();
             setInterval(fetchPumpData, 5000);
