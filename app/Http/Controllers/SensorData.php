@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SensorDataUpdated;
 use App\Mail\Alert;
 use App\Models\IntrusionDetection;
 use App\Models\Owner;
@@ -16,8 +17,6 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
-use App\Events\SensorDataUpdated;
-
 
 class SensorData extends Controller
 {
@@ -229,6 +228,10 @@ class SensorData extends Controller
 
                                 Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
                                 Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
+                                Log::info('Successfully broadcasted sensor data', [
+                                    'sensorData' => $sd,
+                                    'towerId' => $tower->id,
+                                ]);
 
                             } else {
 
@@ -344,18 +347,20 @@ class SensorData extends Controller
                                         $ennut = $this->encrypt_data($decrypted_nutrient, $key_str, $iv_str, $method);
                                         $enlight = $this->encrypt_data($decrypted_light, $key_str, $iv_str, $method);
 
-                                    $sd = [
-    'ph' => $decrypted_ph,
-    'temperature' => $decrypted_temp,
-    'nutrient_level' => $decrypted_nutrient,
-    'light' => $decrypted_light,
-];
+                                        $sd = [
+                                            'ph' => $decrypted_ph,
+                                            'temperature' => $decrypted_temp,
+                                            'nutrient_level' => $decrypted_nutrient,
+                                            'light' => $decrypted_light,
+                                        ];
 
-Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
+                                        Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
 
-// You can still use Laravel's event system to communicate with Livewire if needed.
-event(new SensorDataUpdated($sd, $tower->id));
-
+                                        event(new SensorDataUpdated($sd, $tower->id));
+                                        Log::info('Successfully broadcasted sensor data', [
+                                            'sensorData' => $sd,
+                                            'towerId' => $tower->id,
+                                        ]);
 
                                         Sensor::create([
                                             'towerid' => $tower->id,

@@ -18,5 +18,7 @@ class SensorDataHandler extends Component
 
         // Emit a Livewire event that your frontend can listen to
         $this->emit('sensorDataUpdated', $this->sensorData);
+        Log::info('Emitted sensorDataUpdated event', ['sensorData' => $this->sensorData]);
+
     }
 }
