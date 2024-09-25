@@ -225,6 +225,8 @@ class SensorData extends Controller
                                     'light' => $decrypted_light,
                                 ];
 
+                                Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
+
                                 event(new SensorDataUpdated($sd, $tower->id));
 
                             } else {
@@ -347,6 +349,9 @@ class SensorData extends Controller
                                             'nutrient_level' => $decrypted_nutrient,
                                             'light' => $decrypted_light,
                                         ];
+
+                                        Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
+
 
                                         event(new SensorDataUpdated($sd, $tower->id));
 
