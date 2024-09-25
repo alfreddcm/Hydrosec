@@ -68,15 +68,15 @@ class Towercon extends Controller
 
         $tower = Tower::find($towerId);
 
-        // $hour = now()->hour;
+        $hour = now()->hour;
 
-        // if ($hour >= 6 && $hour < 18) {
-        //     $mode = 1;
-        // } elseif ($hour >= 18 && $hour < 22) {
-        //     $mode = 2;
-        // } else {
-        //     $mode = 0;
-        // }
+        if ($hour >= 6 && $hour < 18) {
+            $mode = 1;
+        } elseif ($hour >= 18 && $hour < 22) {
+            $mode = 2;
+        } else {
+            $mode = 0;
+        }
 
         if ($tower) {
             if ($days > 0) {
@@ -84,7 +84,7 @@ class Towercon extends Controller
                 $startdate = Carbon::now();
                 $enddate = $startdate->copy()->addDays($days);
                 $tower->status = Crypt::encryptString('1');
-                // $tower->mode = Crypt::encryptString($mode);
+                 $tower->mode = Crypt::encryptString($mode);
                 $tower->startdate = $startdate;
                 $tower->enddate = $enddate;
                 $tower->save();
