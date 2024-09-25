@@ -3,14 +3,12 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\ShouldBroadcastNow;
-use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow; // Import this interface
 use Illuminate\Queue\SerializesModels;
 
 class SensorDataUpdated implements ShouldBroadcastNow
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use SerializesModels;
 
     public $sensorData;
     public $towerId;
@@ -21,9 +19,15 @@ class SensorDataUpdated implements ShouldBroadcastNow
         $this->towerId = $towerId;
     }
 
-    // Define the channel where the event will be broadcast
+    // Define the broadcast channel
     public function broadcastOn()
     {
         return new Channel('tower.' . $this->towerId);
+    }
+
+    // Define the event name
+    public function broadcastAs()
+    {
+        return 'SensorDataUpdated';
     }
 }
