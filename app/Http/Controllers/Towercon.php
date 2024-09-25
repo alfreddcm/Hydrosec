@@ -83,7 +83,7 @@ class Towercon extends Controller
 
                 $startdate = Carbon::now();
                 $enddate = $startdate->copy()->addDays($days);
-                // $tower->status = Crypt::encryptString('1');
+                $tower->status = Crypt::encryptString('1');
                 // $tower->mode = Crypt::encryptString($mode);
                 $tower->startdate = $startdate;
                 $tower->enddate = $enddate;
