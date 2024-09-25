@@ -537,7 +537,7 @@
                 });
             }
 
-           function setupPusher() {
+function setupPusher(towerId) {
     // Initialize Pusher with the correct app key and cluster
     const pusher = new Pusher('3e52514a75529a62c062', {
         cluster: 'ap1',
@@ -555,39 +555,34 @@
         console.error('Pusher connection error:', JSON.stringify(err));
     });
 
-    // Subscribe to the channel
+    // Subscribe to the correct channel using the dynamic towerId
     const channel = pusher.subscribe('sensor-data-channel.' + towerId);
     console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
 
-    // Bind to the sensor-data-updated event
-    channel.bind('sensor-data-updated', function(data) {
+    // Bind to the sensor-data-updated event (use exact event name matching the backend broadcast)
+    channel.bind('App\\Events\\SensorDataUpdated', function(data) {
         console.log('Received Pusher data:', data);
 
-        // Log the structure of the received data
+        // Log the structure of the received data for debugging
         console.log('Structure of received data:', JSON.stringify(data, null, 2));
 
-        // Check if the data structure is as expected
+        // Check if the data structure contains the expected sensorData object
         if (data && data.sensorData) {
             console.log('Data structure is valid.');
 
-            // Accessing sensor data from the expected structure
-            const {
-                temperature,
-                nutrient_level,
-                pH,
-                light
-            } = data.sensorData; // Access sensorData
+            // Destructure the sensorData object to extract relevant fields
+            const { temperature, nutrient_level, ph, light } = data.sensorData; // Make sure "ph" matches backend casing
 
             console.log('Updating UI with data:', {
                 temperature,
                 nutrient_level,
-                pH,
+                ph,
                 light
             });
 
-            // Update your UI components
+            // Update the UI components with the received data (assuming these functions exist)
             updateNutrientImage(parseFloat(nutrient_level));
-            updatePhScaleImage(parseFloat(pH));
+            updatePhScaleImage(parseFloat(ph)); // Corrected 'pH' to 'ph' for consistency with backend
             updateLightStatus(parseFloat(light));
             updateThermometerImage(parseFloat(temperature));
             updateOnlineStatus(true);
@@ -596,6 +591,8 @@
         }
     });
 }
+);
+    }
 
 
 
