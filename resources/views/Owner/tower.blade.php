@@ -446,7 +446,7 @@
                     encrypted: true
                 });
 
-                const channel = pusher.subscribe('tower.{{ $towerId }}');
+                const channel = pusher.subscribe('tower.' + towerId);
 
                 channel.bind('App\\Events\\SensorDataUpdated', function(data) {
                     console.log('Real-time sensor data received:', data.sensorData);
