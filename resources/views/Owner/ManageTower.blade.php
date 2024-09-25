@@ -138,16 +138,18 @@
                                     </div>
                                 </div>
                             @endif
+<div wire:poll.5s>
+                @livewire('sensor-dashboard', ['towerId' => $$data->id])
+
+</div>
+
                         @endforeach
                     @else
                         <span>No towers</span>
                     @endif
 
                 </div>
-<div wire:poll.5s>
-                @livewire('sensor-dashboard', ['towerId' => $tower->id])
 
-</div>
 
 
                 <div class="addtowerb">
