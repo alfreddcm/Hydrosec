@@ -466,11 +466,8 @@
                 const channel = pusher.subscribe('tower.' + towerId);
 
                 // Log when subscribing to the channel
-                channel.bind('pusher:subscription_succeeded', function() {
+                channel.bind('SensorDataUpdated', function(data) {
                     console.log('Successfully subscribed to channel:', 'tower.' + towerId);
-                });
-
-                channel.bind('App\\Events\\SensorDataUpdated', function(data) {
                     console.log('Real-time sensor data received:', data.sensorData);
 
                     const sensorData = data.sensorData;
