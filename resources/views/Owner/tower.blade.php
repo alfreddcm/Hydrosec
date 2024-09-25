@@ -526,7 +526,7 @@
                             updatePhScaleImage(parseFloat(pH));
                             updateLightStatus(parseFloat(light));
                             updateThermometerImage(parseFloat(temperature));
-                            updateOnlineStatus(true);
+                            updateOnlineStatus(false);
                         } else {
                             console.log('No data available');
                         }
@@ -537,26 +537,20 @@
                 });
             }
 
-            document.addEventListener('sensorDataUpdated', event => {
-                const {
-                    sensorData
-                } = event.detail;
-                if (sensorData) {
-                    const {
-                        temperature,
-                        nutrient_level,
-                        pH,
-                        light
-                    } = sensorData;
-                    updateNutrientImage(parseFloat(nutrient_level));
-                    updatePhScaleImage(parseFloat(pH));
-                    updateLightStatus(parseFloat(light));
-                    updateThermometerImage(parseFloat(temperature));
-                    updateOnlineStatus(true);
-                } else {
-                    console.log('No data available');
-                }
-            });
+               document.addEventListener('livewire:load', function () {
+        Livewire.on('sensorDataUpdated', event => {
+            const { sensorData } = event;
+            if (sensorData) {
+                updateNutrientImage(parseFloat(sensorData.nutrient_level));
+                updatePhScaleImage(parseFloat(sensorData.ph));
+                updateLightStatus(parseFloat(sensorData.light));
+                updateThermometerImage(parseFloat(sensorData.temperature));
+                updateOnlineStatus(true);
+            } else {
+                console.log('No data available');
+            }
+        });
+    });
 
 
 

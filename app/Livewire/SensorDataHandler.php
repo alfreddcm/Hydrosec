@@ -10,25 +10,15 @@ class SensorDataHandler extends Component
     public $sensorData = [];
     public $towerId;
 
-    protected $listeners = ['sensorDataBeforeSave'];
+    protected $listeners = ['sensorDataBeforeSave' => 'updateSensorData'];
 
-    // Method to handle the event when it's emitted
-    public function sensorDataBeforeSave($sensorData, $towerId)
-    {
-        $this->sensorData = $sensorData;
-        $this->towerId = $towerId;
+public function updateSensorData($sensorData, $towerId)
+{
+    // Here you can do additional processing if needed
+    $this->sensorData = $sensorData;
 
-        // You can log or perform additional logic here
-        Log::info('Received sensor data before save:', [
-            'sensorData' => $this->sensorData,
-            'towerId' => $this->towerId,
-        ]);
+    // Emit a new event for further handling in JavaScript
+    $this->emit('sensorDataUpdated', ['sensorData' => $this->sensorData]);
+}
 
-        // Optionally, you could broadcast this data or trigger more logic.
-    }
-
-    public function render()
-    {
-        return view('livewire.sensor-data-handler');
-    }
 }

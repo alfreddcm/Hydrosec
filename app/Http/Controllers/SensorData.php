@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SensorDataUpdated;
 use App\Mail\Alert;
 use App\Models\IntrusionDetection;
 use App\Models\Owner;
@@ -17,7 +16,6 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
-
 
 class SensorData extends Controller
 {
@@ -230,7 +228,6 @@ class SensorData extends Controller
                                 Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
                                 Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
 
-
                             } else {
 
                                 if ($decrypted_ph < 1 || $decrypted_ph > 14 || is_nan($decrypted_ph)) {
@@ -355,7 +352,7 @@ class SensorData extends Controller
                                         Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
 
                                         // event(new SensorDataUpdated($sd, $tower->id));
-Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
+                                        Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
 
                                         Sensor::create([
                                             'towerid' => $tower->id,
@@ -482,7 +479,7 @@ Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
 
             $sensorData = Sensor::where('towerid', $id)
                 ->orderBy('created_at', 'asc')
-                ->get([ $column, 'created_at']);
+                ->get([$column, 'created_at']);
 
             $decryptedData = [];
 
