@@ -31,7 +31,7 @@ class Alert extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.alert')
+        return $this->markdown('Emails.alert')
                     ->subject($this->details['title'])
                     ->with('details', $this->details);
     }

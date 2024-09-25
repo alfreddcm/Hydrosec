@@ -204,7 +204,7 @@ class SensorData extends Controller
 
                 if ($towercode == $decrypted_towercode) {
                     $ipmac = Tower::where('id', $tower->id)->first();
-                    $towerinfoid = $tower->id;
+                    $towerinfoid = $ipmac->id;
                     $towerinfocode = Crypt::decryptString($ipmac->towercode);
 
                     Cache::put($towerinfoid, $towerinfocode, 3600);
