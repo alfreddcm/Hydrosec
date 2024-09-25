@@ -565,12 +565,15 @@
 
                     if (data.towerId === towerId) {
                         console.log('Data matches the towerId:', towerId);
+
+                        // Accessing sensor data from the expected structure
                         const {
                             temperature,
                             nutrient_level,
                             pH,
                             light
-                        } = data;
+                        } = data.sensorData; // Updated to access sensorData
+
                         console.log('Updating UI with data:', {
                             temperature,
                             nutrient_level,

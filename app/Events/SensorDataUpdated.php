@@ -10,12 +10,12 @@ class SensorDataUpdated implements ShouldBroadcast
 {
     use Dispatchable, SerializesModels;
 
-    public $sensorData;
+    public $sd;
     public $towerId;
 
-    public function __construct(array $sensorData, $towerId)
+    public function __construct(array $sd, $towerId)
     {
-        $this->sensorData = $sensorData;
+        $this->sd = $sd;
         $this->towerId = $towerId;
     }
 
@@ -27,7 +27,7 @@ class SensorDataUpdated implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'sensorData' => $this->sensorData,
+            'sensorData' => $this->sd,
             'towerId' => $this->towerId,
         ];
     }

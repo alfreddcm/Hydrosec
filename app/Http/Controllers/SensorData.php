@@ -218,14 +218,14 @@ class SensorData extends Controller
 
                             if (Crypt::decryptString($ipmac->status) != '1') {
 
-                                $sensorData = [
+                                $sd = [
                                     'ph' => $decrypted_ph,
                                     'temperature' => $decrypted_temp,
                                     'nutrient_level' => $decrypted_nutrient,
                                     'light' => $decrypted_light,
                                 ];
 
-                                event(new SensorDataUpdated($sensorData, $tower->id));
+                                event(new SensorDataUpdated($sd, $tower->id));
 
                             } else {
 
@@ -341,14 +341,14 @@ class SensorData extends Controller
                                         $ennut = $this->encrypt_data($decrypted_nutrient, $key_str, $iv_str, $method);
                                         $enlight = $this->encrypt_data($decrypted_light, $key_str, $iv_str, $method);
 
-                                        $sensorData = [
+                                        $sd = [
                                             'ph' => $decrypted_ph,
                                             'temperature' => $decrypted_temp,
                                             'nutrient_level' => $decrypted_nutrient,
                                             'light' => $decrypted_light,
                                         ];
 
-                                        event(new SensorDataUpdated($sensorData, $tower->id));
+                                        event(new SensorDataUpdated($sd, $tower->id));
 
                                         Sensor::create([
                                             'towerid' => $tower->id,
