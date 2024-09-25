@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use App\Events\SensorDataUpdated;
+
 
 class SensorData extends Controller
 {
