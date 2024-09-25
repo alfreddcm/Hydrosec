@@ -65,6 +65,14 @@ class UpdateTowerMode extends Command
 
 
 //testing
+// Example code to trigger the event
+// event(new SensorDataUpdated([
+//     'temperature' => '28.00',
+//     'nutrient_level' => '4.00',
+//     'pH' => '6.50',
+//     'light' => '1',
+// ], 1));
+
    
         // $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp', $method, $key_str, $iv_str);
         // $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);

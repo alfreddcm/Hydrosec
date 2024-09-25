@@ -17,6 +17,11 @@ class SensorDataUpdated implements ShouldBroadcast
     {
         $this->sd = $sd;
         $this->towerId = $towerId;
+
+        Log::info('SensorDataUpdated event created', [
+            'sensorData' => $sd,
+            'towerId' => $towerId,
+        ]);
     }
 
     public function broadcastOn()
