@@ -537,56 +537,66 @@
                 });
             }
 
-            function setupPusher() {
-                // Initialize Pusher with the correct app key and cluster
-                const pusher = new Pusher('3e52514a75529a62c062', {
-                    cluster: 'ap1',
-                    encrypted: true
-                });
-                console.log('Pusher initialized');
+           function setupPusher() {
+    // Initialize Pusher with the correct app key and cluster
+    const pusher = new Pusher('3e52514a75529a62c062', {
+        cluster: 'ap1',
+        encrypted: true
+    });
+    console.log('Pusher initialized');
 
-                // Check connection state
-                pusher.connection.bind('state_change', function(states) {
-                    console.log('Pusher connection state changed:', states);
-                });
+    // Check connection state
+    pusher.connection.bind('state_change', function(states) {
+        console.log('Pusher connection state changed:', states);
+    });
 
-                // Bind to connection errors
-                pusher.connection.bind('error', function(err) {
-                    console.error('Pusher connection error:', JSON.stringify(err));
-                });
+    // Bind to connection errors
+    pusher.connection.bind('error', function(err) {
+        console.error('Pusher connection error:', JSON.stringify(err));
+    });
 
-                const channel = pusher.subscribe('sensor-data-channel.' + towerId);
-                console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
+    // Subscribe to the channel
+    const channel = pusher.subscribe('sensor-data-channel.' + towerId);
+    console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
 
-                channel.bind('sensor-data-updated', function(data) {
-                    console.log('Received Pusher data:', data);
+    // Bind to the sensor-data-updated event
+    channel.bind('sensor-data-updated', function(data) {
+        console.log('Received Pusher data:', data);
 
-                    if (data.towerId === towerId) {
-                        console.log('Data matches the towerId:', towerId);
-                        const {
-                            temperature,
-                            nutrient_level,
-                            pH,
-                            light
-                        } = data.sensorData; 
+        // Log the structure of the received data
+        console.log('Structure of received data:', JSON.stringify(data, null, 2));
 
-                        console.log('Updating UI with data:', {
-                            temperature,
-                            nutrient_level,
-                            pH,
-                            light
-                        });
+        // Check if the data structure is as expected
+        if (data && data.sensorData) {
+            console.log('Data structure is valid.');
 
-                        updateNutrientImage(parseFloat(nutrient_level));
-                        updatePhScaleImage(parseFloat(pH));
-                        updateLightStatus(parseFloat(light));
-                        updateThermometerImage(parseFloat(temperature));
-                        updateOnlineStatus(true);
-                    } else {
-                        console.warn('Received data for different towerId:', data.towerId);
-                    }
-                });
-            }
+            // Accessing sensor data from the expected structure
+            const {
+                temperature,
+                nutrient_level,
+                pH,
+                light
+            } = data.sensorData; // Access sensorData
+
+            console.log('Updating UI with data:', {
+                temperature,
+                nutrient_level,
+                pH,
+                light
+            });
+
+            // Update your UI components
+            updateNutrientImage(parseFloat(nutrient_level));
+            updatePhScaleImage(parseFloat(pH));
+            updateLightStatus(parseFloat(light));
+            updateThermometerImage(parseFloat(temperature));
+            updateOnlineStatus(true);
+        } else {
+            console.error('Invalid data structure received:', data);
+        }
+    });
+}
+
 
 
             function fetchPumpData() {
