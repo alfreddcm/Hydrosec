@@ -138,20 +138,12 @@
                                     </div>
                                 </div>
                             @endif
-<div wire:poll.5s>
-                @livewire('sensor-dashboard', ['towerId' => $$data->id])
-
-</div>
-
                         @endforeach
                     @else
                         <span>No towers</span>
                     @endif
 
                 </div>
-
-
-
                 <div class="addtowerb">
                     <a href="#" class="btn btn-success mt-1 addtowerbutton" data-bs-toggle="modal"
                         data-bs-target="#addTowerModal">

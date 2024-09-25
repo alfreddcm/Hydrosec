@@ -117,6 +117,7 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <div class="con justify-content-center ">
         <div class="card text-center maincard">
@@ -434,19 +435,26 @@
             let tempChart = null;
             let modeStatInterval = null;
 
-            document.addEventListener('livewire:load', function() {
+
+            document.addEventListener('DOMContentLoaded', function() {
                 console.log('Livewire component has been loaded');
 
-                // Fetch the initial sensor data
                 fetchInitialSensorData();
 
-                Livewire.on('sensorDataUpdated', (event) => {
-                    console.log('sensorDataUpdated event received:', event);
+                const pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+                    cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+                    encrypted: true
+                });
 
-                    const {
-                        sensorData
-                    } = event;
+                const channel = pusher.subscribe('tower.{{ $towerId }}');
+
+                channel.bind('App\\Events\\SensorDataUpdated', function(data) {
+                    console.log('Real-time sensor data received:', data.sensorData);
+
+                    const sensorData = data.sensorData;
+
                     if (sensorData) {
+                        // Update the UI with the new sensor data
                         console.log('Updating sensor data:', sensorData);
                         updateNutrientImage(parseFloat(sensorData.nutrient_level));
                         updatePhScaleImage(parseFloat(sensorData.ph));
@@ -458,6 +466,8 @@
                     }
                 });
             });
+
+
 
             function updateOnlineStatus(isOnline) {
                 const statusIndicator = $('#online-status');
@@ -574,7 +584,7 @@
                         if (data.length === 0) {
                             tbody.append(
                                 '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
-                                );
+                            );
                         } else {
                             // Construct HTML for pump data
                             let rows = data.map((item, index) => {

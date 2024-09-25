@@ -354,7 +354,7 @@ class SensorData extends Controller
                                         ];
 
                                         Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
-                                        Livewire::emit('sensorDataBeforeSave', $sd, $tower->id);
+                                        event(new SensorDataUpdated($sensorData, $towerId));
                                         Log::info('Successfully broadcasted sensor data', [
                                             'sensorData' => $sd,
                                             'towerId' => $tower->id,
