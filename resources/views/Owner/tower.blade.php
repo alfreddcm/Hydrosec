@@ -531,23 +531,50 @@
             });
         }
 
-        function setupPusher() {
-            const pusher = new Pusher('1868615', { cluster: 'ap1', encrypted: true });
-            const channel = pusher.subscribe('sensor-data-channel.' + towerId);
+      function setupPusher() {
+    // Initialize Pusher
+    const pusher = new Pusher('1868615', { cluster: 'ap1', encrypted: true });
+    console.log('Pusher initialized');
 
-            channel.bind('sensor-data-updated', function(data) {
-                        console.log('Received Pusher data:', data); // Log the received data
+    // Check connection state
+    pusher.connection.bind('state_change', function(states) {
+        console.log('Pusher connection state changed:', states);
+    });
 
-                if (data.towerId === towerId) {
-                    const { temperature, nutrient_level, pH, light } = data;
-                    updateNutrientImage(parseFloat(nutrient_level));
-                    updatePhScaleImage(parseFloat(pH));
-                    updateLightStatus(parseFloat(light));
-                    updateThermometerImage(parseFloat(temperature));
-                    updateOnlineStatus(true);
-                }
+    // Bind to connection errors
+    pusher.connection.bind('error', function(err) {
+        console.error('Pusher connection error:', err);
+    });
+
+    // Subscribe to the channel
+    const channel = pusher.subscribe('sensor-data-channel.' + towerId);
+    console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
+
+    channel.bind('sensor-data-updated', function(data) {
+        console.log('Received Pusher data:', data); // Log the received data
+
+        // Check if the towerId matches
+        if (data.towerId === towerId) {
+            console.log('Data matches the towerId:', towerId);
+            const { temperature, nutrient_level, pH, light } = data;
+            console.log('Updating UI with data:', {
+                temperature,
+                nutrient_level,
+                pH,
+                light
             });
+            
+            updateNutrientImage(parseFloat(nutrient_level));
+            updatePhScaleImage(parseFloat(pH));
+            updateLightStatus(parseFloat(light));
+            updateThermometerImage(parseFloat(temperature));
+            updateOnlineStatus(true);
+        } else {
+            console.warn('Received data for different towerId:', data.towerId);
         }
+    });
+}
+
 
         function fetchPumpData() {
             $.ajax({
