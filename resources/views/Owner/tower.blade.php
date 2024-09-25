@@ -555,24 +555,20 @@
                     console.error('Pusher connection error:', JSON.stringify(err));
                 });
 
-                // Subscribe to the channel
                 const channel = pusher.subscribe('sensor-data-channel.' + towerId);
                 console.log('Subscribed to channel:', 'sensor-data-channel.' + towerId);
 
-                // Bind to the sensor-data-updated event
                 channel.bind('sensor-data-updated', function(data) {
                     console.log('Received Pusher data:', data);
 
                     if (data.towerId === towerId) {
                         console.log('Data matches the towerId:', towerId);
-
-                        // Accessing sensor data from the expected structure
                         const {
                             temperature,
                             nutrient_level,
                             pH,
                             light
-                        } = data.sensorData; // Updated to access sensorData
+                        } = data.sensorData; 
 
                         console.log('Updating UI with data:', {
                             temperature,
@@ -591,6 +587,7 @@
                     }
                 });
             }
+
 
             function fetchPumpData() {
                 $.ajax({
