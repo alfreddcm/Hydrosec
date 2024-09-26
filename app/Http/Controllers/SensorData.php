@@ -267,7 +267,7 @@ class SensorData extends Controller
                                     $this->sendAlertEmail($details, $tower->id, $statusType);
 
                                     return response()->json(['errors' => $alertMessages], 422);
-                                    
+
                                 } else {
                                     $alertMessages = [];
 
@@ -384,8 +384,8 @@ class SensorData extends Controller
                                         //     'message' => 'Data stored successfully.',
                                         // ]);
 
-                                        $mode = Crypt::decryptString($tower->mode);
-                                        $stat = Crypt::decryptString($tower->status);
+                                        $mode = Crypt::decryptString($ipmac->mode);
+                                        $stat = Crypt::decryptString($ipmac->status);
 
                                         $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
                                         $encryptedStatus = $this->encrypt_data($stat, $method, $key_str, $iv_str);
