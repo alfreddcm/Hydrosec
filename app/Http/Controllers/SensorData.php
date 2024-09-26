@@ -241,8 +241,9 @@ class SensorData extends Controller
 
                                 //reply mode state
 
-                                $encryptedMode = $this->encrypt_data($modess, $method, $key_str, $iv_str);
-                                $encryptedStatus = $this->encrypt_data($sttatus, $method, $key_str, $iv_str);
+                                $encryptedMode = $this->encrypt_data($modess, $key_str, $iv_str, $method);
+$encryptedStatus = $this->encrypt_data($sttatus, $key_str, $iv_str, $method);
+
                                 Log::info('encry stat mode', [
                                     'stat' => $encryptedMode,
                                     'mode' => $encryptedStatus,
@@ -364,6 +365,8 @@ class SensorData extends Controller
                                         $entemp = $this->encrypt_data($decrypted_temp, $key_str, $iv_str, $method);
                                         $ennut = $this->encrypt_data($decrypted_nutrient, $key_str, $iv_str, $method);
                                         $enlight = $this->encrypt_data($decrypted_light, $key_str, $iv_str, $method);
+                                        
+                                     
 
                                         $sd = [
                                             'ph' => $decrypted_ph,
@@ -392,10 +395,8 @@ class SensorData extends Controller
                                         //     'status' => 'success',
                                         //     'message' => 'Data stored successfully.',
                                         // ]);
-
-                                        $encryptedMode = $this->encrypt_data($modess, $method, $key_str, $iv_str);
-                                        $encryptedStatus = $this->encrypt_data($sttatus, $method, $key_str, $iv_str);
-
+   $encryptedMode = $this->encrypt_data($modess, $key_str, $iv_str, $method);
+                                        $encryptedStatus = $this->encrypt_data($sttatus, $key_str, $iv_str, $method);
                                         // return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
                                         Log::info('encry stat mode', [
                                             'stat' => $encryptedMode,
@@ -694,9 +695,7 @@ class SensorData extends Controller
         }
     }
 
-
-
-        private function encrypt_data($data, $method, $key, $iv)
+    private function encrypt_data($dat, $key, $iv, $method)
     {
         try {
             $data = base64_encode($data);
@@ -715,6 +714,5 @@ class SensorData extends Controller
             return null;
         }
     }
-
 
 }
