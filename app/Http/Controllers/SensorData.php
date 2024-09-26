@@ -232,6 +232,15 @@ class SensorData extends Controller
                                     'towerId' => $tower->id,
                                 ]);
 
+                                //reply mode state
+                                $mode = Crypt::decryptString($ipmac->mode);
+                                $stat = Crypt::decryptString($ipmac->status);
+
+                                $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
+                                $encryptedStatus = $this->encrypt_data($stat, $method, $key_str, $iv_str);
+
+                                return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
+
                             } else {
 
                                 if ($decrypted_ph < 1 || $decrypted_ph > 14 || is_nan($decrypted_ph)) {
@@ -258,6 +267,7 @@ class SensorData extends Controller
                                     $this->sendAlertEmail($details, $tower->id, $statusType);
 
                                     return response()->json(['errors' => $alertMessages], 422);
+                                    
                                 } else {
                                     $alertMessages = [];
 
@@ -369,13 +379,21 @@ class SensorData extends Controller
                                             'status' => '1',
                                         ]);
 
-                                        return response()->json([
-                                            'status' => 'success',
-                                            'message' => 'Data stored successfully.',
-                                        ]);
+                                        // return response()->json([
+                                        //     'status' => 'success',
+                                        //     'message' => 'Data stored successfully.',
+                                        // ]);
+
+                                        $mode = Crypt::decryptString($tower->mode);
+                                        $stat = Crypt::decryptString($tower->status);
+
+                                        $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
+                                        $encryptedStatus = $this->encrypt_data($stat, $method, $key_str, $iv_str);
+
+                                        return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success'=>'Stored']]);
+
                                     } catch (\Exception $e) {
                                         Log::error('Error storing data:', ['error' => $e->getMessage()]);
-
                                         return response()->json(['error' => 'Error storing data.'], 500);
                                     }
                                 }
