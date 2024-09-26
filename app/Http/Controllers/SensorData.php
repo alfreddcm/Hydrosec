@@ -212,11 +212,18 @@ class SensorData extends Controller
                     if ($ipmac && !is_null($ipmac->ipAdd)) {
                         $ip = Crypt::decryptString($ipmac->ipAdd);
                         $mac = Crypt::decryptString($ipmac->macAdd);
+
                         Log::info('Decrypted IP and MAC addresses:', ['ipAddress' => $ip, 'macAddress' => $mac]);
 
                         if ($ip == $decrypted_ip && $mac == $decrypted_mac) {
+                            $sttatus = Crypt::decryptString($ipmac->status);
+                            $modess = Crypt::decryptString($ipmac->mode);
+                            Log::info('Dec stat mode', [
+                                'stat' => $sttatus,
+                                'mode' => $modess,
+                            ]);
 
-                            if (Crypt::decryptString($ipmac->status) != '1') {
+                            if ($sttatus != '1') {
 
                                 $sd = [
                                     'ph' => $decrypted_ph,
@@ -233,11 +240,9 @@ class SensorData extends Controller
                                 ]);
 
                                 //reply mode state
-                                $mode = Crypt::decryptString($ipmac->mode);
-                                $stat = Crypt::decryptString($ipmac->status);
 
-                                $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
-                                $encryptedStatus = $this->encrypt_data($stat, $method, $key_str, $iv_str);
+                                $encryptedMode = $this->encrypt_data($modess, $method, $key_str, $iv_str);
+                                $encryptedStatus = $this->encrypt_data($sttatus, $method, $key_str, $iv_str);
 
                                 return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
 
@@ -384,13 +389,12 @@ class SensorData extends Controller
                                         //     'message' => 'Data stored successfully.',
                                         // ]);
 
-                                        $mode = Crypt::decryptString($ipmac->mode);
-                                        $stat = Crypt::decryptString($ipmac->status);
+                                        $encryptedMode = $this->encrypt_data($modess, $method, $key_str, $iv_str);
+                                        $encryptedStatus = $this->encrypt_data($sttatus, $method, $key_str, $iv_str);
 
-                                        $encryptedMode = $this->encrypt_data($mode, $method, $key_str, $iv_str);
-                                        $encryptedStatus = $this->encrypt_data($stat, $method, $key_str, $iv_str);
+                                        // return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
 
-                                        return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success'=>'Stored']]);
+                                        return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success' => 'Stored']]);
 
                                     } catch (\Exception $e) {
                                         Log::error('Error storing data:', ['error' => $e->getMessage()]);
