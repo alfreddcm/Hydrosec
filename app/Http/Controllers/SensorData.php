@@ -212,18 +212,11 @@ class SensorData extends Controller
                     if ($ipmac && !is_null($ipmac->ipAdd)) {
                         $ip = Crypt::decryptString($ipmac->ipAdd);
                         $mac = Crypt::decryptString($ipmac->macAdd);
-
                         Log::info('Decrypted IP and MAC addresses:', ['ipAddress' => $ip, 'macAddress' => $mac]);
 
                         if ($ip == $decrypted_ip && $mac == $decrypted_mac) {
-                            $sttatus = Crypt::decryptString($ipmac->status);
-                            $modess = Crypt::decryptString($ipmac->mode);
-                            Log::info('Dec stat mode', [
-                                'stat' => $sttatus,
-                                'mode' => $modess,
-                            ]);
 
-                            if ($sttatus != '1') {
+                            if (Crypt::decryptString($ipmac->status) != '1') {
 
                                 $sd = [
                                     'ph' => $decrypted_ph,
@@ -240,14 +233,8 @@ class SensorData extends Controller
                                 ]);
 
                                 //reply mode state
-
-                                $encryptedMode = $this->encrypt_data($modess, $key_str, $iv_str, $method);
-$encryptedStatus = $this->encrypt_data($sttatus, $key_str, $iv_str, $method);
-
-                                Log::info('encry stat mode', [
-                                    'stat' => $encryptedMode,
-                                    'mode' => $encryptedStatus,
-                                ]);
+                                $encryptedMode = $this->encrypt_data($mode, $key_str, $iv_str, $method);
+                                $encryptedStatus = $this->encrypt_data($status, $key_str, $iv_str, $method);
 
                                 return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
 
@@ -277,7 +264,6 @@ $encryptedStatus = $this->encrypt_data($sttatus, $key_str, $iv_str, $method);
                                     $this->sendAlertEmail($details, $tower->id, $statusType);
 
                                     return response()->json(['errors' => $alertMessages], 422);
-
                                 } else {
                                     $alertMessages = [];
 
@@ -365,8 +351,6 @@ $encryptedStatus = $this->encrypt_data($sttatus, $key_str, $iv_str, $method);
                                         $entemp = $this->encrypt_data($decrypted_temp, $key_str, $iv_str, $method);
                                         $ennut = $this->encrypt_data($decrypted_nutrient, $key_str, $iv_str, $method);
                                         $enlight = $this->encrypt_data($decrypted_light, $key_str, $iv_str, $method);
-                                        
-                                     
 
                                         $sd = [
                                             'ph' => $decrypted_ph,
@@ -391,22 +375,18 @@ $encryptedStatus = $this->encrypt_data($sttatus, $key_str, $iv_str, $method);
                                             'status' => '1',
                                         ]);
 
+                                        $encryptedMode = $this->encrypt_data($mode, $key_str, $iv_str, $method);
+                                        $encryptedStatus = $this->encrypt_data($status, $key_str, $iv_str, $method);
+
+                                        return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success' => 'success']]);
+
                                         // return response()->json([
                                         //     'status' => 'success',
                                         //     'message' => 'Data stored successfully.',
                                         // ]);
-   $encryptedMode = $this->encrypt_data($modess, $key_str, $iv_str, $method);
-                                        $encryptedStatus = $this->encrypt_data($sttatus, $key_str, $iv_str, $method);
-                                        // return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
-                                        Log::info('encry stat mode', [
-                                            'stat' => $encryptedMode,
-                                            'mode' => $encryptedStatus,
-                                        ]);
-
-                                        return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success' => 'Stored']]);
-
                                     } catch (\Exception $e) {
                                         Log::error('Error storing data:', ['error' => $e->getMessage()]);
+
                                         return response()->json(['error' => 'Error storing data.'], 500);
                                     }
                                 }
@@ -695,8 +675,9 @@ $encryptedStatus = $this->encrypt_data($sttatus, $key_str, $iv_str, $method);
         }
     }
 
-    private function encrypt_data($dat, $key, $iv, $method)
+    private function encrypt_data($data, $key, $iv, $method)
     {
+
         try {
             $data = base64_encode($data);
             $str_padded = $data;
