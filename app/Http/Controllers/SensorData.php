@@ -217,6 +217,10 @@ class SensorData extends Controller
                         if ($ip == $decrypted_ip && $mac == $decrypted_mac) {
                             $statuss = Crypt::decryptString($ipmac->status);
                             $modee = Crypt::decryptString($ipmac->mode);
+                            Log::info('Successfully decc', [
+                                'mode' => $modee,
+                                'stat' => $statuss,
+                            ]);
 
                             if ($statuss != '1') {
 
@@ -237,6 +241,10 @@ class SensorData extends Controller
                                 //reply mode state
                                 $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                 $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
+                                Log::info('Successfully enc sensor data', [
+                                    'mode' => $encryptedMode,
+                                    'stat' => $encryptedStatus,
+                                ]);
 
                                 return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
 
@@ -379,6 +387,12 @@ class SensorData extends Controller
 
                                         $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                         $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
+                                        Log::info('Successfully enc sensor data', [
+                                            'mode' => $encryptedMode,
+                                            'stat' => $encryptedStatus,
+                                        ]);
+
+                                        // return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
 
                                         return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success' => 'success']]);
 
