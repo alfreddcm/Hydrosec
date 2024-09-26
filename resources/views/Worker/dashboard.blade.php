@@ -642,6 +642,7 @@
                             sensorDataInterval = null;
                             modeStatInterval = null;
                         }
+                        load()
                         fetchPumpData();
                         startIntervals();
 
