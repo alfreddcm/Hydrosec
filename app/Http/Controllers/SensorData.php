@@ -272,8 +272,17 @@ class SensorData extends Controller
 
                                     $statusType = 'sensor_error';
                                     $this->sendAlertEmail($details, $tower->id, $statusType);
+                                 
+                                    $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
+                                    $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
+                                    Log::info('Successfully enc sensor data', [
+                                        'mode' => $encryptedMode,
+                                        'stat' => $encryptedStatus,
+                                    ]);
 
-                                    return response()->json(['errors' => $alertMessages], 422);
+                                    return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
+
+                                    //return response()->json(['errors' => $alertMessages], 422);
                                 } else {
                                     $alertMessages = [];
 
@@ -403,7 +412,14 @@ class SensorData extends Controller
                                     } catch (\Exception $e) {
                                         Log::error('Error storing data:', ['error' => $e->getMessage()]);
 
-                                        return response()->json(['error' => 'Error storing data.'], 500);
+                                        $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
+                                        $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
+                                        Log::info('Successfully enc sensor data', [
+                                            'mode' => $encryptedMode,
+                                            'stat' => $encryptedStatus,
+                                        ]);
+
+                                        return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
                                     }
                                 }
                             }
@@ -432,7 +448,7 @@ class SensorData extends Controller
 
                     }
                 }
-                return response()->json(['error' => 'Tower not found.'], 404);
+                return response()->json(['error' => 'error'], 404);
             }
         } catch (ValidationException $e) {
 
@@ -445,7 +461,7 @@ class SensorData extends Controller
                 'errors' => $e->errors(),
             ]);
 
-            return response()->json(['error' => 'Invalid data provided', 'details' => $e->errors()], 422);
+            // return response()->json(['error' => 'Invalid data provided', 'details' => $e->errors()], 422);
         } catch (\Exception $e) {
 
             $failedAttempts = Cache::get($failedAttemptsKey, 0);
