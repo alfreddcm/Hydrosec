@@ -215,8 +215,10 @@ class SensorData extends Controller
                         Log::info('Decrypted IP and MAC addresses:', ['ipAddress' => $ip, 'macAddress' => $mac]);
 
                         if ($ip == $decrypted_ip && $mac == $decrypted_mac) {
+                            $statuss = Crypt::decryptString($ipmac->status);
+                            $modee = Crypt::decryptString($ipmac->mode);
 
-                            if (Crypt::decryptString($ipmac->status) != '1') {
+                            if ($statuss != '1') {
 
                                 $sd = [
                                     'ph' => $decrypted_ph,
@@ -233,8 +235,8 @@ class SensorData extends Controller
                                 ]);
 
                                 //reply mode state
-                                $encryptedMode = $this->encrypt_data($mode, $key_str, $iv_str, $method);
-                                $encryptedStatus = $this->encrypt_data($status, $key_str, $iv_str, $method);
+                                $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
+                                $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
 
                                 return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
 
@@ -375,8 +377,8 @@ class SensorData extends Controller
                                             'status' => '1',
                                         ]);
 
-                                        $encryptedMode = $this->encrypt_data($mode, $key_str, $iv_str, $method);
-                                        $encryptedStatus = $this->encrypt_data($status, $key_str, $iv_str, $method);
+                                        $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
+                                        $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
 
                                         return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success' => 'success']]);
 
