@@ -694,9 +694,10 @@ class SensorData extends Controller
         }
     }
 
-    private function encrypt_data($data, $key, $iv, $method)
-    {
 
+
+        private function encrypt_data($data, $method, $key, $iv)
+    {
         try {
             $data = base64_encode($data);
             $str_padded = $data;
@@ -714,5 +715,6 @@ class SensorData extends Controller
             return null;
         }
     }
+
 
 }

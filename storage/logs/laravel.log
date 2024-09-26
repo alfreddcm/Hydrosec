@@ -1,0 +1,145 @@
+[2024-09-26 13:59:27] local.INFO: select * from `cache` where `key` in (?)  
+[2024-09-26 13:59:27] local.INFO: array (
+  0 => 'intrusion_failed_attempts_mode127.0.0.1',
+)  
+[2024-09-26 13:59:27] local.INFO: 3475.46  
+[2024-09-26 13:59:27] local.INFO: Mode request received {"input":{"sensorData":"d8K0O0Lss77dkfsMTuACX23fu3Zi4j6ZJwoHztkJoqc=","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"}} 
+[2024-09-26 13:59:27] local.INFO: Decrypted request data {"decryptedIpAddress":"192.168.4.10","decryptedMacAddress":"EC:64:C9:C4:A3:65","decryptedTowercode":"2024"} 
+[2024-09-26 13:59:29] local.INFO: select * from `tbl_tower`  
+[2024-09-26 13:59:29] local.INFO: array (
+)  
+[2024-09-26 13:59:29] local.INFO: 955.65  
+[2024-09-26 13:59:30] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-26 13:59:30] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-26 13:59:30] local.INFO: 825.64  
+[2024-09-26 13:59:31] local.INFO: delete from `cache` where `key` in (?)  
+[2024-09-26 13:59:31] local.INFO: array (
+  0 => 'intrusion_failed_attempts_mode127.0.0.1',
+)  
+[2024-09-26 13:59:31] local.INFO: 918.16  
+[2024-09-26 13:59:39] local.INFO: select * from `cache` where `key` in (?)  
+[2024-09-26 13:59:39] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-09-26 13:59:39] local.INFO: 3690.09  
+[2024-09-26 13:59:39] local.INFO: Request received: {"sensorData":"d8K0O0Lss77dkfsMTuACX23fu3Zi4j6ZJwoHztkJoqc=","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-09-26 13:59:39] local.INFO: Validated data: {"sensorData":"d8K0O0Lss77dkfsMTuACX23fu3Zi4j6ZJwoHztkJoqc=","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-09-26 13:59:39] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-09-26 13:59:39] local.INFO: Data: {"data":"6.40,60.00,4.34,0"} 
+[2024-09-26 13:59:40] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-09-26 13:59:40] local.INFO: array (
+)  
+[2024-09-26 13:59:40] local.INFO: 947.15  
+[2024-09-26 13:59:40] local.INFO: from tower: {"phValue":"6.40","temp":"60.00","waterLevel":"4.34","light":"0","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-09-26 13:59:41] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-26 13:59:41] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-26 13:59:41] local.INFO: 1049.58  
+[2024-09-26 13:59:43] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-09-26 13:59:43] local.INFO: array (
+  0 => 1727333981,
+  1 => '1',
+  2 => 's:4:"2024";',
+)  
+[2024-09-26 13:59:43] local.INFO: 1385.07  
+[2024-09-26 13:59:43] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-09-26 13:59:43] local.INFO: Dec stat mode {"stat":"1","mode":"1"} 
+[2024-09-26 13:59:43] local.INFO: Sensor data condition check: {"pH":"Good","Temperature":"Hot","Nutrient Volume":"15%"} 
+[2024-09-26 13:59:43] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Volume Triggers":1} 
+[2024-09-26 13:59:43] local.INFO: Sending alert email with conditions: {"conditions":"Nutrient Volume: 4.34 - 15%"} 
+[2024-09-26 13:59:43] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-09-26 13:59:43] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-26 13:59:43] local.INFO: 876.24  
+[2024-09-26 13:59:45] local.INFO: select * from `tbl_useraccounts` where `tbl_useraccounts`.`id` = ? limit 1  
+[2024-09-26 13:59:45] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-26 13:59:45] local.INFO: 1374.2  
+[2024-09-26 14:00:11] local.INFO: Alert email sent to {"email":"alfredmarcelinoii45@gmail.com","tower_id":1} 
+[2024-09-26 14:00:16] local.INFO: insert into `tbl_towerlogs` (`ID_tower`, `activity`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-09-26 14:00:16] local.INFO: array (
+  0 => 1,
+  1 => 'eyJpdiI6Im91dmcvMHBFMTFXS3FVSVN6QTFuZ3c9PSIsInZhbHVlIjoiQnRPY2NlM0VxTnJJRFBkUXhKWnR1b1EzMm9NajFyZjN2RlU0Yk5FTUloZjZsRU1lcENKdnNpb1I4UHRzODVpb1hBNFBmODlnNVRqUkpmMzJCdk0xRG9WT0VGZWdpeUdhYlJCZDVzNjhEem9WeVlFWDhMQ3dMQXJuT2twamdIVVdzNzhMdUxXM1Rmd0tYYkF6SlVYV0NiZE5MalJPYURtM1ZNUW9sWFlpcnNRcnJhcjNldFM2MllNZmNiTjFDRldWIiwibWFjIjoiMTQxOGIwMDgxNjU4YmRjMzdkNjg5NTkwODgzYTMxMDc0NGJiNWQzMTUxNzA4ZTJlYzQ1N2VlNzNhMDAzNTEzZCIsInRhZyI6IiJ9',
+  2 => '2024-09-26 14:00:11',
+  3 => '2024-09-26 14:00:11',
+)  
+[2024-09-26 14:00:16] local.INFO: 5065.89  
+[2024-09-26 14:00:16] local.INFO: Alert logged in tbl_towerlogs {"tower_id":1,"activity":"\"The following conditions have been detected at Tower 'Lettuce': Nutrient Volume: 4.34 - 15%\""} 
+[2024-09-26 14:00:17] local.INFO: update `tbl_tower` set `last_critical_condition_email_sent_at` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-26 14:00:17] local.INFO: array (
+  0 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000002000000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-09-26 13:59:45.446286',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+  1 => '2024-09-26 14:00:16',
+  2 => 1,
+)  
+[2024-09-26 14:00:17] local.INFO: 1512.76  
+[2024-09-26 14:00:17] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.40","temperature":"60.00","nutrient_level":"4.34","light":"0"},"towerId":1} 
+[2024-09-26 14:00:27] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.40","temperature":"60.00","nutrient_level":"4.34","light":"0"},"towerId":1} 
+[2024-09-26 14:00:29] local.INFO: insert into `sensor` (`towerid`, `pH`, `temperature`, `nutrientlevel`, `light`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?)  
+[2024-09-26 14:00:29] local.INFO: array (
+  0 => 1,
+  1 => 'DnLvmGpS6m2jtV8FMCVzWw==',
+  2 => 'R63TelLwXbJST+pmY1Fs8g==',
+  3 => '5dZ49lBYCFWgEmAp9L2nKg==',
+  4 => 'yYWitIHG242+3ATbRxFwYA==',
+  5 => '2024-09-26 14:00:27',
+  6 => '2024-09-26 14:00:27',
+)  
+[2024-09-26 14:00:29] local.INFO: 1247.18  
+[2024-09-26 14:00:29] local.ERROR: Encryption error: openssl_encrypt(): Unknown cipher algorithm  
+[2024-09-26 14:00:29] local.ERROR: Encryption error: openssl_encrypt(): Unknown cipher algorithm  
+[2024-09-26 14:00:29] local.INFO: encry stat mode {"stat":null,"mode":null} 
+[2024-09-26 14:02:25] local.INFO: select * from `cache` where `key` in (?)  
+[2024-09-26 14:02:25] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-09-26 14:02:25] local.INFO: 29430.31  
+[2024-09-26 14:02:25] local.INFO: Request received: {"sensorData":"d8K0O0Lss77dkfsMTuACX23fu3Zi4j6ZJwoHztkJoqc=","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-09-26 14:02:25] local.INFO: Validated data: {"sensorData":"d8K0O0Lss77dkfsMTuACX23fu3Zi4j6ZJwoHztkJoqc=","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-09-26 14:02:25] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-09-26 14:02:25] local.INFO: Data: {"data":"6.40,60.00,4.34,0"} 
+[2024-09-26 14:02:33] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-09-26 14:02:33] local.INFO: array (
+)  
+[2024-09-26 14:02:33] local.INFO: 7790.78  
+[2024-09-26 14:02:33] local.INFO: from tower: {"phValue":"6.40","temp":"60.00","waterLevel":"4.34","light":"0","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-09-26 14:02:46] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-09-26 14:02:46] local.INFO: array (
+  0 => 1,
+)  
+[2024-09-26 14:02:46] local.INFO: 12830.78  
+[2024-09-26 14:02:59] local.ERROR: Maximum execution time of 60 seconds exceeded {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Maximum execution time of 60 seconds exceeded at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:598)
+[stacktrace]
+#0 {main}
+"} 
