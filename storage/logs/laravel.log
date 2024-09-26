@@ -14734,3 +14734,58 @@
 [stacktrace]
 #0 {main}
 "} 
+[2024-09-25 15:05:53] local.INFO: SensorDataUpdated event created {"sensorData":{"ph":7.5,"temperature":25.5,"nutrient_level":5.2,"light":1},"towerId":1} 
+[2024-09-25 15:05:58] local.INFO: insert into `jobs` (`queue`, `attempts`, `reserved_at`, `available_at`, `created_at`, `payload`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-25 15:05:58] local.INFO: array (
+  0 => 'default',
+  1 => 0,
+  2 => NULL,
+  3 => 1727247955,
+  4 => 1727247955,
+  5 => '{"uuid":"3baa487e-06ad-41ad-93e4-ceb1f9ac71ed","displayName":"App\\\\Events\\\\SensorDataUpdated","job":"Illuminate\\\\Queue\\\\CallQueuedHandler@call","maxTries":null,"maxExceptions":null,"failOnTimeout":false,"backoff":null,"timeout":null,"retryUntil":null,"data":{"commandName":"Illuminate\\\\Broadcasting\\\\BroadcastEvent","command":"O:38:\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\":14:{s:5:\\"event\\";O:28:\\"App\\\\Events\\\\SensorDataUpdated\\":2:{s:2:\\"sd\\";a:4:{s:2:\\"ph\\";d:7.5;s:11:\\"temperature\\";d:25.5;s:14:\\"nutrient_level\\";d:5.2;s:5:\\"light\\";i:1;}s:7:\\"towerId\\";i:1;}s:5:\\"tries\\";N;s:7:\\"timeout\\";N;s:7:\\"backoff\\";N;s:13:\\"maxExceptions\\";N;s:10:\\"connection\\";N;s:5:\\"queue\\";N;s:5:\\"delay\\";N;s:11:\\"afterCommit\\";N;s:10:\\"middleware\\";a:0:{}s:7:\\"chained\\";a:0:{}s:15:\\"chainConnection\\";N;s:10:\\"chainQueue\\";N;s:19:\\"chainCatchCallbacks\\";N;}"}}',
+)  
+[2024-09-25 15:05:58] local.INFO: 3088.37  
+[2024-09-25 15:06:11] local.INFO: SensorDataUpdated event created {"sensorData":{"ph":7.5,"temperature":25.5,"nutrient_level":5.2,"light":0},"towerId":1} 
+[2024-09-25 15:06:12] local.INFO: insert into `jobs` (`queue`, `attempts`, `reserved_at`, `available_at`, `created_at`, `payload`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-25 15:06:12] local.INFO: array (
+  0 => 'default',
+  1 => 0,
+  2 => NULL,
+  3 => 1727247971,
+  4 => 1727247971,
+  5 => '{"uuid":"3181c0c2-231f-4f2a-8b42-19c949ddf8fa","displayName":"App\\\\Events\\\\SensorDataUpdated","job":"Illuminate\\\\Queue\\\\CallQueuedHandler@call","maxTries":null,"maxExceptions":null,"failOnTimeout":false,"backoff":null,"timeout":null,"retryUntil":null,"data":{"commandName":"Illuminate\\\\Broadcasting\\\\BroadcastEvent","command":"O:38:\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\":14:{s:5:\\"event\\";O:28:\\"App\\\\Events\\\\SensorDataUpdated\\":2:{s:2:\\"sd\\";a:4:{s:2:\\"ph\\";d:7.5;s:11:\\"temperature\\";d:25.5;s:14:\\"nutrient_level\\";d:5.2;s:5:\\"light\\";i:0;}s:7:\\"towerId\\";i:1;}s:5:\\"tries\\";N;s:7:\\"timeout\\";N;s:7:\\"backoff\\";N;s:13:\\"maxExceptions\\";N;s:10:\\"connection\\";N;s:5:\\"queue\\";N;s:5:\\"delay\\";N;s:11:\\"afterCommit\\";N;s:10:\\"middleware\\";a:0:{}s:7:\\"chained\\";a:0:{}s:15:\\"chainConnection\\";N;s:10:\\"chainQueue\\";N;s:19:\\"chainCatchCallbacks\\";N;}"}}',
+)  
+[2024-09-25 15:06:12] local.INFO: 1267.9  
+[2024-09-25 15:06:33] local.INFO: SensorDataUpdated event created {"sensorData":{"ph":7.5,"temperature":25.5,"nutrient_level":5.2,"light":0},"towerId":1} 
+[2024-09-25 15:06:34] local.INFO: insert into `jobs` (`queue`, `attempts`, `reserved_at`, `available_at`, `created_at`, `payload`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-25 15:06:34] local.INFO: array (
+  0 => 'default',
+  1 => 0,
+  2 => NULL,
+  3 => 1727247993,
+  4 => 1727247993,
+  5 => '{"uuid":"bdf91877-911e-47a8-b003-83638cc0922b","displayName":"App\\\\Events\\\\SensorDataUpdated","job":"Illuminate\\\\Queue\\\\CallQueuedHandler@call","maxTries":null,"maxExceptions":null,"failOnTimeout":false,"backoff":null,"timeout":null,"retryUntil":null,"data":{"commandName":"Illuminate\\\\Broadcasting\\\\BroadcastEvent","command":"O:38:\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\":14:{s:5:\\"event\\";O:28:\\"App\\\\Events\\\\SensorDataUpdated\\":2:{s:2:\\"sd\\";a:4:{s:2:\\"ph\\";d:7.5;s:11:\\"temperature\\";d:25.5;s:14:\\"nutrient_level\\";d:5.2;s:5:\\"light\\";i:0;}s:7:\\"towerId\\";i:1;}s:5:\\"tries\\";N;s:7:\\"timeout\\";N;s:7:\\"backoff\\";N;s:13:\\"maxExceptions\\";N;s:10:\\"connection\\";N;s:5:\\"queue\\";N;s:5:\\"delay\\";N;s:11:\\"afterCommit\\";N;s:10:\\"middleware\\";a:0:{}s:7:\\"chained\\";a:0:{}s:15:\\"chainConnection\\";N;s:10:\\"chainQueue\\";N;s:19:\\"chainCatchCallbacks\\";N;}"}}',
+)  
+[2024-09-25 15:06:34] local.INFO: 648.13  
+[2024-09-25 15:07:23] local.INFO: SensorDataUpdated event created {"sensorData":{"ph":7.5,"temperature":25.5,"nutrient_level":5.2,"light":0},"towerId":1} 
+[2024-09-25 15:07:26] local.INFO: insert into `jobs` (`queue`, `attempts`, `reserved_at`, `available_at`, `created_at`, `payload`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-25 15:07:26] local.INFO: array (
+  0 => 'default',
+  1 => 0,
+  2 => NULL,
+  3 => 1727248043,
+  4 => 1727248043,
+  5 => '{"uuid":"5be06885-f27b-4a4b-be9a-491929f1a926","displayName":"App\\\\Events\\\\SensorDataUpdated","job":"Illuminate\\\\Queue\\\\CallQueuedHandler@call","maxTries":null,"maxExceptions":null,"failOnTimeout":false,"backoff":null,"timeout":null,"retryUntil":null,"data":{"commandName":"Illuminate\\\\Broadcasting\\\\BroadcastEvent","command":"O:38:\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\":14:{s:5:\\"event\\";O:28:\\"App\\\\Events\\\\SensorDataUpdated\\":2:{s:2:\\"sd\\";a:4:{s:2:\\"ph\\";d:7.5;s:11:\\"temperature\\";d:25.5;s:14:\\"nutrient_level\\";d:5.2;s:5:\\"light\\";i:0;}s:7:\\"towerId\\";i:1;}s:5:\\"tries\\";N;s:7:\\"timeout\\";N;s:7:\\"backoff\\";N;s:13:\\"maxExceptions\\";N;s:10:\\"connection\\";N;s:5:\\"queue\\";N;s:5:\\"delay\\";N;s:11:\\"afterCommit\\";N;s:10:\\"middleware\\";a:0:{}s:7:\\"chained\\";a:0:{}s:15:\\"chainConnection\\";N;s:10:\\"chainQueue\\";N;s:19:\\"chainCatchCallbacks\\";N;}"}}',
+)  
+[2024-09-25 15:07:26] local.INFO: 2747.88  
+[2024-09-25 15:07:36] local.INFO: SensorDataUpdated event created {"sensorData":{"ph":7.5,"temperature":25.5,"nutrient_level":5.2,"light":0},"towerId":1} 
+[2024-09-25 15:07:37] local.INFO: insert into `jobs` (`queue`, `attempts`, `reserved_at`, `available_at`, `created_at`, `payload`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-25 15:07:37] local.INFO: array (
+  0 => 'default',
+  1 => 0,
+  2 => NULL,
+  3 => 1727248056,
+  4 => 1727248056,
+  5 => '{"uuid":"112fb9fb-1b5f-48ba-a589-336777bcc343","displayName":"App\\\\Events\\\\SensorDataUpdated","job":"Illuminate\\\\Queue\\\\CallQueuedHandler@call","maxTries":null,"maxExceptions":null,"failOnTimeout":false,"backoff":null,"timeout":null,"retryUntil":null,"data":{"commandName":"Illuminate\\\\Broadcasting\\\\BroadcastEvent","command":"O:38:\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\":14:{s:5:\\"event\\";O:28:\\"App\\\\Events\\\\SensorDataUpdated\\":2:{s:2:\\"sd\\";a:4:{s:2:\\"ph\\";d:7.5;s:11:\\"temperature\\";d:25.5;s:14:\\"nutrient_level\\";d:5.2;s:5:\\"light\\";i:0;}s:7:\\"towerId\\";i:1;}s:5:\\"tries\\";N;s:7:\\"timeout\\";N;s:7:\\"backoff\\";N;s:13:\\"maxExceptions\\";N;s:10:\\"connection\\";N;s:5:\\"queue\\";N;s:5:\\"delay\\";N;s:11:\\"afterCommit\\";N;s:10:\\"middleware\\";a:0:{}s:7:\\"chained\\";a:0:{}s:15:\\"chainConnection\\";N;s:10:\\"chainQueue\\";N;s:19:\\"chainCatchCallbacks\\";N;}"}}',
+)  
+[2024-09-25 15:07:37] local.INFO: 926.59  

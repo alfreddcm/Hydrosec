@@ -437,8 +437,6 @@
 
 
             function load() {
-
-
                 console.log('Livewire component has been loaded');
 
                 fetchInitialSensorData();
@@ -447,25 +445,16 @@
                     cluster: 'ap1',
                     encrypted: true
                 });
-
-                // Log when Pusher is connected
                 pusher.connection.bind('connected', function() {
                     console.log('Pusher connection established');
                 });
-
-                // Log if the connection is disconnected
                 pusher.connection.bind('disconnected', function() {
                     console.log('Pusher connection disconnected');
                 });
-
-                // Log if the connection is failed
                 pusher.connection.bind('failed', function() {
                     console.log('Pusher connection failed');
                 });
-
                 const channel = pusher.subscribe('tower.' + towerId);
-
-                // Log when subscribing to the channel
                 channel.bind('SensorDataUpdated', function(data) {
                     console.log('Successfully subscribed to channel:', 'tower.' + towerId);
                     console.log('Real-time sensor data received:', data.sensorData);
@@ -485,9 +474,6 @@
                     }
                 });
             }
-
-
-
 
             function updateOnlineStatus(isOnline) {
                 const statusIndicator = $('#online-status');
@@ -651,7 +637,6 @@
                 }
             }
             load();
-
             fetchPumpData();
             startIntervals();
             setInterval(fetchPumpData, 5000);
@@ -752,7 +737,6 @@
 
             thermometer.style.filter = 'none'; // Reset filter for valid temperature values
 
-            // Update thermometer and status based on temperature
             if (temperature <= 18) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
                 statusText.textContent = "Cold";
@@ -782,13 +766,12 @@
             const circle = document.getElementById('statusCircle');
             const statusText = document.getElementById('statusText');
 
-            // Update light status based on the status value
             if (status === 1) {
                 circle.style.backgroundColor = 'green';
-                statusText.textContent = 'Active';
+                statusText.textContent = 'On';
             } else {
                 circle.style.backgroundColor = 'gray';
-                statusText.textContent = 'Inactive';
+                statusText.textContent = 'off';
             }
         }
 
@@ -796,7 +779,6 @@
             const modeText = document.getElementById('modeText');
             const modeCircle = document.getElementById('modeCircle');
 
-            // Update mode display based on the mode value
             switch (mode) {
                 case 0:
                     modeText.textContent = 'Off';
