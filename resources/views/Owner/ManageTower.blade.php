@@ -95,14 +95,15 @@
                                                             <span class="badge">
                                                                 {{ $decryptedStatus == '1' ? 'Active' : 'Inactive' }}
                                                             </span>
-                                                            @if ($decryptedStatus == '0' && !is_null($towerinfo->startdate) && !is_null($towerinfo->enddate))
+                                                            @if ($decryptedStatus == '0' && !is_null($data->startdate) && !is_null($data->enddate))
                                                                 <form action="{{ route('tower.en') }}" method="POST">
                                                                     @csrf
                                                                     <input type="hidden" name="tower_id"
-                                                                        value="{{ $towerinfo->id }}">
+                                                                        value="{{ $data->id }}">
                                                                     <button type="submit"
-                                                                        class="btn btn-primary mb-1">Enable</button>
+                                                                        class="btn btn-primary mb-1">Enable </button>
                                                                 </form>
+                                                                
                                                             @endif
                                                         </p>
                                                     </div>
@@ -126,7 +127,7 @@
                                                             @csrf
                                                             <input type="hidden" name="tower_id"
                                                                 value="{{ $data->id }}">
-                                                            <button type="submit" class="btn btn-primary mt-2 mb-1">Start
+                                                            <button type="submit" class="btn btn-primary mt-2 mb-1"> Start
                                                                 Cycle Again</button>
                                                         </form>
 
