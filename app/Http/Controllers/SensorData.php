@@ -272,7 +272,7 @@ class SensorData extends Controller
 
                                     $statusType = 'sensor_error';
                                     $this->sendAlertEmail($details, $tower->id, $statusType);
-                                 
+
                                     $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                     $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
                                     Log::info('Successfully enc sensor data', [
@@ -305,9 +305,9 @@ class SensorData extends Controller
                                         $volumeCondition = $this->getCondition((float) $decrypted_nutrient, 'nutrient');
 
                                         $triggerConditions = [
-                                            'phCondition' => ['Too acidic', 'Too basic', 'basic', 'acidic'],
+                                            'phCondition' => ['Too acidic', 'Acidic', 'Basic', 'Too basic'],
                                             'volumeCondition' => ['25%', '15%', ' critical low'],
-                                            'tempCondition' => ['Too Hot', 'hot'],
+                                            'tempCondition' => ['Too cold', 'Cold', 'Hot', 'Too hot'],
                                         ];
 
                                         if (in_array($phCondition, $triggerConditions['phCondition'])) {
@@ -557,16 +557,16 @@ class SensorData extends Controller
 
         switch ($type) {
             case 'pH':
-                if ($averageValue < 5.5) {
+                if ($averageValue < 5.0) {
                     $condition = 'Too acidic';
                 } elseif ($averageValue < 6.0) {
                     $condition = 'Acidic';
-                } elseif ($averageValue > 7.0) {
-                    $condition = 'Too basic';
-                } elseif ($averageValue > 6.5) {
+                } elseif ($averageValue <= 7.0) {
+                    $condition = 'Good';
+                } elseif ($averageValue <= 8.0) {
                     $condition = 'Basic';
                 } else {
-                    $condition = 'Good';
+                    $condition = 'Too basic';
                 }
                 break;
 
@@ -595,14 +595,17 @@ class SensorData extends Controller
 
             case 'temp':
                 if ($averageValue <= 18) {
-                    $condition = 'too Cold';
+                    $condition = 'Too cold';
                 } elseif ($averageValue > 18 && $averageValue <= 25) {
-                    $condition = 'cold';
+                    $condition = 'Cold';
                 } elseif ($averageValue > 25 && $averageValue <= 30) {
                     $condition = 'Good';
-                } else {
+                } elseif ($averageValue > 30 && $averageValue <= 35) {
                     $condition = 'Hot';
+                } else {
+                    $condition = 'Too hot';
                 }
+                break;
 
                 break;
         }

@@ -705,7 +705,7 @@
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
 
                 // Update status based on pH value
-                if (phValue < 5.5) {
+                if (phValue < 5.0) {
                     statusText.textContent = "Too Acidic";
                     statusText.style.color = 'red';
                 } else if (phValue < 6.0) {
@@ -722,6 +722,7 @@
                     statusText.style.color = 'green';
                 }
             } else {
+                // Handle invalid pH range
                 phScale.src = `{{ asset('images/ph/7.png') }}`;
                 statusText.textContent = "N/A";
                 statusText.style.color = 'black';
@@ -729,6 +730,7 @@
                 phScale.style.filter = 'grayscale(100%)';
             }
         }
+
 
         function updateThermometerImage(temperature) {
             const thermometer = document.getElementById('thermometer');
@@ -739,28 +741,29 @@
 
             if (temperature <= 18) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
-                statusText.textContent = "Cold";
+                statusText.textContent = "Too Cold";
                 statusText.style.color = 'blue';
             } else if (temperature > 18 && temperature <= 25) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
-                statusText.textContent = "Cold (Optimal)";
-                statusText.style.color = 'blue';
+                statusText.textContent = "Cold";
+                statusText.style.color = 'lightblue';
             } else if (temperature > 25 && temperature <= 30) {
                 thermometer.src = '{{ asset('images/Temp/normal.png') }}';
                 statusText.textContent = "Good";
                 statusText.style.color = 'green';
-            } else if (temperature > 31) {
+            } else if (temperature > 30 && temperature <= 35) {
+                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
+                statusText.textContent = "Hot";
+                statusText.style.color = 'orange';
+            } else {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Too Hot";
                 statusText.style.color = 'darkred';
-            } else {
-                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                thermometer.style.filter = 'grayscale(100%)';
-                tempValueElement.textContent = "N/A";
-                statusText.style.color = 'gray';
             }
+
             tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
         }
+
 
         function updateLightStatus(status) {
             const circle = document.getElementById('statusCircle');
