@@ -39,8 +39,8 @@
         }
 
         /* .card-title {
-                        letter-spacing: 1px;
-                    } */
+                            letter-spacing: 1px;
+                        } */
         .card-text span.font-weight-bold {
             font-size: 1.1em;
         }
@@ -103,7 +103,6 @@
                                                                     <button type="submit"
                                                                         class="btn btn-primary mb-1">Enable </button>
                                                                 </form>
-                                                                
                                                             @endif
                                                         </p>
                                                     </div>
@@ -134,7 +133,7 @@
                                                         <form action="{{ route('tower.stopdis') }}" method="POST">
                                                             @csrf
                                                             <input type="hidden" name="tower_id"
-                                                                value="{{ $towerinfo->id }}">
+                                                                value="{{ $data->id }}">
                                                             <button type="submit" class="btn btn-danger"
                                                                 onclick="return confirm('Are you sure you want to disable the tower?');">Disable
                                                                 Tower</button>
