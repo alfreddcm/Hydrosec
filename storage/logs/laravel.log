@@ -55,3 +55,30 @@
 [2024-09-27 22:20:26] local.INFO: 625.33  
 [2024-09-27 22:20:26] local.INFO: Tower ID 1 mode updated to 1  
 [2024-09-27 22:20:26] local.INFO: Tower modes updated at 2024-09-27 22:20:26  
+[2024-09-27 23:16:52] local.INFO: select * from `tbl_tower`  
+[2024-09-27 23:16:52] local.INFO: array (
+)  
+[2024-09-27 23:16:52] local.INFO: 1627.28  
+[2024-09-27 23:16:53] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-27 23:16:53] local.INFO: array (
+  0 => 'eyJpdiI6InRqV2U4N0FwUVhUekVXUDZWREhCd0E9PSIsInZhbHVlIjoiamE3dHdVNkFvY0dLZEV6K1FSZVg0UT09IiwibWFjIjoiYjA5MDZmZmY1OTkyMzA2ODJlZWZkNGEyMGQzYmQzYzQ2NzJlODg4MTIzMmEzMWIwYWJiYmVkOTNkMTg1ZTM5NCIsInRhZyI6IiJ9',
+  1 => '2024-09-27 23:16:52',
+  2 => 1,
+)  
+[2024-09-27 23:16:53] local.INFO: 493.03  
+[2024-09-27 23:16:53] local.INFO: Tower ID 1 mode updated to 1  
+[2024-09-27 23:16:53] local.INFO: Tower modes updated at 2024-09-27 23:16:53  
+[2024-09-27 23:17:21] local.INFO: select * from `tbl_tower`  
+[2024-09-27 23:17:21] local.INFO: array (
+)  
+[2024-09-27 23:17:21] local.INFO: 1933.26  
+[2024-09-27 23:17:23] local.INFO: update `tbl_tower` set `status` = ?, `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-27 23:17:23] local.INFO: array (
+  0 => 'eyJpdiI6ImFGanFOTHUzWktHeFQ0MVZwcnhQZlE9PSIsInZhbHVlIjoibWI2R2pGR0VpZXErSkhBalNWdWpvdz09IiwibWFjIjoiMDQ4Njg0ODQyNzgxZTIyYmQ1NDMxODVmZmM2ZmU0ZWMxYjlhODFkN2JmY2JiOGU1OGQ0MjU5YWM4Yzg0MjgyMyIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6ImlnTW9ncVloa1VQS1hoZVJCMHE0OFE9PSIsInZhbHVlIjoiNU0rME9uV1paeXZYOWlTUTEyL2N4dz09IiwibWFjIjoiNzdiNDlmODIwMGQ5Yjc0MjJkMjBkMjMxZmU5ZGRlZTA0MTAyMzRhNDZkOWNiYjUwZDU2YzFjYWIwZThiNDI2NiIsInRhZyI6IiJ9',
+  2 => '2024-09-27 23:17:21',
+  3 => 1,
+)  
+[2024-09-27 23:17:23] local.INFO: 1085.71  
+[2024-09-27 23:17:23] local.INFO: Tower ID 1 mode updated to 1  
+[2024-09-27 23:17:23] local.INFO: Tower modes updated at 2024-09-27 23:17:23  

@@ -277,7 +277,6 @@
                         <button type="submit" class="btn btn-primary mb-1">Restart</button>
                     </form>
                 @elseif (Crypt::decryptString($towerinfo->status) == 0 && !is_null($towerinfo->startdate) && !is_null($towerinfo->enddate))
-
                     <form action="{{ route('tower.en') }}" method="POST">
                         @csrf
                         <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
@@ -762,13 +761,23 @@
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Hot";
                 statusText.style.color = 'orange';
-            } else {
+            } else if (temperature > 35 && temperature !== null) { // Add check for non-null temperature
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Too Hot";
                 statusText.style.color = 'darkred';
+            } else {
+                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
+                thermometer.style.filter = 'grayscale(100%)'; // Apply grayscale filter
+                tempValueElement.textContent = "N/A";
+                statusText.textContent = "Unknown";
+                statusText.style.color = 'gray';
+                tempValueElement.style.color = 'gray';
             }
 
-            tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+            // If valid temperature, update the temp value
+            if (temperature !== null) {
+                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+            }
         }
 
 

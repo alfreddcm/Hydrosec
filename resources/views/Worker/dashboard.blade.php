@@ -768,14 +768,25 @@
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Hot";
                 statusText.style.color = 'orange';
-            } else {
+            } else if (temperature > 35 && temperature !== null) { // Add check for non-null temperature
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Too Hot";
                 statusText.style.color = 'darkred';
+            } else {
+                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
+                thermometer.style.filter = 'grayscale(100%)'; // Apply grayscale filter
+                tempValueElement.textContent = "N/A";
+                statusText.textContent = "Unknown";
+                statusText.style.color = 'gray';
+                tempValueElement.style.color = 'gray';
             }
 
-            tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+            // If valid temperature, update the temp value
+            if (temperature !== null) {
+                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+            }
         }
+
 
 
         function updateLightStatus(status) {
