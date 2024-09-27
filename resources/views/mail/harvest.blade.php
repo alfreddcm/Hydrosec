@@ -1,10 +1,11 @@
 @component('mail::message')
+
 # {{ $subject }}
 
 {{ $body }}
 
-@component('mail::button', ['url' => route('dashboard')])
-View Dashboard
+@component('mail::button', ['url' => config('app.url')])
+View Your Account
 @endcomponent
 
 Thanks,<br>

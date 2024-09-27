@@ -2,7 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\Harvest;
+use App\Models\Owner;
+use App\Models\Tower;
+use App\Models\TowerLogs;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class harvestremainder extends Command
 {
@@ -25,6 +33,13 @@ class harvestremainder extends Command
      */
     public function handle()
     {
+        // Log the execution start of the command
+        Log::info('Harvest Remainder command executed.');
+
+        $now = Carbon::now();
+        $oneDayLater = $now->copy()->addDay();
+        $daysBefore = -1;
+
         $towers = Tower::whereNotNull('enddate')
             ->where(function ($query) use ($now, $oneDayLater, $daysBefore) {
                 $query->whereBetween('enddate', [$now->copy()->addDays($daysBefore), $oneDayLater])
@@ -36,18 +51,23 @@ class harvestremainder extends Command
             $owner = Owner::find($tower->OwnerID);
             if ($owner) {
                 $ownerEmail = Crypt::decryptString($owner->email);
+
+                // Calculate remaining days
+                $remainingDays = $tower->enddate->diffInDays($now, false);
+                Log::debug("Tower ID: {$tower->id}, Remaining days until harvest: {$remainingDays}");
+
                 if ($tower->enddate->isSameDay($oneDayLater)) {
                     $subject = "Reminder: Tower Harvest Date Today";
-                    $body = "Dear Owner,  This is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.";
-         
+                    $body = "Dear Owner, This is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.";
+
                     $mode = '4';
                     $encryptedMode = Crypt::encryptString($mode);
                     Tower::query()->update(['mode' => $encryptedMode]);
 
                 } elseif ($tower->enddate->isSameDay($oneDayLater->addDay())) {
                     $subject = "Reminder: Tower Harvest Date Tomorrow";
-                    $body = "Dear Owner,  This is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.";
-                } else { 
+                    $body = "Dear Owner, This is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.";
+                } else {
                     continue;
                 }
 
