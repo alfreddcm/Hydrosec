@@ -49,12 +49,13 @@ class harvestremainder extends Command
         $daysBefore = -1;
 
         $towers = Tower::whereNotNull('enddate')
-            ->where(function ($query) use ($now, $oneDayLater, $oneWeekLater, $daysBefore) {
-                $query->whereBetween('enddate', [$now->copy()->addDays($daysBefore), $oneDayLater])
-                    ->orWhereBetween('enddate', [$oneDayLater, $oneDayLater])
-                    ->orWhere('enddate', $oneWeekLater); // Condition for one week later
-            })
-            ->get();
+    ->where(function ($query) use ($now, $oneDayLater, $oneWeekLater) {
+        $query->whereBetween('enddate', [$now->toDateString(), $oneDayLater->toDateString()])
+            ->orWhereBetween('enddate', [$oneDayLater->toDateString(), $oneDayLater->toDateString()])
+            ->orWhere('enddate', $oneWeekLater->toDateString()); 
+    })
+    ->get();
+
 
         foreach ($towers as $tower) {
             $owner = Owner::find($tower->OwnerID);
