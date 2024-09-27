@@ -276,6 +276,13 @@
                         <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                         <button type="submit" class="btn btn-primary mb-1">Restart</button>
                     </form>
+                @elseif (Crypt::decryptString($towerinfo->status) == 0 && !is_null($towerinfo->startdate) && !is_null($towerinfo->enddate))
+
+                    <form action="{{ route('tower.en') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                        <button type="submit" class="btn btn-primary mb-1">Enable</button>
+                    </form>
                 @else
                     <!-- Show Update Dates Button and Modal if dates are not null -->
                     <form>

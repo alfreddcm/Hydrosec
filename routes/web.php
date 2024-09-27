@@ -93,6 +93,7 @@ Route::middleware('auth:owner')->group(function () {
     Route::post('/tower/stop', [Towercon::class, 'stop'])->name('tower.stop');
     Route::post('/tower/stopdis', [Towercon::class, 'stopdis'])->name('tower.stopdis');
     Route::post('/tower/restart', [Towercon::class, 'restartCycle'])->name('tower.restart');
+    Route::post('/tower/en', [Towercon::class, 'en'])->name('tower.en');
 
 });
 

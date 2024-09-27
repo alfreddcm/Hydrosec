@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\Alert;
 use App\Models\Owner;
 use App\Models\Tower;
-use App\Models\TowerLogs;
+use App\Models\Towerlogs;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
@@ -36,26 +36,24 @@ class harvestremainder extends Command
         // Log the execution start of the command
         Log::info('Harvest Reminder command executed.');
 
+        // Fetch only dates (without time)
         $now = Carbon::now()->toDateString();
         $oneDayLater = Carbon::now()->addDay()->toDateString();
         $oneWeekLater = Carbon::now()->addWeek()->toDateString();
 
+        // Log the dates (without time)
         Log::info('Dates:', [
             'now' => $now,
             'oneDayLater' => $oneDayLater,
             'oneWeekLater' => $oneWeekLater,
         ]);
 
-        $daysBefore = -1;
-
         $towers = Tower::whereNotNull('enddate')
-    ->where(function ($query) use ($now, $oneDayLater, $oneWeekLater) {
-        $query->whereBetween('enddate', [$now->toDateString(), $oneDayLater->toDateString()])
-            ->orWhereBetween('enddate', [$oneDayLater->toDateString(), $oneDayLater->toDateString()])
-            ->orWhere('enddate', $oneWeekLater->toDateString()); 
-    })
-    ->get();
-
+            ->where(function ($query) use ($now, $oneDayLater, $oneWeekLater) {
+                $query->whereBetween('enddate', [$now, $oneDayLater])
+                    ->orWhere('enddate', $oneWeekLater); // Correct condition for one week later
+            })
+            ->get();
 
         foreach ($towers as $tower) {
             $owner = Owner::find($tower->OwnerID);
@@ -63,17 +61,12 @@ class harvestremainder extends Command
                 $ownerEmail = Crypt::decryptString($owner->email);
                 Log::info("Owner's email for tower ID {$tower->id}: {$ownerEmail}");
 
-                // Ensure enddate is a Carbon instance
+                // Ensure enddate is a Carbon instance and log it
                 $endDate = Carbon::parse($tower->enddate)->toDateString();
                 Log::info("End date for tower ID {$tower->id}: {$endDate}");
-// Cast enddate to Carbon
 
-                // Calculate remaining days
-                $remainingDays = $endDate->diffInDays($now, false);
-                Log::debug("Tower ID: {$tower->id}, Remaining days until harvest: {$remainingDays}");
-
-                if ($endDate->isSameDay($oneDayLater)) {
-                    $subject = "Remind  er: Tower Harvest Date Today";
+                if ($endDate === $oneDayLater) {
+                    $subject = "Reminder: Tower Harvest Date Today";
                     $body = "Dear Owner, Today is the end date for tower {$tower->id}. Please take the necessary actions.";
 
                     $mode = '4';
@@ -82,15 +75,15 @@ class harvestremainder extends Command
 
                     Log::info('Condition matched: Harvest today', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
 
-                } elseif ($endDate->isSameDay($oneDayLater->addDay())) {
+                } elseif ($endDate === Carbon::parse($oneDayLater)->addDay()->toDateString()) {
                     $subject = "Reminder: Tower Harvest Date Tomorrow";
-                    $body = "Dear Owner, The end date for tower {$tower->id} is tomorrow ({$endDate->format('Y-m-d')}). Please take the necessary actions.";
+                    $body = "Dear Owner, The end date for tower {$tower->id} is tomorrow ({$endDate}). Please take the necessary actions.";
 
                     Log::info('Condition matched: Harvest tomorrow', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
 
-                } elseif ($endDate->isSameDay($oneWeekLater)) { // Condition for one week later
+                } elseif ($endDate === $oneWeekLater) {
                     $subject = "Reminder: Tower Harvest Date in One Week";
-                    $body = "Dear Owner, The end date for tower {$tower->id} is in one week ({$endDate->format('Y-m-d')}). Please take the necessary actions.";
+                    $body = "Dear Owner, The end date for tower {$tower->id} is in one week ({$endDate}). Please take the necessary actions.";
 
                     Log::info('Condition matched: Harvest in one week', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
 
@@ -137,5 +130,4 @@ class harvestremainder extends Command
             }
         }
     }
-
 }

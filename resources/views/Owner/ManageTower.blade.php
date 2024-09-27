@@ -39,8 +39,8 @@
         }
 
         /* .card-title {
-                    letter-spacing: 1px;
-                } */
+                        letter-spacing: 1px;
+                    } */
         .card-text span.font-weight-bold {
             font-size: 1.1em;
         }
@@ -95,6 +95,15 @@
                                                             <span class="badge">
                                                                 {{ $decryptedStatus == '1' ? 'Active' : 'Inactive' }}
                                                             </span>
+                                                            @if ($decryptedStatus == '0' && !is_null($towerinfo->startdate) && !is_null($towerinfo->enddate))
+                                                                <form action="{{ route('tower.en') }}" method="POST">
+                                                                    @csrf
+                                                                    <input type="hidden" name="tower_id"
+                                                                        value="{{ $towerinfo->id }}">
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary mb-1">Enable</button>
+                                                                </form>
+                                                            @endif
                                                         </p>
                                                     </div>
                                                 </div>
@@ -120,7 +129,7 @@
                                                             <button type="submit" class="btn btn-primary mt-2 mb-1">Start
                                                                 Cycle Again</button>
                                                         </form>
-                                                        
+
                                                         <form action="{{ route('tower.stopdis') }}" method="POST">
                                                             @csrf
                                                             <input type="hidden" name="tower_id"

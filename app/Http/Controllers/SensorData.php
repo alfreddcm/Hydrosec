@@ -671,7 +671,7 @@ class SensorData extends Controller
                             ),
                         ]);
 
-                        Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => json_encode($details['body'])]);
+                        Log::info('Alert logged in tbl_Towerlog', ['tower_id' => $towerId, 'activity' => json_encode($details['body'])]);
 
                         // Update the last email sent timestamp based on status type
                         switch ($statusType) {
