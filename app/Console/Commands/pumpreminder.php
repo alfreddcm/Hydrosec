@@ -35,27 +35,6 @@ class pumpreminder extends Command
      */
     public function handle()
     {
-        // $nextHour = $now->copy()->addHour();
-        // $hoursBefore = 1;
-
-        // $allTowers = Tower::pluck('id');
-
-        // $towersWithData = Tower::whereNotNull('enddate')
-        //     ->where(function ($query) use ($now, $nextHour, $hoursBefore) {
-        //         $query->whereBetween('enddate', [$now->copy()->subHours($hoursBefore), $nextHour])
-        //             ->orWhereBetween('enddate', [$nextHour, $nextHour]);
-        //     })
-        //     ->pluck('id');
-
-        // $towersWithoutData = $allTowers->diff($towersWithData);
-
-        // foreach ($towersWithoutData as $towerId) {
-        //     $tower = Tower::find($towerId);
-        //     if (!$tower) {
-        //         Log::error("Tower not found with ID $towerId.");
-        //         continue;
-        //     }
-
         $key_str = "ISUHydroSec2024!";
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";

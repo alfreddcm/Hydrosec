@@ -45,7 +45,7 @@ class harvestremainder extends Command
             ->where(function ($query) use ($now, $oneDayLater, $oneWeekLater, $daysBefore) {
                 $query->whereBetween('enddate', [$now->copy()->addDays($daysBefore), $oneDayLater])
                     ->orWhereBetween('enddate', [$oneDayLater, $oneDayLater])
-                    ->orWhere('enddate', $oneWeekLater); 
+                    ->orWhere('enddate', $oneWeekLater); // Adding a condition for one week later
             })
             ->get();
 
@@ -54,7 +54,10 @@ class harvestremainder extends Command
             if ($owner) {
                 $ownerEmail = Crypt::decryptString($owner->email);
 
-                $endDate = $tower->enddate instanceof Carbon ? $tower->enddate : Carbon::parse($tower->enddate);
+                // Ensure enddate is a Carbon instance
+                $endDate = Carbon::parse($tower->enddate); // Cast enddate to Carbon
+
+                // Calculate remaining days
                 $remainingDays = $endDate->diffInDays($now, false);
                 Log::debug("Tower ID: {$tower->id}, Remaining days until harvest: {$remainingDays}");
 
@@ -86,7 +89,7 @@ class harvestremainder extends Command
                     $mailStatus = 'Failed';
                     Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
                 } finally {
-                    $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
+                    $activityLog = Crypt::encryptString(json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
 
                     TowerLogs::create([
                         'ID_tower' => $tower->id,
