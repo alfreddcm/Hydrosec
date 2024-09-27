@@ -31,8 +31,10 @@ class UpdateTowerMode extends Command
         foreach ($towers as $tower) {
             $currentMode = Crypt::decryptString($tower->mode);
             $newMode = ($currentMode + 1) % 3;
+             $newMode = 1;
+
             $tower->mode = Crypt::encryptString($newMode);
-          //  $tower->status = Crypt::encryptString($newMode);
+            //$tower->status = Crypt::encryptString(4);
             $tower->save();
 
             $this->info("Tower ID {$tower->id} mode updated to {$newMode}");

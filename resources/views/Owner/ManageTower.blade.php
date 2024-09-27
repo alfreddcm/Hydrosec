@@ -103,6 +103,15 @@
                                                                     <button type="submit"
                                                                         class="btn btn-primary mb-1">Enable </button>
                                                                 </form>
+                                                                @elseif($decryptedStatus == '0' && is_null($data->startdate) && is_null($data->enddate))
+                                                                 <form action="{{ route('tower.stopdis') }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="tower_id"
+                                                                value="{{ $data->id }}">
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Are you sure you want to disable the tower?');">Disable
+                                                                Tower</button>
+                                                        </form>
                                                             @endif
                                                         </p>
                                                     </div>
@@ -130,14 +139,7 @@
                                                                 Cycle Again</button>
                                                         </form>
 
-                                                        <form action="{{ route('tower.stopdis') }}" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="tower_id"
-                                                                value="{{ $data->id }}">
-                                                            <button type="submit" class="btn btn-danger"
-                                                                onclick="return confirm('Are you sure you want to disable the tower?');">Disable
-                                                                Tower</button>
-                                                        </form>
+                                                       
                                                     </center>
 
                                                 </h5>

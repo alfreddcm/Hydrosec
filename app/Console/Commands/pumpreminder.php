@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Mail\Alert;
 use App\Models\Owner;
+use App\Models\Pump;
 use App\Models\Tower;
 use App\Models\Towerlog;
 use Carbon\Carbon;
@@ -12,106 +13,120 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class harvestremainder extends Command
+class pumpreminder extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:harvestremainder';
+
+    protected $signature = 'app:pumpreminder';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command';
+    protected $description = 'Pumping Remainder';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        // Log the execution start of the command
-        Log::info('Harvest Reminder command executed.');
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
 
-        // Fetch towers with a startdate and enddate
-        $towers = Tower::whereNotNull('enddate')->whereNotNull('startdate')->get();
+        $now = Carbon::now();
+        $emailCooldown = 5;
+        $towers = Tower::select('id', 'status', 'name', 'OwnerID', 'last_pumping_email_sent_at')->get();
+        foreach ($towers as $data) {
+            if (Crypt::decryptString($data->status) == '1') {
+                $towerId = $data->id;
+                Log::info('Processing tower', ['tower_id' => $towerId]);
 
-        foreach ($towers as $tower) {
-            // Use tower's enddate instead of startdate for calculations
-            $towerEndDate = Carbon::parse($tower->enddate)->startOfDay(); // Ensure time is set to 00:00:00
+                $now = Carbon::now();
+                $emailCooldown = 5;
+                $timeLimit = Carbon::now()->subMinutes(5);
 
-            // Calculate the "one day later" and "one week later" based on the enddate
-            $now = Carbon::now()->startOfDay(); // Current date (today) at 00:00:00
-            $oneDayLater = $now->copy()->addDay(); // Tomorrow
-            $oneWeekLater = $now->copy()->addWeek(); // A week later
+                $recentStatuses = Pump::where('towerid', $towerId)
+                    ->orderBy('created_at', 'desc')
+                    ->limit(2)
+                    ->get();
 
-            // Log the dates for debugging purposes
-            Log::info('Dates:', [
-                'now' => $now->toDateString(),
-                'oneDayLater' => $oneDayLater->toDateString(),
-                'oneWeekLater' => $oneWeekLater->toDateString(),
-                'enddate' => $towerEndDate->toDateString(),
-            ]);
+                if (count($recentStatuses) === 2 &&
+                    $this->decrypt_data($recentStatuses[0]->status, $method, $key_str, $iv_str) == '0' &&
+                    $this->decrypt_data($recentStatuses[1]->status, $method, $key_str, $iv_str) == '0') {
 
-            $owner = Owner::find($tower->OwnerID);
-            if ($owner) {
-                // Decrypt the email
-                $ownerEmail = Crypt::decryptString($owner->email);
-                Log::info("Owner's email for tower ID {$tower->id}: {$ownerEmail}");
+                    Log::info('Consecutive pump status 0 detected', ['tower_id' => $towerId]);
 
-                // Check if harvest is today, tomorrow, or in one week
-                if ($towerEndDate->isSameDay($now)) {
-                    // Harvest today
-                    $subject = "Reminder: Tower Harvest Date Today";
-                    $body = "Dear Owner, Today is the end date for tower {$tower->id}. Please take the necessary actions.";
-                    Log::info('Condition matched: Harvest today', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+                    // Ensure last_pumping_email_sent_at is a Carbon instance
+                    if ($data->last_pumping_email_sent_at) {
+                        $lastEmailSentAt = Carbon::parse($data->last_pumping_email_sent_at);
+                        if ($lastEmailSentAt->diffInMinutes($now) < $emailCooldown) {
+                            $remainingTime = $emailCooldown - $lastEmailSentAt->diffInMinutes($now);
+                            Log::info('Skipping email, recently sent', ['tower_id' => $towerId, 'remaining_time' => $remainingTime]);
+                            continue;
+                        }
+                    }
 
-                } elseif ($towerEndDate->isSameDay($oneDayLater)) {
-                    // Harvest tomorrow
-                    $subject = "Reminder: Tower Harvest Date Tomorrow";
-                    $body = "Dear Owner, The end date for tower {$tower->id} is tomorrow ({$towerEndDate->toDateString()}). Please take the necessary actions.";
-                    Log::info('Condition matched: Harvest tomorrow', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+                    $owner = Owner::select('email')->where('id', $data->OwnerID)->first();
+                    if ($owner) {
+                        $body = "The Tower '" . Crypt::decryptString($data->name) . "' did not pump at " . $now . "  Please check the plug.";
 
-                } elseif ($towerEndDate->isSameDay($oneWeekLater)) {
-                    // Harvest in one week
-                    $subject = "Reminder: Tower Harvest Date in One Week";
-                    $body = "Dear Owner, The end date for tower {$tower->id} is in one week ({$towerEndDate->toDateString()}). Please take the necessary actions.";
-                    Log::info('Condition matched: Harvest in one week', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+                        $details = [
+                            'title' => 'Pumping stopped.',
+                            'body' => $body,
+                        ];
 
+                        $ownerEmail = Crypt::decryptString($owner->email);
+                        $mailStatus = 'Failed';
+
+                        try {
+                            Mail::to($ownerEmail)->send(new Alert($details));
+                            $mailStatus = 'Sent';
+                            Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $towerId]);
+
+                            $data->last_pumping_email_sent_at = $now;
+                            $data->save();
+                        } catch (\Exception $e) {
+                            $mailStatus = 'Failed';
+                            Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
+                        } finally {
+                            $activityLog = Crypt::encryptString("Alert: " . json_encode($details['body']) . " Mail Status: " . $mailStatus);
+
+                            Towerlog::create([
+                                'ID_tower' => $towerId,
+                                'activity' => $activityLog,
+                            ]);
+
+                            Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => $body]);
+                        }
+                    } else {
+                        Log::error("Owner not found for tower ID {$towerId}.");
+                    }
                 } else {
-                    continue; // Skip if no conditions matched
+                    Log::info("No consecutive pump status 0 for tower ID $towerId.");
                 }
-
-                // Try sending the email and log the outcome
-                try {
-                    Log::info('Attempting to send email to: ', ['email' => $ownerEmail]);
-                    $details = ['title' => $subject, 'body' => $body];
-                    Mail::to($ownerEmail)->send(new Alert($details));
-                    Log::info('Email sent successfully to: ', ['email' => $ownerEmail]);
-                    $mailStatus = 'Sent';
-                } catch (\Exception $e) {
-                    $mailStatus = 'Failed';
-                    Log::error('Failed to send alert email', [
-                        'email' => $ownerEmail,
-                        'tower_id' => $tower->id,
-                        'error' => $e->getMessage(),
-                    ]);
-                } finally {
-                    // Encrypt and log the activity
-                    $activityLog = Crypt::encryptString(json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
-                    Towerlog::create([
-                        'ID_tower' => $tower->id,
-                        'activity' => $activityLog,
-                    ]);
-                    Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
-                }
-
-            } else {
-                $this->error("Owner not found for tower ID {$tower->id}.");
             }
+        }
+
+    }
+
+    private function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
+            return null;
         }
     }
 

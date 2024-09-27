@@ -1,0 +1,57 @@
+[2024-09-27 22:12:53] local.ERROR: Cannot declare class App\Console\Commands\harvestremainder, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Console\\Commands\\harvestremainder, because the name is already in use at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\app\\Console\\Commands\\pumpreminder.php:15)
+[stacktrace]
+#0 {main}
+"} 
+[2024-09-27 22:13:05] local.ERROR: Cannot declare class App\Console\Commands\harvestremainder, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Console\\Commands\\harvestremainder, because the name is already in use at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\app\\Console\\Commands\\pumpreminder.php:15)
+[stacktrace]
+#0 {main}
+"} 
+[2024-09-27 22:14:01] local.ERROR: Cannot declare class App\Console\Commands\harvestremainder, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Console\\Commands\\harvestremainder, because the name is already in use at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\app\\Console\\Commands\\pumpreminder.php:15)
+[stacktrace]
+#0 {main}
+"} 
+[2024-09-27 22:14:51] local.ERROR: Cannot declare class App\Console\Commands\harvestremainder, because the name is already in use {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot declare class App\\Console\\Commands\\harvestremainder, because the name is already in use at C:\\Users\\User\\Desktop\\Cap\\Hydrosec\\app\\Console\\Commands\\pumpreminder.php:15)
+[stacktrace]
+#0 {main}
+"} 
+[2024-09-27 22:17:48] local.INFO: select * from `tbl_tower`  
+[2024-09-27 22:17:48] local.INFO: array (
+)  
+[2024-09-27 22:17:48] local.INFO: 2429.4  
+[2024-09-27 22:17:49] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-27 22:17:49] local.INFO: array (
+  0 => 'eyJpdiI6ImlaVHF5QTJvNmozOUZURTg0UUhITmc9PSIsInZhbHVlIjoiSEFPdkovb3hMMHBCRmhoTEF6UHJyZz09IiwibWFjIjoiYjQ1NTVjOGMyZjBjYWRjZTk3ZjVjNGMxN2RmZjhkZjU0NmExMjJhNDVmZDk4NjhlYmE5NDFiZjZlZGUyNjNmMiIsInRhZyI6IiJ9',
+  1 => '2024-09-27 22:17:48',
+  2 => 1,
+)  
+[2024-09-27 22:17:49] local.INFO: 616.52  
+[2024-09-27 22:17:49] local.INFO: Tower ID 1 mode updated to 4  
+[2024-09-27 22:17:49] local.INFO: Tower modes updated at 2024-09-27 22:17:49  
+[2024-09-27 22:19:11] local.INFO: select * from `tbl_tower`  
+[2024-09-27 22:19:11] local.INFO: array (
+)  
+[2024-09-27 22:19:11] local.INFO: 1598.39  
+[2024-09-27 22:19:11] local.INFO: update `tbl_tower` set `status` = ?, `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-27 22:19:11] local.INFO: array (
+  0 => 'eyJpdiI6ImZFRXRaUGVHdjQwSFdvRkRGVnVmMEE9PSIsInZhbHVlIjoiTEI0TGRDbFI1eU9MQ09OdDJSTjVSdz09IiwibWFjIjoiYjU5YzRmYmEwNGViYTY2NDAxOWE5OThhZjliM2IwN2E1MGVmNmUxMWVlOTUyYWJkMjRmZWI1NDEzMWFkYTY5NyIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6Im8wQWhkMDZOYkpNZVpYSzBWYTloMkE9PSIsInZhbHVlIjoiU0ZMVVNwR2FTbDM0WlBZbGRTZXd4Zz09IiwibWFjIjoiOTNiMGE4M2Q2ZmUzNzNjZGRmMmViMDRkNjBjMWNkMzA5N2ZhOGFhNmM1NjE3ZjE3OTJmYWU4Y2RlOGUzYzUyYyIsInRhZyI6IiJ9',
+  2 => '2024-09-27 22:19:11',
+  3 => 1,
+)  
+[2024-09-27 22:19:11] local.INFO: 468.25  
+[2024-09-27 22:19:11] local.INFO: Tower ID 1 mode updated to 1  
+[2024-09-27 22:19:11] local.INFO: Tower modes updated at 2024-09-27 22:19:11  
+[2024-09-27 22:20:26] local.INFO: select * from `tbl_tower`  
+[2024-09-27 22:20:26] local.INFO: array (
+)  
+[2024-09-27 22:20:26] local.INFO: 2006.93  
+[2024-09-27 22:20:26] local.INFO: update `tbl_tower` set `status` = ?, `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-27 22:20:26] local.INFO: array (
+  0 => 'eyJpdiI6ImwrRXQzTXBwVURITld1Rm1IZ2cyM1E9PSIsInZhbHVlIjoiY2ZwSWFVL1lpU3g4Y0hNa2NBYklyUT09IiwibWFjIjoiYWY4YTI3NDMyNGE0NjA2NDE3MzA1MzEwMjllNmUyMWJjOWFlMWIyOGVhYTA2NDQyNGRiOGI1YjhjOGE0MDg1YyIsInRhZyI6IiJ9',
+  1 => 'eyJpdiI6Im5RTDB0ZDRBU2VRVDhFanNIbi9LNGc9PSIsInZhbHVlIjoiV0kvTnQzOFZiaXdBY2tRYXZrZ2lMZz09IiwibWFjIjoiZTJiYTFiZmUzMDIyZWI4MDUyODdhN2FkMTk1Yjk1MWQxZjk3NzRhZGJjZmUwMDFiNTk4ZDhjOWRiM2QwZDkwZSIsInRhZyI6IiJ9',
+  2 => '2024-09-27 22:20:26',
+  3 => 1,
+)  
+[2024-09-27 22:20:26] local.INFO: 625.33  
+[2024-09-27 22:20:26] local.INFO: Tower ID 1 mode updated to 1  
+[2024-09-27 22:20:26] local.INFO: Tower modes updated at 2024-09-27 22:20:26  
