@@ -82,12 +82,20 @@ class harvestremainder extends Command
                 }
 
                 try {
+                    Log::info('Attempting to send email to: ', ['email' => $ownerEmail]);
+
                     Mail::to($ownerEmail)->send(new Harvest($subject, $body));
+
+                    Log::info('Email sent successfully to: ', ['email' => $ownerEmail]);
+
                     $mailStatus = 'Sent';
-                    Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
                 } catch (\Exception $e) {
                     $mailStatus = 'Failed';
-                    Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
+                    Log::error('Failed to send alert email', [
+                        'email' => $ownerEmail,
+                        'tower_id' => $tower->id,
+                        'error' => $e->getMessage(),
+                    ]);
                 } finally {
                     $activityLog = Crypt::encryptString(json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
 
