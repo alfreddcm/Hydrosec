@@ -38,12 +38,14 @@ class harvestremainder extends Command
 
         $now = Carbon::now();
         $oneDayLater = $now->copy()->addDay();
+        $oneWeekLater = $now->copy()->addWeek(); // One week later
         $daysBefore = -1;
 
         $towers = Tower::whereNotNull('enddate')
-            ->where(function ($query) use ($now, $oneDayLater, $daysBefore) {
+            ->where(function ($query) use ($now, $oneDayLater, $oneWeekLater, $daysBefore) {
                 $query->whereBetween('enddate', [$now->copy()->addDays($daysBefore), $oneDayLater])
-                    ->orWhereBetween('enddate', [$oneDayLater, $oneDayLater]);
+                    ->orWhereBetween('enddate', [$oneDayLater, $oneDayLater])
+                    ->orWhere('enddate', $oneWeekLater); 
             })
             ->get();
 
@@ -52,11 +54,11 @@ class harvestremainder extends Command
             if ($owner) {
                 $ownerEmail = Crypt::decryptString($owner->email);
 
-                // Calculate remaining days
-                $remainingDays = $tower->enddate->diffInDays($now, false);
+                $endDate = $tower->enddate instanceof Carbon ? $tower->enddate : Carbon::parse($tower->enddate);
+                $remainingDays = $endDate->diffInDays($now, false);
                 Log::debug("Tower ID: {$tower->id}, Remaining days until harvest: {$remainingDays}");
 
-                if ($tower->enddate->isSameDay($oneDayLater)) {
+                if ($endDate->isSameDay($oneDayLater)) {
                     $subject = "Reminder: Tower Harvest Date Today";
                     $body = "Dear Owner, This is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.";
 
@@ -64,9 +66,14 @@ class harvestremainder extends Command
                     $encryptedMode = Crypt::encryptString($mode);
                     Tower::query()->update(['mode' => $encryptedMode]);
 
-                } elseif ($tower->enddate->isSameDay($oneDayLater->addDay())) {
+                } elseif ($endDate->isSameDay($oneDayLater->addDay())) {
                     $subject = "Reminder: Tower Harvest Date Tomorrow";
-                    $body = "Dear Owner, This is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.";
+                    $body = "Dear Owner, This is a reminder that the end date for tower {$tower->id} is tomorrow on {$endDate->format('Y-m-d')}. Please take the necessary actions.";
+
+                } elseif ($endDate->isSameDay($oneWeekLater)) { // New condition for one week later
+                    $subject = "Reminder: Tower Harvest Date in One Week";
+                    $body = "Dear Owner, This is a reminder that the end date for tower {$tower->id} is one week away on {$endDate->format('Y-m-d')}. Please take the necessary actions.";
+
                 } else {
                     continue;
                 }
