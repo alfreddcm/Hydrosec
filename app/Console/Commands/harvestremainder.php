@@ -53,6 +53,8 @@ class harvestremainder extends Command
             $owner = Owner::find($tower->OwnerID);
             if ($owner) {
                 $ownerEmail = Crypt::decryptString($owner->email);
+                Log::info("Owner's email for tower ID {$tower->id}: {$ownerEmail}");
+
 
                 // Ensure enddate is a Carbon instance
                 $endDate = Carbon::parse($tower->enddate); // Cast enddate to Carbon
@@ -69,13 +71,22 @@ class harvestremainder extends Command
                     $encryptedMode = Crypt::encryptString($mode);
                     Tower::query()->update(['mode' => $encryptedMode]);
 
+                    Log::info('Condition matched: Harvest today', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+
+
                 } elseif ($endDate->isSameDay($oneDayLater->addDay())) {
                     $subject = "Reminder: Tower Harvest Date Tomorrow";
                     $body = "Dear Owner, This is a reminder that the end date for tower {$tower->id} is tomorrow on {$endDate->format('Y-m-d')}. Please take the necessary actions.";
 
+                    Log::info('Condition matched: Harvest tomorrow', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+
+
                 } elseif ($endDate->isSameDay($oneWeekLater)) { // New condition for one week later
                     $subject = "Reminder: Tower Harvest Date in One Week";
                     $body = "Dear Owner, This is a reminder that the end date for tower {$tower->id} is one week away on {$endDate->format('Y-m-d')}. Please take the necessary actions.";
+
+                    Log::info('Condition matched: Harvest in one week', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+
 
                 } else {
                     continue;
