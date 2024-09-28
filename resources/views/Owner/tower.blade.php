@@ -144,6 +144,7 @@
                         </p>
                     @endif
 
+                    <center><span id="created_at">...</span></center>
                     <div class="row justify-content-center g-1">
                         <div class="col-sm-3">
                             <h5>Mode: <span id="modeCircle" class="circle"></span><span id="modeText"
@@ -446,6 +447,8 @@
                 console.log('Livewire component has been loaded');
 
                 fetchInitialSensorData();
+                const datetime = document.getElementById('datetime');
+                const now = new Date();
 
                 const pusher = new Pusher('3e52514a75529a62c062', {
                     cluster: 'ap1',
@@ -475,6 +478,8 @@
                         updateLightStatus(parseFloat(sensorData.light));
                         updateThermometerImage(parseFloat(sensorData.temperature));
                         updateOnlineStatus(true);
+
+                        datetime.textContent = now.toLocaleString();
                     } else {
                         console.log('No data available');
                     }
@@ -527,6 +532,7 @@
                             data: {
                                 labels: labels,
                                 datasets: [{
+                                    label: 'Sensor Data',
                                     data: values,
                                     borderColor: 'rgba(75, 192, 192, 1)',
                                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -559,6 +565,8 @@
             });
 
             function fetchInitialSensorData() {
+                const datetime = document.getElementById('created_at');
+
                 $.ajax({
                     url: `/sensor-data/${towerId}`,
                     method: 'GET',
@@ -568,13 +576,15 @@
                                 temperature,
                                 nutrient_level,
                                 pH,
-                                light
+                                light,
+                                created_at
                             } = response.sensorData;
                             updateNutrientImage(parseFloat(nutrient_level));
                             updatePhScaleImage(parseFloat(pH));
                             updateLightStatus(parseFloat(light));
                             updateThermometerImage(parseFloat(temperature));
                             updateOnlineStatus(false);
+                            datetime.textContent = created_at;
                         } else {
                             console.log('No data available');
                         }
@@ -709,7 +719,7 @@
 
             if (phValue >= 0 && phValue <= 14) {
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
-
+                phScale.style.filter = 'none';
                 // Update status based on pH value
                 if (phValue < 5.0) {
                     statusText.textContent = "Too Acidic";

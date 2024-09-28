@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 
 class SensorData extends Controller
 {
@@ -37,7 +38,7 @@ class SensorData extends Controller
                 $sdata = Sensor::where('towerid', $tid)
                     ->where('created_at', '>=', $oneHourAgo)
                     ->orderBy('id', 'desc')
-                    ->select('pH', 'temperature', 'nutrientlevel', 'status', 'light') // Specify required columns
+                    ->select('pH', 'temperature', 'nutrientlevel', 'status', 'light', 'created_at')
                     ->first();
 
                 if ($sdata) {
@@ -53,7 +54,7 @@ class SensorData extends Controller
                         'temperature' => $temp,
                         'nutrient_level' => $volume,
                         'light' => $light,
-                    ];
+                        'stamps' => Carbon::parse($sdata->created_at)->format('Y-m-d H:i:s')];
 
                     return response()->json(['sensorData' => $decrypted_data]);
                 } else {
@@ -439,8 +440,8 @@ class SensorData extends Controller
                         }
 
                     } else {
-                        $ipmac->ipAdd = Crypt::encryptString($decryptedIpAddress);
-                        $ipmac->macAdd = Crypt::encryptString($decryptedMacAddress);
+                        $ipmac->ipAdd = Crypt::encryptString($decrypted_ip);
+                        $ipmac->macAdd = Crypt::encryptString($decrypted_mac);
                         $ipmac->save();
 
                         Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
@@ -458,7 +459,7 @@ class SensorData extends Controller
             Log::warning('Validation failed', [
                 'ipAddress' => $request->ip(),
                 'failedAttempts' => $failedAttempts,
-                'errors' => $e->errors(),
+                // 'errors' => $e->errors(),
             ]);
 
             // return response()->json(['error' => 'Invalid data provided', 'details' => $e->errors()], 422);
@@ -470,7 +471,7 @@ class SensorData extends Controller
             Log::warning('Validation failed', [
                 'ipAddress' => $request->ip(),
                 'failedAttempts' => $failedAttempts,
-                'errors' => $e->errors(),
+                // 'errors' => $e->errors(),
             ]);
 
         } finally {

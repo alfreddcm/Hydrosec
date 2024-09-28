@@ -410,6 +410,8 @@
                 console.log('Livewire component has been loaded');
 
                 fetchSensorData2();
+                const datetime = document.getElementById('datetime');
+                const now = new Date();
 
                 const pusher = new Pusher('3e52514a75529a62c062', {
                     cluster: 'ap1',
@@ -439,6 +441,9 @@
                         updateLightStatus(parseFloat(sensorData.light));
                         updateThermometerImage(parseFloat(sensorData.temperature));
                         updateOnlineStatus(true);
+
+                        datetime.textContent = now.toLocaleString();
+
 
                     } else {
                         console.log('No data available');
@@ -533,6 +538,8 @@
 
             // Fetch sensor data and update images
             function fetchSensorData2() {
+                const datetime = document.getElementById('created_at');
+
                 $.ajax({
                     url: '/Worker/sensor-data/' + towerId,
                     method: 'GET',
@@ -543,13 +550,14 @@
                                 .nutrient_level);
                             const pHlevel = parseFloat(response.sensorData.pH);
                             const light = parseFloat(response.sensorData.light);
+                            const created_at = response.sensorData.created_at;
 
                             updateNutrientImage(NutrientVolume);
                             updatePhScaleImage(pHlevel);
                             updateLightStatus(light);
                             updateThermometerImage(Temperature);
                             updateOnlineStatus(false);
-
+                            datetime.textContent = created_at;
 
                         } else {
                             console.log('No data available');
@@ -654,56 +662,48 @@
             const volumeValueElement = document.getElementById('nutrient-value');
 
             if (isNaN(nutrientVolume) || nutrientVolume === null) {
-                nutrientImage.src = '{{ asset('images/Water/10.png') }}'; // Grayscale image
+                nutrientImage.src = '{{ asset('images/Water/10.png') }}';
                 statusText.textContent = "N/A";
                 statusText.style.color = 'gray';
                 volumeValueElement.style.color = 'gray';
                 nutrientImage.style.filter = 'grayscale(100%)';
-
             } else {
-                nutrientImage.style.filter = 'none'; // Reset filter for valid nutrient values
+
+                nutrientImage.style.filter = 'none';
                 volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
 
                 if (nutrientVolume >= 20) {
                     nutrientImage.src = '{{ asset('images/Water/100.png') }}';
                     statusText.textContent = "Full";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 17) {
                     nutrientImage.src = '{{ asset('images/Water/80.png') }}';
                     statusText.textContent = "85%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 15) {
                     nutrientImage.src = '{{ asset('images/Water/70.png') }}';
                     statusText.textContent = "75%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 12) {
                     nutrientImage.src = '{{ asset('images/Water/60.png') }}';
                     statusText.textContent = "60%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 10) {
                     nutrientImage.src = '{{ asset('images/Water/50.png') }}';
                     statusText.textContent = "50%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 7) {
                     nutrientImage.src = '{{ asset('images/Water/30.png') }}';
                     statusText.textContent = "35%";
                     statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
                 } else if (nutrientVolume >= 5) {
                     nutrientImage.src = '{{ asset('images/Water/20.png') }}';
                     statusText.textContent = "25%";
                     statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
                 } else {
                     nutrientImage.src = '{{ asset('images/Water/10.png') }}';
-                    statusText.textContent = "Empty";
-                    statusText.style.color = 'gray';
-                    volumeValueElement.style.color = 'gray';
+                    statusText.textContent = "Low";
+                    statusText.style.color = 'green';
                 }
             }
         }
@@ -717,7 +717,7 @@
 
             if (phValue >= 0 && phValue <= 14) {
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
-
+                phScale.style.filter = 'none';
                 // Update status based on pH value
                 if (phValue < 5.0) {
                     statusText.textContent = "Too Acidic";
@@ -744,6 +744,7 @@
                 phScale.style.filter = 'grayscale(100%)';
             }
         }
+
 
         function updateThermometerImage(temperature) {
             const thermometer = document.getElementById('thermometer');
