@@ -16,6 +16,7 @@
             return Crypt::decryptString($owner->status) === '0';
         });
 
+        $owners = Owner::all();
         $workers = Worker::all();
         $towers = Tower::all()->keyBy('id');
 
@@ -44,161 +45,150 @@
 
                                 <div class="panel-body">
                                     <div class="dataTable_wrapper">
-                                        <table class="table table-striped table-bordered table-hover"
-                                            id="dataTables-example">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Username</th>
-                                                    <th>Email</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if ($activeOwners->isNotEmpty())
-                                                    @foreach ($activeOwners as $owner)
+                                        @if ($owners->isNotEmpty())
+                                            <table class="table table-striped table-bordered table-hover"
+                                                id="dataTables-example">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Username</th>
+                                                        <th>Email</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($owners as $owner)
+                                                        @php
+                                                            $status = Crypt::decryptString($owner->status);
+                                                        @endphp
                                                         <tr class="odd gradeX owner-row">
                                                             <td>{{ $owner->id }}</td>
                                                             <td>{{ Crypt::decryptString($owner->name) }}</td>
                                                             <td>{{ Crypt::decryptString($owner->username) }}</td>
                                                             <td>{{ Crypt::decryptString($owner->email) }}</td>
                                                             <td>
-                                                                <div class="btn-group">
-                                                                    <a href="{{ route('admin.edit', $owner->id) }}"
-                                                                        class="btn btn-success">Edit</a>
-                                                                    <form action="{{ route('admin.dis', $owner->id) }}"
-                                                                        method="post">
+                                                                @if ($status === '1')
+                                                                    <!-- Owner is active -->
+                                                                    <div class="btn-group">
+                                                                        <a href="{{ route('admin.edit', $owner->id) }}"
+                                                                            class="btn btn-success">Edit</a>
+                                                                        <form action="{{ route('admin.dis', $owner->id) }}"
+                                                                            method="post" style="display:inline;">
+                                                                            @csrf
+                                                                            <button
+                                                                                onclick="return confirm('Are you sure you want to disable this?')"
+                                                                                type="submit"
+                                                                                class="btn btn-danger btn-rounded">Disable</button>
+                                                                        </form>
+                                                                    </div>
+                                                                @else
+                                                                    <!-- Owner is deactivated -->
+                                                                    <form action="{{ route('admin.en', $owner->id) }}"
+                                                                        method="post" style="display:inline;">
                                                                         @csrf
                                                                         <button
-                                                                            onclick="return confirm('Are you sure You want to delete this?')"
+                                                                            onclick="return confirm('Are you sure you want to enable this?')"
                                                                             type="submit"
-                                                                            class="btn btn-info ti-trash btn-rounded">Disable</button>
+                                                                            class="btn btn-info btn-rounded">Enable</button>
                                                                     </form>
-                                                                </div>
+                                                                @endif
                                                             </td>
                                                         </tr>
-                                                        @if ($workers)
+
+                                                        @if ($status === '1')
                                                             <tr class="workerlist">
                                                                 <td colspan="5">
-                                                                    <table class="table table-bordered worker-table">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>No</th>
-                                                                                <th>Worker Name</th>
-                                                                                <th>Worker Username</th>
-                                                                                <th>Tower assigned</th>
+                                                                    @if ($workers && $workers->isNotEmpty())
+                                                                        <table class="table table-bordered worker-table">
 
-                                                                                <th>Action</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            @php $counter2 = 1; @endphp
-
+                                                                            @php $counter = 1; @endphp
                                                                             @foreach ($workers as $worker)
-                                                                                @if ($worker->OwnerID == $owner->id && Crypt::decryptString($worker->status) == '1')
-                                                                                    @php
-                                                                                      
-                                                                                        $tower = $towers->get(
-                                                                                            $worker->towerid,
-                                                                                        );
-                                                                                    @endphp
-                                                                                    <tr>
-                                                                                        <td>{{ $counter2++ }}</td>
-                                                                                        <td>{{ Crypt::decryptString($worker->name) }}
-                                                                                        </td>
-                                                                                        <td>{{ Crypt::decryptString($worker->username) }}
-                                                                                        </td>
-                                                                                        <td>{{ $tower ? Crypt::decryptString($tower->name) : 'N/A' }}
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <div class="btn-group">
-                                                                                                <a href="{{ route('admin.edit2', $worker->id) }}"
-                                                                                                    class="btn btn-success">Edit</a>
-                                                                                            </div>
-
-                                                                                            <form
-                                                                                                action="{{ route('admin.dis2', $worker->id) }}"
-                                                                                                method="POST">
-                                                                                                @csrf
-                                                                                                <button
-                                                                                                    onclick="return confirm('Are you sure you want to disable this?')"
-                                                                                                    type="submit"
-                                                                                                    class="btn btn-danger btn-rounded">
-                                                                                                    Disable
-                                                                                                </button>
-                                                                                            </form>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                @endif
-                                                                                @if ($worker->OwnerID == $owner->id && Crypt::decryptString($worker->status) == '0')
-                                                                                    @php
-                                                                                        $tower = $towers->get(
-                                                                                            $worker->towerid,
-                                                                                        );
-                                                                                    @endphp
-                                                                                    <tr>
-                                                                                        <td>{{ $counter2++ }}</td>
-                                                                                        <td>{{ Crypt::decryptString($worker->name) }}
-                                                                                        </td>
-                                                                                        <td>{{ Crypt::decryptString($worker->username) }}
-                                                                                        </td>
-                                                                                        <td>{{ $tower ? Crypt::decryptString($tower->name) : 'N/A' }}
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <form
-                                                                                                action="{{ route('admin.en2', $worker->id) }}"
-                                                                                                method="POST">
-                                                                                                @csrf
-                                                                                                <button
-                                                                                                    onclick="return confirm('Are you sure you want to enable this?')"
-                                                                                                    type="submit"
-                                                                                                    class="btn btn-secondary ti-trash btn-rounded">
-                                                                                                    Enable
-                                                                                                </button>
-                                                                                            </form>
-
-                                                                                        </td>
-                                                                                    </tr>
+                                                                                @if ($worker->OwnerID == $owner->id)
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>No</th>
+                                                                                            <th>Worker Name</th>
+                                                                                            <th>Worker Username</th>
+                                                                                            <th>Tower Assigned</th>
+                                                                                            <th>Action</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        @php
+                                                                                            $workerStatus = Crypt::decryptString(
+                                                                                                $worker->status,
+                                                                                            );
+                                                                                            $tower = $towers->get(
+                                                                                                $worker->towerid,
+                                                                                            );
+                                                                                        @endphp
+                                                                                        <tr>
+                                                                                            <td>{{ $counter++ }}</td>
+                                                                                            <td>{{ Crypt::decryptString($worker->name) }}
+                                                                                            </td>
+                                                                                            <td>{{ Crypt::decryptString($worker->username) }}
+                                                                                            </td>
+                                                                                            <td>{{ $tower ? Crypt::decryptString($tower->name) : 'N/A' }}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                @if ($workerStatus == '1')
+                                                                                                    <!-- Active Worker -->
+                                                                                                    <div class="btn-group">
+                                                                                                        <a href="{{ route('admin.edit2', $worker->id) }}"
+                                                                                                            class="btn btn-success">Edit</a>
+                                                                                                        <form
+                                                                                                            action="{{ route('admin.dis2', $worker->id) }}"
+                                                                                                            method="POST"
+                                                                                                            style="display:inline;">
+                                                                                                            @csrf
+                                                                                                            <button
+                                                                                                                onclick="return confirm('Are you sure you want to disable this?')"
+                                                                                                                type="submit"
+                                                                                                                class="btn btn-danger btn-rounded">Disable</button>
+                                                                                                        </form>
+                                                                                                    </div>
+                                                                                                @else
+                                                                                                    <!-- Deactivated Worker -->
+                                                                                                    <form
+                                                                                                        action="{{ route('admin.en2', $worker->id) }}"
+                                                                                                        method="POST"
+                                                                                                        style="display:inline;">
+                                                                                                        @csrf
+                                                                                                        <button
+                                                                                                            onclick="return confirm('Are you sure you want to enable this?')"
+                                                                                                            type="submit"
+                                                                                                            class="btn btn-secondary btn-rounded">Enable</button>
+                                                                                                    </form>
+                                                                                                @endif
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    @else
+                                                                                        <tr>
+                                                                                            <td colspan="5"
+                                                                                                class="text-center">No
+                                                                                                worker accounts
+                                                                                            </td>
+                                                                                        </tr>
                                                                                 @endif
                                                                             @endforeach
-                                                                        </tbody>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                        @else
-                                                            <center>
-                                                                <span>No worker accounts</span>
-
-                                                            </center>
-                                                        @endif
-                                                    @endforeach
-                                                @elseif ($deactivatedOwners->isNotEmpty())
-                                                    @foreach ($deactivatedOwners as $owner)
-                                                        <tr class="odd gradeX owner-row">
-                                                            <td>{{ $owner->id }}</td>
-                                                            <td>{{ Crypt::decryptString($owner->name) }}</td>
-                                                            <td>{{ Crypt::decryptString($owner->username) }}</td>
-                                                            <td>{{ Crypt::decryptString($owner->email) }}</td>
-                                                            <td>
-                                                                <form action="{{ route('admin.en', $owner->id) }}"
-                                                                    method="post">
-                                                                    @csrf
-                                                                    <button
-                                                                        onclick="return confirm('Are you sure you want to enable this?')"
-                                                                        type="submit"
-                                                                        class="btn btn-info ti-trash btn-rounded">Enable</button>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @else
-                                                    <p>No active accounts available</p>
-                                                @endif
-                                            </tbody>
+                                                </tbody>
+                                            </table>
+                                        @endif
+                                        </td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
+                                        </tbody>
                                         </table>
+                                    @else
+                                        <tr>
+                                            <td colspan="5" class="text-center">No active accounts available</td>
+                                        </tr>
+                                        @endif
                                     </div>
                                 </div>
+
                             </div>
 
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -206,6 +196,7 @@
                                 Add Account
                             </button>
                         </div>
+
                     </div>
                 </div>
         </div>
@@ -259,11 +250,6 @@
         #toggleButton:hover {
             text-decoration: underline;
             color: rgb(0, 0, 0);
-        }
-
-        .dis {
-            display: none;
-            /* Initially hide the div */
         }
 
         .workerlist {

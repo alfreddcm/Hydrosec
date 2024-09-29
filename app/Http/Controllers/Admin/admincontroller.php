@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\IntrusionDetection;
-use Carbon\Carbon;
 use App\Mail\Alert;
 use App\Models\Admin;
+use App\Models\IntrusionDetection;
 use App\Models\Owner;
-use App\Models\Worker;
 use App\Models\Tower;
-
+use App\Models\Worker;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -66,49 +65,49 @@ class admincontroller extends Controller
 
     }
 
-public function showCounts()
-{
-    // Count owners with decrypted status of 1
-    $ownerCount = Owner::all()->filter(function ($owner) {
-        $status = Crypt::decryptString($owner->status);
-        Log::info('Owner status decrypted:', ['status' => $status]);
-        return $status == '1';
-    })->count();
+    public function showCounts()
+    {
+        // Count owners with decrypted status of 1
+        $ownerCount = Owner::all()->filter(function ($owner) {
+            $status = Crypt::decryptString($owner->status);
+            Log::info('Owner status decrypted:', ['status' => $status]);
+            return $status == '1';
+        })->count();
 
-    // Log the count of owners
-    Log::info('Owner Count:', ['count' => $ownerCount]);
+        // Log the count of owners
+        Log::info('Owner Count:', ['count' => $ownerCount]);
 
-    // Count workers with decrypted status of 1
-    $workerCount = Worker::all()->filter(function ($worker) {
-        $status = Crypt::decryptString($worker->status);
-        Log::info('Worker status decrypted:', ['status' => $status]);
-        return $status == '1';
-    })->count();
+        // Count workers with decrypted status of 1
+        $workerCount = Worker::all()->filter(function ($worker) {
+            $status = Crypt::decryptString($worker->status);
+            Log::info('Worker status decrypted:', ['status' => $status]);
+            return $status == '1';
+        })->count();
 
-    // Log the count of workers
-    Log::info('Worker Count:', ['count' => $workerCount]);
+        // Log the count of workers
+        Log::info('Worker Count:', ['count' => $workerCount]);
 
-    // Fetch intrusion data and format date
-    $intrusions = IntrusionDetection::all()->map(function ($intrusion) {
-        $intrusion->formatted_detected_at = Carbon::parse($intrusion->detected_at)->format('h:i A d,m,Y');
-        $intrusion->ip_address = Crypt::decryptString($intrusion->ip_address);
-        $intrusion->user_agent = Crypt::decryptString($intrusion->user_agent);
-        $intrusion->failed_attempts = Crypt::decryptString($intrusion->failed_attempts);
+        // Fetch intrusion data and format date
+        $intrusions = IntrusionDetection::all()->map(function ($intrusion) {
+            $intrusion->formatted_detected_at = Carbon::parse($intrusion->detected_at)->format('h:i A d,m,Y');
+            $intrusion->ip_address = Crypt::decryptString($intrusion->ip_address);
+            $intrusion->user_agent = Crypt::decryptString($intrusion->user_agent);
+            $intrusion->failed_attempts = Crypt::decryptString($intrusion->failed_attempts);
 
-        // Log each intrusion entry
-        Log::info('Intrusion Detection Entry:', [
-            'ip_address' => $intrusion->ip_address,
-            'user_agent' => $intrusion->user_agent,
-            'failed_attempts' => $intrusion->failed_attempts,
-            'formatted_detected_at' => $intrusion->formatted_detected_at,
-        ]);
+            // Log each intrusion entry
+            Log::info('Intrusion Detection Entry:', [
+                'ip_address' => $intrusion->ip_address,
+                'user_agent' => $intrusion->user_agent,
+                'failed_attempts' => $intrusion->failed_attempts,
+                'formatted_detected_at' => $intrusion->formatted_detected_at,
+            ]);
 
-        return $intrusion;
-    });
+            return $intrusion;
+        });
 
-    // Return all data to the view
-    return view('Admin.dashboard', compact('ownerCount', 'workerCount', 'intrusions'));
-}
+        // Return all data to the view
+        return view('Admin.dashboard', compact('ownerCount', 'workerCount', 'intrusions'));
+    }
 
     public function edit($id)
     {
@@ -210,7 +209,7 @@ public function showCounts()
 
         return redirect()->back()->with('success', 'Password updated successfully');
     }
-   
+
     public function adminupdatePassword2(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -226,8 +225,8 @@ public function showCounts()
                 'confirmed',
             ],
         ], [
-    'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
-]);
+            'password.regex' => 'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+        ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -286,10 +285,11 @@ public function showCounts()
         return false;
     }
 
-    public function disableOwner()
+    public function disableOwner(Request $request, $id)
     {
         try {
-            $user = Owner::find(auth()->user()->id);
+            $user = Owner::find($id);
+
             if ($user) {
                 $user->status = Crypt::encryptString("0");
                 $user->save();
@@ -311,10 +311,10 @@ public function showCounts()
         }
     }
 
-    public function en()
+    public function en(Request $request, $id)
     {
         try {
-            $user = Owner::find(auth()->user()->id);
+            $user = Owner::find($id);
             if ($user) {
                 $user->status = Crypt::encryptString("1");
                 $user->save();
@@ -329,12 +329,12 @@ public function showCounts()
                 return redirect()->route('UserAccounts')->withErrors(['error' => 'Owner not found.']);
             }
         } catch (\Exception $exception) {
-            
+
             return redirect()->route('UserAccounts')->withErrors(['error' => 'Unable to enable the account.']);
         }
     }
 
-        public function workerdis(Request $request, $id)
+    public function workerdis(Request $request, $id)
     {
 
         $user = Worker::find($id);
