@@ -470,7 +470,7 @@
 
                     const sensorData = data.sensorData;
 
-                    if (sensorData) {
+                    if (data.sensorData && data) {
                         // Log the received sensor data
                         console.log('Updating sensor data:', sensorData);
                         updateNutrientImage(parseFloat(sensorData.nutrient_level));

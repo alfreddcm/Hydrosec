@@ -378,6 +378,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        let firstFetch = false;
+
         function updateTime() {
             const now = new Date();
             let hours = now.getHours();
@@ -426,6 +428,7 @@
                 pusher.connection.bind('failed', function() {
                     console.log('Pusher connection failed');
                 });
+
                 const channel = pusher.subscribe('tower.' + towerId);
                 channel.bind('SensorDataUpdated', function(data) {
                     console.log('Successfully subscribed to channel:', 'tower.' + towerId);
@@ -433,7 +436,7 @@
 
                     const sensorData = data.sensorData;
 
-                    if (sensorData) {
+                    if (data.sensorData && data) {
                         // Log the received sensor data
                         console.log('Updating sensor data:', sensorData);
                         updateNutrientImage(parseFloat(sensorData.nutrient_level));
@@ -442,8 +445,8 @@
                         updateThermometerImage(parseFloat(sensorData.temperature));
                         updateOnlineStatus(true);
 
+                        const now = new Date();
                         datetime.textContent = now.toLocaleString();
-
 
                     } else {
                         console.log('No data available');
@@ -558,6 +561,8 @@
                             updateThermometerImage(Temperature);
                             updateOnlineStatus(false);
                             datetime.textContent = created_at;
+
+                            firstFetch = true;
 
                         } else {
                             console.log('No data available');
