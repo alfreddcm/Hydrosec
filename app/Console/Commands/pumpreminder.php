@@ -77,7 +77,7 @@ class pumpreminder extends Command
                         $body = "The Tower '" . Crypt::decryptString($data->name) . "' did not pump at " . $now . "  Please check the plug.";
 
                         $details = [
-                            'title' => 'Pumping stopped.',
+                            'title' => 'Electricity Cut-off',
                             'body' => $body,
                         ];
 
