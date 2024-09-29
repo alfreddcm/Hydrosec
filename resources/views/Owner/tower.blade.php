@@ -144,7 +144,9 @@
                         </p>
                     @endif
 
-                    <center><span id="created_at">...</span></center>
+                    <center>
+                        <div>Last Fetch: <span id="created_at"></span></div>
+                    </center>
                     <div class="row justify-content-center g-1">
                         <div class="col-sm-3">
                             <h5>Mode: <span id="modeCircle" class="circle"></span><span id="modeText"
@@ -577,14 +579,14 @@
                                 nutrient_level,
                                 pH,
                                 light,
-                                created_at
+                                stamps,
                             } = response.sensorData;
                             updateNutrientImage(parseFloat(nutrient_level));
                             updatePhScaleImage(parseFloat(pH));
                             updateLightStatus(parseFloat(light));
                             updateThermometerImage(parseFloat(temperature));
                             updateOnlineStatus(false);
-                            datetime.textContent = created_at;
+                            datetime.textContent = stamps;
                         } else {
                             console.log('No data available');
                         }

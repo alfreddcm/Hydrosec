@@ -205,6 +205,7 @@
                                 @else
                                     <p class="card-text">No Worker set</p>
                                 @endif
+                                <center><div> <span id="created_at"></span></div></center>
 
                                 <div class="row justify-content-center g-1">
                                     <div class="col-sm-3">
@@ -553,7 +554,7 @@
                                 .nutrient_level);
                             const pHlevel = parseFloat(response.sensorData.pH);
                             const light = parseFloat(response.sensorData.light);
-                            const created_at = response.sensorData.created_at;
+                            const created_at = response.sensorData.stamps;
 
                             updateNutrientImage(NutrientVolume);
                             updatePhScaleImage(pHlevel);

@@ -36,7 +36,7 @@ class SensorData extends Controller
             if ($stat == '1') {
                 $oneHourAgo = Carbon::now()->subHour();
                 $sdata = Sensor::where('towerid', $tid)
-                    ->where('created_at', '>=', $oneHourAgo)
+                //->where('created_at', '>=', $oneHourAgo)
                     ->orderBy('id', 'desc')
                     ->select('pH', 'temperature', 'nutrientlevel', 'status', 'light', 'created_at')
                     ->first();
@@ -49,14 +49,27 @@ class SensorData extends Controller
                     $status = $this->decrypt_data($sdata->status, $method, $key_str, $iv_str);
                     $light = $this->decrypt_data($sdata->light, $method, $key_str, $iv_str);
 
+                    $createdAt = Carbon::parse($sdata->created_at);
+                    $currentTime = Carbon::now();
+
+                    $diffInSeconds = $currentTime->diffInSeconds($createdAt);
+
+                    if ($diffInSeconds <= 3600) { // 3600 seconds = 1 hour
+                        $stamps = "{$diffInSeconds} seconds ago";
+                    } else {
+                        $stamps = $createdAt->format('g:i A D d/m/Y');
+                    }
+
                     $decrypted_data = [
                         'pH' => $ph,
                         'temperature' => $temp,
                         'nutrient_level' => $volume,
                         'light' => $light,
-                        'stamps' => Carbon::parse($sdata->created_at)->format('Y-m-d H:i:s')];
+                        'stamps' => $stamps,
+                    ];
 
                     return response()->json(['sensorData' => $decrypted_data]);
+
                 } else {
 
                     $decrypted_data = [
@@ -64,6 +77,7 @@ class SensorData extends Controller
                         'temperature' => null,
                         'nutrient_level' => null,
                         'light' => null,
+
                     ];
 
                     return response()->json(['sensorData' => $decrypted_data]);
@@ -205,7 +219,7 @@ class SensorData extends Controller
 
                 if ($towercode == $decrypted_towercode) {
                     $ipmac = Tower::where('id', $tower->id)->first();
-                    $towerinfoid = $ipmac->id;
+                    $towerinfoid = $tower->id;
                     $towerinfocode = Crypt::decryptString($ipmac->towercode);
 
                     Cache::put($towerinfoid, $towerinfocode, 3600);
