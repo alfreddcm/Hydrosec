@@ -416,6 +416,18 @@
                 const datetime = document.getElementById('datetime');
                 const now = new Date();
 
+                const options = {
+                    timeZone: 'Asia/Manila', // Set the timezone to Asia/Manila
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    hour12: true, // Use 12-hour format
+                    weekday: 'short', // Short form of the day (e.g., Mon, Tue)
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                };
+
                 const pusher = new Pusher('3e52514a75529a62c062', {
                     cluster: 'ap1',
                     encrypted: true
@@ -446,8 +458,7 @@
                         updateThermometerImage(parseFloat(sensorData.temperature));
                         updateOnlineStatus(true);
 
-                        const now = new Date();
-                        datetime.textContent = now.toLocaleString();
+                        datetime.textContent = now.toLocaleString('en-US', options);
 
                     } else {
                         console.log('No data available');

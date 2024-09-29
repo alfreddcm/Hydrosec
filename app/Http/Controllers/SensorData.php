@@ -49,13 +49,19 @@ class SensorData extends Controller
                     $status = $this->decrypt_data($sdata->status, $method, $key_str, $iv_str);
                     $light = $this->decrypt_data($sdata->light, $method, $key_str, $iv_str);
 
-                    $createdAt = Carbon::parse($sdata->created_at);
+                    $createdAt = Carbon::parse($sdata->created_at); // No need to convert timezone manually
                     $currentTime = Carbon::now();
 
-                    $diffInSeconds = $currentTime->diffInSeconds($createdAt);
+                    $diffInSeconds = abs($currentTime->diffInSeconds($createdAt));
 
-                    if ($diffInSeconds <= 3600) { // 3600 seconds = 1 hour
-                        $stamps = "{$diffInSeconds} seconds ago";
+                    if ($currentTime->lessThan($createdAt)) {
+                        $stamps = "In the future";
+                    } elseif ($diffInSeconds < 60) { 
+                        $stamps = $diffInSeconds . " seconds ago";
+                    } elseif ($diffInSeconds < 3600) {
+                        $minutes = floor($diffInSeconds / 60);
+                        $seconds = $diffInSeconds % 60;
+                        $stamps = $minutes . " minutes " . $seconds . " seconds ago";
                     } else {
                         $stamps = $createdAt->format('g:i A D d/m/Y');
                     }
