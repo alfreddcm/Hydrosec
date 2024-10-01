@@ -129,7 +129,7 @@ class AuthManager extends Controller
 
                 } else {
                     $storedUsername = Crypt::decryptString($user->username);
-$storedPassword = $user->password;
+                    $storedPassword = $user->password;
 
                     if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
 
@@ -160,7 +160,7 @@ $storedPassword = $user->password;
                     RateLimiter::hit($throttleKey);
                 } else {
                     $storedUsername = Crypt::decryptString($user->username);
-$storedPassword = $user->password;
+                    $storedPassword = $user->password;
 
                     if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
 

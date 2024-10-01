@@ -56,7 +56,7 @@ class SensorData extends Controller
 
                     if ($currentTime->lessThan($createdAt)) {
                         $stamps = "In the future";
-                    } elseif ($diffInSeconds < 60) { 
+                    } elseif ($diffInSeconds < 60) {
                         $stamps = $diffInSeconds . " seconds ago";
                     } elseif ($diffInSeconds < 3600) {
                         $minutes = floor($diffInSeconds / 60);

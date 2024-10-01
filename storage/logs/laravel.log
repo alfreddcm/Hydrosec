@@ -26938,3 +26938,163 @@
   5 => 'QBNVEwOsCdBJULKLmvE5CpV1jh0XSgO3x5gengn3',
 )  
 [2024-09-29 13:55:18] local.INFO: 806.78  
+[2024-09-29 17:23:54] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-29 17:23:54] local.INFO: array (
+  0 => 'ZzTdVK0Dg9EYfeiUKJKRlA8Wk8NB8AvwX4EOiXVn',
+)  
+[2024-09-29 17:23:54] local.INFO: 3036.18  
+[2024-09-29 17:23:55] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-29 17:23:55] local.INFO: array (
+  0 => 'ZzTdVK0Dg9EYfeiUKJKRlA8Wk8NB8AvwX4EOiXVn',
+)  
+[2024-09-29 17:23:55] local.INFO: 801.61  
+[2024-09-29 17:23:57] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-29 17:23:57] local.INFO: array (
+  0 => 'YToyOntzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyODoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2xvZ291dCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=',
+  1 => 1727601834,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'ZzTdVK0Dg9EYfeiUKJKRlA8Wk8NB8AvwX4EOiXVn',
+)  
+[2024-09-29 17:23:57] local.INFO: 2177.21  
+[2024-09-29 17:23:59] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-29 17:23:59] local.INFO: array (
+  0 => 'ZzTdVK0Dg9EYfeiUKJKRlA8Wk8NB8AvwX4EOiXVn',
+)  
+[2024-09-29 17:23:59] local.INFO: 2019.36  
+[2024-09-29 17:24:00] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-09-29 17:24:00] local.INFO: array (
+  0 => 'YTozOntzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo2OiJfdG9rZW4iO3M6NDA6IlJWUERNeXg0MXV5dFo1bWg4WExobjJaUlM0WUFTSGhEdFhGVjB0d3YiO30=',
+  1 => 1727601839,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'ZzTdVK0Dg9EYfeiUKJKRlA8Wk8NB8AvwX4EOiXVn',
+)  
+[2024-09-29 17:24:00] local.INFO: 1026.53  
+[2024-09-30 00:25:50] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-30 00:25:51] local.INFO: array (
+  0 => 'KVRnGoZLN1s4fOeVa6piPM89eB8Dm1SUbAZ7Wmfb',
+)  
+[2024-09-30 00:25:51] local.INFO: 1846.02  
+[2024-09-30 00:25:57] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-09-30 00:25:57] local.INFO: array (
+  0 => 'KVRnGoZLN1s4fOeVa6piPM89eB8Dm1SUbAZ7Wmfb',
+)  
+[2024-09-30 00:25:57] local.INFO: 461.78  
+[2024-09-30 00:25:57] local.INFO: insert into `sessions` (`payload`, `last_activity`, `user_id`, `ip_address`, `user_agent`, `id`) values (?, ?, ?, ?, ?, ?)  
+[2024-09-30 00:25:57] local.INFO: array (
+  0 => 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicHhxUmlJNUROT3FvUWZLYnpaTkUxUDc0WWlBaEFGUUJyYWx1QlE3QSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=',
+  1 => 1727627157,
+  2 => NULL,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'KVRnGoZLN1s4fOeVa6piPM89eB8Dm1SUbAZ7Wmfb',
+)  
+[2024-09-30 00:25:57] local.INFO: 429.65  
+[2024-09-30 16:06:56] local.INFO: select * from `tbl_tower`  
+[2024-09-30 16:06:56] local.INFO: array (
+)  
+[2024-09-30 16:06:56] local.INFO: 1056.88  
+[2024-09-30 16:06:57] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 16:06:57] local.INFO: array (
+  0 => 'eyJpdiI6ImMxK0ZDdHVZVENXQ01rZEZPQ2NzOVE9PSIsInZhbHVlIjoiVnpGekhheHRleitKZE1WaVh1NW9PZz09IiwibWFjIjoiNjBlYWNlNDdkMzRkNDI2OGJjYTFmOTJkNGNjNTM2NzYwZGRhMDc5YmQyZGZiYjgyNDliN2ExNzU2N2Y1NmEyZCIsInRhZyI6IiJ9',
+  1 => '2024-09-30 16:06:57',
+  2 => 1,
+)  
+[2024-09-30 16:06:57] local.INFO: 375.47  
+[2024-09-30 16:06:57] local.INFO: Tower ID 1 mode updated to 0  
+[2024-09-30 16:06:57] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 16:06:57] local.INFO: array (
+  0 => 'eyJpdiI6ImxLRU9nVnZRUXRSTEVMQ3FtZm5vNGc9PSIsInZhbHVlIjoicXhBYTBXbGoyMENZanpCVnhWd3BxZz09IiwibWFjIjoiOTM3NWRiYzFmMDQ4MWU3NGVmYmU1MGJkZmY2NmEwMTcxMGNhYjhkMGExNjE5NTk4MWY1YmViYWQ4MjBkZTA5NSIsInRhZyI6IiJ9',
+  1 => '2024-09-30 16:06:57',
+  2 => 2,
+)  
+[2024-09-30 16:06:57] local.INFO: 245.42  
+[2024-09-30 16:06:57] local.INFO: Tower ID 2 mode updated to 0  
+[2024-09-30 16:06:57] local.INFO: Tower modes updated at 2024-09-30 16:06:57  
+[2024-09-30 16:07:02] local.INFO: select * from `tbl_tower`  
+[2024-09-30 16:07:02] local.INFO: array (
+)  
+[2024-09-30 16:07:02] local.INFO: 1025.12  
+[2024-09-30 16:07:02] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 16:07:02] local.INFO: array (
+  0 => 'eyJpdiI6ImVYNnE2MU9lU0MyUzhyM1FJS21VTkE9PSIsInZhbHVlIjoiYVRta25oTndvZDJuS2pVblAxMk83UT09IiwibWFjIjoiZjhmYThjOTAwODU5MDIxNjkyNDY0ODlhYmRmM2FlMmU0MGMyMzhiNjJhMThhM2QwMzA0ZjBjOGIyMzg5ZjkwOCIsInRhZyI6IiJ9',
+  1 => '2024-09-30 16:07:02',
+  2 => 1,
+)  
+[2024-09-30 16:07:02] local.INFO: 310.68  
+[2024-09-30 16:07:02] local.INFO: Tower ID 1 mode updated to 1  
+[2024-09-30 16:07:02] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 16:07:03] local.INFO: array (
+  0 => 'eyJpdiI6IldUQ3NlK1NSWW0yZFVDVlJPb0IzWlE9PSIsInZhbHVlIjoiNi92cWlIOVdTZitDVC9ka2hFV0VsQT09IiwibWFjIjoiMWYwNzE3NjMwMjMxZWE2ODQ2Zjc1NGNhODM5MGRiODEzZmY0NDA5MTcwZmIwMTM0YmU4M2MxMDNjNDI4ZDJjZCIsInRhZyI6IiJ9',
+  1 => '2024-09-30 16:07:02',
+  2 => 2,
+)  
+[2024-09-30 16:07:03] local.INFO: 288.6  
+[2024-09-30 16:07:03] local.INFO: Tower ID 2 mode updated to 1  
+[2024-09-30 16:07:03] local.INFO: Tower modes updated at 2024-09-30 16:07:03  
+[2024-09-30 17:05:08] local.INFO: select * from `tbl_tower`  
+[2024-09-30 17:05:08] local.INFO: array (
+)  
+[2024-09-30 17:05:08] local.INFO: 1152.61  
+[2024-09-30 17:05:09] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 17:05:09] local.INFO: array (
+  0 => 'eyJpdiI6ImNORVoxazNNb1VwQXNMWmc0WE1qcUE9PSIsInZhbHVlIjoiMnQxb3puc1pLTzl5TzJrVFdEWVNJQT09IiwibWFjIjoiNjI5ZmNmYmE4YzMyOTY2YzUzOTBiNzU3ODU2OWYyNDA2MGU1M2NhYWNiNDdjZWNkNmRmM2QyMDM5ZDBhOGM0MiIsInRhZyI6IiJ9',
+  1 => '2024-09-30 17:05:08',
+  2 => 1,
+)  
+[2024-09-30 17:05:09] local.INFO: 617.1  
+[2024-09-30 17:05:09] local.INFO: Tower ID 1 mode updated to 2  
+[2024-09-30 17:05:09] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 17:05:09] local.INFO: array (
+  0 => 'eyJpdiI6Imh6QXdYMmVIRjNRaDBPQ1VIdDFsQ3c9PSIsInZhbHVlIjoiWmZVUTZjWlFnVXdNcFZDNEJOSWM3dz09IiwibWFjIjoiYjkyODhjNGExMjRhM2ExMTBlNTI2NzYwNWNjMTAyY2E3MzZiN2NhMjJiM2YzMTQ0NjE4NmQyMWJmZjE5NmI0YiIsInRhZyI6IiJ9',
+  1 => '2024-09-30 17:05:09',
+  2 => 2,
+)  
+[2024-09-30 17:05:09] local.INFO: 272.1  
+[2024-09-30 17:05:09] local.INFO: Tower ID 2 mode updated to 2  
+[2024-09-30 17:05:09] local.INFO: Tower modes updated at 2024-09-30 17:05:09  
+[2024-09-30 17:06:03] local.INFO: select * from `tbl_tower`  
+[2024-09-30 17:06:03] local.INFO: array (
+)  
+[2024-09-30 17:06:03] local.INFO: 784.29  
+[2024-09-30 17:06:03] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 17:06:03] local.INFO: array (
+  0 => 'eyJpdiI6IkhUQ3RONTNiQkhPanhuY3YxWDFDMFE9PSIsInZhbHVlIjoiamppQTdqd3BiYWhiQ3FJbVhvRUw5dz09IiwibWFjIjoiYjk1NjhmMTQ5MGJjNWE3MDgzMjY4YmM3YWE0ZWJlY2ZlYTk2ZDQ5YzkwZDIxNjEwYjZjMWZkYTcyYTE4MWY2YyIsInRhZyI6IiJ9',
+  1 => '2024-09-30 17:06:03',
+  2 => 1,
+)  
+[2024-09-30 17:06:03] local.INFO: 218.37  
+[2024-09-30 17:06:03] local.INFO: Tower ID 1 mode updated to 0  
+[2024-09-30 17:06:03] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 17:06:03] local.INFO: array (
+  0 => 'eyJpdiI6InlxOTZtc2dRNXdBMzQxZUMybitwT0E9PSIsInZhbHVlIjoiaVRCK3huaXRPcFZvRnlIbXhXWEtYdz09IiwibWFjIjoiNzdhMmY3YWNlMjBhMzMxZDc0Zjk2NTFhNmI3ZmNiYjhkOTU5ODQwZjY3ZWExMjA5YWYyMjdmMTM1M2E5N2ZmNCIsInRhZyI6IiJ9',
+  1 => '2024-09-30 17:06:03',
+  2 => 2,
+)  
+[2024-09-30 17:06:03] local.INFO: 251.14  
+[2024-09-30 17:06:03] local.INFO: Tower ID 2 mode updated to 0  
+[2024-09-30 17:06:03] local.INFO: Tower modes updated at 2024-09-30 17:06:03  
+[2024-09-30 17:07:44] local.INFO: select * from `tbl_tower`  
+[2024-09-30 17:07:44] local.INFO: array (
+)  
+[2024-09-30 17:07:44] local.INFO: 867.31  
+[2024-09-30 17:07:45] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 17:07:45] local.INFO: array (
+  0 => 'eyJpdiI6Im9FQ0kwdlFydk9KOUJsZkJ1TUdSdkE9PSIsInZhbHVlIjoicnA5ZVU3K01mOFpIUXVyaU9OSExxZz09IiwibWFjIjoiZWRmMzMwZDg4ODFkYWE5NmNhM2UwMDk3N2Y2ODg2YzJhODgxYTM2NjVhMWJmN2YwOTlhMjU2Y2VlY2NmNmQwOSIsInRhZyI6IiJ9',
+  1 => '2024-09-30 17:07:44',
+  2 => 1,
+)  
+[2024-09-30 17:07:45] local.INFO: 250.57  
+[2024-09-30 17:07:45] local.INFO: Tower ID 1 mode updated to 1  
+[2024-09-30 17:07:45] local.INFO: update `tbl_tower` set `mode` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-09-30 17:07:45] local.INFO: array (
+  0 => 'eyJpdiI6IkhsbENkajAzZnhsV2hvcWx2eVNLaVE9PSIsInZhbHVlIjoiSWpXTXNFU2hycDc4Q1FGSUQ3Wmhpdz09IiwibWFjIjoiYWY5YmFhMzc0NmRhMzZmNjJlOWEzZDc3ZmY4ZjBiZmNlMDUzZTA1NzJhYjMwMmE4NGMwNTQ3M2Y4YmMzYWNhOSIsInRhZyI6IiJ9',
+  1 => '2024-09-30 17:07:45',
+  2 => 2,
+)  
+[2024-09-30 17:07:45] local.INFO: 244.91  
+[2024-09-30 17:07:45] local.INFO: Tower ID 2 mode updated to 1  
+[2024-09-30 17:07:45] local.INFO: Tower modes updated at 2024-09-30 17:07:45  

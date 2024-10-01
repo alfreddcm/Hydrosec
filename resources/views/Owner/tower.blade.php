@@ -449,20 +449,8 @@
                 console.log('Livewire component has been loaded');
 
                 fetchInitialSensorData();
-                const datetime = document.getElementById('datetime');
-                const now = new Date();
-
-                const options = {
-                    timeZone: 'Asia/Manila', // Set the timezone to Asia/Manila
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                    hour12: true, // Use 12-hour format
-                    weekday: 'short', // Short form of the day (e.g., Mon, Tue)
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                };
+               
+                
 
                 const pusher = new Pusher('3e52514a75529a62c062', {
                     cluster: 'ap1',
@@ -484,16 +472,32 @@
 
                     const sensorData = data.sensorData;
 
-                    if (data.sensorData && data) {
+                    if (data.sensorData && data) { 
+                        const datetime = document.getElementById('created_at');
+                        const now = new Date();
+                        
+                        const options = {
+                        timeZone: 'Asia/Manila', // Set the timezone to Asia/Manila
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric',
+                        hour12: true, // Use 12-hour format
+                        weekday: 'short', // Short form of the day (e.g., Mon, Tue)
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                        };
+                
                         // Log the received sensor data
                         console.log('Updating sensor data:', sensorData);
                         updateNutrientImage(parseFloat(sensorData.nutrient_level));
                         updatePhScaleImage(parseFloat(sensorData.ph));
                         updateLightStatus(parseFloat(sensorData.light));
                         updateThermometerImage(parseFloat(sensorData.temperature));
+                        datetime.textContent = now.toLocaleString('en-US', options);
+
                         updateOnlineStatus(true);
 
-                        datetime.textContent = now.toLocaleString('en-US', options);
                     } else {
                         console.log('No data available');
                     }

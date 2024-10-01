@@ -10,8 +10,9 @@ use App\Models\Towerlog; // Fixed the model name to match Laravel's naming conve
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log; // Ensure Log is imported
+// Ensure Log is imported
 
 class IfOff extends Command
 {
@@ -71,7 +72,7 @@ class IfOff extends Command
                         } catch (\Exception $e) {
                             $this->error('Failed to send alert email to ' . $email . ': ' . $e->getMessage());
                         } finally {
-                            $activityLog = Crypt::encryptString("Alert: "  . json_encode($details['body']) . " Mail Status: " . $mailStatus);
+                            $activityLog = Crypt::encryptString("Alert: " . json_encode($details['body']) . " Mail Status: " . $mailStatus);
 
                             Towerlog::create([
                                 'ID_tower' => $towerId,

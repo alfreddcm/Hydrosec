@@ -828,7 +828,7 @@
 
             switch (mode) {
                 case 0:
-                    modeText.textContent = 'Inactive';
+                    modeText.textContent = 'Blackout';
                     modeCircle.style.backgroundColor = 'gray';
                     break;
                 case 1:

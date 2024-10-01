@@ -341,7 +341,6 @@
                                 createChart(chart.id, chart.title, chart.key, chart.yAxisOptions);
                             });
 
-                            // Pump Chart
                             if (data.some(item => item.pump_status !== undefined && item.pump_created_at !== undefined)) {
                                 Highcharts.chart('pumpChart-{{ $code }}', {
                                     chart: {
@@ -362,14 +361,14 @@
                                             text: 'Pump Status'
                                         },
                                         min: 0,
-                                        max: 1, // Since the pump status is likely 0 or 1
+                                        max: 1, 
                                         tickInterval: 1
                                     },
                                     series: [{
                                         name: 'Pump Status',
                                         data: data.map(item => [new Date(item.pump_created_at).getTime(), item
                                             .pump_status
-                                        ]) // Map pump data
+                                        ])
                                     }],
                                     tooltip: {
                                         pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:.0f}</b><br/>' // 0 or 1
