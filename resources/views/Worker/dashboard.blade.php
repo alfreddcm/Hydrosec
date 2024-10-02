@@ -205,7 +205,9 @@
                                 @else
                                     <p class="card-text">No Worker set</p>
                                 @endif
-                                <center><div> <span id="created_at"></span></div></center>
+                                <center>
+                                    <div> <span id="created_at"></span></div>
+                                </center>
 
                                 <div class="row justify-content-center g-1">
                                     <div class="col-sm-3">
@@ -736,22 +738,23 @@
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
                 phScale.style.filter = 'none';
                 // Update status based on pH value
-                if (phValue < 5.0) {
-                    statusText.textContent = "Too Acidic";
-                    statusText.style.color = 'red';
-                } else if (phValue < 6.0) {
+                if (phValue < 5.6) {
                     statusText.textContent = "Acidic";
                     statusText.style.color = 'orange';
-                } else if (phValue > 7.0) {
-                    statusText.textContent = "Too Basic";
-                    statusText.style.color = 'purple';
-                } else if (phValue > 6.5) {
-                    statusText.textContent = "Basic";
-                    statusText.style.color = 'blue';
-                } else {
+                } else if (phValue >= 5.6 && phValue < 7) {
                     statusText.textContent = "Good";
                     statusText.style.color = 'green';
+                } else if (phValue == 7) {
+                    statusText.textContent = "Neutral";
+                    statusText.style.color = 'blue';
+                } else if (phValue > 7) {
+                    statusText.textContent = "Alkaline";
+                    statusText.style.color = 'purple';
+                } else {
+                    statusText.textContent = "Unknown";
+                    statusText.style.color = 'gray';
                 }
+
             } else {
                 // Handle invalid pH range
                 phScale.src = `{{ asset('images/ph/7.png') }}`;
@@ -770,29 +773,29 @@
 
             thermometer.style.filter = 'none'; // Reset filter for valid temperature values
 
-            if (temperature <= 18) {
-                thermometer.src = '{{ asset('images/Temp/cold.png') }}';
-                statusText.textContent = "Too Cold";
-                statusText.style.color = 'blue';
-            } else if (temperature > 18 && temperature <= 25) {
+            if (temperature < 20) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
                 statusText.textContent = "Cold";
+                statusText.style.color = 'blue';
+            } else if (temperature >= 20 && temperature <= 25) {
+                thermometer.src = '{{ asset('images/Temp/cold.png') }}';
+                statusText.textContent = "Mild";
                 statusText.style.color = 'lightblue';
             } else if (temperature > 25 && temperature <= 30) {
                 thermometer.src = '{{ asset('images/Temp/normal.png') }}';
                 statusText.textContent = "Good";
                 statusText.style.color = 'green';
-            } else if (temperature > 30 && temperature <= 35) {
+            } else if (temperature > 30 && temperature <= 40) {
+                thermometer.src = '{{ asset('images/Temp/warm.png') }}';
+                statusText.textContent = "Warm";
+                statusText.style.color = 'orange';
+            } else if (temperature > 40) {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Hot";
-                statusText.style.color = 'orange';
-            } else if (temperature > 35 && temperature !== null) { // Add check for non-null temperature
-                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                statusText.textContent = "Too Hot";
                 statusText.style.color = 'darkred';
             } else {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                thermometer.style.filter = 'grayscale(100%)'; // Apply grayscale filter
+                thermometer.style.filter = 'grayscale(100%)';
                 tempValueElement.textContent = "N/A";
                 statusText.textContent = "Unknown";
                 statusText.style.color = 'gray';
