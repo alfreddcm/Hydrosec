@@ -6,13 +6,13 @@ use App\Models\Pump;
 use App\Models\Sensor;
 use App\Models\SensorDataHistory;
 use App\Models\Tower;
-use App\Models\TowerLogs;
+use App\Models\Towerlog;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\RedirectResponse;
 
 class Towercon extends Controller
 {
@@ -68,23 +68,23 @@ class Towercon extends Controller
 
         $tower = Tower::find($towerId);
 
-        // $hour = now()->hour;
+        $hour = now()->hour;
 
-        // if ($hour >= 6 && $hour < 18) {
-        //     $mode = 1;
-        // } elseif ($hour >= 18 && $hour < 22) {
-        //     $mode = 2;
-        // } else {
-        //     $mode = 0;
-        // }
+        if ($hour >= 6 && $hour < 18) {
+            $mode = 1;
+        } elseif ($hour >= 18 && $hour < 22) {
+            $mode = 2;
+        } else {
+            $mode = 0;
+        }
 
         if ($tower) {
             if ($days > 0) {
 
                 $startdate = Carbon::now();
                 $enddate = $startdate->copy()->addDays($days);
-                // $tower->status = Crypt::encryptString('1');
-                // $tower->mode = Crypt::encryptString($mode);
+                $tower->status = Crypt::encryptString('1');
+                $tower->mode = Crypt::encryptString($mode);
                 $tower->startdate = $startdate;
                 $tower->enddate = $enddate;
                 $tower->save();
@@ -101,7 +101,7 @@ class Towercon extends Controller
                     'date_end' => $enddate,
                 ]);
 
-                TowerLogs::create([
+                Towerlog::create([
                     'ID_tower' => $towerId,
                     'activity' => Crypt::encryptString("New cycle started. Tower ID: {$tower->id}, Start date: {$startdate}, End date: {$enddate}"),
                 ]);
@@ -110,7 +110,7 @@ class Towercon extends Controller
             } elseif ($newDays > 0) {
                 // Handle updating an existing cycle
                 $startdate = $tower->startdate;
-                $enddate = Carbon::parse($startdate)->addDays($newDays);
+                $enddate = Carbon::now()->addDays($newDays);
 
                 $tower->enddate = $enddate;
                 $tower->save();
@@ -126,7 +126,6 @@ class Towercon extends Controller
             return redirect()->back()->with('error', 'Invalid input.');
         }
 
-        // Log the error if the tower was not found
         Log::error('Failed to handle cycle - Tower not found', [
             'tower_id' => $towerId,
         ]);
@@ -167,7 +166,6 @@ class Towercon extends Controller
         $ownerID = $tow->OwnerID;
         \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
 
-
         $sensorData = Sensor::where('towerid', $towerId)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -175,6 +173,10 @@ class Towercon extends Controller
         \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
 
         $pumps = Pump::where('towerid', $towerId)->get();
+        if ($sensorData->isEmpty() && $pumps->isEmpty()) {
+            \Log::info('No sensor or pump data available');
+            return redirect()->back()->with('success', 'No sensor or pump data to save.');
+        }
 
         $pumpDataArray = $pumps->map(function ($pump) {
             return [
@@ -203,7 +205,7 @@ class Towercon extends Controller
                 'towerid' => $towerId,
                 'OwnerID' => $ownerID,
                 'sensor_data' => json_encode($sensorDataArray),
-                'pump_data' => json_encode($pumpDataArray), // Save pump data to the new column
+                'pump' => json_encode($pumpDataArray), // Save pump data to the new column
                 'created_at' => Carbon::now(),
             ]);
 
@@ -222,7 +224,7 @@ class Towercon extends Controller
         \Log::info('Activity log created', ['activityLog' => $activityLog]);
 
         try {
-            TowerLogs::create([
+            Towerlog::create([
                 'ID_tower' => $tow->id,
                 'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
             ]);
@@ -242,7 +244,7 @@ class Towercon extends Controller
 
     public function stopdis(Request $request)
     {
-        \Log::info('Stop method called', ['request' => $request->all()]);
+        \Log::info('Dis method called', ['request' => $request->all()]);
 
         $towerId = $request->input('tower_id');
         \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
@@ -259,8 +261,6 @@ class Towercon extends Controller
             $stat = Crypt::encryptString('0');
             \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
 
-            $tow->startdate = null;
-            $tow->enddate = null;
             $tow->status = $stat;
 
             $tow->save();
@@ -271,20 +271,127 @@ class Towercon extends Controller
             return redirect()->back()->with('error', 'Failed to update tower status.');
         }
 
+        // Create the activity log
+        $activityLog = [
+            'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set to disabled.',
+            'Date' => Carbon::now()->toDateTimeString(),
+        ];
+
+        \Log::info('Activity log created', ['activityLog' => $activityLog]);
+
+        try {
+            Towerlog::create([
+                'ID_tower' => $tow->id,
+                'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
+            ]);
+
+            \Log::info('Activity log saved');
+        } catch (\Exception $e) {
+            \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+        }
+
+        return redirect()->back()->with('success', 'Cycle stopped, Tower has set to disabled!');
+    }
+
+    public function en(Request $request)
+    {
+        \Log::info('en method called', ['request' => $request->all()]);
+
+        $towerId = $request->input('tower_id');
+        \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
+
+        $tow = Tower::where('id', $towerId)->first();
+        if (!$tow) {
+            \Log::error('Tower not found', ['towerId' => $towerId]);
+            return redirect()->back()->with('error', 'Tower not found.');
+        }
+
+        \Log::info('Tower retrieved', ['tow' => $tow]);
+
+        try {
+            $stat = Crypt::encryptString('1');
+            \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+
+            $tow->status = $stat;
+
+            $tow->save();
+            \Log::info('Tower status updated and saved', ['tow' => $tow]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Failed to update tower status.');
+        }
+
+        $activityLog = [
+            'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set to Ative Status.',
+            'Date' => Carbon::now()->toDateTimeString(),
+        ];
+
+        \Log::info('Activity log created', ['activityLog' => $activityLog]);
+
+        try {
+            Towerlog::create([
+                'ID_tower' => $tow->id,
+                'activity' => Crypt::encryptString(json_encode($activityLog)),
+            ]);
+
+            \Log::info('Activity log saved');
+        } catch (\Exception $e) {
+            \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+        }
+
+        return redirect()->back()->with('success', 'Tower set to Enabled successfully!');
+    }
+
+    public function restartCycle(Request $request)
+    {
+
+        \Log::info('Restart method called', ['request' => $request->all()]);
+
+        $towerId = $request->input('tower_id');
+        \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
+
+        $tow = Tower::where('id', $towerId)->first();
+        $count = $tow->startdate->diffInDays($tow->enddate);
+
+        if (!$tow) {
+            \Log::error('Tower not found', ['towerId' => $towerId]);
+            return redirect()->back()->with('error', 'Tower not found.');
+        }
+
+        \Log::info('Tower retrieved', ['tow' => $tow]);
+
+        try {
+            $stat = Crypt::encryptString('1');
+            \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+
+            $tow->startdate = now();
+            $tow->enddate = now()->addDays($count);
+
+            $tow->status = $stat;
+            $tow->save();
+
+            \Log::info('Tower status updated and saved', ['tow' => $tow]);
+        } catch (\Exception $e) {
+            \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Failed to update tower status.');
+        }
+
         $ownerID = $tow->OwnerID;
         \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
 
-        // Retrieve sensor data
         $sensorData = Sensor::where('towerid', $towerId)
             ->orderBy('created_at', 'desc')
             ->get();
 
         \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
 
-        // Retrieve pump data
         $pumps = Pump::where('towerid', $towerId)->get();
+        if ($sensorData->isEmpty() && $pumps->isEmpty()) {
+            \Log::info('No sensor or pump data available');
+            return redirect()->back()->with('success', 'No sensor or pump data to save.');
+        }
 
-        // Example: Format pump data
         $pumpDataArray = $pumps->map(function ($pump) {
             return [
                 'status' => $pump->status,
@@ -294,7 +401,7 @@ class Towercon extends Controller
 
         \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
 
-        // Format sensor data
+// Format sensor data
         $sensorDataArray = $sensorData->map(function ($data) {
             return [
                 'pH' => $data->pH,
@@ -307,13 +414,12 @@ class Towercon extends Controller
 
         \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
 
-        // Save sensor data history
         try {
             SensorDataHistory::create([
                 'towerid' => $towerId,
                 'OwnerID' => $ownerID,
                 'sensor_data' => json_encode($sensorDataArray),
-                'pump_data' => json_encode($pumpDataArray), // Save pump data to the new column
+                'pump' => json_encode($pumpDataArray), // Save pump data to the new column
                 'created_at' => Carbon::now(),
             ]);
 
@@ -323,16 +429,16 @@ class Towercon extends Controller
             return redirect()->back()->with('error', 'Failed to save data.');
         }
 
-        // Create the activity log
+// Create the activity log
         $activityLog = [
-            'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set to done cycle.',
+            'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set Restart cycle.',
             'Date' => Carbon::now()->toDateTimeString(),
         ];
 
         \Log::info('Activity log created', ['activityLog' => $activityLog]);
 
         try {
-            TowerLogs::create([
+            Towerlog::create([
                 'ID_tower' => $tow->id,
                 'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
             ]);
@@ -344,26 +450,11 @@ class Towercon extends Controller
 
         Sensor::truncate();
         Pump::truncate();
+
         \Log::info('Sensor table truncated');
 
         return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
-    }
 
-    public function restartCycle(Request $request)
-    {
-        $tower = Tower::find($request->tower_id);
-
-        if ($tower) {
-            $tower->startdate = null;
-            $tower->enddate = null;
-
-            $tower->status = Crypt::encryptString('0');
-            $tower->save();
-
-            return redirect()->back()->with('success', 'Tower cycle restarted successfully.');
-        }
-
-        return redirect()->back()->with('error', 'Failed to restart the tower cycle.');
     }
 
     public function modestat(Request $request, $id)
@@ -403,7 +494,6 @@ class Towercon extends Controller
     }
 
     //for sensory hisstory data
-
 
     private function decrypt_data($encrypted_data, $method, $key, $iv)
     {

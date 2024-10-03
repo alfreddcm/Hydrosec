@@ -1,34 +1,33 @@
 <?php
+
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow; // Import this interface
 use Illuminate\Queue\SerializesModels;
 
-class SensorDataUpdated implements ShouldBroadcast
+class SensorDataUpdated implements ShouldBroadcastNow
 {
-    use Dispatchable, SerializesModels;
+    use SerializesModels;
 
     public $sensorData;
     public $towerId;
 
-    public function __construct(array $sensorData, $towerId)
+    public function __construct($sensorData, $towerId)
     {
         $this->sensorData = $sensorData;
         $this->towerId = $towerId;
     }
 
+    // Define the broadcast channel
     public function broadcastOn()
     {
-        return new Channel('sensor-data-channel.' . $this->towerId);
+        return new Channel('tower.' . $this->towerId);
     }
 
-    public function broadcastWith()
+    // Define the event name
+    public function broadcastAs()
     {
-        return [
-            'sensorData' => $this->sensorData,
-            'towerId' => $this->towerId,
-        ];
+        return 'SensorDataUpdated';
     }
 }

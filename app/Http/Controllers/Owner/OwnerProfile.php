@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Owner;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Owner;
+use App\Models\SensorDataHistory;
 use App\Models\Tower;
 use App\Models\Worker;
-use App\Models\SensorDataHistory;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -174,45 +174,45 @@ class OwnerProfile extends Controller
     }
 
     public function workerPassword(Request $request)
-{
-    // Validate the request
-    $validator = Validator::make($request->all(), [
-        'id' => 'required|integer',
-         'password' => [
-        'required',
-        'string',
-        'min:8',
-        'regex:/[a-z]/',        // Lowercase letter
-        'regex:/[A-Z]/',        // Uppercase letter
-        'regex:/[0-9]/',        // Digit
-        'regex:/[@$!%*?&#]/',   // Special character
-        'confirmed',            // Password confirmation
-    ], [
-        'password.required' => 'Password is required.',
-        'password.min' => 'Password must be at least 8 characters.',
-        'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
-        'password.confirmed' => 'Password confirmation does not match.',
-    ]
-    ]);
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/', // Lowercase letter
+                'regex:/[A-Z]/', // Uppercase letter
+                'regex:/[0-9]/', // Digit
+                'regex:/[@$!%*?&#]/', // Special character
+                'confirmed', // Password confirmation
+            ], [
+                'password.required' => 'Password is required.',
+                'password.min' => 'Password must be at least 8 characters.',
+                'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
+                'password.confirmed' => 'Password confirmation does not match.',
+            ],
+        ]);
 
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Fetch the worker by ID
+        $user = Worker::where('id', $request->id)->first();
+
+        // Check if the user exists
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        // Update the worker's password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password updated successfully');
     }
-
-    // Fetch the worker by ID
-    $user = Worker::where('id', $request->id)->first();
-
-    // Check if the user exists
-    if (!$user) {
-        return redirect()->back()->with('error', 'User not found');
-    }
-
-    // Update the worker's password
-    $user->password = Hash::make($request->password);
-    $user->save();
-
-    return redirect()->back()->with('success', 'Password updated successfully');
-}
 
     public function workerdis(Request $request, $id)
     {
@@ -244,7 +244,6 @@ class OwnerProfile extends Controller
         $allDecryptedData = [];
 
         foreach ($towers as $tower) {
-
             $sensorDataHistory = SensorDataHistory::where('towerid', $tower->id)->get();
 
             if ($sensorDataHistory->isEmpty()) {
@@ -254,44 +253,90 @@ class OwnerProfile extends Controller
             foreach ($sensorDataHistory as $data) {
                 $code = Crypt::decryptString($tower->towercode);
                 $sensorDataArray = json_decode($data->sensor_data, true);
-                // \Log::info("Decoded sensor data: ", $sensorDataArray);
+                $pumpDataArray = json_decode($data->pump, true);
 
+                // Initialize decrypted entries
                 $decryptedEntries = [];
 
+                // Process sensor data
                 if (is_array($sensorDataArray)) {
                     foreach ($sensorDataArray as $sensorData) {
                         if (isset($sensorData['pH'], $sensorData['temperature'], $sensorData['nutrientlevel'], $sensorData['light'])) {
-                            $decryptedEntry = [
-                                'pH' => (float) $this->decrypt_data($sensorData['pH'], $method, $key_str, $iv_str),
-                                'temperature' => (float) $this->decrypt_data($sensorData['temperature'], $method, $key_str, $iv_str),
-                                'nutrientlevel' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $key_str, $iv_str),
-                                'light' => (float) $this->decrypt_data($sensorData['light'], $method, $key_str, $iv_str),
-                                'created_at' => Carbon::parse($data->created_at),
-
-                            ];
-
-                            $decryptedEntries[] = $decryptedEntry;
+                            try {
+                                $decryptedEntry = [
+                                    'pH' => (float) $this->decrypt_data($sensorData['pH'], $method, $key_str, $iv_str),
+                                    'temperature' => (float) $this->decrypt_data($sensorData['temperature'], $method, $key_str, $iv_str),
+                                    'nutrientlevel' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $key_str, $iv_str),
+                                    'light' => (float) $this->decrypt_data($sensorData['light'], $method, $key_str, $iv_str),
+                                    'created_at' => Carbon::parse($data->created_at),
+                                ];
+                                $decryptedEntries[] = $decryptedEntry;
+                            } catch (\Exception $e) {
+                                \Log::error("Decryption error for sensor data: " . $e->getMessage(), ['sensorData' => $sensorData]);
+                            }
                         } else {
                             \Log::error("Missing required sensor data keys: ", $sensorData);
                         }
                     }
-
-                    // Use $data->id as the key for decrypted data
-                    $startDate = Carbon::parse($data->created_at)->format('m/d/Y');
-                    $endDate = Carbon::parse($data->created_at)->format('m/d/Y');
-
-                    $allDecryptedData[$data->id] = [
-                        'towercode' => $code,
-                        'data' => $decryptedEntries,
-                        'startDate' => $startDate,
-                        'endDate' => $endDate,
-                    ];
                 } else {
-                    \Log::error("Invalid sensor data format: ", $sensorDataArray);
+                    \Log::error("Invalid sensor data format: ", ['sensorDataArray' => $sensorDataArray]);
                 }
+
+                // Process pump data
+                // Process pump data
+                if (is_array($pumpDataArray)) {
+                    foreach ($pumpDataArray as $pdata) {
+                        if (isset($pdata['status'], $pdata['created_at'])) {
+                            try {
+                                $decryptedStatus = $this->decrypt_data($pdata['status'], $method, $key_str, $iv_str);
+
+                                // Ensure the decrypted status is numeric (like 0 or 1)
+                                $decryptedPumpEntry = [
+                                    'pump_status' => (float) $decryptedStatus, // Cast to float if needed
+                                    'pump_created_at' => Carbon::parse($pdata['created_at']),
+                                ];
+
+                                $decryptedEntries[] = $decryptedPumpEntry;
+                            } catch (\Exception $e) {
+                                \Log::error("Decryption error for pump data: " . $e->getMessage(), ['pumpData' => $pdata]);
+                            }
+                        } else {
+                            \Log::error("Missing required pump data keys: ", $pdata);
+                        }
+                    }
+                } else {
+                    \Log::error("Invalid pump data format: ", ['pumpDataArray' => $pumpDataArray]);
+                }
+
+                // Use $data->id as the key for decrypted data
+                $startDate = Carbon::parse($data->created_at)->format('m/d/Y');
+                $endDate = Carbon::parse($data->created_at)->format('m/d/Y');
+
+                $allDecryptedData[$data->id] = [
+                    'towercode' => $code,
+                    'data' => $decryptedEntries,
+                    'startDate' => $startDate,
+                    'endDate' => $endDate,
+                ];
             }
         }
 
+        // Return the view with the decrypted data
         return view('Owner.dashboard', ['allDecryptedData' => $allDecryptedData]);
+    }
+
+    private function decrypt_data($encrypted_data, $method, $key, $iv)
+    {
+        try {
+
+            $encrypted_data = base64_decode($encrypted_data);
+            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+            $decrypted_data = rtrim($decrypted_data, "\0");
+            $decoded_msg = base64_decode($decrypted_data);
+            return $decoded_msg;
+        } catch (\Exception $e) {
+            Log::error('Decryption error: ' . $e->getMessage());
+            return null;
+        }
     }
 }

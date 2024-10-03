@@ -47,7 +47,7 @@
                             <br>
                             <span class="text-danger">{{ $errors->first('email') }}</span>
                         @endif
-                            <input type="email" class="form-control" id="email" name="email" value="{{ $Email }}">
+                            <input type="email" class="form-control" id="email" name="email" value="{{ $Email }}" readonly>
                         </div>
                         <div class="mb-2 text">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#passwordConfirmModal">Save</button>

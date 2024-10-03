@@ -10,7 +10,6 @@
     }
 }
 
-
 @endphp
 <!doctype html>
 <html lang="en">
@@ -35,6 +34,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     </script>
+    <style>
+        .dropdown-menu {
+    z-index: 1050; /* Adjust this value as needed */
+    position: absolute; /* Ensure it's positioned absolutely */
+}</style>
 </head>
 
 <body>

@@ -117,6 +117,7 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <div class="con justify-content-center ">
         <div class="card text-center maincard">
@@ -126,7 +127,9 @@
                     <h2 class="title">
                         <a href="{{ route('ownermanagetower') }}" class="previous">&laquo;</a>
 
-                        {{ Crypt::decryptString($towerinfo->name) }}
+                        {{ Crypt::decryptString($towerinfo->name) }} <div id="online-status" style="display: inline-block;">
+                        </div>
+
                     </h2>
                     @if ($wokername)
                         <p class="card-text">
@@ -141,6 +144,9 @@
                         </p>
                     @endif
 
+                    <center>
+                        <div>Last Fetch: <span id="created_at"></span></div>
+                    </center>
                     <div class="row justify-content-center g-1">
                         <div class="col-sm-3">
                             <h5>Mode: <span id="modeCircle" class="circle"></span><span id="modeText"
@@ -216,7 +222,7 @@
                         <div class="col-sm-4">
                             <div class="card sensor-card">
                                 <center>
-                                    <h3 class="mt-3">Nutrient Level</h3>
+                                    <h3 class="mt-3">Nutrient Volume</h3>
                                     <button type="button" class="btn btnpop" data-bs-toggle="modal"
                                         data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
                                         data-column="nutrientlevel">
@@ -272,6 +278,12 @@
                         @csrf
                         <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                         <button type="submit" class="btn btn-primary mb-1">Restart</button>
+                    </form>
+                @elseif (Crypt::decryptString($towerinfo->status) == 0 && !is_null($towerinfo->startdate) && !is_null($towerinfo->enddate))
+                    <form action="{{ route('tower.en') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
+                        <button type="submit" class="btn btn-primary mb-1">Enable</button>
                     </form>
                 @else
                     <!-- Show Update Dates Button and Modal if dates are not null -->
@@ -354,16 +366,16 @@
                                     <button type="submit" class="btn btn-danger"
                                         onclick="return confirm('Are you sure you want to stop the cycle?');">Stop
                                         Cycle</button>
-
                                 </form>
+
                                 <form action="{{ route('tower.stopdis') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                     <button type="submit" class="btn btn-danger"
                                         onclick="return confirm('Are you sure you want to disable the tower?');">Disable
                                         Tower</button>
-
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -423,16 +435,82 @@
             </div>
         </div>
     </div>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <script>
         var towerId = @json($towerinfo->id);
 
-        var id = {{ $towerinfo->id }};
         $(document).ready(function() {
-            var towerId = @json($towerinfo->id);
             let tempChart = null;
-            let sensorDataInterval = null;
             let modeStatInterval = null;
+
+
+            function load() {
+                console.log('Livewire component has been loaded');
+
+                fetchInitialSensorData();
+
+
+
+                const pusher = new Pusher('3e52514a75529a62c062', {
+                    cluster: 'ap1',
+                    encrypted: true
+                });
+                pusher.connection.bind('connected', function() {
+                    console.log('Pusher connection established');
+                });
+                pusher.connection.bind('disconnected', function() {
+                    console.log('Pusher connection disconnected');
+                });
+                pusher.connection.bind('failed', function() {
+                    console.log('Pusher connection failed');
+                });
+                const channel = pusher.subscribe('tower.' + towerId);
+                channel.bind('SensorDataUpdated', function(data) {
+                    console.log('Successfully subscribed to channel:', 'tower.' + towerId);
+                    console.log('Real-time sensor data received:', data.sensorData);
+
+                    const sensorData = data.sensorData;
+
+                    if (data.sensorData && data) {
+                        const datetime = document.getElementById('created_at');
+                        const now = new Date();
+
+                        const options = {
+                            timeZone: 'Asia/Manila', // Set the timezone to Asia/Manila
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            second: 'numeric',
+                            hour12: true, // Use 12-hour format
+                            weekday: 'short', // Short form of the day (e.g., Mon, Tue)
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric',
+                        };
+
+                        // Log the received sensor data
+                        console.log('Updating sensor data:', sensorData);
+                        updateNutrientImage(parseFloat(sensorData.nutrient_level));
+                        updatePhScaleImage(parseFloat(sensorData.ph));
+                        updateLightStatus(parseFloat(sensorData.light));
+                        updateThermometerImage(parseFloat(sensorData.temperature));
+                        datetime.textContent = now.toLocaleString('en-US', options);
+
+                        updateOnlineStatus(true);
+
+                    } else {
+                        console.log('No data available');
+                    }
+                });
+            }
+
+            function updateOnlineStatus(isOnline) {
+                const statusIndicator = $('#online-status');
+                const color = isOnline ? 'green' : 'red';
+                statusIndicator.html(
+                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
+                );
+            }
 
             $('#tempmodal').on('shown.bs.modal', function(event) {
                 let button = event.relatedTarget;
@@ -460,25 +538,19 @@
                         const data = response.sensorData;
                         const labels = data.map(item => item.timestamp);
                         const values = data.map(item => item.value);
-
                         const ctx = document.getElementById('tempChart');
+
                         if (!ctx) {
                             console.error('Canvas element not found.');
                             return;
                         }
 
-                        const chartCtx = ctx.getContext('2d');
-                        if (!chartCtx) {
-                            console.error('Unable to get canvas context.');
-                            return;
-                        }
-
-                        tempChart = new Chart(chartCtx, {
-                            labels: labels,
+                        tempChart = new Chart(ctx.getContext('2d'), {
                             type: 'line',
                             data: {
                                 labels: labels,
                                 datasets: [{
+                                    label: 'Sensor Data',
                                     data: values,
                                     borderColor: 'rgba(75, 192, 192, 1)',
                                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -510,23 +582,27 @@
                 });
             });
 
-            // Fetch sensor data and update images
-            function fetchSensorData2() {
+            function fetchInitialSensorData() {
+                const datetime = document.getElementById('created_at');
+
                 $.ajax({
-                    url: '/sensor-data/' + towerId,
+                    url: `/sensor-data/${towerId}`,
                     method: 'GET',
                     success: function(response) {
                         if (response.sensorData) {
-                            const Temperature = parseFloat(response.sensorData.temperature);
-                            const NutrientVolume = parseFloat(response.sensorData.nutrient_level);
-                            const pHlevel = parseFloat(response.sensorData.pH);
-                            const light = parseFloat(response.sensorData.light);
-
-                            updateNutrientImage(NutrientVolume);
-                            updatePhScaleImage(pHlevel);
-                            updateLightStatus(light);
-                            updateThermometerImage(Temperature);
-
+                            const {
+                                temperature,
+                                nutrient_level,
+                                pH,
+                                light,
+                                stamps,
+                            } = response.sensorData;
+                            updateNutrientImage(parseFloat(nutrient_level));
+                            updatePhScaleImage(parseFloat(pH));
+                            updateLightStatus(parseFloat(light));
+                            updateThermometerImage(parseFloat(temperature));
+                            updateOnlineStatus(false);
+                            datetime.textContent = stamps;
                         } else {
                             console.log('No data available');
                         }
@@ -535,32 +611,8 @@
                         console.error('AJAX Error: ' + status + ' ' + error);
                     }
                 });
-
-
             }
-            // 2. Listen for Real-Time Updates via Pusher
-            function setupPusher() {
-                const pusher = new Pusher('1868615', {
-                    cluster: 'ap1',
-                    encrypted: true
-                });
 
-                const channel = pusher.subscribe('sensor-data-channel.' + towerId);
-                channel.bind('sensor-data-updated', function(data) {
-                    if (data.towerId === towerId) {
-                        const Temperature = parseFloat(data.temperature);
-                        const NutrientVolume = parseFloat(data.nutrient_level);
-                        const pHlevel = parseFloat(data.pH);
-                        const light = parseFloat(data.light);
-
-                        updateNutrientImage(NutrientVolume);
-                        updatePhScaleImage(pHlevel);
-                        updateLightStatus(light);
-                        updateThermometerImage(Temperature);
-                    }
-                });
-            }
-            // Fetch pump data
             function fetchPumpData() {
                 $.ajax({
                     url: `/pump-data/${towerId}`,
@@ -574,28 +626,15 @@
                                 '<tr><td colspan="3" class="text-center">No records available.</td></tr>'
                             );
                         } else {
-                            $.each(data, function(index, item) {
-                                // Ensure item.pump is treated as a number
-                                var pumpStatus = parseInt(item.pump);
-                                var status;
-                                var textColor = '';
-
-                                if (pumpStatus === 1) {
-                                    status = 'Pump';
-                                } else if (pumpStatus === 0) {
-                                    status = 'Not Pump';
-                                    textColor = 'style="color: red;"';
-                                } else {
-                                    status = 'Unknown';
-                                }
-
-                                var row = `<tr class="table-light">
-                                            <td>${index + 1}</td>
-                                            <td ${textColor}>${status}</td>
-                                            <td>${item.timestamp}</td>
-                                                                 </tr>`;
-                                tbody.append(row);
-                            });
+                            // Construct HTML for pump data
+                            let rows = data.map((item, index) => {
+                                let pumpStatus = parseInt(item.pump);
+                                let status = pumpStatus === 1 ? 'Pump' : (pumpStatus === 0 ?
+                                    'Not Pump' : 'Unknown');
+                                let textColor = pumpStatus === 0 ? 'style="color: red;"' : '';
+                                return `<tr class="table-light"><td>${index + 1}</td><td ${textColor}>${status}</td><td>${item.timestamp}</td></tr>`;
+                            }).join('');
+                            tbody.append(rows);
                         }
                     },
                     error: function() {
@@ -606,14 +645,16 @@
 
             function fetchModeStat() {
                 $.ajax({
-                    url: '/modestat/' + towerId,
+                    url: `/modestat/${towerId}`,
                     method: 'GET',
                     success: function(response) {
                         if (response.modestat) {
-                            const mode = parseFloat(response.modestat.mode);
-                            const status = parseFloat(response.modestat.status);
-                            updatemode(mode);
-                            updatestatus(status);
+                            const {
+                                mode,
+                                status
+                            } = response.modestat;
+                            updatemode(parseFloat(mode));
+                            updatestatus(parseFloat(status));
                         } else {
                             console.log('No data available');
                         }
@@ -624,23 +665,14 @@
                 });
             }
 
-            // Start intervals
             function startIntervals() {
                 if (!modeStatInterval) {
                     modeStatInterval = setInterval(fetchModeStat, 5000);
                 }
             }
-
-            function stopIntervals() {
-
-                clearInterval(modeStatInterval);
-                sensorDataInterval = null;
-                modeStatInterval = null;
-            }
-            fetchInitialSensorData();
+            load();
             fetchPumpData();
             startIntervals();
-
             setInterval(fetchPumpData, 5000);
         });
 
@@ -655,51 +687,43 @@
                 statusText.style.color = 'gray';
                 volumeValueElement.style.color = 'gray';
                 nutrientImage.style.filter = 'grayscale(100%)';
-
             } else {
                 nutrientImage.style.filter = 'none'; // Reset filter for valid nutrient values
                 volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
 
+                // Update image and status based on nutrient volume
                 if (nutrientVolume >= 20) {
                     nutrientImage.src = '{{ asset('images/Water/100.png') }}';
                     statusText.textContent = "Full";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 17) {
                     nutrientImage.src = '{{ asset('images/Water/80.png') }}';
                     statusText.textContent = "85%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 15) {
                     nutrientImage.src = '{{ asset('images/Water/70.png') }}';
                     statusText.textContent = "75%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 12) {
                     nutrientImage.src = '{{ asset('images/Water/60.png') }}';
                     statusText.textContent = "60%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 10) {
                     nutrientImage.src = '{{ asset('images/Water/50.png') }}';
                     statusText.textContent = "50%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 7) {
                     nutrientImage.src = '{{ asset('images/Water/30.png') }}';
                     statusText.textContent = "35%";
                     statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
                 } else if (nutrientVolume >= 5) {
                     nutrientImage.src = '{{ asset('images/Water/20.png') }}';
                     statusText.textContent = "25%";
                     statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
                 } else {
                     nutrientImage.src = '{{ asset('images/Water/10.png') }}';
                     statusText.textContent = "Low";
                     statusText.style.color = 'green';
-                    volumeValueElement.style.color = 'gray';
                 }
             }
         }
@@ -713,89 +737,79 @@
 
             if (phValue >= 0 && phValue <= 14) {
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
-
-                if (phValue < 5.5) {
-                    statusText.textContent = "Too Acidic";
-                    statusText.style.color = 'red';
-                    phValueElement.style.color = 'red';
-                    phScale.style.filter = 'none';
-                } else if (phValue < 6.0) {
+                phScale.style.filter = 'none';
+                // Update status based on pH value
+                if (phValue < 5.6) {
                     statusText.textContent = "Acidic";
                     statusText.style.color = 'orange';
-                    phValueElement.style.color = 'orange';
-                    phScale.style.filter = 'none';
-                } else if (phValue > 7.0) {
-                    statusText.textContent = "Too Basic";
-                    statusText.style.color = 'purple';
-                    phValueElement.style.color = 'purple';
-                    phScale.style.filter = 'none';
-                } else if (phValue > 6.5) {
-                    statusText.textContent = "Basic";
-                    statusText.style.color = 'blue';
-                    phValueElement.style.color = 'blue';
-                    phScale.style.filter = 'none';
-                } else {
+                } else if (phValue >= 5.6 && phValue < 7) {
                     statusText.textContent = "Good";
                     statusText.style.color = 'green';
-                    phValueElement.style.color = 'green';
-                    phScale.style.filter = 'none';
+                } else if (phValue == 7) {
+                    statusText.textContent = "Neutral";
+                    statusText.style.color = 'blue';
+                } else if (phValue > 7) {
+                    statusText.textContent = "Alkaline";
+                    statusText.style.color = 'purple';
+                } else {
+                    statusText.textContent = "Unknown";
+                    statusText.style.color = 'gray';
                 }
 
-
             } else {
+                // Handle invalid pH range
                 phScale.src = `{{ asset('images/ph/7.png') }}`;
                 statusText.textContent = "N/A";
                 statusText.style.color = 'black';
                 phValueElement.style.color = 'black';
                 phScale.style.filter = 'grayscale(100%)';
             }
-
         }
 
-        function updateThermometerImage(temperature) {
 
+        function updateThermometerImage(temperature) {
             const thermometer = document.getElementById('thermometer');
             const statusText = document.getElementById('temp-status');
             const tempValueElement = document.getElementById('temp-value');
 
             thermometer.style.filter = 'none'; // Reset filter for valid temperature values
 
-            if (temperature <= 18) {
+            if (temperature < 20) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
                 statusText.textContent = "Cold";
                 statusText.style.color = 'blue';
-                tempValueElement.style.color = 'blue';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-            } else if (temperature > 18 && temperature <= 25) {
+            } else if (temperature >= 20 && temperature <= 25) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
-                statusText.textContent = "Cold (Optimal)";
-                statusText.style.color = 'blue';
-                tempValueElement.style.color = 'blue';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
+                statusText.textContent = "Mild";
+                statusText.style.color = 'lightblue';
             } else if (temperature > 25 && temperature <= 30) {
                 thermometer.src = '{{ asset('images/Temp/normal.png') }}';
                 statusText.textContent = "Good";
                 statusText.style.color = 'green';
-                tempValueElement.style.color = 'green';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-            } else if (temperature > 31) {
+            } else if (temperature > 30 && temperature <= 40) {
+                thermometer.src = '{{ asset('images/Temp/warm.png') }}';
+                statusText.textContent = "Warm";
+                statusText.style.color = 'orange';
+            } else if (temperature > 40) {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                statusText.textContent = "Too Hot";
+                statusText.textContent = "Hot";
                 statusText.style.color = 'darkred';
-                tempValueElement.style.color = 'darkred';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
             } else {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 thermometer.style.filter = 'grayscale(100%)';
                 tempValueElement.textContent = "N/A";
+                statusText.textContent = "Unknown";
                 statusText.style.color = 'gray';
                 tempValueElement.style.color = 'gray';
             }
+
+
+            // If valid temperature, update the temp value
+            if (temperature !== null) {
+                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+            }
         }
+
 
         function updateLightStatus(status) {
             const circle = document.getElementById('statusCircle');
@@ -803,12 +817,10 @@
 
             if (status === 1) {
                 circle.style.backgroundColor = 'green';
-                statusText.textContent = 'Active';
-
+                statusText.textContent = 'On';
             } else {
                 circle.style.backgroundColor = 'gray';
-                statusText.textContent = 'Inactive';
-
+                statusText.textContent = 'off';
             }
         }
 
@@ -840,6 +852,7 @@
             const statusCircle = document.getElementById('statusCircle1');
             const statusText = document.getElementById('statusText1');
 
+            // Update status display based on the status value
             if (status === 1) {
                 statusCircle.style.backgroundColor = 'green';
                 statusText.textContent = 'Active';

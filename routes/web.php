@@ -9,19 +9,19 @@ use App\Http\Controllers\SensorData;
 use App\Http\Controllers\Towercon;
 use Illuminate\Support\Facades\Route;
 
-Route::fallback(function (Request $request) {
-    if (auth()->check()) {
-        if (auth()->user()->hasRole('owner')) {
-            return redirect()->route('ownerdashboard');
-        } elseif (auth()->user()->hasRole('worker')) {
-            return redirect()->route('workerdashboard');
-        } elseif (auth()->user()->hasRole('admin')) {
-            return redirect()->route('admindashboard');
-        }
-    }
+// Route::fallback(function (Request $request) {
+//     if (auth()->check()) {
+//         if (auth()->user()->hasRole('owner')) {
+//             return redirect()->route('ownerdashboard');
+//         } elseif (auth()->user()->hasRole('worker')) {
+//             return redirect()->route('workerdashboard');
+//         } elseif (auth()->user()->hasRole('admin')) {
+//             return redirect()->route('admindashboard');
+//         }
+//     }
 
-    return redirect()->route('index');
-});
+//     return redirect()->route('index');
+// });
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {return view('index');})->name('index');
@@ -79,10 +79,10 @@ Route::middleware('auth:owner')->group(function () {
     Route::get('/startcycle', [SensorData::class, 'startcycle'])->name('startcycle');
 
     Route::post('/addtower', [Towercon::class, 'store'])->name('posttower');
-Route::get('/towerdata/{id}', function ($id) {
- 
-    return view('Owner.tower', ['id' => $id]);
-})->name('towerdata');
+    Route::get('/towerdata/{id}', function ($id) {
+
+        return view('Owner.tower', ['id' => $id]);
+    })->name('towerdata');
     Route::get('/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
     Route::get('/pump-data/{id}', [SensorData::class, 'getPump']);
@@ -93,6 +93,7 @@ Route::get('/towerdata/{id}', function ($id) {
     Route::post('/tower/stop', [Towercon::class, 'stop'])->name('tower.stop');
     Route::post('/tower/stopdis', [Towercon::class, 'stopdis'])->name('tower.stopdis');
     Route::post('/tower/restart', [Towercon::class, 'restartCycle'])->name('tower.restart');
+    Route::post('/tower/en', [Towercon::class, 'en'])->name('tower.en');
 
 });
 
@@ -130,7 +131,11 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/Admin/update-password', [admincontroller::class, 'adminupdatePassword'])->name('admin.updatePassword');
     Route::post('/Admin/update-password2', [admincontroller::class, 'adminupdatePassword2'])->name('admin.updatePassword2');
 
-    Route::post('/Admin/worker-dis/{id}', [admincontroller::class, 'disableOwner'])->name('admin.dis');
-    Route::post('/Admin/worker-en/{id}', [admincontroller::class, 'en'])->name('admin.en');
+    Route::post('/Admin/dis/{id}', [admincontroller::class, 'disableOwner'])->name('admin.dis');
+    Route::post('/Admin/en/{id}', [admincontroller::class, 'en'])->name('admin.en');
+
+    Route::post('/Admin/worker-dis/{id}', [admincontroller::class, 'workerdis'])->name('admin.dis2');
+Route::post('/Admin/worker-en/{id}', [admincontroller::class, 'workeren'])->name('admin.en2');
+
 
 });

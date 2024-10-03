@@ -53,6 +53,7 @@
                                     <label for="password"
                                         class="col-md-4 col-form-label text-md-end text-start">Password</label>
                                     <div class="col-md-6">
+                                         <span>Password must be have atleast one uppercase and lowercase letter, number and a special character. </span>
                                         <input type="password" class="form-control @error('password') is-invalid @enderror"
                                             id="password" name="password">
                                         @if ($errors->has('password'))

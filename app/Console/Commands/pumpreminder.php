@@ -6,7 +6,7 @@ use App\Mail\Alert;
 use App\Models\Owner;
 use App\Models\Pump;
 use App\Models\Tower;
-use App\Models\TowerLogs;
+use App\Models\Towerlog;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
@@ -35,42 +35,20 @@ class pumpreminder extends Command
      */
     public function handle()
     {
-        // $nextHour = $now->copy()->addHour();
-        // $hoursBefore = 1;
-
-        // $allTowers = Tower::pluck('id');
-
-        // $towersWithData = Tower::whereNotNull('enddate')
-        //     ->where(function ($query) use ($now, $nextHour, $hoursBefore) {
-        //         $query->whereBetween('enddate', [$now->copy()->subHours($hoursBefore), $nextHour])
-        //             ->orWhereBetween('enddate', [$nextHour, $nextHour]);
-        //     })
-        //     ->pluck('id');
-
-        // $towersWithoutData = $allTowers->diff($towersWithData);
-
-        // foreach ($towersWithoutData as $towerId) {
-        //     $tower = Tower::find($towerId);
-        //     if (!$tower) {
-        //         Log::error("Tower not found with ID $towerId.");
-        //         continue;
-        //     }
-
         $key_str = "ISUHydroSec2024!";
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
 
         $now = Carbon::now();
-        $emailCooldown = 5; // Time in minutes to wait before sending another email
-
-        $towers = Tower::get();
+        $emailCooldown = 5;
+        $towers = Tower::select('id', 'status', 'name', 'OwnerID', 'last_pumping_email_sent_at')->get();
         foreach ($towers as $data) {
             if (Crypt::decryptString($data->status) == '1') {
                 $towerId = $data->id;
                 Log::info('Processing tower', ['tower_id' => $towerId]);
 
                 $now = Carbon::now();
-                $emailCooldown = 5; 
+                $emailCooldown = 5;
                 $timeLimit = Carbon::now()->subMinutes(5);
 
                 $recentStatuses = Pump::where('towerid', $towerId)
@@ -94,12 +72,12 @@ class pumpreminder extends Command
                         }
                     }
 
-                    $owner = Owner::where('id', $data->OwnerID)->first();
+                    $owner = Owner::select('email')->where('id', $data->OwnerID)->first();
                     if ($owner) {
                         $body = "The Tower '" . Crypt::decryptString($data->name) . "' did not pump at " . $now . "  Please check the plug.";
 
                         $details = [
-                            'title' => 'Pumping stopped.',
+                            'title' => 'Electricity Cut-off',
                             'body' => $body,
                         ];
 
@@ -117,9 +95,9 @@ class pumpreminder extends Command
                             $mailStatus = 'Failed';
                             Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                         } finally {
-                            $activityLog = Crypt::encryptString("Alert: "  . json_encode($details['body']) ." Mail Status: " . $mailStatus);
+                            $activityLog = Crypt::encryptString("Alert: " . json_encode($details['body']) . " Mail Status: " . $mailStatus);
 
-                            TowerLogs::create([
+                            Towerlog::create([
                                 'ID_tower' => $towerId,
                                 'activity' => $activityLog,
                             ]);

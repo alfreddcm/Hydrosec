@@ -97,6 +97,8 @@ class AuthManager extends Controller
                     RateLimiter::hit($throttleKey);
 
                 } else {
+                    $storedUsername = Crypt::decryptString($user->username);
+                    $storedPassword = $user->password;
                     if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
 
                         return Redirect::back()->with('error', 'Account is not enable. Contact admin.');
@@ -126,6 +128,9 @@ class AuthManager extends Controller
                     RateLimiter::hit($throttleKey);
 
                 } else {
+                    $storedUsername = Crypt::decryptString($user->username);
+                    $storedPassword = $user->password;
+
                     if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
 
                         return Redirect::back()->with('error', 'Account is not enable. Contact admin.');
@@ -154,6 +159,9 @@ class AuthManager extends Controller
                     }
                     RateLimiter::hit($throttleKey);
                 } else {
+                    $storedUsername = Crypt::decryptString($user->username);
+                    $storedPassword = $user->password;
+
                     if ($username === $storedUsername && Hash::check($password, $storedPassword)) {
 
                         return Redirect::back()->with('error', 'Account is not enable. Contact admin.');
@@ -179,15 +187,21 @@ class AuthManager extends Controller
             'name' => 'required|string|max:250',
             'email' => 'required|email|max:250',
             'password' => [
-                    'required',
-                    'string',
-                    'min:8',
-                    'regex:/[a-z]/', 
-                    'regex:/[A-Z]/', 
-                    'regex:/[0-9]/', 
-                    'regex:/[@$!%*?&#]/', 
-                    'confirmed', 
-                ],        ]);
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&#]/',
+                'confirmed',
+            ], [
+                'password.required' => 'Password is required.',
+                'password.min' => 'Password must be at least 8 characters.',
+                'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).',
+                'password.confirmed' => 'Password confirmation does not match.',
+            ],
+        ]);
 
         $username = $request->username;
         $usernameExists = $this->checkUsername('username', $username);
@@ -213,8 +227,8 @@ class AuthManager extends Controller
             'status' => Crypt::encryptString('1'),
         ]);
 
-        return redirect()->route('index')
-            ->with('success', 'You have successfully registered & logged in!');
+        return redirect()->route('login')
+            ->with('success', 'You have successfully registered please logged in!');
 
     }
 

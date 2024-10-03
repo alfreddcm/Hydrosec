@@ -29,10 +29,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\SecureHeaders::class,
 
         ],
-        'api' => [
+        // 'api' => [
 
-            'throttle:api', 
-        ],
+        //     'throttle:api', 
+        // ],
     ];
 
 }

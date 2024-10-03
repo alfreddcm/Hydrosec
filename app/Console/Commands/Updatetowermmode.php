@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Tower;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
@@ -19,196 +20,208 @@ class UpdateTowerMode extends Command
 
     public function handle()
     {
-        
-        $key_str = "ISUHydroSec2024!";
-        $iv_str = "HydroVertical143";
-        $method = "AES-128-CBC";
-
-    
-
-
         $towers = Tower::all();
+        //     $hour = Carbon::now()->hour;
+        //  if ($hour >= 6 && $hour < 18) {
+        //     $mode = 1;  // 6 AM to 6 PM
+        // } elseif ($hour >= 18 && $hour < 22) {
+        //     $mode = 2;  // 6 PM to 10 PM
+        // } elseif ($hour >= 22 || $hour < 1) {
+        //     $mode = 0;  // 10 PM to 1 AM
+        // } else {
+        //     $mode = 2;  // 1 AM to 6 AM
+        // }
+
         foreach ($towers as $tower) {
+
             $currentMode = Crypt::decryptString($tower->mode);
-            $newMode = ($currentMode + 1) % 3;
-            $tower->mode = Crypt::encryptString($newMode);
-          //  $tower->status = Crypt::encryptString($newMode);
+            $mode = ($currentMode + 1) % 3;
+
+            $tower->mode = Crypt::encryptString($mode);
             $tower->save();
 
-            $this->info("Tower ID {$tower->id} mode updated to {$newMode}");
-            Log::info("Tower ID {$tower->id} mode updated to {$newMode}");
-
+            $this->info("Tower ID {$tower->id} mode updated to {$mode}");
+            Log::info("Tower ID {$tower->id} mode updated to {$mode}");
         }
 
-        Log::info('Tower modes updated at ' . now());
+        Log::info('Tower modes updated at ' . Carbon::now());
         $this->info('Tower modes updated.');
     }
 
-    public function decrypt_data($encrypted_data, $method, $key, $iv)
-    {
-        try {
+}
+function wrf()
+{
+    // public function decrypt_data($encrypted_data, $method, $key, $iv)
+    // {
+    //     try {
 
-            $encrypted_data = base64_decode($encrypted_data);
-            $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
-            $decrypted_data = rtrim($decrypted_data, "\0");
-            $decoded_msg = base64_decode($decrypted_data);
-            return $decoded_msg;
-        } catch (\Exception $e) {
-            Log::error('Decryption error: ' . $e->getMessage());
-            return null;
-        }
-    }
+    //         $encrypted_data = base64_decode($encrypted_data);
+    //         $decrypted_data = openssl_decrypt($encrypted_data, $method, $key, OPENSSL_NO_PADDING, $iv);
+    //         $decrypted_data = rtrim($decrypted_data, "\0");
+    //         $decoded_msg = base64_decode($decrypted_data);
+    //         return $decoded_msg;
+    //     } catch (\Exception $e) {
+    //         Log::error('Decryption error: ' . $e->getMessage());
+    //         return null;
+    //     }
+    // }
+    //testing
+    // Example code to trigger the event
+    // event(new SensorDataUpdated([
+    //     'temperature' => '28.00',
+    //     'nutrient_level' => '4.00',
+    //     'pH' => '6.50',
+    //     'light' => '1',
+    // ], 1));
+    // $key_str = "ISUHydroSec2024!";
+    // $iv_str = "HydroVertical143";
+    // $method = "AES-128-CBC";
 
-}    
+    // $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp', $method, $key_str, $iv_str);
+    // $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);
+    //  $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
 
+    // Log::info('loglog:', [
+    //     'ipAddress' => $decrypted_ip,
+    //     'macAddress' => $decrypted_mac,
+    // ]);
 
+    // $tower = Tower::find($towerId);
 
+    // $hour = now()->hour;
 
-//testing
-   
-        // $decrypted_ip = $this->decrypt_data('0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp', $method, $key_str, $iv_str);
-        // $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);
-        //  $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
+    // if ($hour >= 6 && $hour < 18) {
+    //     $mode = 1;
+    // } elseif ($hour >= 18 && $hour < 22) {
+    //     $mode = 2;
+    // } else {
+    //     $mode = 0;
+    // }
+    ///////////////////////////////////////////////////////////////////////
+    // public function handle()
+    // {
 
-        // Log::info('loglog:', [
-        //     'ipAddress' => $decrypted_ip,
-        //     'macAddress' => $decrypted_mac,
-        // ]);
+    // $hour = now()->hour;
 
-        // $tower = Tower::find($towerId);
+    // if ($hour >= 6 && $hour < 18) {
+    //     $mode = 1;
+    // } elseif ($hour >= 18 && $hour < 22) {
+    //     $mode = 2;
+    // } else {
+    //     $mode = 0;
+    // }
 
-        // $hour = now()->hour;
+    // $encryptedMode = Crypt::encryptString($mode);
+    // Tower::query()->update(['mode' => $encryptedMode]);
+    // $this->info("Tower mode updated to {$mode}");
 
-        // if ($hour >= 6 && $hour < 18) {
-        //     $mode = 1;
-        // } elseif ($hour >= 18 && $hour < 22) {
-        //     $mode = 2;
-        // } else {
-        //     $mode = 0;
-        // }
-        ///////////////////////////////////////////////////////////////////////
-// public function handle()
-// {
+    // Log::info("Tower mode updated to {$mode} at " . now());
 
-// $hour = now()->hour;
+    // $now = Carbon::now();
+    // $oneDayLater = $now->copy()->addDay();
+    // $daysBefore = 1;
 
-// if ($hour >= 6 && $hour < 18) {
-//     $mode = 1;
-// } elseif ($hour >= 18 && $hour < 22) {
-//     $mode = 2;
-// } else {
-//     $mode = 0;
-// }
+    // $towers = Tower::whereNotNull('enddate')
+    //     ->where(function ($query) use ($now, $oneDayLater, $daysBefore) {
+    //         $query->whereBetween('enddate', [$now->copy()->addDays($daysBefore), $oneDayLater])
+    //             ->orWhereBetween('enddate', [$oneDayLater, $oneDayLater]);
+    //     })
+    //     ->get();
 
-// $encryptedMode = Crypt::encryptString($mode);
-// Tower::query()->update(['mode' => $encryptedMode]);
-// $this->info("Tower mode updated to {$mode}");
+    // foreach ($towers as $tower) {
+    //     $owner = Owner::find($tower->OwnerID);
+    //     if ($owner) {
+    //         $ownerEmail = Crypt::decryptString($owner->email);
+    //         if ($tower->enddate->isSameDay($oneDayLater)) {
+    //             $subject = "Reminder: Tower Harvest Date Today";
+    //             $body = "Dear Owner,\n\nThis is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.\n\nBest regards,\nYour Team";
+    //             $mode = '4';
+    //             $encryptedMode = Crypt::encryptString($mode);
+    //             Tower::query()->update(['mode' => $encryptedMode]);
 
-// Log::info("Tower mode updated to {$mode} at " . now());
+    //         } elseif ($tower->enddate->isSameDay($oneDayLater->addDay())) {
+    //             $subject = "Reminder: Tower Harvest Date Tomorrow";
+    //             $body = "Dear Owner,\n\nThis is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.\n\nBest regards,\nYour Team";
+    //         } else {
+    //             continue;
+    //         }
 
-// $now = Carbon::now();
-// $oneDayLater = $now->copy()->addDay();
-// $daysBefore = 1;
+    //         try {
+    //             Mail::to($ownerEmail)->send(new Harvest($subject, $body));
+    //             $mailStatus = 'Sent';
+    //             Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
+    //         } catch (\Exception $e) {
+    //             $mailStatus = 'Failed';
+    //             Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
+    //         } finally {
+    //             $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
 
-// $towers = Tower::whereNotNull('enddate')
-//     ->where(function ($query) use ($now, $oneDayLater, $daysBefore) {
-//         $query->whereBetween('enddate', [$now->copy()->addDays($daysBefore), $oneDayLater])
-//             ->orWhereBetween('enddate', [$oneDayLater, $oneDayLater]);
-//     })
-//     ->get();
+    //             TowerLogs::create([
+    //                 'ID_tower' => $tower->id,
+    //                 'activity' => $activityLog,
+    //             ]);
 
-// foreach ($towers as $tower) {
-//     $owner = Owner::find($tower->OwnerID);
-//     if ($owner) {
-//         $ownerEmail = Crypt::decryptString($owner->email);
-//         if ($tower->enddate->isSameDay($oneDayLater)) {
-//             $subject = "Reminder: Tower Harvest Date Today";
-//             $body = "Dear Owner,\n\nThis is a reminder that today is the end date for tower {$tower->id}. Please take the necessary actions.\n\nBest regards,\nYour Team";
-//             $mode = '4';
-//             $encryptedMode = Crypt::encryptString($mode);
-//             Tower::query()->update(['mode' => $encryptedMode]);
+    //             Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
+    //         }
 
-//         } elseif ($tower->enddate->isSameDay($oneDayLater->addDay())) {
-//             $subject = "Reminder: Tower Harvest Date Tomorrow";
-//             $body = "Dear Owner,\n\nThis is a reminder that the end date for tower {$tower->id} is tomorrow on {$tower->enddate->format('Y-m-d')}. Please take the necessary actions.\n\nBest regards,\nYour Team";
-//         } else {
-//             continue;
-//         }
+    //     } else {
+    //         $this->error("Owner not found for tower ID {$tower->id}.");
+    //     }
+    // }
 
-//         try {
-//             Mail::to($ownerEmail)->send(new Harvest($subject, $body));
-//             $mailStatus = 'Sent';
-//             Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
-//         } catch (\Exception $e) {
-//             $mailStatus = 'Failed';
-//             Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
-//         } finally {
-//             $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
+    // //check houly
+    // // Get the current time and the next hour
+    // $now = Carbon::now();
+    // $nextHour = $now->copy()->addHour();
+    // $hoursBefore = 1;
 
-//             TowerLogs::create([
-//                 'ID_tower' => $tower->id,
-//                 'activity' => $activityLog,
-//             ]);
+    // // Get all tower IDs
+    // $allTowers = Tower::pluck('id');
+    // //10minsss down pysical setup
 
-//             Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
-//         }
+    // $towersWithData = Tower::whereNotNull('enddate')
+    //     ->where(function ($query) use ($now, $nextHour, $hoursBefore) {
+    //         $query->whereBetween('enddate', [$now->copy()->subHours($hoursBefore), $nextHour])
+    //             ->orWhereBetween('enddate', [$nextHour, $nextHour]);
+    //     })
+    //     ->pluck('id');
 
-//     } else {
-//         $this->error("Owner not found for tower ID {$tower->id}.");
-//     }
-// }
+    // $towersWithoutData = $allTowers->diff($towersWithData);
 
-// //check houly
-// // Get the current time and the next hour
-// $now = Carbon::now();
-// $nextHour = $now->copy()->addHour();
-// $hoursBefore = 1;
+    // foreach ($towersWithoutData as $towerId) {
+    //     $owner = Owner::find($tower->OwnerID);
+    //     if ($owner) {
 
-// // Get all tower IDs
-// $allTowers = Tower::pluck('id');
-// //10minsss down pysical setup
+    //         $subject = " ";
+    //         $body = " ";
 
-// $towersWithData = Tower::whereNotNull('enddate')
-//     ->where(function ($query) use ($now, $nextHour, $hoursBefore) {
-//         $query->whereBetween('enddate', [$now->copy()->subHours($hoursBefore), $nextHour])
-//             ->orWhereBetween('enddate', [$nextHour, $nextHour]);
-//     })
-//     ->pluck('id');
+    //         $ownerEmail = Crypt::decryptString($owner->email);
+    //         try {
+    //             $mailStatus = 'Sent';
+    //             Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
+    //         } catch (\Exception $e) {
+    //             $mailStatus = 'Failed';
+    //             Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
+    //         } finally {
+    //             // Encrypt and log the activity, regardless of email success or failure
+    //             $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
 
-// $towersWithoutData = $allTowers->diff($towersWithData);
+    //             $tow = Tower::find($tower->id);
+    //             $tow->status = Crypt::encryptString('4');
+    //             $tow->save();
 
-// foreach ($towersWithoutData as $towerId) {
-//     $owner = Owner::find($tower->OwnerID);
-//     if ($owner) {
+    //             TowerLogs::create([
+    //                 'ID_tower' => $tower->id,
+    //                 'activity' => $activityLog,
+    //             ]);
 
-//         $subject = " ";
-//         $body = " ";
+    //             Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
+    //         }
 
-//         $ownerEmail = Crypt::decryptString($owner->email);
-//         try {
-//             $mailStatus = 'Sent';
-//             Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
-//         } catch (\Exception $e) {
-//             $mailStatus = 'Failed';
-//             Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
-//         } finally {
-//             // Encrypt and log the activity, regardless of email success or failure
-//             $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
+    //     } else {
+    //         $this->error("Owner not found for tower ID {$tower->id}.");
+    //     }
 
-//             $tow = Tower::find($tower->id);
-//             $tow->status = Crypt::encryptString('4');
-//             $tow->save();
+    // }
 
-//             TowerLogs::create([
-//                 'ID_tower' => $tower->id,
-//                 'activity' => $activityLog,
-//             ]);
-
-//             Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
-//         }
-
-//     } else {
-//         $this->error("Owner not found for tower ID {$tower->id}.");
-//     }
-
-// }
+}

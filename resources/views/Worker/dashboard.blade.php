@@ -3,11 +3,9 @@
 
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>@yield('title')</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-              rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js">
         </script>
@@ -153,6 +151,8 @@
                 margin: 0;
             }
         </style>
+        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+
     </head>
 
     <body>
@@ -190,34 +190,37 @@
                         <div class="col text-end">
 
                             <a href="{{ route('logout') }}"> <button type="submit"
-                                        class="logout-btn">LOGOUT</button></a>
+                                    class="logout-btn">LOGOUT</button></a>
                         </div>
                     </div>
                     <div class="card text-center maincard">
                         <div class="card-body justify-content-center">
                             <div class="card-title">
-                                <h2 class="title">{{ Crypt::decryptString($towerinfo->name) }}</h2>
+                                <h2 class="title">{{ Crypt::decryptString($towerinfo->name) }}<div id="online-status"
+                                        style="display: inline-block;">
+                                    </div>
+                                </h2>
                                 @if ($owner)
                                     <p class="card-text">Owner Name: {{ Crypt::decryptString($ownername->name) }}</p>
                                 @else
                                     <p class="card-text">No Worker set</p>
                                 @endif
+                                <center>
+                                    <div> <span id="created_at"></span></div>
+                                </center>
 
                                 <div class="row justify-content-center g-1">
                                     <div class="col-sm-3">
-                                        <h5>Mode: <span id="modeCircle"
-                                                  class="circle"></span><span id="modeText"
-                                                  class="status-text">N/A</span></h5>
+                                        <h5>Mode: <span id="modeCircle" class="circle"></span><span id="modeText"
+                                                class="status-text">N/A</span></h5>
                                     </div>
                                     <div class="col-sm-3">
-                                        <h5>Status: <span id="statusCircle1"
-                                                  class="circle"></span><span id="statusText1"
-                                                  class="status-text">Inactive</span></h5>
+                                        <h5>Status: <span id="statusCircle1" class="circle"></span><span
+                                                id="statusText1" class="status-text">Inactive</span></h5>
                                     </div>
                                     <div class="col-sm-3">
-                                        <h5>Grow Lights : <span id="statusCircle"
-                                                  class="circle"></span><span id="statusText"
-                                                  class="status-text">Inactive</span></h5>
+                                        <h5>Grow Lights : <span id="statusCircle" class="circle"></span><span
+                                                id="statusText" class="status-text">Inactive</span></h5>
                                     </div>
                                 </div>
 
@@ -227,22 +230,18 @@
                                         <div class="card sensor-card">
                                             <center>
                                                 <h3 class="mt-3">Temperature</h3>
-                                                <button type="button"
-                                                        class="btn btnpop"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#tempmodal"
-                                                        data-tower-id="{{ $towerinfo->id }}"
-                                                        data-column="temperature">
+                                                <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                                    data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
+                                                    data-column="temperature">
                                                     <img src="{{ asset('images/icon/graph.png') }}"
-                                                         class="img-fluid rounded-top"
-                                                         alt=""
-                                                         style="height:30px" />
+                                                        class="img-fluid rounded-top" alt=""
+                                                        style="height:30px" />
                                                 </button>
                                                 <div class="card-body justify-content-center g-4">
                                                     <div class="icon">
                                                         <img id="thermometer"
-                                                             src="{{ asset('images/Temp/normal.png') }}"
-                                                             alt="Thermometer">
+                                                            src="{{ asset('images/Temp/normal.png') }}"
+                                                            alt="Thermometer">
                                                     </div>
                                                     <div class="value">
                                                         <h4 class="mt-3"><span id="temp-value">n/a</span></h4>
@@ -258,25 +257,20 @@
                                         <div class="card sensor-card">
                                             <center>
                                                 <h3 class="mt-3">pH Level</h3>
-                                                <button type="button"
-                                                        class="btn btnpop"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#tempmodal"
-                                                        data-tower-id="{{ $towerinfo->id }}"
-                                                        data-column="pH">
+                                                <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                                    data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
+                                                    data-column="pH">
                                                     <img src="{{ asset('images/icon/graph.png') }}"
-                                                         class="img-fluid rounded-top"
-                                                         alt=""
-                                                         style="height:30px" />
+                                                        class="img-fluid rounded-top" alt=""
+                                                        style="height:30px" />
                                                 </button>
                                                 <div class="icon">
-                                                    <img id="ph-scale"
-                                                         src="{{ asset('images/ph/8.png') }}"
-                                                         alt="ph-scale">
+                                                    <img id="ph-scale" src="{{ asset('images/ph/8.png') }}"
+                                                        alt="ph-scale">
                                                 </div>
                                                 <div class="value">
                                                     <h4 class="mt-3"><span id="ph-value">n/a</span> <span
-                                                              id="ph-status">n/a</span></h4>
+                                                            id="ph-status">n/a</span></h4>
                                                 </div>
                                             </center>
                                         </div>
@@ -286,23 +280,19 @@
                                     <div class="col-sm-4">
                                         <div class="card sensor-card">
                                             <center>
-                                                <h3 class="mt-3">Nutrient Level</h3>
-                                                <button type="button"
-                                                        class="btn btnpop"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#tempmodal"
-                                                        data-tower-id="{{ $towerinfo->id }}"
-                                                        data-column="nutrientlevel">
+                                                <h3 class="mt-3">Nutrient Volume</h3>
+                                                <button type="button" class="btn btnpop" data-bs-toggle="modal"
+                                                    data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
+                                                    data-column="nutrientlevel">
                                                     <img src="{{ asset('images/icon/graph.png') }}"
-                                                         class="img-fluid rounded-top"
-                                                         alt=""
-                                                         style="height:30px" />
+                                                        class="img-fluid rounded-top" alt=""
+                                                        style="height:30px" />
                                                 </button>
                                                 <div class="card-body justify-content-center g-4">
                                                     <div class="icon">
                                                         <img id="nutrient-image"
-                                                             src="{{ asset('images/Water/100.png') }}"
-                                                             alt="Nutient_volume">
+                                                            src="{{ asset('images/Water/100.png') }}"
+                                                            alt="Nutient_volume">
                                                     </div>
                                                     <div class="value">
                                                         <h4 class="mt-3"><span id="nutrient-value">n/a</span></h4>
@@ -340,7 +330,7 @@
                         <div class="table-container">
                             <div class="table-responsive">
                                 <table
-                                       class="table table-striped table-hover table-borderless table-primary align-middle">
+                                    class="table table-striped table-hover table-borderless table-primary align-middle">
                                     <thead class="table-light sticky-top">
                                         <tr>
                                             <th>No.</th>
@@ -348,11 +338,9 @@
                                             <th>Timestamps</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="sensor-data-body"
-                                           class="table-group-divider">
+                                    <tbody id="sensor-data-body" class="table-group-divider">
                                         <tr>
-                                            <td colspan="3"
-                                                class="text-center">No records available.</td>
+                                            <td colspan="3" class="text-center">No records available.</td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
@@ -368,31 +356,21 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade "
-             id="tempmodal"
-             tabindex="-1"
-             role="dialog"
-             aria-labelledby="modalTitleId"
-             aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered"
-                 role="document">
+        <div class="modal fade " id="tempmodal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-center"
-                            id="modalTitleId">
+                        <h5 class="modal-title text-center" id="modalTitleId">
                             Graph
                         </h5>
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
-                            <canvas id="tempChart"><img src="{{ asset('images/loading.svg') }}"
-                                     alt=""
-                                     style="height:30px"
-                                     ; /></canvas>
+                            <canvas id="tempChart"><img src="{{ asset('images/loading.svg') }}" alt=""
+                                    style="height:30px" ; /></canvas>
                         </div>
                     </div>
                 </div>
@@ -403,6 +381,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        let firstFetch = false;
+
         function updateTime() {
             const now = new Date();
             let hours = now.getHours();
@@ -429,6 +409,73 @@
             let tempChart = null;
             let sensorDataInterval = null;
             let modeStatInterval = null;
+
+
+            function load() {
+                console.log('Livewire component has been loaded');
+
+                fetchSensorData2();
+                const datetime = document.getElementById('datetime');
+                const now = new Date();
+
+                const options = {
+                    timeZone: 'Asia/Manila', // Set the timezone to Asia/Manila
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    hour12: true, // Use 12-hour format
+                    weekday: 'short', // Short form of the day (e.g., Mon, Tue)
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                };
+
+                const pusher = new Pusher('3e52514a75529a62c062', {
+                    cluster: 'ap1',
+                    encrypted: true
+                });
+                pusher.connection.bind('connected', function() {
+                    console.log('Pusher connection established');
+                });
+                pusher.connection.bind('disconnected', function() {
+                    console.log('Pusher connection disconnected');
+                });
+                pusher.connection.bind('failed', function() {
+                    console.log('Pusher connection failed');
+                });
+
+                const channel = pusher.subscribe('tower.' + towerId);
+                channel.bind('SensorDataUpdated', function(data) {
+                    console.log('Successfully subscribed to channel:', 'tower.' + towerId);
+                    console.log('Real-time sensor data received:', data.sensorData);
+
+                    const sensorData = data.sensorData;
+
+                    if (data.sensorData && data) {
+                        // Log the received sensor data
+                        console.log('Updating sensor data:', sensorData);
+                        updateNutrientImage(parseFloat(sensorData.nutrient_level));
+                        updatePhScaleImage(parseFloat(sensorData.ph));
+                        updateLightStatus(parseFloat(sensorData.light));
+                        updateThermometerImage(parseFloat(sensorData.temperature));
+                        updateOnlineStatus(true);
+
+                        datetime.textContent = now.toLocaleString('en-US', options);
+
+                    } else {
+                        console.log('No data available');
+                    }
+                });
+            }
+
+            function updateOnlineStatus(isOnline) {
+                const statusIndicator = $('#online-status');
+                const color = isOnline ? 'green' : 'red';
+                statusIndicator.html(
+                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
+                );
+            }
+
 
             $('#tempmodal').on('shown.bs.modal', function(event) {
                 let button = event.relatedTarget;
@@ -508,20 +555,28 @@
 
             // Fetch sensor data and update images
             function fetchSensorData2() {
+                const datetime = document.getElementById('created_at');
+
                 $.ajax({
                     url: '/Worker/sensor-data/' + towerId,
                     method: 'GET',
                     success: function(response) {
                         if (response.sensorData) {
                             const Temperature = parseFloat(response.sensorData.temperature);
-                            const NutrientVolume = parseFloat(response.sensorData.nutrient_level);
+                            const NutrientVolume = parseFloat(response.sensorData
+                                .nutrient_level);
                             const pHlevel = parseFloat(response.sensorData.pH);
                             const light = parseFloat(response.sensorData.light);
+                            const created_at = response.sensorData.stamps;
 
                             updateNutrientImage(NutrientVolume);
                             updatePhScaleImage(pHlevel);
                             updateLightStatus(light);
                             updateThermometerImage(Temperature);
+                            updateOnlineStatus(false);
+                            datetime.textContent = created_at;
+
+                            firstFetch = true;
 
                         } else {
                             console.log('No data available');
@@ -563,10 +618,10 @@
                                 }
 
                                 var row = `<tr class="table-light">
-                    <td>${index + 1}</td>
-                    <td ${textColor}>${status}</td>
-                    <td>${item.timestamp}</td>
-                </tr>`;
+                                            <td>${index + 1}</td>
+                                            <td ${textColor}>${status}</td>
+                                            <td>${item.timestamp}</td>
+                                        </tr>`;
                                 tbody.append(row);
                             });
                         }
@@ -607,17 +662,16 @@
                 }
             }
 
-            // Stop intervals
             function stopIntervals() {
                 clearInterval(sensorDataInterval);
                 clearInterval(modeStatInterval);
                 sensorDataInterval = null;
                 modeStatInterval = null;
             }
+            load();
             fetchPumpData();
             startIntervals();
 
-            // Refresh pump data every 30 seconds
             setInterval(fetchPumpData, 10000);
         });
 
@@ -627,56 +681,48 @@
             const volumeValueElement = document.getElementById('nutrient-value');
 
             if (isNaN(nutrientVolume) || nutrientVolume === null) {
-                nutrientImage.src = '{{ asset('images/Water/10.png') }}'; // Grayscale image
+                nutrientImage.src = '{{ asset('images/Water/10.png') }}';
                 statusText.textContent = "N/A";
                 statusText.style.color = 'gray';
                 volumeValueElement.style.color = 'gray';
                 nutrientImage.style.filter = 'grayscale(100%)';
-
             } else {
-                nutrientImage.style.filter = 'none'; // Reset filter for valid nutrient values
+
+                nutrientImage.style.filter = 'none';
                 volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
 
                 if (nutrientVolume >= 20) {
                     nutrientImage.src = '{{ asset('images/Water/100.png') }}';
                     statusText.textContent = "Full";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 17) {
                     nutrientImage.src = '{{ asset('images/Water/80.png') }}';
                     statusText.textContent = "85%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 15) {
                     nutrientImage.src = '{{ asset('images/Water/70.png') }}';
                     statusText.textContent = "75%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 12) {
                     nutrientImage.src = '{{ asset('images/Water/60.png') }}';
                     statusText.textContent = "60%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 10) {
                     nutrientImage.src = '{{ asset('images/Water/50.png') }}';
                     statusText.textContent = "50%";
                     statusText.style.color = 'blue';
-                    volumeValueElement.style.color = 'blue';
                 } else if (nutrientVolume >= 7) {
                     nutrientImage.src = '{{ asset('images/Water/30.png') }}';
                     statusText.textContent = "35%";
                     statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
                 } else if (nutrientVolume >= 5) {
                     nutrientImage.src = '{{ asset('images/Water/20.png') }}';
                     statusText.textContent = "25%";
                     statusText.style.color = 'orange';
-                    volumeValueElement.style.color = 'orange';
                 } else {
                     nutrientImage.src = '{{ asset('images/Water/10.png') }}';
-                    statusText.textContent = "Empty";
-                    statusText.style.color = 'gray';
-                    volumeValueElement.style.color = 'gray';
+                    statusText.textContent = "Low";
+                    statusText.style.color = 'green';
                 }
             }
         }
@@ -690,76 +736,79 @@
 
             if (phValue >= 0 && phValue <= 14) {
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
-                if (phValue < 5.0) {
+                phScale.style.filter = 'none';
+                // Update status based on pH value
+                if (phValue < 5.6) {
                     statusText.textContent = "Acidic";
-                    statusText.style.color = 'red';
-                    phValueElement.style.color = 'red';
-                    phScale.style.filter = 'none';
-                } else if (phValue === 7) {
-                    statusText.textContent = "Neutral";
-                    statusText.style.color = 'green';
-                    phValueElement.style.color = 'green';
-                    phScale.style.filter = 'none';
-                } else {
+                    statusText.style.color = 'orange';
+                } else if (phValue >= 5.6 && phValue < 7) {
                     statusText.textContent = "Good";
+                    statusText.style.color = 'green';
+                } else if (phValue == 7) {
+                    statusText.textContent = "Neutral";
                     statusText.style.color = 'blue';
-                    phValueElement.style.color = 'blue';
-                    phScale.style.filter = 'none';
+                } else if (phValue > 7) {
+                    statusText.textContent = "Alkaline";
+                    statusText.style.color = 'purple';
+                } else {
+                    statusText.textContent = "Unknown";
+                    statusText.style.color = 'gray';
                 }
+
             } else {
+                // Handle invalid pH range
                 phScale.src = `{{ asset('images/ph/7.png') }}`;
                 statusText.textContent = "N/A";
                 statusText.style.color = 'black';
                 phValueElement.style.color = 'black';
                 phScale.style.filter = 'grayscale(100%)';
             }
-
         }
 
-        function updateThermometerImage(temperature) {
 
+        function updateThermometerImage(temperature) {
             const thermometer = document.getElementById('thermometer');
             const statusText = document.getElementById('temp-status');
             const tempValueElement = document.getElementById('temp-value');
 
             thermometer.style.filter = 'none'; // Reset filter for valid temperature values
 
-            if (temperature <= 18) {
+            if (temperature < 20) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
                 statusText.textContent = "Cold";
                 statusText.style.color = 'blue';
-                tempValueElement.style.color = 'blue';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-            } else if (temperature > 18 && temperature <= 25) {
-                thermometer.src = '{{ asset('images/Temp/normal.png') }}';
-                statusText.textContent = "Normal (Optimal)";
-                statusText.style.color = 'green';
-                tempValueElement.style.color = 'green';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
+            } else if (temperature >= 20 && temperature <= 25) {
+                thermometer.src = '{{ asset('images/Temp/cold.png') }}';
+                statusText.textContent = "Mild";
+                statusText.style.color = 'lightblue';
             } else if (temperature > 25 && temperature <= 30) {
+                thermometer.src = '{{ asset('images/Temp/normal.png') }}';
+                statusText.textContent = "Good";
+                statusText.style.color = 'green';
+            } else if (temperature > 30 && temperature <= 40) {
+                thermometer.src = '{{ asset('images/Temp/warm.png') }}';
+                statusText.textContent = "Warm";
+                statusText.style.color = 'orange';
+            } else if (temperature > 40) {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Hot";
-                statusText.style.color = 'red';
-                tempValueElement.style.color = 'red';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
-            } else if (temperature > 31) {
-                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
-                statusText.textContent = "Too Hot";
                 statusText.style.color = 'darkred';
-                tempValueElement.style.color = 'darkred';
-                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
-
             } else {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 thermometer.style.filter = 'grayscale(100%)';
                 tempValueElement.textContent = "N/A";
+                statusText.textContent = "Unknown";
                 statusText.style.color = 'gray';
                 tempValueElement.style.color = 'gray';
             }
+
+            // If valid temperature, update the temp value
+            if (temperature !== null) {
+                tempValueElement.textContent = `${temperature.toFixed(2)} ℃`;
+            }
         }
+
+
 
         function updateLightStatus(status) {
             const circle = document.getElementById('statusCircle');
@@ -782,7 +831,7 @@
 
             switch (mode) {
                 case 0:
-                    modeText.textContent = 'Inactive';
+                    modeText.textContent = 'Blackout';
                     modeCircle.style.backgroundColor = 'gray';
                     break;
                 case 1:
