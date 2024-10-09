@@ -130,7 +130,7 @@
                         {{ Crypt::decryptString($towerinfo->name) }} <div id="online-status" style="display: inline-block;">
                         </div>
                     </h2>
-                    <h5>
+                    <h6>
                         <p class="card-text  no-line-spacing">
                             <b> Plant: </b>
                             @if ($towerinfo->plantVar)
@@ -140,7 +140,8 @@
                             @endif
                         </p>
 
-                    </h5>
+                    </h6>
+
                     @if ($wokername && $wokername->filter(fn($item) => Crypt::decryptString($item->status) == '1')->isNotEmpty())
                         <p class="card-text">
                             Assigned User: <br>
@@ -197,7 +198,7 @@
                                         <div class="value">
                                             <h4 class="mt-3"><span id="temp-value">n/a</span></h4>
                                             <span id="temp-status">n/a</span><br>
-                                            <span id="temp-con">n/a</span>
+                                            <span id="temp-con">...</span>
 
                                         </div>
                                     </div>
@@ -773,7 +774,7 @@
                 if (phValue < 5.5) {
                     statusText.textContent = "Acidic";
                     statusText.style.color = 'orange';
-                    phcon.textContent = "critical";
+                    phcon.textContent = "Critical";
                     phcon.style.color = 'red';
 
 
@@ -786,13 +787,13 @@
                 } else if (phValue == 7) {
                     statusText.textContent = "Neutral";
                     statusText.style.color = 'blue';
-                    phcon.textContent = "critical";
+                    phcon.textContent = "Critical";
                     phcon.style.color = 'red';
 
                 } else if (phValue > 7) {
                     statusText.textContent = "Alkaline";
                     statusText.style.color = 'purple';
-                    phcon.textContent = "critical";
+                    phcon.textContent = "Critical";
                     phcon.style.color = 'red';
                 } else {
                     statusText.textContent = "Unknown";
@@ -814,6 +815,8 @@
             const thermometer = document.getElementById('thermometer');
             const statusText = document.getElementById('temp-status');
             const tempValueElement = document.getElementById('temp-value');
+            const tempcon = document.getElementById('temp-con');
+
 
             thermometer.style.filter = 'none'; // Reset filter for valid temperature values
 
@@ -821,22 +824,32 @@
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
                 statusText.textContent = "Cold";
                 statusText.style.color = 'blue';
+                tempcon.textContent = "Critical";
+                tempcon.style.color = 'red';
             } else if (temperature >= 20 && temperature <= 25) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
                 statusText.textContent = "Mild";
                 statusText.style.color = 'lightblue';
+                tempcon.textContent = "Critical";
+                tempcon.style.color = 'red';
             } else if (temperature > 25 && temperature <= 30) {
                 thermometer.src = '{{ asset('images/Temp/normal.png') }}';
-                statusText.textContent = "Good";
+                statusText.textContent = "Ideal";
                 statusText.style.color = 'green';
+                tempcon.textContent = "";
+                tempcon.style.color = 'black';
             } else if (temperature > 30 && temperature <= 40) {
                 thermometer.src = '{{ asset('images/Temp/warm.png') }}';
                 statusText.textContent = "Warm";
                 statusText.style.color = 'orange';
+                tempcon.textContent = "Critical";
+                tempcon.style.color = 'red';
             } else if (temperature > 40) {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Hot";
                 statusText.style.color = 'darkred';
+                tempcon.textContent = "Critical";
+                tempcon.style.color = 'red';
             } else {
                 thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 thermometer.style.filter = 'grayscale(100%)';
@@ -844,6 +857,8 @@
                 statusText.textContent = "Unknown";
                 statusText.style.color = 'gray';
                 tempValueElement.style.color = 'gray';
+                tempcon.textContent = "...";
+                tempcon.style.color = 'black';
             }
 
 
