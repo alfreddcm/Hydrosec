@@ -16,6 +16,7 @@
                 return Crypt::decryptString($worker->status) === '1';
             })
             ->count();
+            
         $towerCount = Tower::where('OwnerID', Auth::id())->count();
 
         $towerId = Tower::where('OwnerID', Auth::id())->value('id');

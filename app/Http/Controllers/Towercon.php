@@ -61,11 +61,12 @@ class Towercon extends Controller
     }
 
     public function updateDates(Request $request)
-    {
+    {   
         $days = (int) $request->input('days', 0);
         $newDays = (int) $request->input('newDays', 0);
         $towerId = $request->input('tower_id');
         $plant = $request->input('plantSelect');
+
 
         $tower = Tower::find($towerId);
 
@@ -163,10 +164,6 @@ class Towercon extends Controller
         $ownerID = $tow->OwnerID;
 
         $pumps = Pump::where('towerid', $towerId)->get();
-        if ($sensorData->isEmpty() && $pumps->isEmpty()) {
-            \Log::info('No sensor or pump data available');
-            return redirect()->back()->with('success', 'No sensor or pump data to save.');
-        }
 
         $pumpDataArray = $pumps->map(function ($pump) {
             return [
@@ -194,6 +191,11 @@ class Towercon extends Controller
         })->toArray();
 
         \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
+
+        if ($sensorData->isEmpty() && $pumps->isEmpty()) {
+            \Log::info('No sensor or pump data available');
+            return redirect()->back()->with('success', 'No sensor or pump data to save.');
+        }
 
         try {
             SensorDataHistory::create([

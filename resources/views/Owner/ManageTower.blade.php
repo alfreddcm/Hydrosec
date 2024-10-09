@@ -72,7 +72,7 @@
                             @endphp
 
                             @if ($decryptedStatus == '0' || $decryptedStatus == '1')
-                                <div class="col-sm-3">
+                                <div class="col-md-3">
                                     <a href="{{ route('towerdata', ['id' => $data->id]) }}">
                                         <div class="card shadow-sm mb-4 border-0">
                                             <div class="card-body">
@@ -90,7 +90,7 @@
                                                             <span
                                                                 class="font-weight-bold">{{ Crypt::decryptString($data->towercode) }}</span>
                                                         </p>
-                                                        <p class="card-text">
+                                                        <p class="card-text  no-line-spacing">
                                                            <b> Plant: </b>
                                                             @if ($data->plantVar)
                                                                 {{ Crypt::decryptString($data->plantVar) }}
@@ -101,7 +101,7 @@
                                                             @endif
                                                         </p>
 
-                                                        <p class="card-text">
+                                                        <p class="card-text  no-line-spacing">
                                                             <b>Status:</b>
                                                             <span class="badge">
                                                                 {{ $decryptedStatus == '1' ? 'Active' : 'Inactive' }}
@@ -114,15 +114,6 @@
                                                                     <button type="submit"
                                                                         class="btn btn-primary mb-1">Enable </button>
                                                                 </form>
-                                                            @elseif($decryptedStatus == '0' && is_null($data->startdate) && is_null($data->enddate))
-                                                                <form action="{{ route('tower.stopdis') }}" method="POST">
-                                                                    @csrf
-                                                                    <input type="hidden" name="tower_id"
-                                                                        value="{{ $data->id }}">
-                                                                    <button type="submit" class="btn btn-danger"
-                                                                        onclick="return confirm('Are you sure you want to disable the tower?');">Disable
-                                                                        Tower</button>
-                                                                </form>
                                                             @endif
                                                         </p>
                                                     </div>
@@ -131,8 +122,9 @@
                                         </div>
                                     </a>
                                 </div>
+
                             @elseif ($decryptedStatus == '4')
-                                <div class="col-sm-3">
+                                <div class="col-md-3">
                                     <div class="card shadow-sm mb-1 border-0">
                                         <div class="card-body">
                                             <a href="">

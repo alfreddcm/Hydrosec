@@ -131,12 +131,12 @@
                         </div>
                     </h2>
                     <h5>
-                        @if($towerinfo->plantVar)
-                        {{ Crypt::decryptString($towerinfo->plantVar) }} 
+                        @if ($towerinfo->plantVar)
+                            {{ Crypt::decryptString($towerinfo->plantVar) }}
                         @else
                             <p class="card-text">
-                            Plant type not set
-                        </p>
+                                Plant type not set
+                            </p>
                         @endif
 
                     </h5>
@@ -180,8 +180,7 @@
                                     <h3 class="mt-3">Temperature</h3>
 
                                     <button type="button" class="btn btnpop" data-bs-toggle="modal"
-                                        data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
-                                        data-column="temp">
+                                        data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}" data-column="temp">
 
                                         <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
                                             alt="" style="height:30px" ; />
@@ -322,7 +321,7 @@
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label for="days">Select Number of Days:</label>
-                                        <select name="days" id="days" class="form-control">
+                                        <select name="days" id="days" class="form-control" required>
                                             @for ($i = 15; $i <= 50; $i++)
                                                 <option value="{{ $i }}">{{ $i }} days</option>
                                             @endfor
@@ -331,11 +330,11 @@
                                     <div class="form-group">
                                         <label for="plantSelect" class="form-label">Choose a Plant</label>
 
-                        <select class="form-select" id="plantSelect">
-                            <option selected disabled>Select a plant...</option>
-                            <option value="Lettuce">Lettuce </option>
-                            <option value="Bok Choy">Bok choy </option>
-                        </select>
+                                        <select class="form-select" id="plantSelect" required>
+                                            <option selected disabled>Select a plant...</option>
+                                            <option value="Lettuce">Lettuce </option>
+                                            <option value="Bok Choy">Bok choy </option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -382,7 +381,8 @@
                                     @csrf
                                     <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                     <button type="submit" class="btn btn-danger"
-                                        onclick="return confirm('Are you sure you want to stop the cycle?');">Stop Cycle</button>
+                                        onclick="return confirm('Are you sure you want to stop the cycle?');">Stop
+                                        Cycle</button>
                                 </form>
 
                                 <form action="{{ route('tower.stopdis') }}" method="POST">

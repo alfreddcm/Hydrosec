@@ -12,10 +12,11 @@
         use App\Models\Worker;
 
         $accs = DB::table('tbl_workeraccounts')
-            ->join('tbl_tower', 'tbl_workeraccounts.OwnerID', '=', 'tbl_tower.OwnerID')
-            ->where('tbl_workeraccounts.OwnerID', Auth::id())
-            ->select('tbl_workeraccounts.*', 'tbl_tower.name as tower_name', 'tbl_tower.name as towerid')
-            ->get();
+    ->join('tbl_tower', 'tbl_workeraccounts.OwnerID', '=', 'tbl_tower.OwnerID')
+    ->where('tbl_workeraccounts.OwnerID', Auth::id())
+    ->select('tbl_workeraccounts.*', 'tbl_tower.name as tower_name', 'tbl_tower.name as towerid')
+    ->distinct() 
+    ->get();
         $counter = 1;
 
     @endphp
