@@ -134,7 +134,7 @@
                         <p class="card-text  no-line-spacing">
                             <b> Plant: </b>
                             @if ($towerinfo->plantVar)
-                                {{ Crypt::decryptString($data->plantVar) }}
+                                {{ Crypt::decryptString($towerinfo->plantVar) }}
                             @else
                                 Not set
                             @endif
