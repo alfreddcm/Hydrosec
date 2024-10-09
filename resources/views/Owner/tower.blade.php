@@ -129,8 +129,17 @@
 
                         {{ Crypt::decryptString($towerinfo->name) }} <div id="online-status" style="display: inline-block;">
                         </div>
-
                     </h2>
+                    <h5>
+                        @if($towerinfo->plantVar)
+                        {{ Crypt::decryptString($towerinfo->plantVar) }} 
+                        @else
+                            <p class="card-text">
+                            Plant type not set
+                        </p>
+                        @endif
+
+                    </h5>
                     @if ($wokername)
                         <p class="card-text">
                             Assigned User: <br>
@@ -172,7 +181,7 @@
 
                                     <button type="button" class="btn btnpop" data-bs-toggle="modal"
                                         data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
-                                        data-column="temperature">
+                                        data-column="temp">
 
                                         <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
                                             alt="" style="height:30px" ; />
@@ -200,7 +209,7 @@
                                 <center>
                                     <h3 class="mt-3">pH Level</h3>
                                     <button type="button" class="btn btnpop" data-bs-toggle="modal"
-                                        data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}" data-column="pH">
+                                        data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}" data-column="ph">
 
                                         <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
                                             alt="" style="height:30px" ; />
@@ -225,7 +234,7 @@
                                     <h3 class="mt-3">Nutrient Volume</h3>
                                     <button type="button" class="btn btnpop" data-bs-toggle="modal"
                                         data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
-                                        data-column="nutrientlevel">
+                                        data-column="nutlevel">
 
                                         <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top"
                                             alt="" style="height:30px" ; />
@@ -319,6 +328,15 @@
                                             @endfor
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="plantSelect" class="form-label">Choose a Plant</label>
+
+                        <select class="form-select" id="plantSelect">
+                            <option selected disabled>Select a plant...</option>
+                            <option value="Lettuce">Lettuce </option>
+                            <option value="Bok Choy">Bok choy </option>
+                        </select>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
@@ -364,8 +382,7 @@
                                     @csrf
                                     <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                     <button type="submit" class="btn btn-danger"
-                                        onclick="return confirm('Are you sure you want to stop the cycle?');">Stop
-                                        Cycle</button>
+                                        onclick="return confirm('Are you sure you want to stop the cycle?');">Stop Cycle</button>
                                 </form>
 
                                 <form action="{{ route('tower.stopdis') }}" method="POST">
@@ -448,10 +465,6 @@
             function load() {
                 console.log('Livewire component has been loaded');
 
-                fetchInitialSensorData();
-
-
-
                 const pusher = new Pusher('3e52514a75529a62c062', {
                     cluster: 'ap1',
                     encrypted: true
@@ -526,6 +539,8 @@
                     tempChart.destroy();
                 }
 
+                // Show loading indicator (if implemented)
+
                 $.ajax({
                     url: `/get-data/${towerId}/${column}`,
                     method: 'GET',
@@ -536,6 +551,11 @@
                         }
 
                         const data = response.sensorData;
+                        if (data.length === 0) {
+                            console.error('No data available for the selected tower.');
+                            return;
+                        }
+
                         const labels = data.map(item => item.timestamp);
                         const values = data.map(item => item.value);
                         const ctx = document.getElementById('tempChart');
@@ -582,36 +602,7 @@
                 });
             });
 
-            function fetchInitialSensorData() {
-                const datetime = document.getElementById('created_at');
 
-                $.ajax({
-                    url: `/sensor-data/${towerId}`,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.sensorData) {
-                            const {
-                                temperature,
-                                nutrient_level,
-                                pH,
-                                light,
-                                stamps,
-                            } = response.sensorData;
-                            updateNutrientImage(parseFloat(nutrient_level));
-                            updatePhScaleImage(parseFloat(pH));
-                            updateLightStatus(parseFloat(light));
-                            updateThermometerImage(parseFloat(temperature));
-                            updateOnlineStatus(false);
-                            datetime.textContent = stamps;
-                        } else {
-                            console.log('No data available');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error: ' + status + ' ' + error);
-                    }
-                });
-            }
 
             function fetchPumpData() {
                 $.ajax({

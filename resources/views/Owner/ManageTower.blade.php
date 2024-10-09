@@ -39,8 +39,8 @@
         }
 
         /* .card-title {
-                            letter-spacing: 1px;
-                        } */
+                                        letter-spacing: 1px;
+                                    } */
         .card-text span.font-weight-bold {
             font-size: 1.1em;
         }
@@ -91,6 +91,17 @@
                                                                 class="font-weight-bold">{{ Crypt::decryptString($data->towercode) }}</span>
                                                         </p>
                                                         <p class="card-text">
+                                                           <b> Plant: </b>
+                                                            @if ($data->plantVar)
+                                                                {{ Crypt::decryptString($data->plantVar) }}
+                                                            @else
+                                                                <p class="card-text">
+                                                                    Not set
+                                                                </p>
+                                                            @endif
+                                                        </p>
+
+                                                        <p class="card-text">
                                                             <b>Status:</b>
                                                             <span class="badge">
                                                                 {{ $decryptedStatus == '1' ? 'Active' : 'Inactive' }}
@@ -103,15 +114,15 @@
                                                                     <button type="submit"
                                                                         class="btn btn-primary mb-1">Enable </button>
                                                                 </form>
-                                                                @elseif($decryptedStatus == '0' && is_null($data->startdate) && is_null($data->enddate))
-                                                                 <form action="{{ route('tower.stopdis') }}" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="tower_id"
-                                                                value="{{ $data->id }}">
-                                                            <button type="submit" class="btn btn-danger"
-                                                                onclick="return confirm('Are you sure you want to disable the tower?');">Disable
-                                                                Tower</button>
-                                                        </form>
+                                                            @elseif($decryptedStatus == '0' && is_null($data->startdate) && is_null($data->enddate))
+                                                                <form action="{{ route('tower.stopdis') }}" method="POST">
+                                                                    @csrf
+                                                                    <input type="hidden" name="tower_id"
+                                                                        value="{{ $data->id }}">
+                                                                    <button type="submit" class="btn btn-danger"
+                                                                        onclick="return confirm('Are you sure you want to disable the tower?');">Disable
+                                                                        Tower</button>
+                                                                </form>
                                                             @endif
                                                         </p>
                                                     </div>
@@ -139,7 +150,6 @@
                                                                 Cycle Again</button>
                                                         </form>
 
-                                                       
                                                     </center>
 
                                                 </h5>

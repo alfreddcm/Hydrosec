@@ -65,6 +65,7 @@ class Towercon extends Controller
         $days = (int) $request->input('days', 0);
         $newDays = (int) $request->input('newDays', 0);
         $towerId = $request->input('tower_id');
+        $plant = $request->input('plantSelect');
 
         $tower = Tower::find($towerId);
 
@@ -85,15 +86,11 @@ class Towercon extends Controller
                 $enddate = $startdate->copy()->addDays($days);
                 $tower->status = Crypt::encryptString('1');
                 $tower->mode = Crypt::encryptString($mode);
+                $tower->plantVar = Crypt::encryptString($plant);
+
                 $tower->startdate = $startdate;
                 $tower->enddate = $enddate;
                 $tower->save();
-
-                Log::info('New cycle started', [
-                    'tower_id' => $tower->id,
-                    'date_started' => $startdate,
-                    'date_end' => $enddate,
-                ]);
 
                 Log::info('New cycle started', [
                     'tower_id' => $tower->id,
@@ -164,13 +161,6 @@ class Towercon extends Controller
         }
 
         $ownerID = $tow->OwnerID;
-        \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
-
-        $sensorData = Sensor::where('towerid', $towerId)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
 
         $pumps = Pump::where('towerid', $towerId)->get();
         if ($sensorData->isEmpty() && $pumps->isEmpty()) {
@@ -186,16 +176,21 @@ class Towercon extends Controller
         })->toArray();
 
         \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
+        \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
 
-        // Format sensor data
+        $sensorData = Sensor::where('towerid', $towerId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
+
         $sensorDataArray = $sensorData->map(function ($data) {
-            return [
-                'pH' => $data->pH,
-                'temperature' => $data->temperature,
-                'nutrientlevel' => $data->nutrientlevel,
-                'light' => $data->light,
+            $decodedData = json_decode($data->sensordata, true);
+
+            return array_merge($decodedData, [
                 'created_at' => $data->created_at->toDateTimeString(),
-            ];
+            ]);
+
         })->toArray();
 
         \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
@@ -205,7 +200,8 @@ class Towercon extends Controller
                 'towerid' => $towerId,
                 'OwnerID' => $ownerID,
                 'sensor_data' => json_encode($sensorDataArray),
-                'pump' => json_encode($pumpDataArray), // Save pump data to the new column
+                'pump' => json_encode($pumpDataArray),
+                'plantVar' => crypt::decryptString($tow->plantVar),
                 'created_at' => Carbon::now(),
             ]);
 
@@ -401,15 +397,11 @@ class Towercon extends Controller
 
         \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
 
-// Format sensor data
         $sensorDataArray = $sensorData->map(function ($data) {
-            return [
-                'pH' => $data->pH,
-                'temperature' => $data->temperature,
-                'nutrientlevel' => $data->nutrientlevel,
-                'light' => $data->light,
+            $decodedData = json_decode($data->sensordata, true);
+            return array_merge($decodedData, [
                 'created_at' => $data->created_at->toDateTimeString(),
-            ];
+            ]);
         })->toArray();
 
         \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
@@ -419,7 +411,8 @@ class Towercon extends Controller
                 'towerid' => $towerId,
                 'OwnerID' => $ownerID,
                 'sensor_data' => json_encode($sensorDataArray),
-                'pump' => json_encode($pumpDataArray), // Save pump data to the new column
+                'pump' => json_encode($pumpDataArray),
+                'plantVar' => crypt::decryptString($tow->plantVar),
                 'created_at' => Carbon::now(),
             ]);
 
@@ -429,7 +422,6 @@ class Towercon extends Controller
             return redirect()->back()->with('error', 'Failed to save data.');
         }
 
-// Create the activity log
         $activityLog = [
             'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set Restart cycle.',
             'Date' => Carbon::now()->toDateTimeString(),

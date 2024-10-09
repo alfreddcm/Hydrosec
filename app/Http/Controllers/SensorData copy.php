@@ -56,7 +56,7 @@ class SensorData extends Controller
                     }
                 }
             } else {
-                //\Log::info("No pump data found for tower ID: {$id}");
+        //\Log::info("No pump data found for tower ID: {$id}");
             }
 
             // \Log::info('Pumping events processed successfully');
@@ -79,9 +79,6 @@ class SensorData extends Controller
         $key_str = "ISUHydroSec2024!";
         $iv_str = "HydroVertical143";
         $method = "AES-128-CBC";
-
-        $towerinfoid = null;
-        $towerinfocode = null;
 
         $response = [
             'status' => '',
@@ -123,7 +120,7 @@ class SensorData extends Controller
             $pH = $eplo[0];
             $temp = $eplo[1];
             $nut = $eplo[2];
-            $light = $eplo[3];
+            $decrypted_light = $eplo[3];
 
             $towers = Tower::all(['id', 'name', 'towercode']);
 
@@ -131,7 +128,7 @@ class SensorData extends Controller
                 'phValue' => $pH,
                 'temp' => $temp,
                 'waterLevel' => $nut,
-                'light' => $light,
+                'light' => $decrypted_light,
                 'ipAddress' => $decrypted_ip,
                 'macAddress' => $decrypted_mac,
                 'towercode' => $decrypted_towercode,
@@ -226,7 +223,7 @@ class SensorData extends Controller
                                         $volumeCondition = $this->getCondition((float) $nut, 'nutrient');
 
                                         $triggerConditions = [
-                                            'phCondition' => ['Acidic', 'Neutral', 'Alkaline'],
+                                            'phCondition' => ['Acidic', 'Alkaline'],
                                             'volumeCondition' => ['25%', '15%', 'critical low'],
                                             'tempCondition' => ['Cold', 'Hot'],
                                         ];
@@ -283,10 +280,10 @@ class SensorData extends Controller
                                                 'body' => $body,
                                             ];
 
+                                            // Store JSON data of triggered conditions only
                                             $sensorDataJson = json_encode($triggeredData);
 
                                             Sensor::create([
-                                                'towerid' => $tower->id,
                                                 'towercode' => $decrypted_towercode,
                                                 'sensordata' => $sensorDataJson,
                                                 'status' => '1',
@@ -302,7 +299,7 @@ class SensorData extends Controller
                                             'ph' => $pH,
                                             'temperature' => $temp,
                                             'nutrient_level' => $nut,
-                                            'light' => $light,
+                                            'light' => $decrypted_light,
                                         ];
 
                                         Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
@@ -386,7 +383,7 @@ class SensorData extends Controller
             Log::warning('Validation failed', [
                 'ipAddress' => $request->ip(),
                 'failedAttempts' => $failedAttempts,
-                'errorMessage' => $e->getMessage(),
+                // 'errors' => $e->errors(),
             ]);
 
         } finally {
@@ -423,17 +420,9 @@ class SensorData extends Controller
                         Log::error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
 
                     } finally {
-                        if (Cache::has($failedAttemptsKey)) {
-                            Cache::forget($failedAttemptsKey);
-                        }
-
-                        if (Cache::has($towerinfoid)) {
-                            Cache::forget($towerinfoid);
-                        }
-
-                        if (Cache::has($towerinfocode)) {
-                            Cache::forget($towerinfocode);
-                        }
+                        Cache::forget($failedAttemptsKey);
+                        // Cache::forget($towerinfoid);
+                        Cache::forget($towerinfocode);
                     }
                 }
             }
@@ -444,6 +433,10 @@ class SensorData extends Controller
 //ph,temp,nut
     public function getdata($id, $column)
     {
+        $key_str = "ISUHydroSec2024!";
+        $iv_str = "HydroVertical143";
+        $method = "AES-128-CBC";
+
         try {
             $sensorData = Sensor::where('towerid', $id)
                 ->orderBy('created_at', 'asc')
@@ -453,15 +446,33 @@ class SensorData extends Controller
 
             foreach ($sensorData as $sdata) {
                 $decodedData = json_decode($sdata->sensordata, true);
+
                 $formattedTimestamp = $sdata->created_at->format('Y-m-d H:i:s');
 
-                if (isset($decodedData[$column])) {
+                if (isset($decodedData['ph'])) {
                     $decryptedData[] = [
-                        'type' => $column,
-                        'value' => (float) $decodedData[$column],
+                        'type' => 'pH',
+                        'value' => (float) $decodedData['ph'],
                         'timestamp' => $formattedTimestamp,
                     ];
                 }
+
+                if (isset($decodedData['temp'])) {
+                    $decryptedData[] = [
+                        'type' => 'temperature',
+                        'value' => (float) $decodedData['temp'],
+                        'timestamp' => $formattedTimestamp,
+                    ];
+                }
+
+                if (isset($decodedData['nutlevel'])) {
+                    $decryptedData[] = [
+                        'type' => 'nutrient level',
+                        'value' => (float) $decodedData['nutlevel'],
+                        'timestamp' => $formattedTimestamp,
+                    ];
+                }
+
             }
 
             return response()->json(['sensorData' => $decryptedData]);
@@ -480,7 +491,7 @@ class SensorData extends Controller
             case 'pH':
                 if ($averageValue < 5.6) {
                     $condition = 'Acidic';
-                } elseif ($averageValue >= 5.5 && $averageValue < 6.0) {
+                } elseif ($averageValue >= 5.6 && $averageValue < 7.0) {
                     $condition = 'Good';
                 } elseif ($averageValue == 7.0) {
                     $condition = 'Neutral';
@@ -492,8 +503,18 @@ class SensorData extends Controller
                 break;
 
             case 'nutrient':
-                if ($averageValue > 5) {
-                    $condition = 'Good';
+                if ($averageValue >= 25) {
+                    $condition = 'Full';
+                } elseif ($averageValue >= 17) {
+                    $condition = '85%';
+                } elseif ($averageValue >= 15) {
+                    $condition = '75%';
+                } elseif ($averageValue >= 12) {
+                    $condition = '60%';
+                } elseif ($averageValue >= 10) {
+                    $condition = '50%';
+                } elseif ($averageValue >= 7) {
+                    $condition = '35%';
                 } elseif ($averageValue >= 5) {
                     $condition = '25%';
                 } elseif ($averageValue >= 2) {
@@ -505,11 +526,15 @@ class SensorData extends Controller
                 break;
 
             case 'temp':
-                if ($averageValue < 25) {
+                if ($averageValue < 20) {
                     $condition = 'Cold';
+                } elseif ($averageValue >= 20 && $averageValue <= 25) {
+                    $condition = 'Mild';
                 } elseif ($averageValue > 25 && $averageValue <= 30) {
                     $condition = 'Good';
-                } elseif ($averageValue > 30) {
+                } elseif ($averageValue > 30 && $averageValue <= 40) {
+                    $condition = 'Warm';
+                } elseif ($averageValue > 40) {
                     $condition = 'Hot';
                 } else {
                     $condition = 'Unknown';

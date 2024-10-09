@@ -25,6 +25,7 @@ class Tower extends Authenticatable
         'name',
         'towercode',
         'OwnerID',
+        'plantVar',
         'ipAdd',
         'macAdd',
         'mode',

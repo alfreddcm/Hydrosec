@@ -7,6 +7,7 @@ use App\Http\Controllers\Owner\OwnerProfile;
 use App\Http\Controllers\PHPMailerController;
 use App\Http\Controllers\SensorData;
 use App\Http\Controllers\Towercon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 // Route::fallback(function (Request $request) {
@@ -135,7 +136,11 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/Admin/en/{id}', [admincontroller::class, 'en'])->name('admin.en');
 
     Route::post('/Admin/worker-dis/{id}', [admincontroller::class, 'workerdis'])->name('admin.dis2');
-Route::post('/Admin/worker-en/{id}', [admincontroller::class, 'workeren'])->name('admin.en2');
+    Route::post('/Admin/worker-en/{id}', [admincontroller::class, 'workeren'])->name('admin.en2');
 
+});
 
+Route::get('/update-mode', function () {
+    Artisan::call('tower:update-mode');
+    return response()->json(['message' => 'Update mode command executed successfully!']);
 });

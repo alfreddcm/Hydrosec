@@ -13,11 +13,7 @@ class Sensor extends Model
 
     protected $fillable = [
         'towerid',
-        'pH',
-        'temperature',
-        'nutrientlevel',
-        'light',
-
+        'sensordata'
     ];
 
     // Optionally, specify the table name if it doesn't follow Laravel's naming convention
