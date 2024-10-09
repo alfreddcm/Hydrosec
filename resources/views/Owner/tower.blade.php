@@ -131,19 +131,20 @@
                         </div>
                     </h2>
                     <h5>
-                        @if ($towerinfo->plantVar)
-                            {{ Crypt::decryptString($towerinfo->plantVar) }}
-                        @else
-                            <p class="card-text">
-                                Plant type not set
-                            </p>
-                        @endif
+                        <p class="card-text  no-line-spacing">
+                            <b> Plant: </b>
+                            @if ($towerinfo->plantVar)
+                                {{ Crypt::decryptString($data->plantVar) }}
+                            @else
+                                Not set
+                            @endif
+                        </p>
 
                     </h5>
-                    @if ($wokername)
+                    @if ($wokername && $wokername->filter(fn($item) => Crypt::decryptString($item->status) == '1')->isNotEmpty())
                         <p class="card-text">
                             Assigned User: <br>
-                            @foreach ($wokername as $item)
+                            @foreach ($wokername->filter(fn($item) => Crypt::decryptString($item->status) == '1') as $item)
                                 {{ Crypt::decryptString($item->name) }} &nbsp;
                             @endforeach
                         </p>
@@ -195,7 +196,9 @@
                                         </div>
                                         <div class="value">
                                             <h4 class="mt-3"><span id="temp-value">n/a</span></h4>
-                                            <span id="temp-status">n/a</span>
+                                            <span id="temp-status">n/a</span><br>
+                                            <span id="temp-con">n/a</span>
+
                                         </div>
                                     </div>
                                 </center>
@@ -218,7 +221,9 @@
                                     </div>
 
                                     <div class="value">
-                                        <h4 class="mt-3"><span id="ph-value">n/a</span> <span id="ph-status">n/a</span>
+                                        <h4 class="mt-3"><span id="ph-value">n/a</span> <span
+                                                id="ph-status">n/a</span><br>
+                                            <span id="ph-con">...</span>
                                         </h4>
 
                                     </div>
@@ -245,8 +250,11 @@
                                                 alt="Nutient_volume">
                                         </div>
                                         <div class="value">
-                                            <h4 class="mt-3"><span id="nutrient-value">n/a</span></h4>
-                                            <span id="nutrient-status">n/a</span>
+                                            <h4 class="mt-3"><span id="nutrient-value">n/a</span>
+                                                <span id="nutrient-status">n/a</span>
+                                                <br>
+                                                <span id="nutrient-con">...</span>
+                                            </h4>
                                         </div>
                                     </div>
                                 </center>
@@ -310,7 +318,7 @@
                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form action="{{ route('cycle') }}" method="POST">
+                            <form id="startCycleForm" action="{{ route('cycle') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                 <div class="modal-header">
@@ -322,6 +330,7 @@
                                     <div class="form-group">
                                         <label for="days">Select Number of Days:</label>
                                         <select name="days" id="days" class="form-control" required>
+                                            <option selected disabled>Select days...</option>
                                             @for ($i = 15; $i <= 50; $i++)
                                                 <option value="{{ $i }}">{{ $i }} days</option>
                                             @endfor
@@ -329,11 +338,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="plantSelect" class="form-label">Choose a Plant</label>
-
-                                        <select class="form-select" id="plantSelect" required>
+                                        <select name="plant" class="form-select" id="plantSelect" required>
                                             <option selected disabled>Select a plant...</option>
-                                            <option value="Lettuce">Lettuce </option>
-                                            <option value="Bok Choy">Bok choy </option>
+                                            <option value="Lettuce">Lettuce</option>
+                                            <option value="Bok Choy">Bok choy</option>
                                         </select>
                                     </div>
                                 </div>
@@ -343,6 +351,7 @@
                                     <button type="submit" class="btn btn-primary">Start Cycle</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -455,6 +464,16 @@
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <script>
+        document.getElementById('startCycleForm').addEventListener('submit', function(event) {
+            const days = document.getElementById('days');
+            const plant = document.getElementById('plantSelect');
+
+            if (!days.value || !plant.value) {
+                event.preventDefault();
+                alert("Please fill in all required fields.");
+            }
+        });
+
         var towerId = @json($towerinfo->id);
 
         $(document).ready(function() {
@@ -671,50 +690,69 @@
             const nutrientImage = document.getElementById('nutrient-image');
             const statusText = document.getElementById('nutrient-status');
             const volumeValueElement = document.getElementById('nutrient-value');
+            const volcon = document.getElementById('nutrient-con');
+
 
             if (isNaN(nutrientVolume) || nutrientVolume === null) {
-                nutrientImage.src = '{{ asset('images/Water/10.png') }}'; // Grayscale image
+                nutrientImage.src = '{{ asset('images/Water/10.png') }}';
                 statusText.textContent = "N/A";
                 statusText.style.color = 'gray';
                 volumeValueElement.style.color = 'gray';
                 nutrientImage.style.filter = 'grayscale(100%)';
+                volcon.textContent = '';
+                volcon.style.color = '';
             } else {
-                nutrientImage.style.filter = 'none'; // Reset filter for valid nutrient values
+                nutrientImage.style.filter = 'none';
                 volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
 
-                // Update image and status based on nutrient volume
                 if (nutrientVolume >= 20) {
                     nutrientImage.src = '{{ asset('images/Water/100.png') }}';
                     statusText.textContent = "Full";
                     statusText.style.color = 'blue';
+                    volcon.textContent = '';
+                    volcon.style.color = '';
                 } else if (nutrientVolume >= 17) {
                     nutrientImage.src = '{{ asset('images/Water/80.png') }}';
                     statusText.textContent = "85%";
                     statusText.style.color = 'blue';
+                    volcon.textContent = '';
+                    volcon.style.color = '';
                 } else if (nutrientVolume >= 15) {
                     nutrientImage.src = '{{ asset('images/Water/70.png') }}';
                     statusText.textContent = "75%";
                     statusText.style.color = 'blue';
+                    volcon.textContent = '';
+                    volcon.style.color = '';
                 } else if (nutrientVolume >= 12) {
                     nutrientImage.src = '{{ asset('images/Water/60.png') }}';
                     statusText.textContent = "60%";
                     statusText.style.color = 'blue';
+                    volcon.textContent = '';
+                    volcon.style.color = '';
                 } else if (nutrientVolume >= 10) {
                     nutrientImage.src = '{{ asset('images/Water/50.png') }}';
                     statusText.textContent = "50%";
                     statusText.style.color = 'blue';
+                    volcon.textContent = '';
+                    volcon.style.color = '';
                 } else if (nutrientVolume >= 7) {
                     nutrientImage.src = '{{ asset('images/Water/30.png') }}';
                     statusText.textContent = "35%";
                     statusText.style.color = 'orange';
+                    volcon.textContent = '';
+                    volcon.style.color = '';
                 } else if (nutrientVolume >= 5) {
                     nutrientImage.src = '{{ asset('images/Water/20.png') }}';
                     statusText.textContent = "25%";
                     statusText.style.color = 'orange';
+                    volcon.textContent = 'Critical';
+                    volcon.style.color = 'red';
                 } else {
                     nutrientImage.src = '{{ asset('images/Water/10.png') }}';
                     statusText.textContent = "Low";
                     statusText.style.color = 'green';
+                    volcon.textContent = 'Critical';
+                    volcon.style.color = 'red';
                 }
             }
         }
@@ -723,6 +761,8 @@
             const phScale = document.getElementById('ph-scale');
             const statusText = document.getElementById('ph-status');
             const phValueElement = document.getElementById('ph-value');
+            const phcon = document.getElementById('ph-con');
+
 
             phValueElement.textContent = `${phValue.toFixed(2)}`;
 
@@ -730,25 +770,37 @@
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
                 phScale.style.filter = 'none';
                 // Update status based on pH value
-                if (phValue < 5.6) {
+                if (phValue < 5.5) {
                     statusText.textContent = "Acidic";
                     statusText.style.color = 'orange';
-                } else if (phValue >= 5.6 && phValue < 7) {
-                    statusText.textContent = "Good";
+                    phcon.textContent = "critical";
+                    phcon.style.color = 'red';
+
+
+                } else if (phValue >= 5.5 && phValue < 6) {
+                    statusText.textContent = "Acidic";
                     statusText.style.color = 'green';
+                    phcon.textContent = "Ideal";
+                    phcon.style.color = 'black';
+
                 } else if (phValue == 7) {
                     statusText.textContent = "Neutral";
                     statusText.style.color = 'blue';
+                    phcon.textContent = "critical";
+                    phcon.style.color = 'red';
+
                 } else if (phValue > 7) {
                     statusText.textContent = "Alkaline";
                     statusText.style.color = 'purple';
+                    phcon.textContent = "critical";
+                    phcon.style.color = 'red';
                 } else {
                     statusText.textContent = "Unknown";
                     statusText.style.color = 'gray';
                 }
 
             } else {
-                // Handle invalid pH range
+
                 phScale.src = `{{ asset('images/ph/7.png') }}`;
                 statusText.textContent = "N/A";
                 statusText.style.color = 'black';

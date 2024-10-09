@@ -95,9 +95,7 @@
                                                             @if ($data->plantVar)
                                                                 {{ Crypt::decryptString($data->plantVar) }}
                                                             @else
-                                                                <p class="card-text">
                                                                     Not set
-                                                                </p>
                                                             @endif
                                                         </p>
 
