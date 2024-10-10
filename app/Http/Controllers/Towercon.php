@@ -144,113 +144,109 @@ class Towercon extends Controller
     }
 
     public function stop(Request $request)
-    {
-        \Log::info('Stop method called', ['request' => $request->all()]);
+{
+    \Log::info('Stop method called', ['request' => $request->all()]);
 
-        $towerId = $request->input('tower_id');
-        \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
+    $towerId = $request->input('tower_id');
+    \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
 
-        $tow = Tower::where('id', $towerId)->first();
-        if (!$tow) {
-            \Log::error('Tower not found', ['towerId' => $towerId]);
-            return redirect()->back()->with('error', 'Tower not found.');
-        }
-
-        \Log::info('Tower retrieved', ['tow' => $tow]);
-
-        try {
-            $stat = Crypt::encryptString('0');
-            \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
-
-            $tow->startdate = null;
-            $tow->enddate = null;
-            $tow->status = $stat;
-            $tow->save();
-
-            \Log::info('Tower status updated and saved', ['tow' => $tow]);
-        } catch (\Exception $e) {
-            \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
-            return redirect()->back()->with('error', 'Failed to update tower status.');
-        }
-
-        $ownerID = $tow->OwnerID;
-
-        $pumps = Pump::where('towerid', $towerId)->get();
-
-        $pumpDataArray = $pumps->map(function ($pump) {
-            return [
-                'status' => $pump->status,
-                'created_at' => $pump->created_at->toDateTimeString(),
-            ];
-        })->toArray();
-
-        \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
-        \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
-
-        $sensorData = Sensor::where('towerid', $towerId)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
-
-        $sensorDataArray = $sensorData->map(function ($data) {
-            $decodedData = json_decode($data->sensordata, true);
-
-            return array_merge($decodedData, [
-                'created_at' => $data->created_at->toDateTimeString(),
-            ]);
-
-        })->toArray();
-
-        \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
-
-        if ($sensorData->isEmpty() && $pumps->isEmpty()) {
-            \Log::info('No sensor or pump data available');
-            return redirect()->back()->with('success', 'No sensor or pump data to save.');
-        }
-
-        try {
-            SensorDataHistory::create([
-                'towerid' => $towerId,
-                'OwnerID' => $ownerID,
-                'sensor_data' => json_encode($sensorDataArray),
-                'pump' => json_encode($pumpDataArray),
-                'plantVar' => crypt::decryptString($tow->plantVar),
-                'created_at' => Carbon::now(),
-            ]);
-
-            \Log::info('Sensor and pump data saved');
-        } catch (\Exception $e) {
-            \Log::error('Error saving sensor or pump data', ['exception' => $e->getMessage()]);
-            return redirect()->back()->with('error', 'Failed to save data.');
-        }
-
-        // Create the activity log
-        $activityLog = [
-            'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set to done cycle.',
-            'Date' => Carbon::now()->toDateTimeString(),
-        ];
-
-        \Log::info('Activity log created', ['activityLog' => $activityLog]);
-
-        try {
-            Towerlog::create([
-                'ID_tower' => $tow->id,
-                'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
-            ]);
-
-            \Log::info('Activity log saved');
-        } catch (\Exception $e) {
-            \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
-        }
-
-        Sensor::truncate();
-        Pump::truncate();
-
-        \Log::info('Sensor table truncated');
-
-        return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
+    $tow = Tower::where('id', $towerId)->first();
+    if (!$tow) {
+        \Log::error('Tower not found', ['towerId' => $towerId]);
+        return redirect()->back()->with('error', 'Tower not found.');
     }
+
+    \Log::info('Tower retrieved', ['tow' => $tow]);
+
+    try {
+        $stat = Crypt::encryptString('0');
+        \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+
+        $tow->startdate = null;
+        $tow->enddate = null;
+        $tow->status = $stat;
+        $tow->save();
+
+        \Log::info('Tower status updated and saved', ['tow' => $tow]);
+    } catch (\Exception $e) {
+        \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+        return redirect()->back()->with('error', 'Failed to update tower status.');
+    }
+
+    $ownerID = $tow->OwnerID;
+
+    $pumps = Pump::where('towerid', $towerId)->get();
+    $pumpDataArray = $pumps->map(function ($pump) {
+        return [
+            'status' => $pump->status,
+            'created_at' => $pump->created_at->toDateTimeString(),
+        ];
+    })->toArray();
+
+    \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
+    \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
+
+    $sensorData = Sensor::where('towerid', $towerId)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
+
+    $sensorDataArray = $sensorData->map(function ($data) {
+        $decodedData = json_decode($data->sensordata, true);
+        return array_merge($decodedData, [
+            'created_at' => $data->created_at->toDateTimeString(),
+        ]);
+    })->toArray();
+
+    \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
+
+    if ($sensorData->isEmpty() && $pumps->isEmpty()) {
+        \Log::info('No sensor or pump data available');
+        return redirect()->back()->with('success', 'No sensor or pump data to save.');
+    }
+
+    try {
+        SensorDataHistory::create([
+            'towerid' => $towerId,
+            'OwnerID' => $ownerID,
+            'sensor_data' => json_encode($sensorDataArray),
+            'pump' => json_encode($pumpDataArray),
+            'plantVar' => crypt::decryptString($tow->plantVar),
+            'created_at' => Carbon::now(),
+        ]);
+
+        \Log::info('Sensor and pump data saved');
+    } catch (\Exception $e) {
+        \Log::error('Error saving sensor or pump data', ['exception' => $e->getMessage()]);
+        return redirect()->back()->with('error', 'Failed to save data.');
+    }
+
+    $activityLog = [
+        'Message' => 'Tower ' . Crypt::decryptString($tow->name) . ' has been set to done cycle.',
+        'Date' => Carbon::now()->toDateTimeString(),
+    ];
+
+    \Log::info('Activity log created', ['activityLog' => $activityLog]);
+
+    try {
+        Towerlog::create([
+            'ID_tower' => $tow->id,
+            'activity' => Crypt::encryptString(json_encode($activityLog)),
+        ]);
+
+        \Log::info('Activity log saved');
+    } catch (\Exception $e) {
+        \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+    }
+
+    Sensor::truncate();
+    Pump::truncate();
+
+    \Log::info('Sensor table truncated');
+
+    return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
+}
 
     public function stopdis(Request $request)
     {

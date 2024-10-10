@@ -861,26 +861,26 @@
 
             thermometer.style.filter = 'none'; // Reset filter for valid temperature values
 
-            if (temperature < 20) {
+            if (temperature <= 20) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
                 statusText.textContent = "Cold";
                 statusText.style.color = 'blue';
                 tempcon.textContent = "Critical";
                 tempcon.style.color = 'red';
-            } else if (temperature >= 20 && temperature <= 25) {
+            } else if (temperature > 20 && temperature < 25) {
                 thermometer.src = '{{ asset('images/Temp/cold.png') }}';
                 statusText.textContent = "Mild";
                 statusText.style.color = 'lightblue';
                 tempcon.textContent = "Critical";
                 tempcon.style.color = 'red';
-            } else if (temperature > 25 && temperature <= 30) {
+            } else if (temperature >= 25 && temperature <= 30) {
                 thermometer.src = '{{ asset('images/Temp/normal.png') }}';
                 statusText.textContent = "Ideal";
                 statusText.style.color = 'green';
                 tempcon.textContent = "";
                 tempcon.style.color = 'black';
             } else if (temperature > 30 && temperature <= 40) {
-                thermometer.src = '{{ asset('images/Temp/warm.png') }}';
+                thermometer.src = '{{ asset('images/Temp/hot.png') }}';
                 statusText.textContent = "Warm";
                 statusText.style.color = 'orange';
                 tempcon.textContent = "Critical";

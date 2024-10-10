@@ -391,3 +391,440 @@
 [2024-10-10 22:11:08] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
 [2024-10-10 22:11:09] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
 [2024-10-10 22:11:09] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:17:26] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:17:26] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:17:26] local.INFO: 1907.88  
+[2024-10-10 22:17:26] local.INFO: Request received: {"sensorData":"4,35,4,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:17:26] local.INFO: Validated data: {"sensorData":"4,35,4,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:17:26] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:17:26] local.INFO: Data: {"data":"4,35,4,1"} 
+[2024-10-10 22:17:26] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:17:26] local.INFO: array (
+)  
+[2024-10-10 22:17:26] local.INFO: 459.33  
+[2024-10-10 22:17:26] local.INFO: from tower: {"phValue":"4","temp":"35","waterLevel":"4","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:17:27] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:17:27] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:17:27] local.INFO: 514.68  
+[2024-10-10 22:17:27] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:17:27] local.INFO: array (
+  0 => 1728573447,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:17:27] local.INFO: 626.08  
+[2024-10-10 22:17:27] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:17:27] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:17:27] local.INFO: Sensor data condition check: {"pH":"Acidic","Temperature":"Hot","Nutrient Solution Volume":"15%"} 
+[2024-10-10 22:17:27] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":1,"Nutrient Solution Volume Triggers":1} 
+[2024-10-10 22:17:28] local.INFO: insert into `sensor` (`towerid`, `sensordata`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:17:28] local.INFO: array (
+  0 => 1,
+  1 => '{"ph":"4","temp":"35","nutlevel":"4"}',
+  2 => '2024-10-10 22:17:27',
+  3 => '2024-10-10 22:17:27',
+)  
+[2024-10-10 22:17:28] local.INFO: 517.97  
+[2024-10-10 22:17:28] local.INFO: Sending alert email with conditions: {"conditions":"pH: 4 - Acidic, Temperature: 35 - Hot, Nutrient Solution Volume: 4 - 15%"} 
+[2024-10-10 22:17:28] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-10-10 22:17:28] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:17:28] local.INFO: 497.28  
+[2024-10-10 22:17:29] local.INFO: select * from `tbl_useraccounts` where `tbl_useraccounts`.`id` = ? limit 1  
+[2024-10-10 22:17:29] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:17:29] local.INFO: 593.38  
+[2024-10-10 22:17:35] local.INFO: Alert email sent to {"email":"alfredmarcelinoii45@gmail.com","tower_id":1} 
+[2024-10-10 22:17:36] local.INFO: insert into `tbl_towerlogs` (`ID_tower`, `activity`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:17:36] local.INFO: array (
+  0 => 1,
+  1 => 'eyJpdiI6ImtVbkhSbjN6a2lReDZlTnFNYjd1ZGc9PSIsInZhbHVlIjoid3JtaHMrT01NYUxYbWdYTUloUUVGVTVyY2p4TjZEckxybW4vZ2hoaXQxQTNXOU40V0FJMUk0ZmFjZW41MXdjRjhZSmF3am9zN1crSkZ6M0hmOE1PTTY2a2djTXBlRDlQWWpIYkJhT2djZGlkYlJUOVdyNy9rTHZ1ZVN3Z2ZPazEyTERBUDBIK1lYMDExNDRmQUJqVVVUVW1HRHJMdjQxbWtPZy9STVhabVgyL1ZzTEt1cUZUZlFOWFM2OXRvMUl1d2RpOWtPQTh3eHUwamN5RzB1cVBLVUU5dEZ2cDF4bmpWSnhMVW5LTnBJVkovTURxK21kRVZOSm9kZ2FLcnNRRiIsIm1hYyI6IjdjOTEzMjkxMmE3ZThjMTk2MThkZjE0NjAyN2IwMzk5YTM4YWY4NTgzOWYxMzNjNjJjYTg3ZTJlNWY4ZjY4YzQiLCJ0YWciOiIifQ==',
+  2 => '2024-10-10 22:17:35',
+  3 => '2024-10-10 22:17:35',
+)  
+[2024-10-10 22:17:36] local.INFO: 592.74  
+[2024-10-10 22:17:36] local.INFO: Alert logged in tbl_Towerlog {"tower_id":1,"activity":"\"The following conditions have been detected at Tower 'Lettuce': pH: 4 - Acidic, Temperature: 35 - Hot, Nutrient Solution Volume: 4 - 15%\""} 
+[2024-10-10 22:17:36] local.INFO: update `tbl_tower` set `last_critical_condition_email_sent_at` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-10-10 22:17:36] local.INFO: array (
+  0 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000002050000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-10-10 22:17:29.520755',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+  1 => '2024-10-10 22:17:36',
+  2 => 1,
+)  
+[2024-10-10 22:17:36] local.INFO: 616.39  
+[2024-10-10 22:17:36] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"4","temperature":"35","nutrient_level":"4","light":"1"},"towerId":1} 
+[2024-10-10 22:17:38] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"4","temperature":"35","nutrient_level":"4","light":"1"},"towerId":1} 
+[2024-10-10 22:17:38] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:18:48] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:18:48] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:18:48] local.INFO: 1775.19  
+[2024-10-10 22:18:48] local.INFO: Request received: {"sensorData":"5,38,5,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:18:48] local.INFO: Validated data: {"sensorData":"5,38,5,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:18:48] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:18:48] local.INFO: Data: {"data":"5,38,5,1"} 
+[2024-10-10 22:18:49] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:18:49] local.INFO: array (
+)  
+[2024-10-10 22:18:49] local.INFO: 518.91  
+[2024-10-10 22:18:49] local.INFO: from tower: {"phValue":"5","temp":"38","waterLevel":"5","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:18:49] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:18:49] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:18:49] local.INFO: 568.48  
+[2024-10-10 22:18:50] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:18:50] local.INFO: array (
+  0 => 1728573529,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:18:50] local.INFO: 567.98  
+[2024-10-10 22:18:50] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:18:50] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:18:50] local.INFO: Sensor data condition check: {"pH":"Acidic","Temperature":"Hot","Nutrient Solution Volume":"25%"} 
+[2024-10-10 22:18:50] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":1,"Nutrient Solution Volume Triggers":1} 
+[2024-10-10 22:18:50] local.INFO: insert into `sensor` (`towerid`, `sensordata`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:18:50] local.INFO: array (
+  0 => 1,
+  1 => '{"ph":"5","temp":"38","nutlevel":"5"}',
+  2 => '2024-10-10 22:18:50',
+  3 => '2024-10-10 22:18:50',
+)  
+[2024-10-10 22:18:50] local.INFO: 605.85  
+[2024-10-10 22:18:50] local.INFO: Sending alert email with conditions: {"conditions":"pH: 5 - Acidic, Temperature: 38 - Hot, Nutrient Solution Volume: 5 - 25%"} 
+[2024-10-10 22:18:51] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-10-10 22:18:51] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:18:51] local.INFO: 570.59  
+[2024-10-10 22:18:52] local.INFO: select * from `tbl_useraccounts` where `tbl_useraccounts`.`id` = ? limit 1  
+[2024-10-10 22:18:52] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:18:52] local.INFO: 611.7  
+[2024-10-10 22:18:56] local.INFO: Alert email sent to {"email":"alfredmarcelinoii45@gmail.com","tower_id":1} 
+[2024-10-10 22:18:56] local.INFO: insert into `tbl_towerlogs` (`ID_tower`, `activity`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:18:56] local.INFO: array (
+  0 => 1,
+  1 => 'eyJpdiI6IjNEWEZLSjlBNVFVTFE4aGlJRmlnc1E9PSIsInZhbHVlIjoiRVlaKytpaEdnMnNwWTdiZWFrOWV1NzRKeGJVN2dBYXJuRDQ4WnZLZDFDSWhaL1RtMnhVZUVieEtRcEpzSW4vNjk1SFlsdkZxZlJyc1MxandnV1pHSUJmWDR6SHhIR0poUjQ3TGVIMjNNSjV0RFhRSDBPUDY5SUNHMnNheXRzM3F2OE1WbXFWRnI3R0M3VFdVL3E1MVJ3OGdKL2xRTTVOTGFIbS9vZDRnRndFSnZVNko2T2d3Q1ltN0lLbjU5TDVHcjcwWGNoWS9oK3o3a2p4L0VJbEZwc3NOckNKdk5EdldnVmZIM0lhTkZ4bmI2OHFXRkw5M3djZVFLZXlaNmJoYiIsIm1hYyI6ImVhZTg1YjI5ZDkxMjcwOTNhY2Q2ZDBlMjM4Yjc4MmM1ZGE4ZGY3Yzg0MDI5ZTc3MjkyMmYyNTE5NGY1NzhiZmYiLCJ0YWciOiIifQ==',
+  2 => '2024-10-10 22:18:56',
+  3 => '2024-10-10 22:18:56',
+)  
+[2024-10-10 22:18:56] local.INFO: 567.66  
+[2024-10-10 22:18:56] local.INFO: Alert logged in tbl_Towerlog {"tower_id":1,"activity":"\"The following conditions have been detected at Tower 'Lettuce': pH: 5 - Acidic, Temperature: 38 - Hot, Nutrient Solution Volume: 5 - 25%\""} 
+[2024-10-10 22:18:57] local.INFO: update `tbl_tower` set `last_critical_condition_email_sent_at` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-10-10 22:18:57] local.INFO: array (
+  0 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000002050000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-10-10 22:18:52.011231',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+  1 => '2024-10-10 22:18:56',
+  2 => 1,
+)  
+[2024-10-10 22:18:57] local.INFO: 789.36  
+[2024-10-10 22:18:57] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"5","temperature":"38","nutrient_level":"5","light":"1"},"towerId":1} 
+[2024-10-10 22:18:58] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"5","temperature":"38","nutrient_level":"5","light":"1"},"towerId":1} 
+[2024-10-10 22:18:58] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:19:15] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:19:15] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:19:15] local.INFO: 1395.67  
+[2024-10-10 22:19:15] local.INFO: Request received: {"sensorData":"5,21,5,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:19:15] local.INFO: Validated data: {"sensorData":"5,21,5,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:19:15] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:19:15] local.INFO: Data: {"data":"5,21,5,1"} 
+[2024-10-10 22:19:16] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:19:16] local.INFO: array (
+)  
+[2024-10-10 22:19:16] local.INFO: 461.65  
+[2024-10-10 22:19:16] local.INFO: from tower: {"phValue":"5","temp":"21","waterLevel":"5","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:19:16] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:19:16] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:19:16] local.INFO: 487.18  
+[2024-10-10 22:19:17] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:19:17] local.INFO: array (
+  0 => 1728573556,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:19:17] local.INFO: 461.24  
+[2024-10-10 22:19:17] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:19:17] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:19:17] local.INFO: Sensor data condition check: {"pH":"Acidic","Temperature":"Cold","Nutrient Solution Volume":"25%"} 
+[2024-10-10 22:19:17] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":1,"Nutrient Solution Volume Triggers":1} 
+[2024-10-10 22:19:17] local.INFO: insert into `sensor` (`towerid`, `sensordata`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:19:17] local.INFO: array (
+  0 => 1,
+  1 => '{"ph":"5","temp":"21","nutlevel":"5"}',
+  2 => '2024-10-10 22:19:17',
+  3 => '2024-10-10 22:19:17',
+)  
+[2024-10-10 22:19:17] local.INFO: 499.72  
+[2024-10-10 22:19:17] local.INFO: Sending alert email with conditions: {"conditions":"pH: 5 - Acidic, Temperature: 21 - Cold, Nutrient Solution Volume: 5 - 25%"} 
+[2024-10-10 22:19:18] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-10-10 22:19:18] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:19:18] local.INFO: 643.25  
+[2024-10-10 22:19:18] local.INFO: select * from `tbl_useraccounts` where `tbl_useraccounts`.`id` = ? limit 1  
+[2024-10-10 22:19:18] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:19:18] local.INFO: 489.55  
+[2024-10-10 22:19:18] local.INFO: Skipping email for critical_condition, cooldown remaining: 0.55172583333333 minutes {"tower_id":1} 
+[2024-10-10 22:19:18] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"5","temperature":"21","nutrient_level":"5","light":"1"},"towerId":1} 
+[2024-10-10 22:19:19] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"5","temperature":"21","nutrient_level":"5","light":"1"},"towerId":1} 
+[2024-10-10 22:19:19] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:21:44] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:21:44] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:21:44] local.INFO: 1964.9  
+[2024-10-10 22:21:44] local.INFO: Request received: {"sensorData":"5,25,8,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:21:44] local.INFO: Validated data: {"sensorData":"5,25,8,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:21:44] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:21:44] local.INFO: Data: {"data":"5,25,8,0"} 
+[2024-10-10 22:21:45] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:21:45] local.INFO: array (
+)  
+[2024-10-10 22:21:45] local.INFO: 617.19  
+[2024-10-10 22:21:45] local.INFO: from tower: {"phValue":"5","temp":"25","waterLevel":"8","light":"0","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:21:46] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:21:46] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:21:46] local.INFO: 624.49  
+[2024-10-10 22:21:46] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:21:46] local.INFO: array (
+  0 => 1728573706,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:21:46] local.INFO: 612.38  
+[2024-10-10 22:21:46] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:21:46] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:21:46] local.INFO: Sensor data condition check: {"pH":"Acidic","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:21:46] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:21:47] local.INFO: insert into `sensor` (`towerid`, `sensordata`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:21:47] local.INFO: array (
+  0 => 1,
+  1 => '{"ph":"5"}',
+  2 => '2024-10-10 22:21:46',
+  3 => '2024-10-10 22:21:46',
+)  
+[2024-10-10 22:21:47] local.INFO: 579.36  
+[2024-10-10 22:21:47] local.INFO: Sending alert email with conditions: {"conditions":"pH: 5 - Acidic"} 
+[2024-10-10 22:21:48] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-10-10 22:21:48] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:21:48] local.INFO: 766.6  
+[2024-10-10 22:21:48] local.INFO: select * from `tbl_useraccounts` where `tbl_useraccounts`.`id` = ? limit 1  
+[2024-10-10 22:21:48] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:21:48] local.INFO: 473.17  
+[2024-10-10 22:21:54] local.INFO: Alert email sent to {"email":"alfredmarcelinoii45@gmail.com","tower_id":1} 
+[2024-10-10 22:21:54] local.INFO: insert into `tbl_towerlogs` (`ID_tower`, `activity`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:21:54] local.INFO: array (
+  0 => 1,
+  1 => 'eyJpdiI6ImtVZEFnalRyMW5LNjBFV0xWNWFKSnc9PSIsInZhbHVlIjoiSjNLZmhJcmJrcFoxOUhBdFBkRDJYSXhIc09HdVFYSW9YaHFHUzR5eDl0aTFmUWpQQnlNaHJzVldpVURUdjJIY1RMNGFGSFJQdU5HcHBvcmRXZDcwdG5GQUMyU1J0a3hCV2ZJbnBZTHRQNnYyamhCYkFIbjNSTmkrZ1BLbkx4bzJVWDBUUTMzTSt4blhBVDc2U2MrNnFOUzFsbk9IV2VvVFN5S2ltR0hKNzBVPSIsIm1hYyI6ImMwMDhjODBhNDlmZmI1NmU5NmIwZjU1NWZjYWYzZGQwOTc0YTNiZjRiMjU1ZjhiZjNiZGIwYTZiNWJhYzNhMjEiLCJ0YWciOiIifQ==',
+  2 => '2024-10-10 22:21:54',
+  3 => '2024-10-10 22:21:54',
+)  
+[2024-10-10 22:21:54] local.INFO: 539.84  
+[2024-10-10 22:21:54] local.INFO: Alert logged in tbl_Towerlog {"tower_id":1,"activity":"\"The following conditions have been detected at Tower 'Lettuce': pH: 5 - Acidic\""} 
+[2024-10-10 22:21:55] local.INFO: update `tbl_tower` set `last_critical_condition_email_sent_at` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-10-10 22:21:55] local.INFO: array (
+  0 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000002050000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-10-10 22:21:48.605058',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+  1 => '2024-10-10 22:21:54',
+  2 => 1,
+)  
+[2024-10-10 22:21:55] local.INFO: 701.64  
+[2024-10-10 22:21:55] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"5","temperature":"25","nutrient_level":"8","light":"0"},"towerId":1} 
+[2024-10-10 22:21:56] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"5","temperature":"25","nutrient_level":"8","light":"0"},"towerId":1} 
+[2024-10-10 22:21:56] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:26:12] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:26:12] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:26:12] local.INFO: 1525.68  
+[2024-10-10 22:26:12] local.INFO: Request received: {"sensorData":"5,25,3,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:26:12] local.INFO: Validated data: {"sensorData":"5,25,3,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:26:12] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:26:12] local.INFO: Data: {"data":"5,25,3,0"} 
+[2024-10-10 22:26:12] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:26:12] local.INFO: array (
+)  
+[2024-10-10 22:26:12] local.INFO: 490.47  
+[2024-10-10 22:26:12] local.INFO: from tower: {"phValue":"5","temp":"25","waterLevel":"3","light":"0","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:26:13] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:26:13] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:26:13] local.INFO: 562.29  
+[2024-10-10 22:26:13] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:26:13] local.INFO: array (
+  0 => 1728573973,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:26:13] local.INFO: 485.63  
+[2024-10-10 22:26:13] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:26:13] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:26:13] local.INFO: Sensor data condition check: {"pH":"Acidic","Temperature":"Unknown","Nutrient Solution Volume":"15%"} 
+[2024-10-10 22:26:13] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":1} 
+[2024-10-10 22:26:14] local.INFO: insert into `sensor` (`towerid`, `sensordata`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:26:14] local.INFO: array (
+  0 => 1,
+  1 => '{"ph":"5","nutlevel":"3"}',
+  2 => '2024-10-10 22:26:13',
+  3 => '2024-10-10 22:26:13',
+)  
+[2024-10-10 22:26:14] local.INFO: 550.29  
+[2024-10-10 22:26:14] local.INFO: Sending alert email with conditions: {"conditions":"pH: 5 - Acidic, Nutrient Solution Volume: 3 - 15%"} 
+[2024-10-10 22:26:14] local.INFO: select * from `tbl_tower` where `tbl_tower`.`id` = ? limit 1  
+[2024-10-10 22:26:14] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:26:14] local.INFO: 461.31  
+[2024-10-10 22:26:15] local.INFO: select * from `tbl_useraccounts` where `tbl_useraccounts`.`id` = ? limit 1  
+[2024-10-10 22:26:15] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:26:15] local.INFO: 532.52  
+[2024-10-10 22:26:20] local.INFO: Alert email sent to {"email":"alfredmarcelinoii45@gmail.com","tower_id":1} 
+[2024-10-10 22:26:21] local.INFO: insert into `tbl_towerlogs` (`ID_tower`, `activity`, `updated_at`, `created_at`) values (?, ?, ?, ?)  
+[2024-10-10 22:26:21] local.INFO: array (
+  0 => 1,
+  1 => 'eyJpdiI6ImxGV2JVOGJjOGFsN01yQitFUkR2TUE9PSIsInZhbHVlIjoiK3hwa3BZZzROaHNnci9iUTFLbTFkNjM2RTJBZ1labFFuQ045RUl4ai9yMU1VeGlZSXlKalFCenV3VkoxUmhucU1weTUwdWszTVZzNGdiZDdZZ1ZHcE9CaW14UlB3NG43WFJCSVZ3WTg0RmM0V1VFMFY2S0Fab1U4S0RKVVhpVkJBMVBxaVYzVFRLYWpsR0J1dmw5OXptR0NJbTlWTVJpN2x2ZGFpMFZuOEttWEJwWW5udjEzbVBmbmRJSzBKQ09nQm55N0pDWTY2QTdEdlJ2b2JTSEpSdjFFdnJEMEkwWThpaENldis4RjgxYz0iLCJtYWMiOiIwOTgyZjU0NTBhMjRlZmUzZDg0NzdhZmY1NjdkNWFkMDFhOTY0Yjc0OTk2YTMzZDQ1NjM4YjFhOWMwZjRlOWFlIiwidGFnIjoiIn0=',
+  2 => '2024-10-10 22:26:20',
+  3 => '2024-10-10 22:26:20',
+)  
+[2024-10-10 22:26:21] local.INFO: 603.93  
+[2024-10-10 22:26:21] local.INFO: Alert logged in tbl_Towerlog {"tower_id":1,"activity":"\"The following conditions have been detected at Tower 'Lettuce': pH: 5 - Acidic, Nutrient Solution Volume: 3 - 15%\""} 
+[2024-10-10 22:26:22] local.INFO: update `tbl_tower` set `last_critical_condition_email_sent_at` = ?, `tbl_tower`.`updated_at` = ? where `id` = ?  
+[2024-10-10 22:26:22] local.INFO: array (
+  0 => 
+  \Carbon\Carbon::__set_state(array(
+     'endOfTime' => false,
+     'startOfTime' => false,
+     'constructedObjectId' => '00000000000002050000000000000000',
+     'clock' => NULL,
+     'localMonthsOverflow' => NULL,
+     'localYearsOverflow' => NULL,
+     'localStrictModeEnabled' => NULL,
+     'localHumanDiffOptions' => NULL,
+     'localToStringFormat' => NULL,
+     'localSerializer' => NULL,
+     'localMacros' => NULL,
+     'localGenericMacros' => NULL,
+     'localFormatFunction' => NULL,
+     'localTranslator' => NULL,
+     'dumpProperties' => 
+    array (
+      0 => 'date',
+      1 => 'timezone_type',
+      2 => 'timezone',
+    ),
+     'dumpLocale' => NULL,
+     'dumpDateProperties' => NULL,
+     'date' => '2024-10-10 22:26:15.185314',
+     'timezone_type' => 3,
+     'timezone' => 'Asia/Manila',
+  )),
+  1 => '2024-10-10 22:26:21',
+  2 => 1,
+)  
+[2024-10-10 22:26:22] local.INFO: 633.26  
+[2024-10-10 22:26:22] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"5","temperature":"25","nutrient_level":"3","light":"0"},"towerId":1} 
+[2024-10-10 22:26:23] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"5","temperature":"25","nutrient_level":"3","light":"0"},"towerId":1} 
+[2024-10-10 22:26:23] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 

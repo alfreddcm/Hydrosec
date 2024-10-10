@@ -16,7 +16,7 @@
                 return Crypt::decryptString($worker->status) === '1';
             })
             ->count();
-            
+
         $towerCount = Tower::where('OwnerID', Auth::id())->count();
 
         $towerId = Tower::where('OwnerID', Auth::id())->value('id');
@@ -214,7 +214,7 @@
                         <div class="col-md-12">
                             <div class="card chart-card">
                                 <div class="card-header mb-0">
-                                    <h3>Tower Code: {{ $code }}</h3>
+                                    <h4>Tower Code: {{ $code }} | Plant : {{ $data['plantVar'] }}</h4>
                                     <small>From: {{ $data['startDate'] }} To: {{ $data['endDate'] }}</small>
                                 </div>
                                 <div class="card-body">
@@ -362,7 +362,7 @@
                                             text: 'Pump Status'
                                         },
                                         min: 0,
-                                        max: 1, 
+                                        max: 1,
                                         tickInterval: 1
                                     },
                                     series: [{
