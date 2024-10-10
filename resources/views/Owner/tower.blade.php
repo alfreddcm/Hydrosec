@@ -119,6 +119,25 @@
         .value {
             font-size: 1 rem;
         }
+
+        .p-card {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 18rem;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            z-index: 1000;
+        }
+
+        .p-card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .p-card-text {
+            font-size: 1rem;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
@@ -127,6 +146,15 @@
         <div class="card text-center maincard">
             <div class="card-body justify-content-center">
                 <div class="card-title">
+
+                    <div class="p-card">
+                        <div class="card-body">
+                            <h5 class="p-card-title">Plant Info</h5>
+                            <p class="p-card-text"><strong>pH:</strong> 5.5 - 6.5</p>
+                            <p class="p-card-text"><strong>Temp:</strong> 25 - 30 °C</p>
+                            <p class="p-card-text"><strong>Tank Capacity:</strong> 20 L</p>
+                        </div>
+                    </div>
 
                     <h2 class="title">
                         <a href="{{ route('ownermanagetower') }}" class="previous">&laquo;</a>
