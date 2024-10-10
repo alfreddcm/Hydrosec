@@ -11,6 +11,8 @@ class SensorDataHistory extends Model
     protected $fillable = [
         'towerid',
         'OwnerID',
+                'plantVar',
+
         'sensor_data',
         'pump',
     ];

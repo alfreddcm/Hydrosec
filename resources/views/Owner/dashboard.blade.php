@@ -262,144 +262,130 @@
                             </div>
                         </div>
                     </div>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const data = @json($data['data']);
+                   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const data = @json($data['data']);
 
-                            function createChart(containerId, title, dataKey, yAxisOptions) {
-                                // Access the appropriate key based on the chart type
-                                const chartData = data.map(item => {
-                                    const dataArray = item[dataKey]; // Access the specific data array
-                                    return dataArray.map(dataPoint => [new Date(dataPoint.created_at).getTime(), dataPoint
-                                        .value
-                                    ]); // Map to timestamp-value pairs
-                                }).flat(); // Flatten the array since data is nested
+        function createChart(containerId, title, dataKey, yAxisOptions) {
+            Highcharts.chart(containerId, {
+                chart: {
+                    type: 'line',
+                    height: '300'
+                },
+                title: {
+                    text: title
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        format: '{value:%I:%M %p %b %e}'
+                    }
+                },
+                yAxis: yAxisOptions,
+                series: [{
+                    name: title,
+                    data: data.map(item => {
+                        const dataArray = item[dataKey]; // Access the specific data array
+                        return dataArray.map(entry => [new Date(entry.created_at).getTime(), entry.value]);
+                    }).flat(), // Flatten the array to create a single data set
+                    dashStyle: 'solid',
+                }],
+                tooltip: {
+                    pointFormat: `{series.name}: <b>{point.y:.2f}</b>`
+                }
+            });
+        }
 
-                                const hasData = chartData.length > 0;
+        const charts = [{
+                id: 'phChart-{{ $code }}',
+                title: 'pH Levels',
+                key: 'pH_data', // Updated key to match the new data structure
+                yAxisOptions: {
+                    min: 1,
+                    max: 14,
+                    tickAmount: 10
+                }
+            },
+            {
+                id: 'tempChart-{{ $code }}',
+                title: 'Temperature',
+                key: 'temperature_data', // Updated key to match the new data structure
+                yAxisOptions: {
+                    min: 0,
+                    max: 60,
+                    tickAmount: 7,
+                    tickInterval: 10
+                }
+            },
+            {
+                id: 'waterChart-{{ $code }}',
+                title: 'Nutrient Volume',
+                key: 'nutrient_data', // Updated key to match the new data structure
+                yAxisOptions: {
+                    min: 1,
+                    max: 20,
+                    tickAmount: 5,
+                    tickInterval: 5
+                }
+            },
+            {
+                id: 'lightChart-{{ $code }}',
+                title: 'Light',
+                key: 'light_data', // Updated key to match the new data structure
+                yAxisOptions: {
+                    categories: [0, 1],
+                    tickAmount: 2,
+                    tickInterval: 1
+                }
+            }
+        ];
 
-                                Highcharts.chart(containerId, {
-                                    chart: {
-                                        type: 'line',
-                                        height: '300'
-                                    },
-                                    title: {
-                                        text: title
-                                    },
-                                    xAxis: {
-                                        type: 'datetime',
-                                        labels: {
-                                            format: '{value:%I:%M %p %b %e}'
-                                        }
-                                    },
-                                    yAxis: yAxisOptions,
-                                    series: [{
-                                        name: title,
-                                        data: hasData ? chartData : [],
-                                        dataLabels: {
-                                            enabled: !hasData, // Enable only if no data
-                                            format: 'No data available'
-                                        },
-                                        dashStyle: 'solid',
-                                    }],
-                                    tooltip: {
-                                        pointFormat: `{series.name}: <b>{point.y:.2f}</b>`
-                                    }
-                                });
-                            }
+        charts.forEach(chart => {
+            createChart(chart.id, chart.title, chart.key, chart.yAxisOptions);
+        });
 
-                            const charts = [{
-                                    id: 'phChart-{{ $code }}',
-                                    title: 'pH Levels',
-                                    key: 'pH_data', // Updated key
-                                    yAxisOptions: {
-                                        min: 1,
-                                        max: 14,
-                                        tickAmount: 10
-                                    }
-                                },
-                                {
-                                    id: 'tempChart-{{ $code }}',
-                                    title: 'Temperature',
-                                    key: 'temperature_data', // Updated key
-                                    yAxisOptions: {
-                                        min: 0,
-                                        max: 60,
-                                        tickAmount: 7,
-                                        tickInterval: 10
-                                    }
-                                },
-                                {
-                                    id: 'waterChart-{{ $code }}',
-                                    title: 'Nutrient Volume',
-                                    key: 'nutrient_data', // Updated key
-                                    yAxisOptions: {
-                                        min: 1,
-                                        max: 20,
-                                        tickAmount: 5,
-                                        tickInterval: 5
-                                    }
-                                },
-                                {
-                                    id: 'lightChart-{{ $code }}',
-                                    title: 'Light',
-                                    key: 'light_data', // Updated key
-                                    yAxisOptions: {
-                                        categories: [0, 1],
-                                        tickAmount: 2,
-                                        tickInterval: 1
-                                    }
-                                }
-                            ];
+        if (data.some(item => item.pump_data && item.pump_data.length > 0)) {
+            Highcharts.chart('pumpChart-{{ $code }}', {
+                chart: {
+                    type: 'spline',
+                    height: '300'
+                },
+                title: {
+                    text: 'Pump'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        format: '{value:%I:%M %p %b %e}'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Pump Status'
+                    },
+                    min: 0,
+                    max: 1,
+                    tickInterval: 1
+                },
+                series: [{
+                    name: 'Pump Status',
+                    data: data.map(item => {
+                        return item.pump_data.map(pumpEntry => [
+                            new Date(pumpEntry.pump_created_at).getTime(),
+                            pumpEntry.pump_status
+                        ]);
+                    }).flat() // Flatten the pump data array
+                }],
+                tooltip: {
+                    pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:.0f}</b><br/>' // 0 or 1
+                }
+            });
+        } else {
+            console.log('Pump data is not available');
+        }
+    });
+</script>
 
-                            charts.forEach(chart => {
-                                createChart(chart.id, chart.title, chart.key, chart.yAxisOptions);
-                            });
-
-                            // Check for pump data
-                            const pumpDataExists = data.some(item => item.pump_data.length > 0); // Check if pump data exists
-
-                            Highcharts.chart('pumpChart-{{ $code }}', {
-                                chart: {
-                                    type: 'spline',
-                                    height: '300'
-                                },
-                                title: {
-                                    text: 'Pump'
-                                },
-                                xAxis: {
-                                    type: 'datetime',
-                                    labels: {
-                                        format: '{value:%I:%M %p %b %e}'
-                                    }
-                                },
-                                yAxis: {
-                                    title: {
-                                        text: 'Pump Status'
-                                    },
-                                    min: 0,
-                                    max: 1,
-                                    tickInterval: 1
-                                },
-                                series: [{
-                                    name: 'Pump Status',
-                                    data: pumpDataExists ? data.flatMap(item => item.pump_data.map(pump => [
-                                        new Date(pump.pump_created_at).getTime(), pump.pump_status
-                                    ])) : [],
-                                    dataLabels: {
-                                        enabled: !pumpDataExists, // Enable only if no data
-                                        format: 'No data available'
-                                    }
-                                }],
-                                tooltip: {
-                                    pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:.0f}</b><br/>' // 0 or 1
-                                }
-                            });
-
-                            if (!pumpDataExists) {
-                                console.log('Pump data is not available');
-                            }
-                        });
-                    </script>
                 @endforeach
             @endif
         </div>
