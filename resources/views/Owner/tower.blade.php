@@ -115,7 +115,8 @@
             border: 1px solid #ddd;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .value{
+
+        .value {
             font-size: 1 rem;
         }
     </style>
@@ -137,7 +138,7 @@
                         <p class="card-text  no-line-spacing">
                             <b> Plant: </b>
                             @if ($towerinfo->plantVar)
-                                {{ Crypt::decryptString($towerinfo->plantVar) }}
+                                {{ dd(Crypt::decryptString($towerinfo->plantVar) )}}
                             @else
                                 Not set
                             @endif
@@ -200,7 +201,7 @@
                                         </div>
                                         <div class="value">
                                             <h4 class="mt-3"><span id="temp-value">n/a</span></h4>
-                                            <span id="temp-status">n/a</span><br>
+                                            <span id="temp-status">n/a</span> | 
                                             <span id="temp-con">...</span>
                                         </div>
                                     </div>
@@ -223,11 +224,11 @@
                                         <img id="ph-scale" src="{{ asset('images/ph/8.png') }}" alt="ph-scale">
                                     </div>
 
-                                      <div class="value">
-                                            <h4 class="mt-3"><span id="ph-value">n/a</span></h4>
-                                            <span id="ph-status">n/a</span><br>
-                                            <span id="ph-con">...</span>
-                                        </div>
+                                    <div class="value">
+                                        <h4 class="mt-3"><span id="ph-value">n/a</span></h4>
+                                        <span id="ph-status">n/a</span>  | 
+                                        <span id="ph-con">...</span>
+                                    </div>
                                 </center>
                             </div>
                         </div>
@@ -251,9 +252,9 @@
                                                 alt="Nutient_volume">
                                         </div>
 
-                                         <div class="value">
+                                        <div class="value">
                                             <h4 class="mt-3"><span id="nutrient-value">n/a</span></h4>
-                                            <span id="nutrient-status">n/a</span><br>
+                                            <span id="nutrient-status">n/a</span> | 
                                             <span id="nutrient-con">...</span>
                                         </div>
                                     </div>
@@ -776,12 +777,17 @@
                     phcon.textContent = "Critical";
                     phcon.style.color = 'red';
 
-
-                } else if (phValue >= 5.5 && phValue < 6) {
+                } else if (phValue >= 5.5 && phValue <= 6.5) {
                     statusText.textContent = "Acidic";
                     statusText.style.color = 'green';
                     phcon.textContent = "Ideal";
                     phcon.style.color = 'black';
+
+                } else if (phValue > 6.5 && phValue < 7) {
+                    statusText.textContent = "Acidic";
+                    statusText.style.color = 'orange';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
 
                 } else if (phValue == 7) {
                     statusText.textContent = "Neutral";
@@ -794,10 +800,14 @@
                     statusText.style.color = 'purple';
                     phcon.textContent = "Critical";
                     phcon.style.color = 'red';
+
                 } else {
                     statusText.textContent = "Unknown";
                     statusText.style.color = 'gray';
+                    phcon.textContent = "Unknown";
+                    phcon.style.color = 'gray';
                 }
+
 
             } else {
 
