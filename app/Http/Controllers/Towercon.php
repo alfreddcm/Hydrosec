@@ -61,12 +61,18 @@ class Towercon extends Controller
     }
 
     public function updateDates(Request $request)
-    {   
+    {
         $days = (int) $request->input('days', 0);
         $newDays = (int) $request->input('newDays', 0);
         $towerId = $request->input('tower_id');
         $plant = $request->input('plantSelect');
 
+        Log::debug('updateDates called with inputs', [
+            'days' => $days,
+            'newDays' => $newDays,
+            'tower_id' => $towerId,
+            'plant' => $plant,
+        ]);
 
         $tower = Tower::find($towerId);
 

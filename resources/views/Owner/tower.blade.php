@@ -138,7 +138,7 @@
                         <p class="card-text  no-line-spacing">
                             <b> Plant: </b>
                             @if ($towerinfo->plantVar)
-                                {{ dd(Crypt::decryptString($towerinfo->plantVar) )}}
+                                {{ Crypt::decryptString($towerinfo->plantVar) }}
                             @else
                                 Not set
                             @endif
@@ -201,7 +201,7 @@
                                         </div>
                                         <div class="value">
                                             <h4 class="mt-3"><span id="temp-value">n/a</span></h4>
-                                            <span id="temp-status">n/a</span> | 
+                                            <span id="temp-status">n/a</span> |
                                             <span id="temp-con">...</span>
                                         </div>
                                     </div>
@@ -226,7 +226,7 @@
 
                                     <div class="value">
                                         <h4 class="mt-3"><span id="ph-value">n/a</span></h4>
-                                        <span id="ph-status">n/a</span>  | 
+                                        <span id="ph-status">n/a</span> |
                                         <span id="ph-con">...</span>
                                     </div>
                                 </center>
@@ -254,7 +254,7 @@
 
                                         <div class="value">
                                             <h4 class="mt-3"><span id="nutrient-value">n/a</span></h4>
-                                            <span id="nutrient-status">n/a</span> | 
+                                            <span id="nutrient-status">n/a</span> |
                                             <span id="nutrient-con">...</span>
                                         </div>
                                     </div>
@@ -339,7 +339,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="plantSelect" class="form-label">Choose a Plant</label>
-                                        <select name="plant" class="form-select" id="plantSelect" required>
+                                        <select name="plantSelect" class="form-select" id="plantSelect" required>
                                             <option selected disabled>Select a plant...</option>
                                             <option value="Lettuce">Lettuce</option>
                                             <option value="Bok Choy">Bok choy</option>
