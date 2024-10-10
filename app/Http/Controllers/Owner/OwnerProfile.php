@@ -233,7 +233,7 @@ class OwnerProfile extends Controller
         return redirect()->route('ownerworkeraccount')->with('success', 'User enable successfully.');
     }
 
-    public function decryptSensorData()
+public function decryptSensorData()
 {
     $key_str = "ISUHydroSec2024!";
     $iv_str = "HydroVertical143";
@@ -256,27 +256,66 @@ class OwnerProfile extends Controller
             $sensorDataArray = json_decode($data->sensor_data, true);
             $pumpDataArray = json_decode($data->pump, true);
 
-            // Initialize decrypted entries
-            $decryptedEntries = [];
+            // Initialize arrays for each sensor type
+            $decryptedPhData = [];
+            $decryptedTemperatureData = [];
+            $decryptedNutrientData = [];
+            $decryptedLightData = [];
+            $decryptedPumpEntries = []; // For pump data
 
             // Process sensor data
             if (is_array($sensorDataArray)) {
                 foreach ($sensorDataArray as $sensorData) {
-                    if (isset($sensorData['pH'], $sensorData['temperature'], $sensorData['nutrientlevel'], $sensorData['light'])) {
+                    // Check for pH data
+                    if (isset($sensorData['pH'])) {
                         try {
                             $decryptedEntry = [
-                                'pH' => (float) $this->decrypt_data($sensorData['pH'], $method, $key_str, $iv_str),
-                                'temperature' => (float) $this->decrypt_data($sensorData['temperature'], $method, $key_str, $iv_str),
-                                'nutrientlevel' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $key_str, $iv_str),
-                                'light' => (float) $this->decrypt_data($sensorData['light'], $method, $key_str, $iv_str),
+                                'value' => (float) $this->decrypt_data($sensorData['pH'], $method, $key_str, $iv_str),
                                 'created_at' => Carbon::parse($data->created_at),
                             ];
-                            $decryptedEntries[] = $decryptedEntry;
+                            $decryptedPhData[] = $decryptedEntry; // Store pH data
                         } catch (\Exception $e) {
-                            \Log::error("Decryption error for sensor data: " . $e->getMessage(), ['sensorData' => $sensorData]);
+                            \Log::error("Decryption error for pH data: " . $e->getMessage(), ['sensorData' => $sensorData]);
                         }
-                    } else {
-                        \Log::error("Missing required sensor data keys: ", $sensorData);
+                    }
+
+                    // Check for temperature data
+                    if (isset($sensorData['temperature'])) {
+                        try {
+                            $decryptedEntry = [
+                                'value' => (float) $this->decrypt_data($sensorData['temperature'], $method, $key_str, $iv_str),
+                                'created_at' => Carbon::parse($data->created_at),
+                            ];
+                            $decryptedTemperatureData[] = $decryptedEntry; // Store temperature data
+                        } catch (\Exception $e) {
+                            \Log::error("Decryption error for temperature data: " . $e->getMessage(), ['sensorData' => $sensorData]);
+                        }
+                    }
+
+                    // Check for nutrient level data
+                    if (isset($sensorData['nutrientlevel'])) {
+                        try {
+                            $decryptedEntry = [
+                                'value' => (float) $this->decrypt_data($sensorData['nutrientlevel'], $method, $key_str, $iv_str),
+                                'created_at' => Carbon::parse($data->created_at),
+                            ];
+                            $decryptedNutrientData[] = $decryptedEntry; // Store nutrient level data
+                        } catch (\Exception $e) {
+                            \Log::error("Decryption error for nutrient level data: " . $e->getMessage(), ['sensorData' => $sensorData]);
+                        }
+                    }
+
+                    // Check for light data
+                    if (isset($sensorData['light'])) {
+                        try {
+                            $decryptedEntry = [
+                                'value' => (float) $this->decrypt_data($sensorData['light'], $method, $key_str, $iv_str),
+                                'created_at' => Carbon::parse($data->created_at),
+                            ];
+                            $decryptedLightData[] = $decryptedEntry; // Store light data
+                        } catch (\Exception $e) {
+                            \Log::error("Decryption error for light data: " . $e->getMessage(), ['sensorData' => $sensorData]);
+                        }
                     }
                 }
             } else {
@@ -289,14 +328,11 @@ class OwnerProfile extends Controller
                     if (isset($pdata['status'], $pdata['created_at'])) {
                         try {
                             $decryptedStatus = $this->decrypt_data($pdata['status'], $method, $key_str, $iv_str);
-
-                            // Ensure the decrypted status is numeric (like 0 or 1)
                             $decryptedPumpEntry = [
-                                'pump_status' => (float) $decryptedStatus, // Cast to float if needed
+                                'pump_status' => (float) $decryptedStatus,
                                 'pump_created_at' => Carbon::parse($pdata['created_at']),
                             ];
-
-                            $decryptedEntries[] = $decryptedPumpEntry;
+                            $decryptedPumpEntries[] = $decryptedPumpEntry; // Store pump data entries
                         } catch (\Exception $e) {
                             \Log::error("Decryption error for pump data: " . $e->getMessage(), ['pumpData' => $pdata]);
                         }
@@ -308,23 +344,28 @@ class OwnerProfile extends Controller
                 \Log::error("Invalid pump data format: ", ['pumpDataArray' => $pumpDataArray]);
             }
 
-            // Use $data->id as the key for decrypted data
+            // Aggregate data for charting
             $startDate = Carbon::parse($data->created_at)->format('m/d/Y');
             $endDate = Carbon::parse($data->created_at)->format('m/d/Y');
 
+            // Store aggregated data
             $allDecryptedData[$data->id] = [
                 'towercode' => $code,
                 'plantVar' => $plantVar, // Add decrypted plantVar to the result
-                'data' => $decryptedEntries,
+                'pH_data' => $decryptedPhData, // Only valid pH data
+                'temperature_data' => $decryptedTemperatureData, // Only valid temperature data
+                'nutrient_data' => $decryptedNutrientData, // Only valid nutrient data
+                'light_data' => $decryptedLightData, // Only valid light data
+                'pump_data' => $decryptedPumpEntries, // Only valid pump data
                 'startDate' => $startDate,
                 'endDate' => $endDate,
             ];
         }
     }
 
-    // Return the view with the decrypted data
-    return view('Owner.dashboard', ['allDecryptedData' => $allDecryptedData]);
+    return $allDecryptedData; // Return the aggregated decrypted data
 }
+
 
     private function decrypt_data($encrypted_data, $method, $key, $iv)
     {
