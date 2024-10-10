@@ -121,6 +121,7 @@
         }
 
         .p-card {
+            
             position: absolute;
             top: 20px;
             right: 20px;
@@ -136,6 +137,7 @@
         }
 
         .p-card-text {
+            text-align: right;
             font-size: 1rem;
         }
     </style>
@@ -147,12 +149,12 @@
             <div class="card-body justify-content-center">
                 <div class="card-title">
 
-                    <div class="p-card">
+                    <div class="card">
                         <div class="card-body">
                             <h5 class="p-card-title">Plant Info</h5>
-                            <p class="p-card-text"><strong>pH:</strong> 5.5 - 6.5</p>
-                            <p class="p-card-text"><strong>Temp:</strong> 25 - 30 °C</p>
-                            <p class="p-card-text"><strong>Tank Capacity:</strong> 20 L</p>
+                            <p class="p-card-text  no-line-spacing"><strong>pH:</strong> 5.5 - 6.5</p>
+                            <p class="p-card-text  no-line-spacing"><strong>Temp:</strong> 25 - 30 °C</p>
+                            <p class="p-card-text  no-line-spacing"><strong>Tank Capacity:</strong> 20 L</p>
                         </div>
                     </div>
 
