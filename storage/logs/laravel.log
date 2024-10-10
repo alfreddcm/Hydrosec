@@ -94,3 +94,300 @@
 [2024-10-10 21:39:43] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"5.5","temperature":"23","nutrient_level":"3","light":"1"},"towerId":1} 
 [2024-10-10 21:39:44] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"5.5","temperature":"23","nutrient_level":"3","light":"1"},"towerId":1} 
 [2024-10-10 21:39:44] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 21:59:21] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 21:59:21] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 21:59:21] local.INFO: 2561  
+[2024-10-10 21:59:21] local.INFO: Request received: {"sensorData":"6,25,6,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 21:59:21] local.INFO: Validated data: {"sensorData":"6,25,6,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 21:59:21] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 21:59:21] local.INFO: Data: {"data":"6,25,6,1"} 
+[2024-10-10 21:59:21] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 21:59:21] local.INFO: array (
+)  
+[2024-10-10 21:59:21] local.INFO: 465.62  
+[2024-10-10 21:59:21] local.INFO: from tower: {"phValue":"6","temp":"25","waterLevel":"6","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 21:59:22] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 21:59:22] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 21:59:22] local.INFO: 543.6  
+[2024-10-10 21:59:23] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 21:59:23] local.INFO: array (
+  0 => 1728572362,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 21:59:23] local.INFO: 695.79  
+[2024-10-10 21:59:23] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 21:59:23] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 21:59:23] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 21:59:23] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 21:59:23] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"6","light":"1"},"towerId":1} 
+[2024-10-10 21:59:26] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"6","light":"1"},"towerId":1} 
+[2024-10-10 21:59:26] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:00:05] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:00:05] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:00:05] local.INFO: 1797.27  
+[2024-10-10 22:00:05] local.INFO: Request received: {"sensorData":"6,30,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:00:05] local.INFO: Validated data: {"sensorData":"6,30,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:00:05] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:00:05] local.INFO: Data: {"data":"6,30,8,1"} 
+[2024-10-10 22:00:05] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:00:05] local.INFO: array (
+)  
+[2024-10-10 22:00:05] local.INFO: 464.41  
+[2024-10-10 22:00:05] local.INFO: from tower: {"phValue":"6","temp":"30","waterLevel":"8","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:00:06] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:00:06] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:00:06] local.INFO: 470.12  
+[2024-10-10 22:00:06] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:00:06] local.INFO: array (
+  0 => 1728572406,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:00:06] local.INFO: 778.41  
+[2024-10-10 22:00:06] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:00:06] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:00:06] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:00:06] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:00:06] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"30","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:00:08] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"30","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:00:08] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:02:29] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:02:29] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:02:29] local.INFO: 3121.13  
+[2024-10-10 22:02:29] local.INFO: Request received: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:02:29] local.INFO: Validated data: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:02:29] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:02:29] local.INFO: Data: {"data":"6,25,8,1"} 
+[2024-10-10 22:02:30] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:02:30] local.INFO: array (
+)  
+[2024-10-10 22:02:30] local.INFO: 589.92  
+[2024-10-10 22:02:30] local.INFO: from tower: {"phValue":"6","temp":"25","waterLevel":"8","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:02:30] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:02:30] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:02:30] local.INFO: 551.48  
+[2024-10-10 22:02:31] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:02:31] local.INFO: array (
+  0 => 1728572550,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:02:31] local.INFO: 652.6  
+[2024-10-10 22:02:31] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:02:31] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:02:31] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:02:31] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:02:31] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:02:32] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:02:32] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:03:07] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:03:07] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:03:07] local.INFO: 2002.75  
+[2024-10-10 22:03:07] local.INFO: Request received: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:03:07] local.INFO: Validated data: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:03:07] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:03:07] local.INFO: Data: {"data":"6,25,8,1"} 
+[2024-10-10 22:03:07] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:03:07] local.INFO: array (
+)  
+[2024-10-10 22:03:07] local.INFO: 531.23  
+[2024-10-10 22:03:07] local.INFO: from tower: {"phValue":"6","temp":"25","waterLevel":"8","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:03:08] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:03:08] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:03:08] local.INFO: 538.32  
+[2024-10-10 22:03:08] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:03:08] local.INFO: array (
+  0 => 1728572588,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:03:08] local.INFO: 520.1  
+[2024-10-10 22:03:08] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:03:08] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:03:08] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:03:08] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:03:08] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:03:09] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:03:09] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:05:39] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:05:39] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:05:39] local.INFO: 1832.83  
+[2024-10-10 22:05:39] local.INFO: Request received: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:05:39] local.INFO: Validated data: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:05:39] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:05:39] local.INFO: Data: {"data":"6,25,8,1"} 
+[2024-10-10 22:05:39] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:05:39] local.INFO: array (
+)  
+[2024-10-10 22:05:39] local.INFO: 447.47  
+[2024-10-10 22:05:39] local.INFO: from tower: {"phValue":"6","temp":"25","waterLevel":"8","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:05:40] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:05:40] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:05:40] local.INFO: 529.5  
+[2024-10-10 22:05:40] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:05:40] local.INFO: array (
+  0 => 1728572740,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:05:40] local.INFO: 662.94  
+[2024-10-10 22:05:40] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:05:40] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:05:40] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:05:40] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:05:40] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:05:42] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:05:42] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:09:04] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:09:04] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:09:04] local.INFO: 1856.05  
+[2024-10-10 22:09:04] local.INFO: Request received: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:09:04] local.INFO: Validated data: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:09:04] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:09:04] local.INFO: Data: {"data":"6,25,8,1"} 
+[2024-10-10 22:09:05] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:09:05] local.INFO: array (
+)  
+[2024-10-10 22:09:05] local.INFO: 608.85  
+[2024-10-10 22:09:05] local.INFO: from tower: {"phValue":"6","temp":"25","waterLevel":"8","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:09:06] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:09:06] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:09:06] local.INFO: 583.61  
+[2024-10-10 22:09:06] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:09:06] local.INFO: array (
+  0 => 1728572946,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:09:06] local.INFO: 664.88  
+[2024-10-10 22:09:06] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:09:06] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:09:06] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:09:06] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:09:06] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:09:07] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:09:07] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:09:19] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:09:19] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:09:19] local.INFO: 1279.8  
+[2024-10-10 22:09:19] local.INFO: Request received: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:09:19] local.INFO: Validated data: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:09:19] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:09:19] local.INFO: Data: {"data":"6,25,8,1"} 
+[2024-10-10 22:09:19] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:09:19] local.INFO: array (
+)  
+[2024-10-10 22:09:19] local.INFO: 530.36  
+[2024-10-10 22:09:19] local.INFO: from tower: {"phValue":"6","temp":"25","waterLevel":"8","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:09:20] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:09:20] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:09:20] local.INFO: 605.69  
+[2024-10-10 22:09:20] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:09:20] local.INFO: array (
+  0 => 1728572960,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:09:20] local.INFO: 608.07  
+[2024-10-10 22:09:20] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:09:20] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:09:20] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:09:20] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:09:20] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:09:21] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:09:21] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:09:53] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:09:53] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:09:53] local.INFO: 1812.16  
+[2024-10-10 22:09:53] local.INFO: Request received: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:09:54] local.INFO: Validated data: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:09:54] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:09:54] local.INFO: Data: {"data":"6,25,8,1"} 
+[2024-10-10 22:09:54] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:09:54] local.INFO: array (
+)  
+[2024-10-10 22:09:54] local.INFO: 497.72  
+[2024-10-10 22:09:54] local.INFO: from tower: {"phValue":"6","temp":"25","waterLevel":"8","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:09:55] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:09:55] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:09:55] local.INFO: 660.41  
+[2024-10-10 22:09:55] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:09:55] local.INFO: array (
+  0 => 1728572995,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:09:55] local.INFO: 486.45  
+[2024-10-10 22:09:55] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:09:55] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:09:55] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:09:55] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:09:55] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:09:56] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:09:56] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-10-10 22:11:06] local.INFO: select * from `cache` where `key` in (?)  
+[2024-10-10 22:11:06] local.INFO: array (
+  0 => 'intrusion_failed_attempts_sensor127.0.0.1',
+)  
+[2024-10-10 22:11:06] local.INFO: 1764.68  
+[2024-10-10 22:11:06] local.INFO: Request received: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:11:06] local.INFO: Validated data: {"sensorData":"6,25,8,1","Credentials":"0WKpqdiTj9r/ZoCYOP0UtDN5PMMZesqRn00ceeIa8JGrtZQ0Czn2WMMGxQzWr5qp"} 
+[2024-10-10 22:11:06] local.INFO: keys: {"key":"192.168.4.10,EC:64:C9:C4:A3:65,2024"} 
+[2024-10-10 22:11:06] local.INFO: Data: {"data":"6,25,8,1"} 
+[2024-10-10 22:11:07] local.INFO: select `id`, `name`, `towercode` from `tbl_tower`  
+[2024-10-10 22:11:07] local.INFO: array (
+)  
+[2024-10-10 22:11:07] local.INFO: 463.24  
+[2024-10-10 22:11:07] local.INFO: from tower: {"phValue":"6","temp":"25","waterLevel":"8","light":"1","ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65","towercode":"2024"} 
+[2024-10-10 22:11:07] local.INFO: select * from `tbl_tower` where `id` = ? limit 1  
+[2024-10-10 22:11:07] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-10 22:11:07] local.INFO: 474  
+[2024-10-10 22:11:08] local.INFO: insert into `cache` (`expiration`, `key`, `value`) values (?, ?, ?) on duplicate key update `expiration` = values(`expiration`), `key` = values(`key`), `value` = values(`value`)  
+[2024-10-10 22:11:08] local.INFO: array (
+  0 => 1728573067,
+  1 => '',
+  2 => 's:4:"2024";',
+)  
+[2024-10-10 22:11:08] local.INFO: 470.47  
+[2024-10-10 22:11:08] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"EC:64:C9:C4:A3:65"} 
+[2024-10-10 22:11:08] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-10-10 22:11:08] local.INFO: Sensor data condition check: {"pH":"Unknown","Temperature":"Unknown","Nutrient Solution Volume":"Good"} 
+[2024-10-10 22:11:08] local.INFO: Trigger counts: {"pH Triggers":0,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":0} 
+[2024-10-10 22:11:08] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:11:09] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6","temperature":"25","nutrient_level":"8","light":"1"},"towerId":1} 
+[2024-10-10 22:11:09] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 

@@ -120,23 +120,22 @@
             font-size: 1 rem;
         }
 
-        .p-card {
-            
+        .info .card {
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 18rem;
-            background-color: #f8f9fa;
+            width: 3 rem;
+            background-color: #ffffff;
             border: 1px solid #ced4da;
             z-index: 1000;
         }
 
         .p-card-title {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1 rem;
         }
 
         .p-card-text {
+            line-height: 0.5;
             text-align: right;
             font-size: 1rem;
         }
@@ -148,13 +147,15 @@
         <div class="card text-center maincard">
             <div class="card-body justify-content-center">
                 <div class="card-title">
-
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="p-card-title">Plant Info</h5>
-                            <p class="p-card-text  no-line-spacing"><strong>pH:</strong> 5.5 - 6.5</p>
-                            <p class="p-card-text  no-line-spacing"><strong>Temp:</strong> 25 - 30 °C</p>
-                            <p class="p-card-text  no-line-spacing"><strong>Tank Capacity:</strong> 20 L</p>
+                    <div class="info">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="p-card-text  no-line-spacing"><strong>Plant:</strong>
+                                    {{ Crypt::decryptString($towerinfo->plantVar) }}</p>
+                                <p class="p-card-text  no-line-spacing"><strong>pH:</strong> 5.5 - 6.5</p>
+                                <p class="p-card-text  no-line-spacing"><strong>Temp:</strong> 25 - 30 °C</p>
+                                <p class="p-card-text  no-line-spacing"><strong>Tank Capacity:</strong> 20 L</p>
+                            </div>
                         </div>
                     </div>
 
@@ -267,7 +268,7 @@
                         <div class="col-sm-4">
                             <div class="card sensor-card">
                                 <center>
-                                    <h3 class="mt-3">Solution Volume</h3>
+                                    <h3 class="mt-3">Nutrient Solution </h3>
                                     <button type="button" class="btn btnpop" data-bs-toggle="modal"
                                         data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
                                         data-column="nutlevel">
@@ -740,37 +741,37 @@
                     nutrientImage.src = '{{ asset('images/Water/100.png') }}';
                     statusText.textContent = "Full";
                     statusText.style.color = 'blue';
-                    volcon.textContent = '';
+                    volcon.textContent = 'Good';
                     volcon.style.color = '';
                 } else if (nutrientVolume >= 17) {
                     nutrientImage.src = '{{ asset('images/Water/80.png') }}';
                     statusText.textContent = "85%";
                     statusText.style.color = 'blue';
-                    volcon.textContent = '';
+                    volcon.textContent = 'Good';
                     volcon.style.color = '';
                 } else if (nutrientVolume >= 15) {
                     nutrientImage.src = '{{ asset('images/Water/70.png') }}';
                     statusText.textContent = "75%";
                     statusText.style.color = 'blue';
-                    volcon.textContent = '';
+                    volcon.textContent = 'Good';
                     volcon.style.color = '';
                 } else if (nutrientVolume >= 12) {
                     nutrientImage.src = '{{ asset('images/Water/60.png') }}';
                     statusText.textContent = "60%";
                     statusText.style.color = 'blue';
-                    volcon.textContent = '';
+                    volcon.textContent = 'Good';
                     volcon.style.color = '';
                 } else if (nutrientVolume >= 10) {
                     nutrientImage.src = '{{ asset('images/Water/50.png') }}';
                     statusText.textContent = "50%";
                     statusText.style.color = 'blue';
-                    volcon.textContent = '';
+                    volcon.textContent = 'Good';
                     volcon.style.color = '';
                 } else if (nutrientVolume >= 7) {
                     nutrientImage.src = '{{ asset('images/Water/30.png') }}';
                     statusText.textContent = "35%";
                     statusText.style.color = 'orange';
-                    volcon.textContent = '';
+                    volcon.textContent = 'Good';
                     volcon.style.color = '';
                 } else if (nutrientVolume >= 5) {
                     nutrientImage.src = '{{ asset('images/Water/20.png') }}';
@@ -785,6 +786,7 @@
                     volcon.textContent = 'Critical';
                     volcon.style.color = 'red';
                 }
+
             }
         }
 

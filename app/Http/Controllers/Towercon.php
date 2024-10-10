@@ -107,7 +107,7 @@ class Towercon extends Controller
 
                 Towerlog::create([
                     'ID_tower' => $towerId,
-                    'activity' => Crypt::encryptString("New cycle started. Tower ID: {$tower->id}, Plant: {{$plant}} Start date: {$startdate}, End date: {$enddate}"),
+                    'activity' => Crypt::encryptString("New cycle started. Tower ID: {$tower->id}, Plant: {$plant} Start date: {$startdate}, End date: {$enddate}"),
                 ]);
 
                 return redirect()->back()->with('success', 'Cycle started successfully!');
@@ -126,7 +126,7 @@ class Towercon extends Controller
 
                 Towerlog::create([
                     'ID_tower' => $towerId,
-                    'activity' => Crypt::encryptString("Date updated. Tower ID: {$towerId}, Plant: {{$plant}}, End date: {$enddate}"),
+                    'activity' => Crypt::encryptString("Date updated. Tower ID: {$towerId}, Plant: {$plant}, End date: {$enddate}"),
                 ]);
 
                 return redirect()->back()->with('success', 'Cycle dates updated successfully!');
