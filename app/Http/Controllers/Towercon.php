@@ -115,6 +115,7 @@ class Towercon extends Controller
                 // Handle updating an existing cycle
                 $startdate = $tower->startdate;
                 $enddate = Carbon::now()->addDays($newDays);
+                $pla=Crypt::decryptString($tower->plantVar);
 
                 $tower->enddate = $enddate;
                 $tower->save();
@@ -126,7 +127,7 @@ class Towercon extends Controller
 
                 Towerlog::create([
                     'ID_tower' => $towerId,
-                    'activity' => Crypt::encryptString("Date updated. Tower ID: {$towerId}, Plant: {$plant}, End date: {$enddate}"),
+                    'activity' => Crypt::encryptString("Date updated. Tower ID: {$towerId}, Plant: {$pla}, End date: {$enddate}"),
                 ]);
 
                 return redirect()->back()->with('success', 'Cycle dates updated successfully!');
