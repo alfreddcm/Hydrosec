@@ -115,6 +115,9 @@
             border: 1px solid #ddd;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
+        .value{
+            font-size: 1 rem;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
@@ -199,7 +202,6 @@
                                             <h4 class="mt-3"><span id="temp-value">n/a</span></h4>
                                             <span id="temp-status">n/a</span><br>
                                             <span id="temp-con">...</span>
-
                                         </div>
                                     </div>
                                 </center>
@@ -221,13 +223,11 @@
                                         <img id="ph-scale" src="{{ asset('images/ph/8.png') }}" alt="ph-scale">
                                     </div>
 
-                                    <div class="value">
-                                        <h4 class="mt-3"><span id="ph-value">n/a</span> <span
-                                                id="ph-status">n/a</span><br>
+                                      <div class="value">
+                                            <h4 class="mt-3"><span id="ph-value">n/a</span></h4>
+                                            <span id="ph-status">n/a</span><br>
                                             <span id="ph-con">...</span>
-                                        </h4>
-
-                                    </div>
+                                        </div>
                                 </center>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                         <div class="col-sm-4">
                             <div class="card sensor-card">
                                 <center>
-                                    <h3 class="mt-3">Nutrient Volume</h3>
+                                    <h3 class="mt-3">Solution Volume</h3>
                                     <button type="button" class="btn btnpop" data-bs-toggle="modal"
                                         data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
                                         data-column="nutlevel">
@@ -250,12 +250,11 @@
                                             <img id="nutrient-image" src="{{ asset('images/Water/100.png') }}"
                                                 alt="Nutient_volume">
                                         </div>
-                                        <div class="value">
-                                            <h4 class="mt-3"><span id="nutrient-value">n/a</span>
-                                                <span id="nutrient-status">n/a</span>
-                                                <br>
-                                                <span id="nutrient-con">...</span>
-                                            </h4>
+
+                                         <div class="value">
+                                            <h4 class="mt-3"><span id="nutrient-value">n/a</span></h4>
+                                            <span id="nutrient-status">n/a</span><br>
+                                            <span id="nutrient-con">...</span>
                                         </div>
                                     </div>
                                 </center>

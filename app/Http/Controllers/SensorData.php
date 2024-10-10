@@ -179,7 +179,7 @@ class SensorData extends Controller
                                     $alertMessages[] = "Temperature value is invalid or out of range (-16°C to 60°C)";
                                 }
                                 if ($nut < 0 || $nut > 23 || is_nan($nut)) {
-                                    $alertMessages[] = "Nutrient level is invalid or out of range (1-20)";
+                                    $alertMessages[] = "Nutrient Solution level is invalid or out of range (1-20)";
                                 }
 
                                 if (!empty($alertMessages)) {
@@ -203,7 +203,6 @@ class SensorData extends Controller
 
                                     return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
 
-                                    //return response()->json(['errors' => $alertMessages], 422);
                                 } else {
                                     $alertMessages = [];
 
@@ -243,19 +242,19 @@ class SensorData extends Controller
 
                                         if (in_array($volumeCondition, $triggerConditions['volumeCondition'])) {
                                             $triggerCounts['nut']++;
-                                            $triggeredConditions['nut'][] = "Nutrient Volume: {$nut} - $volumeCondition";
+                                            $triggeredConditions['nut'][] = "Nutrient Solution Volume: {$nut} - $volumeCondition";
                                         }
 
                                         Log::info('Sensor data condition check:', [
                                             'pH' => $phCondition,
                                             'Temperature' => $tempCondition,
-                                            'Nutrient Volume' => $volumeCondition,
+                                            'Nutrient Solution Volume' => $volumeCondition,
                                         ]);
 
                                         Log::info('Trigger counts:', [
                                             'pH Triggers' => $triggerCounts['ph'],
                                             'Temperature Triggers' => $triggerCounts['temp'],
-                                            'Nutrient Volume Triggers' => $triggerCounts['nut'],
+                                            'Nutrient Solution Volume Triggers' => $triggerCounts['nut'],
                                         ]);
 
                                         $alertMessages = [];
