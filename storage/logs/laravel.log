@@ -1,0 +1,708 @@
+[2024-10-15 22:28:15] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:28:15] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:28:15] local.INFO: 2064.76  
+[2024-10-15 22:28:15] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:28:15] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:15] local.INFO: 535.67  
+[2024-10-15 22:28:16] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:28:16] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:16] local.INFO: 592.88  
+[2024-10-15 22:28:16] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:28:16] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:28:17] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:28:17] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:17] local.INFO: 629.98  
+[2024-10-15 22:28:17] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:28:17] local.INFO: Processed sensor data for data ID: 2 {"pH_data_count":0,"temperature_data_count":4,"nutrient_data_count":5} 
+[2024-10-15 22:28:17] local.INFO: Processed pump data for data ID: 2 {"pump_data_count":0} 
+[2024-10-15 22:28:17] local.DEBUG: 
+Decrypted data details:  [{"towercode":1,"plantVar":"Bok Choy","pH_data":[],
+"temperature_data":[{"created_at":1728569957000,"value":"21"},{"created_at":1728569930000,"value":"38"},{"created_at":1728569847000,"value":"35"},{"created_at":1728567573000,"value":"23"}],
+"nutrient_data":[{"created_at":1728570373000,"value":"3"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"3"}],
+"pump_data":[],"startDate":"10/15/2024","endDate":"10/15/2024"}] 
+[2024-10-15 22:28:17] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:28:17] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:17] local.INFO: 581.65  
+[2024-10-15 22:28:18] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-10-15 22:28:18] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:18] local.INFO: 582.37  
+[2024-10-15 22:28:18] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:28:18] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:18] local.INFO: 648.78  
+[2024-10-15 22:28:19] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-10-15 22:28:19] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:19] local.INFO: 625.19  
+[2024-10-15 22:28:26] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-10-15 22:28:26] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:26] local.INFO: 6747.24  
+[2024-10-15 22:28:26] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:28:26] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:28:26] local.INFO: 564.08  
+[2024-10-15 22:28:30] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:28:30] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729002506,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:28:30] local.INFO: 3283.36  
+[2024-10-15 22:31:01] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:31:01] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:31:01] local.INFO: 2067.95  
+[2024-10-15 22:31:02] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:31:02] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:02] local.INFO: 1076.41  
+[2024-10-15 22:31:02] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:31:02] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:02] local.INFO: 475.15  
+[2024-10-15 22:31:02] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:31:02] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:31:03] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:31:03] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:03] local.INFO: 487.34  
+[2024-10-15 22:31:03] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:31:03] local.INFO: Processed sensor data for data ID: 2 {"pH_data_count":0,"temperature_data_count":4,"nutrient_data_count":5} 
+[2024-10-15 22:31:03] local.INFO: Processed pump data for data ID: 2 {"pump_data_count":0} 
+[2024-10-15 22:31:03] local.DEBUG: Decrypted data details:  [{"towercode":1,"plantVar":"Bok Choy","pH_data":[],"temperature_data":[{"created_at":1728569957000,"value":"21"},{"created_at":1728569930000,"value":"38"},{"created_at":1728569847000,"value":"35"},{"created_at":1728567573000,"value":"23"}],"nutrient_data":[{"created_at":1728570373000,"value":"3"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"3"}],"pump_data":[],"startDate":"10/15/2024","endDate":"10/15/2024"}] 
+[2024-10-15 22:31:04] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:31:04] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:04] local.INFO: 597.17  
+[2024-10-15 22:31:04] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-10-15 22:31:04] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:04] local.INFO: 631.29  
+[2024-10-15 22:31:05] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:31:05] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:05] local.INFO: 459.39  
+[2024-10-15 22:31:05] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-10-15 22:31:05] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:05] local.INFO: 634.08  
+[2024-10-15 22:31:12] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-10-15 22:31:12] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:12] local.INFO: 6765.56  
+[2024-10-15 22:31:13] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:31:13] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:13] local.INFO: 620.21  
+[2024-10-15 22:31:14] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:31:14] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729002673,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:31:14] local.INFO: 614.43  
+[2024-10-15 22:31:23] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:31:23] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:31:23] local.INFO: 1763.03  
+[2024-10-15 22:31:24] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:31:24] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:24] local.INFO: 1104.31  
+[2024-10-15 22:31:25] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:31:25] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:25] local.INFO: 938.58  
+[2024-10-15 22:31:25] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:31:25] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:31:26] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:31:26] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:26] local.INFO: 1121.57  
+[2024-10-15 22:31:26] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:31:26] local.INFO: Processed sensor data for data ID: 2 {"pH_data_count":0,"temperature_data_count":4,"nutrient_data_count":5} 
+[2024-10-15 22:31:26] local.INFO: Processed pump data for data ID: 2 {"pump_data_count":0} 
+[2024-10-15 22:31:26] local.DEBUG: Decrypted data details:  [{"towercode":1,"plantVar":"Bok Choy","pH_data":[],"temperature_data":[{"created_at":1728569957000,"value":"21"},{"created_at":1728569930000,"value":"38"},{"created_at":1728569847000,"value":"35"},{"created_at":1728567573000,"value":"23"}],"nutrient_data":[{"created_at":1728570373000,"value":"3"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"3"}],"pump_data":[],"startDate":"10/15/2024","endDate":"10/15/2024"}] 
+[2024-10-15 22:31:27] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:31:27] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:27] local.INFO: 717.52  
+[2024-10-15 22:31:28] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-10-15 22:31:28] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:28] local.INFO: 1063.17  
+[2024-10-15 22:31:28] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:31:28] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:28] local.INFO: 579.76  
+[2024-10-15 22:31:29] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-10-15 22:31:29] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:29] local.INFO: 599.2  
+[2024-10-15 22:31:32] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-10-15 22:31:32] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:32] local.INFO: 3449.79  
+[2024-10-15 22:31:33] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:31:33] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:31:33] local.INFO: 543.59  
+[2024-10-15 22:31:34] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:31:34] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729002693,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:31:34] local.INFO: 613.07  
+[2024-10-15 22:34:40] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:34:40] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:34:40] local.INFO: 1780.15  
+[2024-10-15 22:34:40] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:34:40] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:34:40] local.INFO: 662.49  
+[2024-10-15 22:34:41] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:34:41] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:34:41] local.INFO: 632.11  
+[2024-10-15 22:34:41] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:34:41] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:34:42] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:34:42] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:34:42] local.INFO: 872.05  
+[2024-10-15 22:34:42] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:34:42] local.ERROR: Undefined array key "pH" {"userId":1,"exception":"[object] (ErrorException(code: 0): Undefined array key \"pH\" at /Users/j/Desktop/Hydrosec/app/Http/Controllers/Owner/OwnerProfile.php:284)
+[stacktrace]
+#0 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(256): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'Undefined array...', '/Users/j/Deskto...', 284)
+#1 /Users/j/Desktop/Hydrosec/app/Http/Controllers/Owner/OwnerProfile.php(284): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, 'Undefined array...', '/Users/j/Deskto...', 284)
+#2 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(46): App\\Http\\Controllers\\Owner\\OwnerProfile->decryptSensorData()
+#3 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Route.php(260): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Owner\\OwnerProfile), 'decryptSensorDa...')
+#4 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Route.php(206): Illuminate\\Routing\\Route->runController()
+#5 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(808): Illuminate\\Routing\\Route->run()
+#6 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#7 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(51): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#8 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#9 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(64): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#10 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'owner')
+#11 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(88): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#12 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#13 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#14 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#15 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#16 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#17 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#18 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(75): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(807): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#24 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(786): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#25 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(750): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#26 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(739): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#27 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(201): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#28 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#29 /Users/j/Desktop/Hydrosec/vendor/livewire/livewire/src/Features/SupportDisablingBackButtonCache/DisableBackButtonCacheMiddleware.php(19): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#30 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Livewire\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#31 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#32 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(176): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#47 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(145): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#48 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1188): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#49 /Users/j/Desktop/Hydrosec/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#50 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('/Users/j/Deskto...')
+#51 {main}
+"} 
+[2024-10-15 22:34:44] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:34:44] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729002882,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:34:44] local.INFO: 1862.35  
+[2024-10-15 22:34:58] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:34:58] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:34:58] local.INFO: 1414.05  
+[2024-10-15 22:34:59] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:34:59] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:34:59] local.INFO: 541.36  
+[2024-10-15 22:34:59] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:34:59] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:34:59] local.INFO: 494.63  
+[2024-10-15 22:34:59] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:34:59] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:35:00] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:35:00] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:00] local.INFO: 603.29  
+[2024-10-15 22:35:00] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:35:00] local.ERROR: Undefined array key "ph " {"userId":1,"exception":"[object] (ErrorException(code: 0): Undefined array key \"ph \" at /Users/j/Desktop/Hydrosec/app/Http/Controllers/Owner/OwnerProfile.php:284)
+[stacktrace]
+#0 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(256): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'Undefined array...', '/Users/j/Deskto...', 284)
+#1 /Users/j/Desktop/Hydrosec/app/Http/Controllers/Owner/OwnerProfile.php(284): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, 'Undefined array...', '/Users/j/Deskto...', 284)
+#2 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(46): App\\Http\\Controllers\\Owner\\OwnerProfile->decryptSensorData()
+#3 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Route.php(260): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Owner\\OwnerProfile), 'decryptSensorDa...')
+#4 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Route.php(206): Illuminate\\Routing\\Route->runController()
+#5 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(808): Illuminate\\Routing\\Route->run()
+#6 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#7 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(51): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#8 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#9 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(64): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#10 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'owner')
+#11 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(88): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#12 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#13 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#14 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#15 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#16 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#17 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#18 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(75): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(807): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#24 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(786): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#25 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(750): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#26 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Routing/Router.php(739): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#27 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(201): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#28 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#29 /Users/j/Desktop/Hydrosec/vendor/livewire/livewire/src/Features/SupportDisablingBackButtonCache/DisableBackButtonCacheMiddleware.php(19): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#30 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Livewire\\Features\\SupportDisablingBackButtonCache\\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#31 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#32 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(176): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#47 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(145): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#48 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1188): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#49 /Users/j/Desktop/Hydrosec/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#50 /Users/j/Desktop/Hydrosec/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('/Users/j/Deskto...')
+#51 {main}
+"} 
+[2024-10-15 22:35:01] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:35:01] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729002901,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:35:01] local.INFO: 669.22  
+[2024-10-15 22:35:24] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:35:24] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:35:24] local.INFO: 2202.9  
+[2024-10-15 22:35:24] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:35:24] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:24] local.INFO: 732.16  
+[2024-10-15 22:35:25] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:35:25] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:25] local.INFO: 592.38  
+[2024-10-15 22:35:25] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:35:25] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:35:26] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:35:26] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:26] local.INFO: 709.29  
+[2024-10-15 22:35:26] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:35:26] local.INFO: Processed sensor data for data ID: 2 {"pH_data_count":6,"temperature_data_count":4,"nutrient_data_count":5} 
+[2024-10-15 22:35:26] local.INFO: Processed pump data for data ID: 2 {"pump_data_count":0} 
+[2024-10-15 22:35:26] local.DEBUG: Decrypted data details:  [{"towercode":1,"plantVar":"Bok Choy","pH_data":[{"created_at":1728570373000,"value":"5"},{"created_at":1728570106000,"value":"5"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"5.5"}],"temperature_data":[{"created_at":1728569957000,"value":"21"},{"created_at":1728569930000,"value":"38"},{"created_at":1728569847000,"value":"35"},{"created_at":1728567573000,"value":"23"}],"nutrient_data":[{"created_at":1728570373000,"value":"3"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"3"}],"pump_data":[],"startDate":"10/15/2024","endDate":"10/15/2024"}] 
+[2024-10-15 22:35:26] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:35:26] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:26] local.INFO: 732.05  
+[2024-10-15 22:35:27] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-10-15 22:35:27] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:27] local.INFO: 822.62  
+[2024-10-15 22:35:28] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:35:28] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:28] local.INFO: 649.62  
+[2024-10-15 22:35:29] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-10-15 22:35:29] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:29] local.INFO: 781.43  
+[2024-10-15 22:35:36] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-10-15 22:35:36] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:36] local.INFO: 6801.41  
+[2024-10-15 22:35:37] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:35:37] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:35:37] local.INFO: 544.73  
+[2024-10-15 22:35:37] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:35:37] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729002937,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:35:37] local.INFO: 708.93  
+[2024-10-15 22:37:06] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:37:06] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:37:06] local.INFO: 2400.63  
+[2024-10-15 22:37:06] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:37:06] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:06] local.INFO: 655.95  
+[2024-10-15 22:37:07] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:37:07] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:07] local.INFO: 652.67  
+[2024-10-15 22:37:07] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:37:07] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:37:08] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:37:08] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:08] local.INFO: 785.51  
+[2024-10-15 22:37:08] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:37:08] local.INFO: Processed sensor data for data ID: 2 {"pH_data_count":6,"temperature_data_count":4,"nutrient_data_count":5} 
+[2024-10-15 22:37:08] local.INFO: Processed pump data for data ID: 2 {"pump_data_count":0} 
+[2024-10-15 22:37:08] local.DEBUG: Decrypted data details:  [{"towercode":1,"plantVar":"Bok Choy","pH_data":[{"created_at":1728570373000,"value":"5"},{"created_at":1728570106000,"value":"5"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"5.5"}],"temperature_data":[{"created_at":1728569957000,"value":"21"},{"created_at":1728569930000,"value":"38"},{"created_at":1728569847000,"value":"35"},{"created_at":1728567573000,"value":"23"}],"nutrient_data":[{"created_at":1728570373000,"value":"3"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"3"}],"pump_data":[],"startDate":"10/15/2024","endDate":"10/15/2024"}] 
+[2024-10-15 22:37:09] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:37:09] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:09] local.INFO: 680.81  
+[2024-10-15 22:37:09] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-10-15 22:37:09] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:09] local.INFO: 610.76  
+[2024-10-15 22:37:10] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:37:10] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:10] local.INFO: 562.1  
+[2024-10-15 22:37:10] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-10-15 22:37:10] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:10] local.INFO: 649.37  
+[2024-10-15 22:37:21] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-10-15 22:37:21] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:21] local.INFO: 10926  
+[2024-10-15 22:37:22] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:37:22] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:37:22] local.INFO: 566.48  
+[2024-10-15 22:37:23] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:37:23] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729003042,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:37:23] local.INFO: 526.82  
+[2024-10-15 22:39:06] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:39:06] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:39:06] local.INFO: 2072.08  
+[2024-10-15 22:39:06] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:39:06] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:06] local.INFO: 940.9  
+[2024-10-15 22:39:08] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:39:08] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:08] local.INFO: 1167.29  
+[2024-10-15 22:39:08] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:39:08] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:39:08] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:39:08] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:08] local.INFO: 652.94  
+[2024-10-15 22:39:08] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:39:08] local.INFO: Processed sensor data for data ID: 2 {"pH_data_count":6,"temperature_data_count":4,"nutrient_data_count":5} 
+[2024-10-15 22:39:08] local.INFO: Processed pump data for data ID: 2 {"pump_data_count":0} 
+[2024-10-15 22:39:08] local.DEBUG: Decrypted data details:  [{"towercode":1,"plantVar":"Bok Choy","pH_data":[{"created_at":1728570373000,"value":"5"},{"created_at":1728570106000,"value":"5"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"5.5"}],"temperature_data":[{"created_at":1728569957000,"value":"21"},{"created_at":1728569930000,"value":"38"},{"created_at":1728569847000,"value":"35"},{"created_at":1728567573000,"value":"23"}],"nutrient_data":[{"created_at":1728570373000,"value":"3"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"3"}],"pump_data":[],"startDate":"10/15/2024","endDate":"10/15/2024"}] 
+[2024-10-15 22:39:09] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:39:09] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:09] local.INFO: 596.12  
+[2024-10-15 22:39:10] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-10-15 22:39:10] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:10] local.INFO: 616.45  
+[2024-10-15 22:39:10] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:39:10] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:10] local.INFO: 743.34  
+[2024-10-15 22:39:11] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-10-15 22:39:11] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:11] local.INFO: 582.3  
+[2024-10-15 22:39:16] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-10-15 22:39:16] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:16] local.INFO: 4755.81  
+[2024-10-15 22:39:16] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:39:16] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:39:16] local.INFO: 545.92  
+[2024-10-15 22:39:17] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:39:17] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729003156,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:39:17] local.INFO: 613.22  
+[2024-10-15 22:40:59] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:40:59] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:40:59] local.INFO: 3827.99  
+[2024-10-15 22:41:00] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:41:00] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:00] local.INFO: 530.97  
+[2024-10-15 22:41:00] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:41:00] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:00] local.INFO: 594.35  
+[2024-10-15 22:41:00] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:41:00] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:41:01] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:41:01] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:01] local.INFO: 585.12  
+[2024-10-15 22:41:01] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:41:01] local.INFO: Processed sensor data for data ID: 2 {"pH_data_count":6,"temperature_data_count":4,"nutrient_data_count":5} 
+[2024-10-15 22:41:01] local.INFO: Processed pump data for data ID: 2 {"pump_data_count":0} 
+[2024-10-15 22:41:01] local.DEBUG: Decrypted data details:  [{"towercode":1,"plantVar":"Bok Choy","pH_data":[{"created_at":1728570373000,"value":"5"},{"created_at":1728570106000,"value":"5"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"5.5"}],"temperature_data":[{"created_at":1728569957000,"value":"21"},{"created_at":1728569930000,"value":"38"},{"created_at":1728569847000,"value":"35"},{"created_at":1728567573000,"value":"23"}],"nutrient_data":[{"created_at":1728570373000,"value":"3"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"3"}],"pump_data":[],"startDate":"10/15/2024","endDate":"10/15/2024"}] 
+[2024-10-15 22:41:02] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:41:02] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:02] local.INFO: 632.14  
+[2024-10-15 22:41:02] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-10-15 22:41:02] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:02] local.INFO: 685.43  
+[2024-10-15 22:41:03] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:41:03] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:03] local.INFO: 569.47  
+[2024-10-15 22:41:04] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-10-15 22:41:04] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:04] local.INFO: 589.85  
+[2024-10-15 22:41:09] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-10-15 22:41:09] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:09] local.INFO: 5182.88  
+[2024-10-15 22:41:09] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:41:09] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:09] local.INFO: 598.76  
+[2024-10-15 22:41:10] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:41:10] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729003269,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:41:10] local.INFO: 450.39  
+[2024-10-15 22:41:55] local.INFO: select * from `sessions` where `id` = ? limit 1  
+[2024-10-15 22:41:55] local.INFO: array (
+  0 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:41:55] local.INFO: 2102.6  
+[2024-10-15 22:41:56] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:41:56] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:56] local.INFO: 1073.48  
+[2024-10-15 22:41:56] local.INFO: select * from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:41:56] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:56] local.INFO: 717.08  
+[2024-10-15 22:41:56] local.INFO: Starting decryption of sensor data for user ID: 1  
+[2024-10-15 22:41:56] local.INFO: Processing tower ID: 1  
+[2024-10-15 22:41:57] local.INFO: select * from `sensor_data_history` where `towerid` = ?  
+[2024-10-15 22:41:57] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:57] local.INFO: 645.02  
+[2024-10-15 22:41:57] local.INFO: Decrypted plant variable for data ID: 2  
+[2024-10-15 22:41:57] local.INFO: Processed sensor data for data ID: 2 {"pH_data_count":6,"temperature_data_count":4,"nutrient_data_count":5} 
+[2024-10-15 22:41:57] local.INFO: Processed pump data for data ID: 2 {"pump_data_count":0} 
+[2024-10-15 22:41:57] local.DEBUG: Decrypted data details:  [{"towercode":1,"plantVar":"Bok Choy","pH_data":[{"created_at":1728570373000,"value":"5"},{"created_at":1728570106000,"value":"5"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"5.5"}],"temperature_data":[{"created_at":1728569957000,"value":"21"},{"created_at":1728569930000,"value":"38"},{"created_at":1728569847000,"value":"35"},{"created_at":1728567573000,"value":"23"}],"nutrient_data":[{"created_at":1728570373000,"value":"3"},{"created_at":1728569957000,"value":"5"},{"created_at":1728569930000,"value":"5"},{"created_at":1728569847000,"value":"4"},{"created_at":1728567573000,"value":"3"}],"pump_data":[],"startDate":"10/15/2024","endDate":"10/15/2024"}] 
+[2024-10-15 22:41:58] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:41:58] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:58] local.INFO: 861.42  
+[2024-10-15 22:41:59] local.INFO: select * from `tbl_workeraccounts` where `OwnerID` = ?  
+[2024-10-15 22:41:59] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:59] local.INFO: 722.86  
+[2024-10-15 22:41:59] local.INFO: select count(*) as aggregate from `tbl_tower` where `OwnerID` = ?  
+[2024-10-15 22:41:59] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:41:59] local.INFO: 609.71  
+[2024-10-15 22:42:00] local.INFO: select `id` from `tbl_tower` where `OwnerID` = ? limit 1  
+[2024-10-15 22:42:00] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:42:00] local.INFO: 611.4  
+[2024-10-15 22:42:04] local.INFO: select `tbl_tower`.`name` as `tower_name`, `tbl_tower`.`towercode` as `tower_code`, `tbl_towerlogs`.`activity`, `tbl_towerlogs`.`created_at` from `tbl_towerlogs` inner join `tbl_tower` on `tbl_towerlogs`.`ID_tower` = `tbl_tower`.`id` where `tbl_towerlogs`.`ID_tower` = ? order by `tbl_towerlogs`.`created_at` desc  
+[2024-10-15 22:42:04] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:42:04] local.INFO: 4208.08  
+[2024-10-15 22:42:05] local.INFO: select * from `tbl_useraccounts` where `id` = ? limit 1  
+[2024-10-15 22:42:05] local.INFO: array (
+  0 => 1,
+)  
+[2024-10-15 22:42:05] local.INFO: 633.36  
+[2024-10-15 22:42:06] local.INFO: update `sessions` set `payload` = ?, `last_activity` = ?, `user_id` = ?, `ip_address` = ?, `user_agent` = ? where `id` = ?  
+[2024-10-15 22:42:06] local.INFO: array (
+  0 => 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHVEOFpnV290S2tJTDJGOUpQQTFsdGlKMHU0S0wwRjNqVnRteHhzOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Pd25lci9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUyOiJsb2dpbl9vd25lcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==',
+  1 => 1729003325,
+  2 => 1,
+  3 => '127.0.0.1',
+  4 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  5 => 'gs9M93XNsDRHDsQrNNbFKWJc2vN34JxgDjv2clQG',
+)  
+[2024-10-15 22:42:06] local.INFO: 1185.99  
