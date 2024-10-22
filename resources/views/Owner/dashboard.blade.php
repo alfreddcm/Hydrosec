@@ -51,7 +51,6 @@
 
     .card {
         padding: 10px;
-        height: 200px;
         border-radius: 10px;
         border: 1px solid #ddd;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -101,42 +100,20 @@
         padding: 20px;
     }
 
-    .data .card-body canvas {
-        width: auto !important;
-    }
-
-    .qq {
-        margin: 0;
-        padding: 0;
-        font-size: smaller
+    .data .chart-container {
+        height: 350px;
+        padding: 10px;
     }
 
     .data .chart-card {
         display: flex;
         flex-direction: column;
         height: 100%;
-        /* Ensure the card height adapts to the content */
         margin-bottom: 20px;
-        /* Add margin if needed */
     }
 
-    .data .card-body {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        /* Ensure the card body takes up remaining space */
-        padding: 0;
-    }
-
-    .data .chart-container {
-        flex: 1;
-        /* Ensure the chart container takes up remaining space */
-    }
-
-    .data .chart {
-        width: 100%;
-        height: 300px;
-        /* Set the height of the chart (adjust as needed) */
+    .data .row {
+        margin-bottom: 20px;
     }
 </style>
 
@@ -218,34 +195,20 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <!-- pH Graph Column -->
                             <div class="col-md-6 mb-4">
-                                <div class="chart-container">
-                                    <div id="phChart-{{ $code }}" class="chart"></div>
-                                </div>
+                                <div class="chart-container" id="phChart-{{ $code }}"></div>
                             </div>
-
-                            <!-- Temperature Graph Column -->
                             <div class="col-md-6 mb-4">
-                                <div class="chart-container">
-                                    <div id="tempChart-{{ $code }}" class="chart"></div>
-                                </div>
+                                <div class="chart-container" id="tempChart-{{ $code }}"></div>
                             </div>
                         </div>
 
                         <div class="row">
-                            <!-- Nutrient Level Graph Column -->
                             <div class="col-md-6 mb-4">
-                                <div class="chart-container">
-                                    <div id="waterChart-{{ $code }}" class="chart"></div>
-                                </div>
+                                <div class="chart-container" id="waterChart-{{ $code }}"></div>
                             </div>
-
-                            <!-- Pump Status Graph Column -->
                             <div class="col-md-6 mb-4">
-                                <div class="chart-container">
-                                    <div id="pumpChart-{{ $code }}" class="chart"></div>
-                                </div>
+                                <div class="chart-container" id="pumpChart-{{ $code }}"></div>
                             </div>
                         </div>
                     </div>
@@ -256,19 +219,18 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const phData = @json($data['pH_data']).map(entry => ({
                     created_at: entry.created_at,
-                    value: Number(entry.value) // Ensure this is a number
+                    value: Number(entry.value)
                 }));
                 const tempData = @json($data['temperature_data']).map(entry => ({
                     created_at: entry.created_at,
-                    value: Number(entry.value) // Ensure this is a number
+                    value: Number(entry.value)
                 }));
                 const nutrientData = @json($data['nutrient_data']).map(entry => ({
                     created_at: entry.created_at,
-                    value: Number(entry.value) // Ensure this is a number
+                    value: Number(entry.value)
                 }));
-                const pumpData = @json($data['pump_data']); // No need to modify as it's already empty
+                const pumpData = @json($data['pump_data']);
 
-                // Function to create charts only if data exists
                 function createChart(chartId, title, yAxisTitle, data) {
                     if (data.length > 0) {
                         Highcharts.chart(chartId, {
@@ -283,31 +245,23 @@
                             },
                             series: [{
                                 name: title,
-                                data: data.map(entry => [entry.created_at, entry.value]), // Ensure proper data format
+                                data: data.map(entry => [entry.created_at, entry.value]),
                             }],
                             tooltip: { pointFormat: '{series.name}: <b>{point.y:.2f}</b>' }
                         });
                     } else {
-                        // Log a message if there's no data for the chart
                         console.warn(`No data available for ${title}`);
                     }
                 }
 
-                // Create charts
                 createChart('phChart-{{ $code }}', 'pH Levels', 'pH Level', phData);
                 createChart('tempChart-{{ $code }}', 'Temperature', 'Temperature (°C)', tempData);
                 createChart('waterChart-{{ $code }}', 'Nutrient Solution Volume', 'Nutrient Solution Volume', nutrientData);
-                createChart('pumpChart-{{ $code }}', 'Pump Status', 'Status', pumpData); // Adjust as needed
+                createChart('pumpChart-{{ $code }}', 'Pump Status', 'Status', pumpData);
             });
         </script>
     @endforeach
 @endif
-
-
-
-
-
-</div>
 
 </div>
 
