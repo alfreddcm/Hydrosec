@@ -21,21 +21,21 @@ class UpdateTowerMode extends Command
     public function handle()
     {
         $towers = Tower::all();
-        //     $hour = Carbon::now()->hour;
-        //  if ($hour >= 6 && $hour < 18) {
-        //     $mode = 1;  // 6 AM to 6 PM
-        // } elseif ($hour >= 18 && $hour < 22) {
-        //     $mode = 2;  // 6 PM to 10 PM
-        // } elseif ($hour >= 22 || $hour < 1) {
-        //     $mode = 0;  // 10 PM to 1 AM
-        // } else {
-        //     $mode = 2;  // 1 AM to 6 AM
-        // }
+            $hour = Carbon::now()->hour;
+         if ($hour >= 6 && $hour < 18) {
+            $mode = 1;  // 6 AM to 6 PM
+        } elseif ($hour >= 18 && $hour < 22) {
+            $mode = 2;  // 6 PM to 10 PM
+        } elseif ($hour >= 22 || $hour < 1) {
+            $mode = 0;  // 10 PM to 1 AM
+        } else {
+            $mode = 2;  // 1 AM to 6 AM
+        }
 
         foreach ($towers as $tower) {
 
             $currentMode = Crypt::decryptString($tower->mode);
-            $mode = ($currentMode + 1) % 3;
+           // $mode = ($currentMode + 1) % 3;
 
             $tower->mode = Crypt::encryptString($mode);
             // $tower->status = Crypt::encryptString(0);
