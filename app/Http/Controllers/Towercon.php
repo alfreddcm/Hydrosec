@@ -65,13 +65,13 @@ class Towercon extends Controller
         $days = (int) $request->input('days', 0);
         $newDays = (int) $request->input('newDays', 0);
         $towerId = $request->input('tower_id');
-        $plant = $request->input('plantSelect');
-
+        $plants = $request->input('plantSelect');
+        $plantsString = implode(', ', $plants);
         Log::debug('updateDates called with inputs', [
             'days' => $days,
             'newDays' => $newDays,
             'tower_id' => $towerId,
-            'plant' => $plant,
+            'plant' => $plantsString,
         ]);
 
         $tower = Tower::find($towerId);
@@ -93,7 +93,7 @@ class Towercon extends Controller
                 $enddate = $startdate->copy()->addDays($days);
                 $tower->status = Crypt::encryptString('1');
                 $tower->mode = Crypt::encryptString($mode);
-                $tower->plantVar = Crypt::encryptString($plant);
+                $tower->plantVar = Crypt::encryptString($plantsString);
 
                 $tower->startdate = $startdate;
                 $tower->enddate = $enddate;
@@ -107,7 +107,7 @@ class Towercon extends Controller
 
                 Towerlog::create([
                     'ID_tower' => $towerId,
-                    'activity' => Crypt::encryptString("New cycle started. Tower ID: {$tower->id}, Plant: {$plant} Start date: {$startdate}, End date: {$enddate}"),
+                    'activity' => Crypt::encryptString("New cycle started. Tower ID: {$tower->id}, Plant: {$plantsString} Start date: {$startdate}, End date: {$enddate}"),
                 ]);
 
                 return redirect()->back()->with('success', 'Cycle started successfully!');
@@ -164,6 +164,7 @@ class Towercon extends Controller
 
         $tow->startdate = null;
         $tow->enddate = null;
+        $tow->plantVar = null;
         $tow->status = $stat;
         $tow->save();
 
@@ -373,7 +374,6 @@ class Towercon extends Controller
 
             $tow->startdate = now();
             $tow->enddate = now()->addDays($count);
-
             $tow->status = $stat;
             $tow->save();
 
