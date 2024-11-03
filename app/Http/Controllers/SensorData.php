@@ -452,7 +452,7 @@ class SensorData extends Controller
 
             foreach ($sensorData as $sdata) {
                 $decodedData = json_decode($sdata->sensordata, true);
-                $formattedTimestamp = $sdata->created_at->format('Y-m-d H:i:s');
+$formattedTimestamp = $sdata->created_at->format('m-d H:i');
 
                 if (isset($decodedData[$column])) {
                     $decryptedData[] = [

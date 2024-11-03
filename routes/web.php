@@ -104,10 +104,7 @@ Route::middleware('auth:worker')->group(function () {
 
     Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
-    Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);
-    Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
-    Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
-    Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);
+    Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);   
     Route::get('/Worker/modestat/{id}', [Towercon::class, 'modestat'])->name('modestat');
 
 });

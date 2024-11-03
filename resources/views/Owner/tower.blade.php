@@ -707,15 +707,27 @@
                 });
             }
 
+                  // Start intervals
             function startIntervals() {
-                if (!modeStatInterval) {
-                    modeStatInterval = setInterval(fetchModeStat, 5000);
+                if (!sensorDataInterval) {
+                    sensorDataInterval = setInterval(fetchSensorData2, 10000);
                 }
+                if (!modeStatInterval) {
+                    modeStatInterval = setInterval(fetchModeStat, 10000);
+                }
+            }
+
+            function stopIntervals() {
+                clearInterval(sensorDataInterval);
+                clearInterval(modeStatInterval);
+                sensorDataInterval = null;
+                modeStatInterval = null;
             }
             load();
             fetchPumpData();
             startIntervals();
-            setInterval(fetchPumpData, 5000);
+
+            setInterval(fetchPumpData, 10000);
         });
 
         function updateNutrientImage(nutrientVolume) {
