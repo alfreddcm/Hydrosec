@@ -418,7 +418,7 @@
                                 @csrf
                                 <input type="hidden" name="tower_id" value="{{ $towerinfo->id }}">
                                 <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Are you sure you want to disable the tower?');">Disable
+                                    onclick="return confirm('Are you sure you want to pause the tower?');"> Pause
                                     Tower</button>
                             </form>
 
