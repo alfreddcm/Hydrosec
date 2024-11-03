@@ -631,65 +631,12 @@
                                 }
                             }
                         }
-<<<<<<< HEAD
-                    },
-                    error: function() {
-                        console.error('Failed to fetch pump data');
-                    }
-                });
-            }
-
-            function fetchModeStat() {
-                $.ajax({
-                    url: `/modestat/${towerId}`,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.modestat) {
-                            const {
-                                mode,
-                                status
-                            } = response.modestat;
-                            updatemode(parseFloat(mode));
-                            updatestatus(parseFloat(status));
-                        } else {
-                            console.log('No data available');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error: ' + status + ' ' + error);
-                    }
-                });
-            }
-
-                  // Start intervals
-            function startIntervals() {
-                if (!sensorDataInterval) {
-                    sensorDataInterval = setInterval(fetchSensorData2, 10000);
-                }
-                if (!modeStatInterval) {
-                    modeStatInterval = setInterval(fetchModeStat, 10000);
-                }
-            }
-
-            function stopIntervals() {
-                clearInterval(sensorDataInterval);
-                clearInterval(modeStatInterval);
-                sensorDataInterval = null;
-                modeStatInterval = null;
-            }
-            load();
-            fetchPumpData();
-            startIntervals();
-
-            setInterval(fetchPumpData, 10000);
-=======
                     });
                 },
                 error: function (xhr) {
                     console.error('An error occurred:', xhr.responseText);
                 }
             });
->>>>>>> a4f29473e5789dc53ce3900707f77a203e8c0482
         });
 
 
