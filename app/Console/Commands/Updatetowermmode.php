@@ -38,7 +38,7 @@ class UpdateTowerMode extends Command
            // $mode = ($currentMode + 1) % 3;
 
             $tower->mode = Crypt::encryptString($mode);
-            // $tower->status = Crypt::encryptString(0);
+             $tower->status = Crypt::encryptString(0);
 
             $tower->save();
 

@@ -17,6 +17,9 @@ class SensorDataUpdated implements ShouldBroadcastNow
     {
         $this->sensorData = $sensorData;
         $this->towerId = $towerId;
+
+      //  Cache::put('cachetower.' . $towerId, $sensorData, 3600);
+
     }
 
     // Define the broadcast channel
