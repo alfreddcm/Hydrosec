@@ -601,7 +601,7 @@ class SensorData extends Controller
                     $decryptedTowerName = Crypt::decryptString($tower->name);
 
                     // Define cooldown period in minutes
-                    $emailCooldown = 1;
+                    $emailCooldown = 30;
 
                     // Check last email sent timestamp based on status type
                     switch ($statusType) {
