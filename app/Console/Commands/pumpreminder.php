@@ -43,7 +43,8 @@ class pumpreminder extends Command
         $emailCooldown = 5;
         $towers = Tower::select('id', 'status', 'name', 'OwnerID', 'last_pumping_email_sent_at')->get();
         foreach ($towers as $data) {
-            if (Crypt::decryptString($data->status) == '1') {
+            if (Crypt::decryptString($data->status) == '1' && (Crypt::decryptString($data->mode) == '1' || Crypt::decryptString($data->mode) == '2')
+            ) {
                 $towerId = $data->id;
                 Log::channel('custom')->info('Processing tower', ['tower_id' => $towerId]);
 
@@ -74,7 +75,7 @@ class pumpreminder extends Command
 
                     $owner = Owner::select('email')->where('id', $data->OwnerID)->first();
                     if ($owner) {
-                        $body = "The Tower '" . Crypt::decryptString($data->name) . "' did not pump at " . $now . "  Please check the plug.";
+                        $body = "The Tower '" . Crypt::decryptString($data->name) . "' did not pump at " . $now . "  Please check the plug. Please be inform that system need electricity to pump nutrients and light the growlights";
 
                         $details = [
                             'title' => 'Electricity Cut-off',

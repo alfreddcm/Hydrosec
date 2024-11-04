@@ -1017,7 +1017,7 @@
 
             switch (mode) {
                 case 0:
-                    modeText.textContent = 'Off';
+                    modeText.textContent = 'Mignight Mode';
                     modeCircle.style.backgroundColor = 'gray';
                     break;
                 case 1:

@@ -4,15 +4,14 @@ namespace App\Console\Commands;
 
 use App\Mail\Alert;
 use App\Models\Owner;
-use App\Models\Sensor;
 use App\Models\Tower;
-use App\Models\Towerlog; // Fixed the model name to match Laravel's naming conventions
+use App\Models\Towerlog;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-// Ensure Log is imported
 
 class IfOff extends Command
 {
@@ -25,18 +24,15 @@ class IfOff extends Command
     public function handle()
     {
         $now = Carbon::now();
-
         $towers = Tower::all();
 
         foreach ($towers as $tower) {
             if (Crypt::decryptString($tower->status) == '1') {
-                $latestSensor = Sensor::where('towerid', $tower->id)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
-
                 $towerId = $tower->id;
+                $cachedData = Cache::get('cachetower.' . $towerId, []);
 
-                if (!$latestSensor || Carbon::parse($latestSensor->created_at)->diffInMinutes($now) > 1) {
+                // Check if the cache has recent data (within the past hour)
+                if (empty($cachedData) || Carbon::parse($cachedData[0]['timestamp'])->diffInHours($now) > 1) {
                     // Check if cooldown period has elapsed
                     if ($tower->last_email_sensor_off) {
                         $lastEmailTime = Carbon::parse($tower->last_email_sensor_off);
@@ -59,7 +55,7 @@ class IfOff extends Command
                             'body' => $body,
                         ];
 
-                        $mailStatus = 'Failed'; // Default to 'Failed'
+                        $mailStatus = 'Failed';
 
                         try {
                             Mail::to($email)->send(new Alert($details));
