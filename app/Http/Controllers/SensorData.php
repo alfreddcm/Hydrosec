@@ -444,29 +444,30 @@ class SensorData extends Controller
     public function getdata($id, $column)
     {
         try {
-            $sensorData = Sensor::where('towerid', $id)
-                ->orderBy('created_at', 'asc')
-                ->get(['sensordata', 'created_at']);
+            // Retrieve data from cache
+            $cachedData = Cache::get('cachetower.' . $id, []);
 
+            // Filter and format the data for the requested column
             $decryptedData = [];
-
-            foreach ($sensorData as $sdata) {
-                $decodedData = json_decode($sdata->sensordata, true);
-$formattedTimestamp = $sdata->created_at->format('m-d H:i');
-
-                if (isset($decodedData[$column])) {
+            foreach ($cachedData as $dataPoint) {
+                if (isset($dataPoint['data'][$column])) {
                     $decryptedData[] = [
                         'type' => $column,
-                        'value' => (float) $decodedData[$column],
-                        'timestamp' => $formattedTimestamp,
+                        'value' => (float) $dataPoint['data'][$column],
+                        'timestamp' => \Carbon\Carbon::parse($dataPoint['timestamp'])->format('m-d H:i'),
                     ];
                 }
+            }
+
+            // Check if we have any relevant data
+            if (empty($decryptedData)) {
+                return response()->json(['message' => 'No data available for the specified column'], 404);
             }
 
             return response()->json(['sensorData' => $decryptedData]);
 
         } catch (\Exception $e) {
-            Log::error('Error fetching sensor data: ' . $e->getMessage());
+            Log::error('Error fetching sensor data from cache: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }

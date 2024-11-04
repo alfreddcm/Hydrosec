@@ -563,81 +563,88 @@
             );
         }
 
-        $('#tempmodal').on('shown.bs.modal', function (event) {
-            let button = event.relatedTarget;
-            if (!button) {
-                console.error('No related target found. Unable to get data attributes.');
+       $('#tempmodal').on('shown.bs.modal', function (event) {
+    let button = event.relatedTarget;
+    if (!button) {
+        console.error('No related target found. Unable to get data attributes.');
+        return;
+    }
+
+    let towerId = button.getAttribute('data-tower-id');
+    let column = button.getAttribute('data-column');
+
+    if (!towerId || !column) {
+        console.error('Tower ID or Column attribute missing.');
+        return;
+    }
+
+    // Destroy existing chart to prevent duplicates
+    if (tempChart) {
+        tempChart.destroy();
+    }
+
+    $.ajax({
+        url: `/get-data/${towerId}/${column}`,
+        method: 'GET',
+        success: function (response) {
+            if (response.error) {
+                console.error('Error fetching data:', response.error);
                 return;
             }
 
-            let towerId = button.getAttribute('data-tower-id');
-            let column = button.getAttribute('data-column');
-
-            if (tempChart) {
-                tempChart.destroy();
+            const data = response.sensorData;
+            if (!data || data.length === 0) {
+                console.error('No data available for the selected tower.');
+                return;
             }
 
+            const labels = data.map(item => item.timestamp);
+            const values = data.map(item => item.value);
+            const ctx = document.getElementById('tempChart');
 
-            $.ajax({
-                url: `/get-data/${towerId}/${column}`,
-                method: 'GET',
-                success: function (response) {
-                    if (response.error) {
-                        console.error('Error fetching data:', response.error);
-                        return;
-                    }
+            if (!ctx) {
+                console.error('Canvas element not found.');
+                return;
+            }
 
-                    const data = response.sensorData;
-                    if (data.length === 0) {
-                        console.error('No data available for the selected tower.');
-                        return;
-                    }
-
-                    const labels = data.map(item => item.timestamp);
-                    const values = data.map(item => item.value);
-                    const ctx = document.getElementById('tempChart');
-
-                    if (!ctx) {
-                        console.error('Canvas element not found.');
-                        return;
-                    }
-
-                    tempChart = new Chart(ctx.getContext('2d'), {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Sensor Data',
-                                data: values,
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderWidth: 1
-                            }]
+            tempChart = new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Sensor Data',
+                        data: values,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'category',
+                            title: {
+                                display: true,
+                                text: 'Time'
+                            }
                         },
-                        options: {
-                            scales: {
-                                x: {
-                                    type: 'category',
-                                    title: {
-                                        display: true,
-                                        text: 'Time'
-                                    }
-                                },
-                                y: {
-                                    title: {
-                                        display: true,
-                                        text: 'Value'
-                                    }
-                                }
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Value'
                             }
                         }
-                    });
-                },
-                error: function (xhr) {
-                    console.error('An error occurred:', xhr.responseText);
+                    }
                 }
             });
-        });
+        },
+        error: function (xhr) {
+            console.error('An error occurred:', xhr.responseText);
+        }
+    });
+});
+
 
 
 
