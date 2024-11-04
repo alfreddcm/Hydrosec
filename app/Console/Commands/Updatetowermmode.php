@@ -35,7 +35,7 @@ class UpdateTowerMode extends Command
         foreach ($towers as $tower) {
 
             $currentMode = Crypt::decryptString($tower->mode);
-            //$mode = ($currentMode + 1) % 3;
+            // $mode = ($currentMode + 1) % 3;
 
             $tower->mode = Crypt::encryptString($mode);
            //  $tower->status = Crypt::encryptString(0);
