@@ -612,7 +612,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Sensor Data',
+                        label: column ,
                         data: values,
                         borderColor: 'rgba(75, 192, 192, 1)',
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
