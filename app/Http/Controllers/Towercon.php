@@ -99,7 +99,7 @@ class Towercon extends Controller
                 $tower->enddate = $enddate;
                 $tower->save();
 
-                Log::info('New cycle started', [
+                Log::channel('custom')->info('New cycle started', [
                     'tower_id' => $tower->id,
                     'date_started' => $startdate,
                     'date_end' => $enddate,
@@ -120,7 +120,7 @@ class Towercon extends Controller
                 $tower->enddate = $enddate;
                 $tower->save();
 
-                Log::info('Cycle dates updated', [
+                Log::channel('custom')->info('Cycle dates updated', [
                     'tower_id' => $tower->id,
                     'date_end' => $enddate,
                 ]);
@@ -136,7 +136,7 @@ class Towercon extends Controller
             return redirect()->back()->with('error', 'Invalid input.');
         }
 
-        Log::error('Failed to handle cycle - Tower not found', [
+        Log::channel('custom')->error('Failed to handle cycle - Tower not found', [
             'tower_id' => $towerId,
         ]);
 
@@ -145,22 +145,22 @@ class Towercon extends Controller
 
     public function stop(Request $request)
 {
-    \Log::info('Stop method called', ['request' => $request->all()]);
+    \Log::channel('custom')->info('Stop method called', ['request' => $request->all()]);
 
     $towerId = $request->input('tower_id');
-    \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
+    \Log::channel('custom')->info('Tower ID retrieved', ['towerId' => $towerId]);
 
     $tow = Tower::where('id', $towerId)->first();
     if (!$tow) {
-        \Log::error('Tower not found', ['towerId' => $towerId]);
+        \Log::channel('custom')->error('Tower not found', ['towerId' => $towerId]);
         return redirect()->back()->with('error', 'Tower not found.');
     }
 
-    \Log::info('Tower retrieved', ['tow' => $tow]);
+    \Log::channel('custom')->info('Tower retrieved', ['tow' => $tow]);
 
     try {
         $stat = Crypt::encryptString('0');
-        \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+        \Log::channel('custom')->info('Status encrypted', ['encryptedStatus' => $stat]);
 
         $tow->startdate = null;
         $tow->enddate = null;
@@ -168,9 +168,9 @@ class Towercon extends Controller
         $tow->status = $stat;
         $tow->save();
 
-        \Log::info('Tower status updated and saved', ['tow' => $tow]);
+        \Log::channel('custom')->info('Tower status updated and saved', ['tow' => $tow]);
     } catch (\Exception $e) {
-        \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+        \Log::channel('custom')->error('Error encrypting status', ['exception' => $e->getMessage()]);
         return redirect()->back()->with('error', 'Failed to update tower status.');
     }
 
@@ -184,14 +184,14 @@ class Towercon extends Controller
         ];
     })->toArray();
 
-    \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
-    \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
+    \Log::channel('custom')->info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
+    \Log::channel('custom')->info('Owner ID retrieved', ['ownerID' => $ownerID]);
 
     $sensorData = Sensor::where('towerid', $towerId)
         ->orderBy('created_at', 'desc')
         ->get();
 
-    \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
+    \Log::channel('custom')->info('Sensor data retrieved', ['sensorData' => $sensorData]);
 
     $sensorDataArray = $sensorData->map(function ($data) {
         $decodedData = json_decode($data->sensordata, true);
@@ -200,10 +200,10 @@ class Towercon extends Controller
         ]);
     })->toArray();
 
-    \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
+    \Log::channel('custom')->info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
 
     if ($sensorData->isEmpty() && $pumps->isEmpty()) {
-        \Log::info('No sensor or pump data available');
+        \Log::channel('custom')->info('No sensor or pump data available');
         return redirect()->back()->with('success', 'No sensor or pump data to save.');
     }
 
@@ -217,9 +217,9 @@ class Towercon extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        \Log::info('Sensor and pump data saved');
+        \Log::channel('custom')->info('Sensor and pump data saved');
     } catch (\Exception $e) {
-        \Log::error('Error saving sensor or pump data', ['exception' => $e->getMessage()]);
+        \Log::channel('custom')->error('Error saving sensor or pump data', ['exception' => $e->getMessage()]);
         return redirect()->back()->with('error', 'Failed to save data.');
     }
 
@@ -228,7 +228,7 @@ class Towercon extends Controller
         'Date' => Carbon::now()->toDateTimeString(),
     ];
 
-    \Log::info('Activity log created', ['activityLog' => $activityLog]);
+    \Log::channel('custom')->info('Activity log created', ['activityLog' => $activityLog]);
 
     try {
         Towerlog::create([
@@ -236,45 +236,45 @@ class Towercon extends Controller
             'activity' => Crypt::encryptString(json_encode($activityLog)),
         ]);
 
-        \Log::info('Activity log saved');
+        \Log::channel('custom')->info('Activity log saved');
     } catch (\Exception $e) {
-        \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+        \Log::channel('custom')->error('Error encrypting activity log', ['exception' => $e->getMessage()]);
     }
 
     Sensor::truncate();
     Pump::truncate();
 
-    \Log::info('Sensor table truncated');
+    \Log::channel('custom')->info('Sensor table truncated');
 
     return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
 }
 
     public function stopdis(Request $request)
     {
-        \Log::info('Dis method called', ['request' => $request->all()]);
+        \Log::channel('custom')->info('Dis method called', ['request' => $request->all()]);
 
         $towerId = $request->input('tower_id');
-        \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
+        \Log::channel('custom')->info('Tower ID retrieved', ['towerId' => $towerId]);
 
         $tow = Tower::where('id', $towerId)->first();
         if (!$tow) {
-            \Log::error('Tower not found', ['towerId' => $towerId]);
+            \Log::channel('custom')->error('Tower not found', ['towerId' => $towerId]);
             return redirect()->back()->with('error', 'Tower not found.');
         }
 
-        \Log::info('Tower retrieved', ['tow' => $tow]);
+        \Log::channel('custom')->info('Tower retrieved', ['tow' => $tow]);
 
         try {
             $stat = Crypt::encryptString('0');
-            \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+            \Log::channel('custom')->info('Status encrypted', ['encryptedStatus' => $stat]);
 
             $tow->status = $stat;
 
             $tow->save();
-            \Log::info('Tower status updated and saved', ['tow' => $tow]);
+            \Log::channel('custom')->info('Tower status updated and saved', ['tow' => $tow]);
 
         } catch (\Exception $e) {
-            \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+            \Log::channel('custom')->error('Error encrypting status', ['exception' => $e->getMessage()]);
             return redirect()->back()->with('error', 'Failed to update tower status.');
         }
 
@@ -284,7 +284,7 @@ class Towercon extends Controller
             'Date' => Carbon::now()->toDateTimeString(),
         ];
 
-        \Log::info('Activity log created', ['activityLog' => $activityLog]);
+        \Log::channel('custom')->info('Activity log created', ['activityLog' => $activityLog]);
 
         try {
             Towerlog::create([
@@ -292,9 +292,9 @@ class Towercon extends Controller
                 'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
             ]);
 
-            \Log::info('Activity log saved');
+            \Log::channel('custom')->info('Activity log saved');
         } catch (\Exception $e) {
-            \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+            \Log::channel('custom')->error('Error encrypting activity log', ['exception' => $e->getMessage()]);
         }
 
         return redirect()->back()->with('success', 'Cycle stopped, Tower has set to disabled!');
@@ -302,30 +302,30 @@ class Towercon extends Controller
 
     public function en(Request $request)
     {
-        \Log::info('en method called', ['request' => $request->all()]);
+        \Log::channel('custom')->info('en method called', ['request' => $request->all()]);
 
         $towerId = $request->input('tower_id');
-        \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
+        \Log::channel('custom')->info('Tower ID retrieved', ['towerId' => $towerId]);
 
         $tow = Tower::where('id', $towerId)->first();
         if (!$tow) {
-            \Log::error('Tower not found', ['towerId' => $towerId]);
+            \Log::channel('custom')->error('Tower not found', ['towerId' => $towerId]);
             return redirect()->back()->with('error', 'Tower not found.');
         }
 
-        \Log::info('Tower retrieved', ['tow' => $tow]);
+        \Log::channel('custom')->info('Tower retrieved', ['tow' => $tow]);
 
         try {
             $stat = Crypt::encryptString('1');
-            \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+            \Log::channel('custom')->info('Status encrypted', ['encryptedStatus' => $stat]);
 
             $tow->status = $stat;
 
             $tow->save();
-            \Log::info('Tower status updated and saved', ['tow' => $tow]);
+            \Log::channel('custom')->info('Tower status updated and saved', ['tow' => $tow]);
 
         } catch (\Exception $e) {
-            \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+            \Log::channel('custom')->error('Error encrypting status', ['exception' => $e->getMessage()]);
             return redirect()->back()->with('error', 'Failed to update tower status.');
         }
 
@@ -334,7 +334,7 @@ class Towercon extends Controller
             'Date' => Carbon::now()->toDateTimeString(),
         ];
 
-        \Log::info('Activity log created', ['activityLog' => $activityLog]);
+        \Log::channel('custom')->info('Activity log created', ['activityLog' => $activityLog]);
 
         try {
             Towerlog::create([
@@ -342,9 +342,9 @@ class Towercon extends Controller
                 'activity' => Crypt::encryptString(json_encode($activityLog)),
             ]);
 
-            \Log::info('Activity log saved');
+            \Log::channel('custom')->info('Activity log saved');
         } catch (\Exception $e) {
-            \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+            \Log::channel('custom')->error('Error encrypting activity log', ['exception' => $e->getMessage()]);
         }
 
         return redirect()->back()->with('success', 'Tower set to Enabled successfully!');
@@ -353,48 +353,48 @@ class Towercon extends Controller
     public function restartCycle(Request $request)
     {
 
-        \Log::info('Restart method called', ['request' => $request->all()]);
+        \Log::channel('custom')->info('Restart method called', ['request' => $request->all()]);
 
         $towerId = $request->input('tower_id');
-        \Log::info('Tower ID retrieved', ['towerId' => $towerId]);
+        \Log::channel('custom')->info('Tower ID retrieved', ['towerId' => $towerId]);
 
         $tow = Tower::where('id', $towerId)->first();
         $count = $tow->startdate->diffInDays($tow->enddate);
 
         if (!$tow) {
-            \Log::error('Tower not found', ['towerId' => $towerId]);
+            \Log::channel('custom')->error('Tower not found', ['towerId' => $towerId]);
             return redirect()->back()->with('error', 'Tower not found.');
         }
 
-        \Log::info('Tower retrieved', ['tow' => $tow]);
+        \Log::channel('custom')->info('Tower retrieved', ['tow' => $tow]);
 
         try {
             $stat = Crypt::encryptString('1');
-            \Log::info('Status encrypted', ['encryptedStatus' => $stat]);
+            \Log::channel('custom')->info('Status encrypted', ['encryptedStatus' => $stat]);
 
             $tow->startdate = now();
             $tow->enddate = now()->addDays($count);
             $tow->status = $stat;
             $tow->save();
 
-            \Log::info('Tower status updated and saved', ['tow' => $tow]);
+            \Log::channel('custom')->info('Tower status updated and saved', ['tow' => $tow]);
         } catch (\Exception $e) {
-            \Log::error('Error encrypting status', ['exception' => $e->getMessage()]);
+            \Log::channel('custom')->error('Error encrypting status', ['exception' => $e->getMessage()]);
             return redirect()->back()->with('error', 'Failed to update tower status.');
         }
 
         $ownerID = $tow->OwnerID;
-        \Log::info('Owner ID retrieved', ['ownerID' => $ownerID]);
+        \Log::channel('custom')->info('Owner ID retrieved', ['ownerID' => $ownerID]);
 
         $sensorData = Sensor::where('towerid', $towerId)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        \Log::info('Sensor data retrieved', ['sensorData' => $sensorData]);
+        \Log::channel('custom')->info('Sensor data retrieved', ['sensorData' => $sensorData]);
 
         $pumps = Pump::where('towerid', $towerId)->get();
         if ($sensorData->isEmpty() && $pumps->isEmpty()) {
-            \Log::info('No sensor or pump data available');
+            \Log::channel('custom')->info('No sensor or pump data available');
             return redirect()->back()->with('success', 'No sensor or pump data to save.');
         }
 
@@ -405,7 +405,7 @@ class Towercon extends Controller
             ];
         })->toArray();
 
-        \Log::info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
+        \Log::channel('custom')->info('Pump data retrieved', ['pumpDataArray' => $pumpDataArray]);
 
         $sensorDataArray = $sensorData->map(function ($data) {
             $decodedData = json_decode($data->sensordata, true);
@@ -414,7 +414,7 @@ class Towercon extends Controller
             ]);
         })->toArray();
 
-        \Log::info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
+        \Log::channel('custom')->info('Sensor data formatted', ['sensorDataArray' => $sensorDataArray]);
 
         try {
             SensorDataHistory::create([
@@ -426,9 +426,9 @@ class Towercon extends Controller
                 'created_at' => Carbon::now(),
             ]);
 
-            \Log::info('Sensor and pump data saved');
+            \Log::channel('custom')->info('Sensor and pump data saved');
         } catch (\Exception $e) {
-            \Log::error('Error saving sensor or pump data', ['exception' => $e->getMessage()]);
+            \Log::channel('custom')->error('Error saving sensor or pump data', ['exception' => $e->getMessage()]);
             return redirect()->back()->with('error', 'Failed to save data.');
         }
 
@@ -437,7 +437,7 @@ class Towercon extends Controller
             'Date' => Carbon::now()->toDateTimeString(),
         ];
 
-        \Log::info('Activity log created', ['activityLog' => $activityLog]);
+        \Log::channel('custom')->info('Activity log created', ['activityLog' => $activityLog]);
 
         try {
             Towerlog::create([
@@ -445,15 +445,15 @@ class Towercon extends Controller
                 'activity' => Crypt::encryptString(json_encode($activityLog)), // Ensure JSON encoding if storing as a string
             ]);
 
-            \Log::info('Activity log saved');
+            \Log::channel('custom')->info('Activity log saved');
         } catch (\Exception $e) {
-            \Log::error('Error encrypting activity log', ['exception' => $e->getMessage()]);
+            \Log::channel('custom')->error('Error encrypting activity log', ['exception' => $e->getMessage()]);
         }
 
         Sensor::truncate();
         Pump::truncate();
 
-        \Log::info('Sensor table truncated');
+        \Log::channel('custom')->info('Sensor table truncated');
 
         return redirect()->back()->with('success', 'Cycle stopped, sensor data saved, and log entry created successfully!');
 
@@ -490,7 +490,7 @@ class Towercon extends Controller
 
             return $result;
         } catch (\Exception $e) {
-            Log::error('Encryption error: ' . $e->getMessage());
+            Log::channel('custom')->error('Encryption error: ' . $e->getMessage());
             return null;
         }
     }
@@ -507,7 +507,7 @@ class Towercon extends Controller
             $decoded_msg = base64_decode($decrypted_data);
             return $decoded_msg;
         } catch (\Exception $e) {
-            Log::error('Decryption error: ' . $e->getMessage());
+            Log::channel('custom')->error('Decryption error: ' . $e->getMessage());
             return null;
         }
     }

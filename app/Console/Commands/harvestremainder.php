@@ -34,7 +34,7 @@ class harvestremainder extends Command
     public function handle()
     {
         // Log the execution start of the command
-        Log::info('Harvest Reminder command executed.');
+        Log::channel('custom')->info('Harvest Reminder command executed.');
 
         // Fetch towers with a startdate and enddate
         $towers = Tower::whereNotNull('enddate')->whereNotNull('startdate')->get();
@@ -49,7 +49,7 @@ class harvestremainder extends Command
             $oneWeekLater = $now->copy()->addWeek(); // A week later
 
             // Log the dates for debugging purposes
-            Log::info('Dates:', [
+            Log::channel('custom')->info('Dates:', [
                 'now' => $now->toDateString(),
                 'oneDayLater' => $oneDayLater->toDateString(),
                 'oneWeekLater' => $oneWeekLater->toDateString(),
@@ -60,26 +60,26 @@ class harvestremainder extends Command
             if ($owner) {
                 // Decrypt the email
                 $ownerEmail = Crypt::decryptString($owner->email);
-                Log::info("Owner's email for tower ID {$tower->id}: {$ownerEmail}");
+                Log::channel('custom')->info("Owner's email for tower ID {$tower->id}: {$ownerEmail}");
 
                 // Check if harvest is today, tomorrow, or in one week
                 if ($towerEndDate->isSameDay($now)) {
                     // Harvest today
                     $subject = "Reminder: Tower Harvest Date Today";
                     $body = "Dear Owner, Today is the end date for tower {$tower->id}. Please take the necessary actions.";
-                    Log::info('Condition matched: Harvest today', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+                    Log::channel('custom')->info('Condition matched: Harvest today', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
 
                 } elseif ($towerEndDate->isSameDay($oneDayLater)) {
                     // Harvest tomorrow
                     $subject = "Reminder: Tower Harvest Date Tomorrow";
                     $body = "Dear Owner, The end date for tower {$tower->id} is tomorrow ({$towerEndDate->toDateString()}). Please take the necessary actions.";
-                    Log::info('Condition matched: Harvest tomorrow', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+                    Log::channel('custom')->info('Condition matched: Harvest tomorrow', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
 
                 } elseif ($towerEndDate->isSameDay($oneWeekLater)) {
                     // Harvest in one week
                     $subject = "Reminder: Tower Harvest Date in One Week";
                     $body = "Dear Owner, The end date for tower {$tower->id} is in one week ({$towerEndDate->toDateString()}). Please take the necessary actions.";
-                    Log::info('Condition matched: Harvest in one week', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
+                    Log::channel('custom')->info('Condition matched: Harvest in one week', ['tower_id' => $tower->id, 'email' => $ownerEmail]);
 
                 } else {
                     continue; // Skip if no conditions matched
@@ -87,14 +87,14 @@ class harvestremainder extends Command
 
                 // Try sending the email and log the outcome
                 try {
-                    Log::info('Attempting to send email to: ', ['email' => $ownerEmail]);
+                    Log::channel('custom')->info('Attempting to send email to: ', ['email' => $ownerEmail]);
                     $details = ['title' => $subject, 'body' => $body];
                     Mail::to($ownerEmail)->send(new Alert($details));
-                    Log::info('Email sent successfully to: ', ['email' => $ownerEmail]);
+                    Log::channel('custom')->info('Email sent successfully to: ', ['email' => $ownerEmail]);
                     $mailStatus = 'Sent';
                 } catch (\Exception $e) {
                     $mailStatus = 'Failed';
-                    Log::error('Failed to send alert email', [
+                    Log::channel('custom')->error('Failed to send alert email', [
                         'email' => $ownerEmail,
                         'tower_id' => $tower->id,
                         'error' => $e->getMessage(),
@@ -106,7 +106,7 @@ class harvestremainder extends Command
                         'ID_tower' => $tower->id,
                         'activity' => $activityLog,
                     ]);
-                    Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
+                    Log::channel('custom')->info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
                 }
 
             } else {

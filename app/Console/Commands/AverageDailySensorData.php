@@ -47,7 +47,7 @@ class AverageDailySensorData extends Command
         }
 
         if ($count === 0) {
-            Log::warning("No valid data points found in cache for tower ID: {$towerId}");
+            Log::channel('custom')->warning("No valid data points found in cache for tower ID: {$towerId}");
             continue;
         }
 
@@ -75,7 +75,7 @@ class AverageDailySensorData extends Command
              Log::channel('custom')->info("Cleared cached data for tower ID: {$towerId}");
 
         } catch (\Exception $e) {
-            Log::error("Failed to save sensor data for tower ID {$towerId}: " . $e->getMessage());
+            Log::channel('custom')->error("Failed to save sensor data for tower ID {$towerId}: " . $e->getMessage());
         }
     }
 

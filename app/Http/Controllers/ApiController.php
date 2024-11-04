@@ -27,7 +27,7 @@ class ApiController extends Controller
         $attemptThreshold = 5;
         $adminEmail = 'hydrosec1@gmail.com';
 
-        Log::info('Pump request received', [
+         Log::channel('custom')->info('Pump request received', [
             'input' => $request->all(),
         ]);
 
@@ -46,7 +46,7 @@ class ApiController extends Controller
             $decryptedMacAddress = $pumi[2];
             $decryptedTowercode = $pumi[3];
 
-            Log::info('Decrypted data', [
+             Log::channel('custom')->info('Decrypted data', [
                 'decryptedPump' => $decryptedPump,
                 'decryptedIpAddress' => $decryptedIpAddress,
                 'decryptedMacAddress' => $decryptedMacAddress,
@@ -58,7 +58,7 @@ class ApiController extends Controller
             foreach ($towerData as $tower) {
                 $towercode = Crypt::decryptString($tower->towercode);
 
-                Log::info('Checking tower code', [
+                 Log::channel('custom')->info('Checking tower code', [
                     'currentTowerCode' => $towercode,
                     'decryptedTowercode' => $decryptedTowercode,
                 ]);
@@ -70,7 +70,7 @@ class ApiController extends Controller
                         $ip = Crypt::decryptString($ipmac->ipAdd);
                         $mac = Crypt::decryptString($ipmac->macAdd);
 
-                        Log::info('Decrypted IP and MAC addresses from DB', [
+                         Log::channel('custom')->info('Decrypted IP and MAC addresses from DB', [
                             'ipAddress' => $ip,
                             'macAddress' => $mac,
                         ]);
@@ -90,7 +90,7 @@ class ApiController extends Controller
                                 'status' => $pump,
                             ]);
 
-                            Log::info('Pump data processed successfully', [
+                             Log::channel('custom')->info('Pump data processed successfully', [
                                 'towerId' => $ipmac->id,
                                 'pump' => $decryptedPump,
                                 'towercode' => $decryptedTowercode,
@@ -98,7 +98,7 @@ class ApiController extends Controller
 
                             return response()->json(['success' => 'Data processed successfully'], 200);
                         } else {
-                            Log::warning('IP or MAC address mismatch', [
+                             Log::channel('custom')->warning('IP or MAC address mismatch', [
                                 'expectedIp' => $decryptedIpAddress,
                                 'actualIp' => $ip,
                                 'expectedMac' => $decryptedMacAddress,
@@ -112,14 +112,14 @@ class ApiController extends Controller
                             return response()->json(['error' => 'IP or MAC address mismatch'], 400);
                         }
                     } else {
-                        Log::warning('No matching IP/MAC data found for tower', [
+                         Log::channel('custom')->warning('No matching IP/MAC data found for tower', [
                             'towerId' => $tower->id,
                         ]);
                     }
                 }
             }
 
-            Log::warning('Tower code not found', [
+             Log::channel('custom')->warning('Tower code not found', [
                 'decryptedTowercode' => $decryptedTowercode,
             ]);
 
@@ -129,7 +129,7 @@ class ApiController extends Controller
             // Increment failed attempts on validation failure
             $failedAttempts++;
             Cache::put($failedAttemptsKey, $failedAttempts, 3600); // Store attempts for 1 hour
-            Log::warning('Validation failed', [
+             Log::channel('custom')->warning('Validation failed', [
                 'ipAddress' => $request->ip(),
                 'failedAttempts' => $failedAttempts,
                 'errors' => $e->errors(),
@@ -138,7 +138,7 @@ class ApiController extends Controller
             return response()->json(['error' => 'Invalid data provided', 'details' => $e->errors()], 422);
 
         } catch (\Exception $e) {
-            Log::error('Error processing request', ['error' => $e->getMessage()]);
+             Log::channel('custom')->error('Error processing request', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'An error occurred while processing the request'], 500);
         } finally {
             if ($failedAttempts >= $attemptThreshold) {
@@ -161,10 +161,10 @@ class ApiController extends Controller
 
                 try {
                     Mail::to($adminEmail)->send(new Alert($details));
-                    Log::info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
+                     Log::channel('custom')->info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
 
                 } catch (\Exception $e) {
-                    Log::error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
+                     Log::channel('custom')->error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
 
                 } finally {
                     Cache::forget($failedAttemptsKey);
@@ -182,7 +182,7 @@ class ApiController extends Controller
         $failedAttempts = Cache::get($failedAttemptsKey, 0);
         $attemptThreshold = 5;
         $adminEmail = "hydrosec1@gmail.com";
-        Log::info('Mode request received', ['input' => $request->all()]);
+         Log::channel('custom')->info('Mode request received', ['input' => $request->all()]);
 
         try {
 
@@ -193,7 +193,7 @@ class ApiController extends Controller
             $decryptedMacAddress = $info[1];
             $decryptedTowercode = $info[2];
 
-            Log::info('Decrypted request data', [
+             Log::channel('custom')->info('Decrypted request data', [
                 'decryptedIpAddress' => $decryptedIpAddress,
                 'decryptedMacAddress' => $decryptedMacAddress,
                 'decryptedTowercode' => $decryptedTowercode,
@@ -223,7 +223,7 @@ class ApiController extends Controller
 
                             $failedAttempts++;
                             Cache::put($failedAttemptsKey, $failedAttempts, 3600); // Store attempts for 1 hour
-                            Log::warning('IP or MAC address mismatch', [
+                             Log::channel('custom')->warning('IP or MAC address mismatch', [
                                 'expectedIp' => $decryptedIpAddress,
                                 'actualIp' => $ip,
                                 'expectedMac' => $decryptedMacAddress,
@@ -238,7 +238,7 @@ class ApiController extends Controller
                         $ipmac->macAdd = Crypt::encryptString($decryptedMacAddress);
                         $ipmac->save();
 
-                        Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
+                         Log::channel('custom')->info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
                         return response()->json(['success' => 'Tower IP and MAC updated'], 201);
                     }
                 } else {
@@ -249,14 +249,14 @@ class ApiController extends Controller
                 }
             }
 
-            Log::warning('Tower code not found', ['decryptedTowercode' => $decryptedTowercode]);
+             Log::channel('custom')->warning('Tower code not found', ['decryptedTowercode' => $decryptedTowercode]);
             return response()->json(['error' => 'Tower code not found'], 404);
 
         } catch (ValidationException $e) {
 
             $failedAttempts++;
             Cache::put($failedAttemptsKey, $failedAttempts, 3600);
-            Log::warning('Validation failed', [
+             Log::channel('custom')->warning('Validation failed', [
                 'ipAddress' => $request->ip(),
                 'failedAttempts' => $failedAttempts,
                 'errors' => $e->errors(),
@@ -266,7 +266,7 @@ class ApiController extends Controller
 
         } catch (\Exception $e) {
 
-            Log::error('Error processing mode request', ['error' => $e->getMessage()]);
+             Log::channel('custom')->error('Error processing mode request', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'An error occurred while processing the request'], 500);
         } finally {
             if ($failedAttempts >= $attemptThreshold) {
@@ -289,10 +289,10 @@ class ApiController extends Controller
 
                 try {
                     Mail::to($adminEmail)->send(new Alert($details));
-                    Log::info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
+                     Log::channel('custom')->info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
 
                 } catch (\Exception $e) {
-                    Log::error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
+                     Log::channel('custom')->error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
 
                 } finally {
                     Cache::forget($failedAttemptsKey);
@@ -316,7 +316,7 @@ class ApiController extends Controller
 
             return $result;
         } catch (\Exception $e) {
-            Log::error('Encryption error: ' . $e->getMessage());
+             Log::channel('custom')->error('Encryption error: ' . $e->getMessage());
             return null;
         }
     }
@@ -331,7 +331,7 @@ class ApiController extends Controller
             $decoded_msg = base64_decode($decrypted_data);
             return $decoded_msg;
         } catch (\Exception $e) {
-            Log::error('Decryption error: ' . $e->getMessage());
+             Log::channel('custom')->error('Decryption error: ' . $e->getMessage());
             return null;
         }
     }

@@ -22,7 +22,7 @@ class ResetPassword extends Controller
     public function reset(Request $request)
     {
         try{
-        Log::info('Reset process started.', ['email' => $request->email]);
+        Log::channel('custom')->info('Reset process started.', ['email' => $request->email]);
         $request->validate([
             'email' => 'required|email',
         ]);
@@ -35,7 +35,7 @@ class ResetPassword extends Controller
             $decryptedEmail = Crypt::decryptString($user->email);
 
             if ($decryptedEmail === $inputEmail) {
-                Log::info('Email matched with a user.', ['email' => $decryptedEmail]);
+                Log::channel('custom')->info('Email matched with a user.', ['email' => $decryptedEmail]);
 
                 $receiver = $request->email;
                 $otp = random_int(100000, 999999);
@@ -45,7 +45,7 @@ class ResetPassword extends Controller
 
                 try {
                     Mail::to($receiver)->send(new OtpMail($otp));
-                    Log::info('OTP sent successfully.', ['email' => $receiver]);
+                    Log::channel('custom')->info('OTP sent successfully.', ['email' => $receiver]);
 
                     return redirect()->route('verifyotpforgot')->with([
                         'email' => $inputEmail,
@@ -53,10 +53,10 @@ class ResetPassword extends Controller
                     ]);
 
                 } catch (TransportExceptionInterface $e) {
-                    Log::error('SMTP server connection failed.', ['email' => $receiver, 'exception' => $e->getMessage()]);
+                    Log::channel('custom')->error('SMTP server connection failed.', ['email' => $receiver, 'exception' => $e->getMessage()]);
                     return back()->with('error', 'Failed to connect to the SMTP server. Please try again later.');
                 } catch (\Exception $e) {
-                    Log::error('Failed to send email.', ['email' => $receiver, 'exception' => $e->getMessage()]);
+                    Log::channel('custom')->error('Failed to send email.', ['email' => $receiver, 'exception' => $e->getMessage()]);
                     return back()->with('error', 'Message could not be sent. Please try again later.');
                 }
             }

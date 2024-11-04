@@ -70,22 +70,22 @@ class admincontroller extends Controller
         // Count owners with decrypted status of 1
         $ownerCount = Owner::all()->filter(function ($owner) {
             $status = Crypt::decryptString($owner->status);
-            Log::info('Owner status decrypted:', ['status' => $status]);
+            Log::channel('custom')->info('Owner status decrypted:', ['status' => $status]);
             return $status == '1';
         })->count();
 
         // Log the count of owners
-        Log::info('Owner Count:', ['count' => $ownerCount]);
+        Log::channel('custom')->info('Owner Count:', ['count' => $ownerCount]);
 
         // Count workers with decrypted status of 1
         $workerCount = Worker::all()->filter(function ($worker) {
             $status = Crypt::decryptString($worker->status);
-            Log::info('Worker status decrypted:', ['status' => $status]);
+            Log::channel('custom')->info('Worker status decrypted:', ['status' => $status]);
             return $status == '1';
         })->count();
 
         // Log the count of workers
-        Log::info('Worker Count:', ['count' => $workerCount]);
+        Log::channel('custom')->info('Worker Count:', ['count' => $workerCount]);
 
         // Fetch intrusion data and format date
         $intrusions = IntrusionDetection::all()->map(function ($intrusion) {
@@ -95,7 +95,7 @@ class admincontroller extends Controller
             $intrusion->failed_attempts = Crypt::decryptString($intrusion->failed_attempts);
 
             // Log each intrusion entry
-            Log::info('Intrusion Detection Entry:', [
+            Log::channel('custom')->info('Intrusion Detection Entry:', [
                 'ip_address' => $intrusion->ip_address,
                 'user_agent' => $intrusion->user_agent,
                 'failed_attempts' => $intrusion->failed_attempts,
@@ -180,7 +180,7 @@ class admincontroller extends Controller
             ]]);
 
         if ($validator->fails()) {
-            Log::warning('Password update failed validation.', ['errors' => $validator->errors(), 'input' => $request->all()]);
+            Log::channel('custom')->warning('Password update failed validation.', ['errors' => $validator->errors(), 'input' => $request->all()]);
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -188,13 +188,13 @@ class admincontroller extends Controller
         $user = Owner::where('id', $request->idd)->first();
 
         if (!$user) {
-            Log::error('User not found during password update.', ['user_id' => $request->idd]);
+            Log::channel('custom')->error('User not found during password update.', ['user_id' => $request->idd]);
             return redirect()->back()->with('error', 'User not found');
         }
 
         $user->password = Hash::make($request->password);
         $user->save();
-        Log::info('User password updated.', ['username' => Crypt::decryptString($user->username), 'email' => $user->email]);
+        Log::channel('custom')->info('User password updated.', ['username' => Crypt::decryptString($user->username), 'email' => $user->email]);
 
         $body = "Dear " . Crypt::decryptString($user->username) . ", your password has been changed to: " . $request->password;
         $details = [
@@ -205,7 +205,7 @@ class admincontroller extends Controller
         $email = Crypt::decryptString($user->email);
         Mail::to($email)->send(new Alert($details));
 
-        Log::info('Password change notification sent.', ['email' => $email]);
+        Log::channel('custom')->info('Password change notification sent.', ['email' => $email]);
 
         return redirect()->back()->with('success', 'Password updated successfully');
     }

@@ -45,7 +45,7 @@ class pumpreminder extends Command
         foreach ($towers as $data) {
             if (Crypt::decryptString($data->status) == '1') {
                 $towerId = $data->id;
-                Log::info('Processing tower', ['tower_id' => $towerId]);
+                Log::channel('custom')->info('Processing tower', ['tower_id' => $towerId]);
 
                 $now = Carbon::now();
                 $emailCooldown = 5;
@@ -60,14 +60,14 @@ class pumpreminder extends Command
                     $this->decrypt_data($recentStatuses[0]->status, $method, $key_str, $iv_str) == '0' &&
                     $this->decrypt_data($recentStatuses[1]->status, $method, $key_str, $iv_str) == '0') {
 
-                    Log::info('Consecutive pump status 0 detected', ['tower_id' => $towerId]);
+                    Log::channel('custom')->info('Consecutive pump status 0 detected', ['tower_id' => $towerId]);
 
                     // Ensure last_pumping_email_sent_at is a Carbon instance
                     if ($data->last_pumping_email_sent_at) {
                         $lastEmailSentAt = Carbon::parse($data->last_pumping_email_sent_at);
                         if ($lastEmailSentAt->diffInMinutes($now) < $emailCooldown) {
                             $remainingTime = $emailCooldown - $lastEmailSentAt->diffInMinutes($now);
-                            Log::info('Skipping email, recently sent', ['tower_id' => $towerId, 'remaining_time' => $remainingTime]);
+                            Log::channel('custom')->info('Skipping email, recently sent', ['tower_id' => $towerId, 'remaining_time' => $remainingTime]);
                             continue;
                         }
                     }
@@ -87,13 +87,13 @@ class pumpreminder extends Command
                         try {
                             Mail::to($ownerEmail)->send(new Alert($details));
                             $mailStatus = 'Sent';
-                            Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $towerId]);
+                            Log::channel('custom')->info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $towerId]);
 
                             $data->last_pumping_email_sent_at = $now;
                             $data->save();
                         } catch (\Exception $e) {
                             $mailStatus = 'Failed';
-                            Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
+                            Log::channel('custom')->error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                         } finally {
                             $activityLog = Crypt::encryptString("Alert: " . json_encode($details['body']) . " Mail Status: " . $mailStatus);
 
@@ -102,13 +102,13 @@ class pumpreminder extends Command
                                 'activity' => $activityLog,
                             ]);
 
-                            Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => $body]);
+                            Log::channel('custom')->info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => $body]);
                         }
                     } else {
-                        Log::error("Owner not found for tower ID {$towerId}.");
+                        Log::channel('custom')->error("Owner not found for tower ID {$towerId}.");
                     }
                 } else {
-                    Log::info("No consecutive pump status 0 for tower ID $towerId.");
+                    Log::channel('custom')->info("No consecutive pump status 0 for tower ID $towerId.");
                 }
             }
         }
@@ -125,7 +125,7 @@ class pumpreminder extends Command
             $decoded_msg = base64_decode($decrypted_data);
             return $decoded_msg;
         } catch (\Exception $e) {
-            Log::error('Decryption error: ' . $e->getMessage());
+            Log::channel('custom')->error('Decryption error: ' . $e->getMessage());
             return null;
         }
     }

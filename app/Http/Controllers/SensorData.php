@@ -63,7 +63,7 @@ class SensorData extends Controller
             return response()->json($events);
 
         } catch (\Exception $e) {
-            // \Log::error('Failed to fetch pump data for tower ID: ' . $id . '. Error: ' . $e->getMessage());
+            // \ Log::channel('custom')->error('Failed to fetch pump data for tower ID: ' . $id . '. Error: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to fetch pump data'], 500);
         }
     }
@@ -196,7 +196,7 @@ class SensorData extends Controller
 
                                     $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                     $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
-                                    Log::channel('custom')->info('Successfully enc sensor data', [
+                                     Log::channel('custom')->info('Successfully enc sensor data', [
                                         'mode' => $encryptedMode,
                                         'stat' => $encryptedStatus,
                                     ]);
@@ -324,7 +324,7 @@ class SensorData extends Controller
                                         return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success' => 'success']]);
 
                                     } catch (\Exception $e) {
-                                        Log::error('Error storing data:', ['error' => $e->getMessage()]);
+                                         Log::channel('custom')->error('Error storing data:', ['error' => $e->getMessage()]);
 
                                         $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                         $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
@@ -419,7 +419,7 @@ class SensorData extends Controller
                          Log::channel('custom')->info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
 
                     } catch (\Exception $e) {
-                        Log::error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
+                         Log::channel('custom')->error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
 
                     } finally {
                         if (Cache::has($failedAttemptsKey)) {
@@ -466,7 +466,7 @@ class SensorData extends Controller
             return response()->json(['sensorData' => $decryptedData]);
 
         } catch (\Exception $e) {
-            Log::error('Error fetching sensor data from cache: ' . $e->getMessage());
+             Log::channel('custom')->error('Error fetching sensor data from cache: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
@@ -569,7 +569,7 @@ class SensorData extends Controller
                          Log::channel('custom')->info('Alert email sent to', ['email' => $email, 'tower_id' => $towerId]);
                     } catch (\Exception $e) {
                         $mailStatus = 'Failed';
-                        Log::error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
+                         Log::channel('custom')->error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                     } finally {
 
                         Towerlog::create([
@@ -613,7 +613,7 @@ class SensorData extends Controller
             $decoded_msg = base64_decode($decrypted_data);
             return $decoded_msg;
         } catch (\Exception $e) {
-            Log::error('Decryption error: ' . $e->getMessage());
+             Log::channel('custom')->error('Decryption error: ' . $e->getMessage());
             return null;
         }
     }
@@ -634,7 +634,7 @@ class SensorData extends Controller
 
             return $result;
         } catch (\Exception $e) {
-            Log::error('Encryption error: ' . $e->getMessage());
+             Log::channel('custom')->error('Encryption error: ' . $e->getMessage());
             return null;
         }
     }

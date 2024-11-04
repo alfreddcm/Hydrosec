@@ -43,10 +43,10 @@ class UpdateTowerMode extends Command
             $tower->save();
 
             $this->info("Tower ID {$tower->id} mode updated to {$mode}");
-            Log::info("Tower ID {$tower->id} mode updated to {$mode}");
+            Log::channel('custom')->info("Tower ID {$tower->id} mode updated to {$mode}");
         }
 
-        Log::info('Tower modes updated at ' . Carbon::now());
+        Log::channel('custom')->info('Tower modes updated at ' . Carbon::now());
         $this->info('Tower modes updated.');
     }
 
@@ -63,7 +63,7 @@ function wrf()
     //         $decoded_msg = base64_decode($decrypted_data);
     //         return $decoded_msg;
     //     } catch (\Exception $e) {
-    //         Log::error('Decryption error: ' . $e->getMessage());
+    //         Log::channel('custom')->error('Decryption error: ' . $e->getMessage());
     //         return null;
     //     }
     // }
@@ -83,7 +83,7 @@ function wrf()
     // $decrypted_mac =$this->decrypt_data('WcR8VYyzFxEfox9Kh2ikhPMcjLIfwPehEqtmYcsQDpQ=', $method, $key_str, $iv_str);
     //  $decrypted_towercode = $this->decrypt_data('QNXvBPGDGwZFskXBHkebtw==', $method, $key_str, $iv_str);
 
-    // Log::info('loglog:', [
+    // Log::channel('custom')->info('loglog:', [
     //     'ipAddress' => $decrypted_ip,
     //     'macAddress' => $decrypted_mac,
     // ]);
@@ -117,7 +117,7 @@ function wrf()
     // Tower::query()->update(['mode' => $encryptedMode]);
     // $this->info("Tower mode updated to {$mode}");
 
-    // Log::info("Tower mode updated to {$mode} at " . now());
+    // Log::channel('custom')->info("Tower mode updated to {$mode} at " . now());
 
     // $now = Carbon::now();
     // $oneDayLater = $now->copy()->addDay();
@@ -151,10 +151,10 @@ function wrf()
     //         try {
     //             Mail::to($ownerEmail)->send(new Harvest($subject, $body));
     //             $mailStatus = 'Sent';
-    //             Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
+    //             Log::channel('custom')->info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
     //         } catch (\Exception $e) {
     //             $mailStatus = 'Failed';
-    //             Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
+    //             Log::channel('custom')->error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
     //         } finally {
     //             $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
 
@@ -163,7 +163,7 @@ function wrf()
     //                 'activity' => $activityLog,
     //             ]);
 
-    //             Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
+    //             Log::channel('custom')->info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
     //         }
 
     //     } else {
@@ -200,10 +200,10 @@ function wrf()
     //         $ownerEmail = Crypt::decryptString($owner->email);
     //         try {
     //             $mailStatus = 'Sent';
-    //             Log::info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
+    //             Log::channel('custom')->info('Alert email sent to', ['email' => $ownerEmail, 'tower_id' => $tower->id]);
     //         } catch (\Exception $e) {
     //             $mailStatus = 'Failed';
-    //             Log::error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
+    //             Log::channel('custom')->error('Failed to send alert email', ['email' => $ownerEmail, 'tower_id' => $tower->id, 'error' => $e->getMessage()]);
     //         } finally {
     //             // Encrypt and log the activity, regardless of email success or failure
     //             $activityLog = Crypt::encryptString("Alert: Conditions detected - " . json_encode(['body' => $body]) . " Mail Status: " . $mailStatus);
@@ -217,7 +217,7 @@ function wrf()
     //                 'activity' => $activityLog,
     //             ]);
 
-    //             Log::info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
+    //             Log::channel('custom')->info('Alert logged in tbl_towerlogs', ['tower_id' => $tower->id, 'activity' => $body]);
     //         }
 
     //     } else {
