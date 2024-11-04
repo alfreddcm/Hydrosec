@@ -30,7 +30,7 @@ class AverageDailySensorData extends Command
         $cachedData = Cache::get('cachetower.' . $towerId, []);
 
         if (empty($cachedData)) {
-            Log::info("No cached data found for tower ID: {$towerId}");
+             Log::channel('custom')->info("No cached data found for tower ID: {$towerId}");
             continue;
         }
 
@@ -40,7 +40,6 @@ class AverageDailySensorData extends Command
         $count = 0;
 
         foreach ($cachedData as $dataPoint) {
-            // Convert values to float before summing
             $tempTotal += isset($dataPoint['data']['temperature']) ? (float)$dataPoint['data']['temperature'] : 0;
             $phTotal += isset($dataPoint['data']['ph']) ? (float)$dataPoint['data']['ph'] : 0;
             $nutTotal += isset($dataPoint['data']['nutrient_level']) ? (float)$dataPoint['data']['nutrient_level'] : 0;
@@ -70,13 +69,17 @@ class AverageDailySensorData extends Command
                 'status' => '1',
             ]);
             $this->info("Averaged sensor data saved for tower ID {$towerId}");
-            Log::info("Averaged sensor data saved for tower ID {$towerId}");
+             Log::channel('custom')->info("Averaged sensor data saved for tower ID {$towerId}");
+
+              Cache::forget('cachetower.' . $towerId);
+             Log::channel('custom')->info("Cleared cached data for tower ID: {$towerId}");
+
         } catch (\Exception $e) {
             Log::error("Failed to save sensor data for tower ID {$towerId}: " . $e->getMessage());
         }
     }
 
-    Log::info('Daily sensor data averages calculated and saved at ' . Carbon::now());
+     Log::channel('custom')->info('Daily sensor data averages calculated and saved at ' . Carbon::now());
     $this->info('Daily sensor data averages calculated and saved.');
 }
 
