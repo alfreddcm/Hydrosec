@@ -35,17 +35,15 @@ class AverageDailySensorData extends Command
                 continue;
             }
 
-            // Initialize sums and count
             $tempTotal = 0;
             $phTotal = 0;
             $nutTotal = 0;
             $count = 0;
 
-            // Sum up values for temp, ph, and nut
             foreach ($cachedData as $dataPoint) {
-                $tempTotal += $dataPoint['temp'] ?? 0;
+                $tempTotal += $dataPoint['temperature'] ?? 0;
                 $phTotal += $dataPoint['ph'] ?? 0;
-                $nutTotal += $dataPoint['nut'] ?? 0;
+                $nutTotal += $dataPoint['nutrient_levelnutrient_level'] ?? 0;
                 $count++;
             }
 

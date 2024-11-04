@@ -284,12 +284,12 @@ class SensorData extends Controller
 
                                             $sensorDataJson = json_encode($triggeredData);
 
-                                            Sensor::create([
-                                                'towerid' => $tower->id,
-                                                'towercode' => $decrypted_towercode,
-                                                'sensordata' => $sensorDataJson,
-                                                'status' => '1',
-                                            ]);
+                                            // Sensor::create([
+                                            //     'towerid' => $tower->id,
+                                            //     'towercode' => $decrypted_towercode,
+                                            //     'sensordata' => $sensorDataJson,
+                                            //     'status' => '1',
+                                            // ]);
 
                                             Log::info('Sending alert email with conditions:', ['conditions' => implode(", ", $alertMessages)]);
                                             $statusType = 'critical_condition';
@@ -444,7 +444,6 @@ class SensorData extends Controller
     public function getdata($id, $column)
     {
         try {
-            // Retrieve data from cache
             $cachedData = Cache::get('cachetower.' . $id, []);
 
             // Filter and format the data for the requested column

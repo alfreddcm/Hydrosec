@@ -207,7 +207,7 @@
                                 <h3 class="mt-3">Temperature</h3>
 
                                 <button type="button" class="btn btnpop" data-bs-toggle="modal"
-                                    data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}" data-column="temp">
+                                    data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}" data-column="temperature">
 
                                     <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top" alt=""
                                         style="height:30px" ; />
@@ -261,7 +261,7 @@
                                 <h3 class="mt-3">Nutrient Solution </h3>
                                 <button type="button" class="btn btnpop" data-bs-toggle="modal"
                                     data-bs-target="#tempmodal" data-tower-id="{{ $towerinfo->id }}"
-                                    data-column="nutlevel">
+                                    data-column="nutrient_level">
 
                                     <img src="{{ asset('images/icon/graph.png') }}" class="img-fluid rounded-top" alt=""
                                         style="height:30px" ; />
