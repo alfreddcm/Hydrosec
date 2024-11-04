@@ -80,6 +80,9 @@ class IfOff extends Command
                     } else {
                         $this->error("Owner not found or email not available for Tower ID {$tower->id}.");
                     }
+                }else{
+                    Log::channel('custom')->info("System is up");
+
                 }
             }
         }
