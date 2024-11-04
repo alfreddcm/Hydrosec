@@ -206,19 +206,18 @@ class SensorData extends Controller
                                     $alertMessages = [];
 
                                     try {
-                                        if (!session()->has('triggerCounts')) {
-                                            session(['triggerCounts' => [
+                                        // Initialize trigger counts in the cache if they don't exist
+                                        if (!Cache::has('triggerCounts')) {
+                                            Cache::put('triggerCounts', [
                                                 'ph' => 0,
                                                 'temp' => 0,
                                                 'nut' => 0,
-                                            ]]);
+                                            ]);
                                         }
 
-                                        $triggerCounts = session('triggerCounts');
-
+                                        $triggerCounts = Cache::get('triggerCounts');
 
                                         $alerts = [];
-
                                         $triggeredConditions = [
                                             'ph' => [],
                                             'temp' => [],
@@ -263,8 +262,8 @@ class SensorData extends Controller
                                             $triggeredConditions['nut'][] = "Nutrient Solution Volume: {$nut} - $volumeCondition";
                                         }
 
-                                        session(['triggerCounts' => $triggerCounts]);
-
+                                        // Save updated trigger counts back to the cache
+                                        Cache::put('triggerCounts', $triggerCounts);
 
                                         Log::channel('custom')->info('Sensor data condition check:', [
                                             'pH' => $phCondition,
@@ -284,24 +283,19 @@ class SensorData extends Controller
                                         if ($triggerCounts['ph'] >= 3) {
                                             $triggeredData['ph'] = $pH;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
-                                           $triggerCounts['ph'] = 0;
-
-
+                                            $triggerCounts['ph'] = 0; // Reset count after triggering alert
                                         }
 
                                         if ($triggerCounts['temp'] >= 3) {
                                             $triggeredData['temp'] = $temp;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
-                                         $triggerCounts['temp'] = 0;
-
-
+                                            $triggerCounts['temp'] = 0; // Reset count after triggering alert
                                         }
 
                                         if ($triggerCounts['nut'] >= 3) {
                                             $triggeredData['nutlevel'] = $nut;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
-                                          $triggerCounts['nut'] = 0;
-
+                                            $triggerCounts['nut'] = 0; // Reset count after triggering alert
                                         }
 
                                         if (!empty($alertMessages)) {
@@ -314,13 +308,6 @@ class SensorData extends Controller
                                             ];
 
                                             $sensorDataJson = json_encode($triggeredData);
-
-                                            // Sensor::create([
-                                            //     'towerid' => $tower->id,
-                                            //     'towercode' => $decrypted_towercode,
-                                            //     'sensordata' => $sensorDataJson,
-                                            //     'status' => '1',
-                                            // ]);
 
                                             Log::channel('custom')->info('Sending alert email with conditions:', ['conditions' => implode(", ", $alertMessages)]);
                                             $statusType = 'critical_condition';
@@ -482,6 +469,8 @@ class SensorData extends Controller
             $endOfDay = \Carbon\Carbon::now()->endOfDay(); // 23:59:59 of the current day
 
             $decryptedData = [];
+            $hoursRetrieved = []; // Keep track of which hours have been retrieved
+
             foreach ($cachedData as $dataPoint) {
                 // Check if timestamp exists and is within the current day
                 if (
@@ -489,16 +478,22 @@ class SensorData extends Controller
                     \Carbon\Carbon::parse($dataPoint['timestamp'])->between($startOfDay, $endOfDay)
                 ) {
                     $timestamp = \Carbon\Carbon::parse($dataPoint['timestamp']);
-                    // Check if the timestamp falls exactly on the hour
-                    if ($timestamp->minute === 0) {
+                    $hour = $timestamp->format('H'); // Get the hour of the timestamp
+
+                    // If this hour hasn't been added yet, add the data point
+                    if (!in_array($hour, $hoursRetrieved)) {
                         $decryptedData[] = [
                             'type' => $column,
                             'value' => (float) $dataPoint['data'][$column],
                             'timestamp' => $timestamp->format('m-d H:i'),
                         ];
+                        $hoursRetrieved[] = $hour; // Mark this hour as retrieved
                     }
                 }
             }
+
+            return $decryptedData;
+
         } catch (\Exception $e) {
             Log::channel('custom')->error('Error fetching sensor data from cache: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error'], 500);
