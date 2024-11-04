@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Tower;
 use App\Models\Sensor;
+use App\Models\Tower;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -29,7 +29,8 @@ class AverageDailySensorData extends Command
 
             // Retrieve cached data for the tower
             $cachedData = Cache::get('cachetower.' . $towerId, []);
-            
+            Log::info("Retrieved cached data for tower ID {$towerId}: " . json_encode($cachedData));
+
             if (empty($cachedData)) {
                 Log::info("No cached data found for tower ID: {$towerId}");
                 continue;
@@ -41,9 +42,16 @@ class AverageDailySensorData extends Command
             $count = 0;
 
             foreach ($cachedData as $dataPoint) {
-                $tempTotal += $dataPoint['temperature'] ?? 0;
-                $phTotal += $dataPoint['ph'] ?? 0;
-                $nutTotal += $dataPoint['nutrient_levelnutrient_level'] ?? 0;
+                // Validate and accumulate values
+                if (isset($dataPoint['temperature']) && is_numeric($dataPoint['temperature'])) {
+                    $tempTotal += $dataPoint['temperature'];
+                }
+                if (isset($dataPoint['ph']) && is_numeric($dataPoint['ph'])) {
+                    $phTotal += $dataPoint['ph'];
+                }
+                if (isset($dataPoint['nutrient_level']) && is_numeric($dataPoint['nutrient_level'])) {
+                    $nutTotal += $dataPoint['nutrient_level'];
+                }
                 $count++;
             }
 
@@ -52,9 +60,9 @@ class AverageDailySensorData extends Command
                 continue;
             }
 
-            $avgTemp = $tempTotal / $count;
-            $avgPh = $phTotal / $count;
-            $avgNut = $nutTotal / $count;
+            $avgTemp = $count > 0 ? $tempTotal / $count : 0;
+            $avgPh = $count > 0 ? $phTotal / $count : 0;
+            $avgNut = $count > 0 ? $nutTotal / $count : 0;
 
             $sensorData = json_encode([
                 'temp' => $avgTemp,
@@ -62,15 +70,18 @@ class AverageDailySensorData extends Command
                 'nut' => $avgNut,
             ]);
 
-            Sensor::create([
-                'towerid' => $towerId,
-                'towercode' => Crypt::decryptString($tower->towercode),
-                'sensordata' => $sensorData,
-                'status' => '1',
-            ]);
-
-            $this->info("Averaged sensor data saved for tower ID {$towerId}");
-            Log::info("Averaged sensor data saved for tower ID {$towerId}");
+            try {
+                Sensor::create([
+                    'towerid' => $towerId,
+                    'towercode' => Crypt::decryptString($tower->towercode),
+                    'sensordata' => $sensorData,
+                    'status' => '1',
+                ]);
+                $this->info("Averaged sensor data saved for tower ID {$towerId}");
+                Log::info("Averaged sensor data saved for tower ID {$towerId}");
+            } catch (\Exception $e) {
+                Log::error("Failed to save sensor data for tower ID {$towerId}: " . $e->getMessage());
+            }
         }
 
         Log::info('Daily sensor data averages calculated and saved at ' . Carbon::now());

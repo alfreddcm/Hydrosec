@@ -157,7 +157,7 @@
                 </h2>
                 <h6>
                     <p class="card-text  no-line-spacing">
-                        <b> Plant: </b>
+                        <b> Crop : </b>
                         @if ($towerinfo->plantVar)
                             {{ Crypt::decryptString($towerinfo->plantVar) }}
                         @else
@@ -357,7 +357,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="plantSelect" class="form-label">Choose a Plant</label>
+                                    <label for="plantSelect" class="form-label">Choose a Crop</label>
                                     <label>
                                         <input type="checkbox" name="plantSelect[]" value="Lettuce"> Lettuce
                                     </label>
