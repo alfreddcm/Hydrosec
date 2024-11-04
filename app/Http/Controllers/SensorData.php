@@ -283,19 +283,25 @@ class SensorData extends Controller
                                         if ($triggerCounts['ph'] >= 3) {
                                             $triggeredData['ph'] = $pH;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
-                                            $triggerCounts['ph'] = 0; // Reset count after triggering alert
+                                            $triggerCounts['ph'] = 0;
+                                            Cache::put('triggerCounts', $triggerCounts);
+
                                         }
 
                                         if ($triggerCounts['temp'] >= 3) {
                                             $triggeredData['temp'] = $temp;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
-                                            $triggerCounts['temp'] = 0; // Reset count after triggering alert
+                                            $triggerCounts['temp'] = 0;
+                                            Cache::put('triggerCounts', $triggerCounts);
+
                                         }
 
                                         if ($triggerCounts['nut'] >= 3) {
                                             $triggeredData['nutlevel'] = $nut;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
-                                            $triggerCounts['nut'] = 0; // Reset count after triggering alert
+                                            $triggerCounts['nut'] = 0;
+                                            Cache::put('triggerCounts', $triggerCounts);
+
                                         }
 
                                         if (!empty($alertMessages)) {
@@ -462,37 +468,25 @@ class SensorData extends Controller
     public function getdata($id, $column)
     {
         try {
+
             $cachedData = Cache::get('cachetower.' . $id, []);
 
-            // Set the start and end of the current day
-            $startOfDay = \Carbon\Carbon::now()->startOfDay(); // 00:00 of the current day
-            $endOfDay = \Carbon\Carbon::now()->endOfDay(); // 23:59:59 of the current day
-
             $decryptedData = [];
-            $hoursRetrieved = []; // Keep track of which hours have been retrieved
 
             foreach ($cachedData as $dataPoint) {
-                // Check if timestamp exists and is within the current day
-                if (
-                    isset($dataPoint['timestamp'], $dataPoint['data'][$column]) &&
-                    \Carbon\Carbon::parse($dataPoint['timestamp'])->between($startOfDay, $endOfDay)
-                ) {
-                    $timestamp = \Carbon\Carbon::parse($dataPoint['timestamp']);
-                    $hour = $timestamp->format('H'); // Get the hour of the timestamp
-
-                    // If this hour hasn't been added yet, add the data point
-                    if (!in_array($hour, $hoursRetrieved)) {
-                        $decryptedData[] = [
-                            'type' => $column,
-                            'value' => (float) $dataPoint['data'][$column],
-                            'timestamp' => $timestamp->format('m-d H:i'),
-                        ];
-                        $hoursRetrieved[] = $hour; // Mark this hour as retrieved
-                    }
+                if (isset($dataPoint['data'][$column])) {
+                    $decryptedData[] = [
+                        'type' => $column,
+                        'value' => (float) $dataPoint['data'][$column],
+                        'timestamp' => \Carbon\Carbon::parse($dataPoint['timestamp'])->format('m-d H:i'),
+                    ];
                 }
             }
-
-            return $decryptedData;
+// Check if we have any relevant data
+            if (empty($decryptedData)) {
+                return response()->json(['message' => 'No data available for the specified column'], 404);
+            }
+            return response()->json(['sensorData' => $decryptedData]);
 
         } catch (\Exception $e) {
             Log::channel('custom')->error('Error fetching sensor data from cache: ' . $e->getMessage());
