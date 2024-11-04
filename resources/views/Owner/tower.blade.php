@@ -888,7 +888,7 @@
                 } else if (phValue === 7.0) {
                     statusText.textContent = "Neutral";
                     statusText.style.color = 'blue';
-                    phcon.textContent = "Ideal";
+                    phcon.textContent = "Neutral";
                     phcon.style.color = 'black';
 
                 } else if (phValue > 7.0 && phValue <= 7.5) {

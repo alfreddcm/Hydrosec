@@ -206,13 +206,19 @@ class SensorData extends Controller
                                     $alertMessages = [];
 
                                     try {
-                                        $triggerCounts = [
-                                            'ph' => 0,
-                                            'temp' => 0,
-                                            'nut' => 0,
-                                        ];
+                                        if (!session()->has('triggerCounts')) {
+                                            session(['triggerCounts' => [
+                                                'ph' => 0,
+                                                'temp' => 0,
+                                                'nut' => 0,
+                                            ]]);
+                                        }
+
+                                        $triggerCounts = session('triggerCounts');
+
 
                                         $alerts = [];
+
                                         $triggeredConditions = [
                                             'ph' => [],
                                             'temp' => [],
@@ -257,6 +263,9 @@ class SensorData extends Controller
                                             $triggeredConditions['nut'][] = "Nutrient Solution Volume: {$nut} - $volumeCondition";
                                         }
 
+                                        session(['triggerCounts' => $triggerCounts]);
+
+
                                         Log::channel('custom')->info('Sensor data condition check:', [
                                             'pH' => $phCondition,
                                             'Temperature' => $tempCondition,
@@ -275,28 +284,24 @@ class SensorData extends Controller
                                         if ($triggerCounts['ph'] >= 3) {
                                             $triggeredData['ph'] = $pH;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
-                                            $triggerCounts = [
-                                                'ph' => 0,
+                                           $triggerCounts['ph'] = 0;
 
-                                            ];
 
                                         }
 
                                         if ($triggerCounts['temp'] >= 3) {
                                             $triggeredData['temp'] = $temp;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
-                                            $triggerCounts = [
-                                                'temp' => 0,
-                                            ];
+                                         $triggerCounts['temp'] = 0;
+
 
                                         }
 
                                         if ($triggerCounts['nut'] >= 3) {
                                             $triggeredData['nutlevel'] = $nut;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
-                                            $triggerCounts = [
-                                                'nut' => 0,
-                                            ];
+                                          $triggerCounts['nut'] = 0;
+
                                         }
 
                                         if (!empty($alertMessages)) {
