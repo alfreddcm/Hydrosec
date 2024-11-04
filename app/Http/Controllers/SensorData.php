@@ -224,7 +224,20 @@ class SensorData extends Controller
                                         $volumeCondition = $this->getCondition((float) $nut, 'nutrient');
 
                                         $triggerConditions = [
-                                            'phCondition' => ['Acidic', 'Neutral', 'Alkaline'],
+                                            'phCondition' => [
+                                                'Extreme acidity', // for pH < 4.5
+                                                'Very strong acidity', // for 4.5 ≤ pH < 5.0
+                                                'Strong acidity', // for 5.0 ≤ pH < 5.5
+                                                //'Medium acidity', // for 5.5 ≤ pH < 6.0
+                                                //'Slight acidity', // for 6.0 ≤ pH < 6.5
+                                                'Very slight acidity', // for 6.5 ≤ pH < 7.0
+                                                'Neutral', // for pH = 7.0
+                                                'Slight alkalinity', // for 7.0 < pH ≤ 7.5
+                                                'Moderate alkalinity', // for 7.5 < pH ≤ 8.0
+                                                'Strong alkalinity', // for 8.0 < pH ≤ 8.5
+                                                'Very strong alkalinity', // for 8.5 < pH ≤ 9.5
+                                                'Extremely strong alkalinity', // for pH > 9.5
+                                            ],
                                             'volumeCondition' => ['25%', '15%', 'critical low'],
                                             'tempCondition' => ['Cold', 'Hot'],
                                         ];
@@ -259,17 +272,31 @@ class SensorData extends Controller
                                         $alertMessages = [];
                                         $triggeredData = [];
 
-                                        if ($triggerCounts['ph']) {
+                                        if ($triggerCounts['ph'] >= 3) {
                                             $triggeredData['ph'] = $pH;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
+                                            $triggerCounts = [
+                                                'ph' => 0,
+
+                                            ];
+
                                         }
-                                        if ($triggerCounts['temp']) {
+
+                                        if ($triggerCounts['temp'] >= 3) {
                                             $triggeredData['temp'] = $temp;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
+                                            $triggerCounts = [
+                                                'temp' => 0,
+                                            ];
+
                                         }
-                                        if ($triggerCounts['nut']) {
+
+                                        if ($triggerCounts['nut'] >= 3) {
                                             $triggeredData['nutlevel'] = $nut;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
+                                            $triggerCounts = [
+                                                'nut' => 0,
+                                            ];
                                         }
 
                                         if (!empty($alertMessages)) {
@@ -445,29 +472,28 @@ class SensorData extends Controller
         try {
             $cachedData = Cache::get('cachetower.' . $id, []);
 
-            $oneHourAgo = \Carbon\Carbon::now()->subHour();
+            // Set the start and end of the current day
+            $startOfDay = \Carbon\Carbon::now()->startOfDay(); // 00:00 of the current day
+            $endOfDay = \Carbon\Carbon::now()->endOfDay(); // 23:59:59 of the current day
 
             $decryptedData = [];
             foreach ($cachedData as $dataPoint) {
+                // Check if timestamp exists and is within the current day
                 if (
                     isset($dataPoint['timestamp'], $dataPoint['data'][$column]) &&
-                    \Carbon\Carbon::parse($dataPoint['timestamp'])->greaterThanOrEqualTo($oneHourAgo)
+                    \Carbon\Carbon::parse($dataPoint['timestamp'])->between($startOfDay, $endOfDay)
                 ) {
-                    $decryptedData[] = [
-                        'type' => $column,
-                        'value' => (float) $dataPoint['data'][$column],
-                        'timestamp' => \Carbon\Carbon::parse($dataPoint['timestamp'])->format('m-d H:i'),
-                    ];
+                    $timestamp = \Carbon\Carbon::parse($dataPoint['timestamp']);
+                    // Check if the timestamp falls exactly on the hour
+                    if ($timestamp->minute === 0) {
+                        $decryptedData[] = [
+                            'type' => $column,
+                            'value' => (float) $dataPoint['data'][$column],
+                            'timestamp' => $timestamp->format('m-d H:i'),
+                        ];
+                    }
                 }
             }
-
-            // Check if we have any relevant data
-            if (empty($decryptedData)) {
-                return response()->json(['message' => 'No data available for the specified column within the last hour'], 404);
-            }
-
-            return response()->json(['sensorData' => $decryptedData]);
-
         } catch (\Exception $e) {
             Log::channel('custom')->error('Error fetching sensor data from cache: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error'], 500);
@@ -475,32 +501,32 @@ class SensorData extends Controller
     }
 
     public function getLastData($id)
-{
-    try {
-        $cachedData = Cache::get('cachetower.' . $id, []);
+    {
+        try {
+            $cachedData = Cache::get('cachetower.' . $id, []);
 
-        // Get the last data point if available
-        $lastDataPoint = !empty($cachedData) ? end($cachedData) : null;
+            // Get the last data point if available
+            $lastDataPoint = !empty($cachedData) ? end($cachedData) : null;
 
-        if ($lastDataPoint) {
-            return response()->json([
-                'sensorData' => [
-                    'nutrient_level' => $lastDataPoint['data']['nutrient_level'] ?? null,
-                    'ph' => $lastDataPoint['data']['ph'] ?? null,
-                    'light' => $lastDataPoint['data']['light'] ?? null,
-                    'temperature' => $lastDataPoint['data']['temperature'] ?? null,
-                    'timestamp' => \Carbon\Carbon::parse($lastDataPoint['timestamp'])->toDateTimeString(),
-                ]
-            ]);
+            if ($lastDataPoint) {
+                return response()->json([
+                    'sensorData' => [
+                        'nutrient_level' => $lastDataPoint['data']['nutrient_level'] ?? null,
+                        'ph' => $lastDataPoint['data']['ph'] ?? null,
+                        'light' => $lastDataPoint['data']['light'] ?? null,
+                        'temperature' => $lastDataPoint['data']['temperature'] ?? null,
+                        'timestamp' => \Carbon\Carbon::parse($lastDataPoint['timestamp'])->toDateTimeString(),
+                    ],
+                ]);
+            }
+
+            return response()->json(['message' => 'No data available'], 404);
+
+        } catch (\Exception $e) {
+            Log::channel('custom')->error('Error fetching last data from cache: ' . $e->getMessage());
+            return response()->json(['error' => 'Internal Server Error'], 500);
         }
-
-        return response()->json(['message' => 'No data available'], 404);
-
-    } catch (\Exception $e) {
-        Log::channel('custom')->error('Error fetching last data from cache: ' . $e->getMessage());
-        return response()->json(['error' => 'Internal Server Error'], 500);
     }
-}
 
     private function getCondition($averageValue, $type)
     {
@@ -508,17 +534,34 @@ class SensorData extends Controller
 
         switch ($type) {
             case 'pH':
-                if ($averageValue < 5.6) {
-                    $condition = 'Acidic';
+                if ($averageValue < 4.5) {
+                    $condition = 'Extreme acidity';
+                } elseif ($averageValue >= 4.5 && $averageValue < 5.0) {
+                    $condition = 'Very strong acidity';
+                } elseif ($averageValue >= 5.0 && $averageValue < 5.5) {
+                    $condition = 'Strong acidity';
                 } elseif ($averageValue >= 5.5 && $averageValue < 6.0) {
-                    $condition = 'Good';
+                    $condition = 'Medium acidity';
+                } elseif ($averageValue >= 6.0 && $averageValue < 6.5) {
+                    $condition = 'Slight acidity';
+                } elseif ($averageValue >= 6.5 && $averageValue < 7.0) {
+                    $condition = 'Very slight acidity';
                 } elseif ($averageValue == 7.0) {
                     $condition = 'Neutral';
-                } elseif ($averageValue > 7.0) {
-                    $condition = 'Alkaline';
+                } elseif ($averageValue > 7.0 && $averageValue <= 7.5) {
+                    $condition = 'Slight alkalinity';
+                } elseif ($averageValue > 7.5 && $averageValue <= 8.0) {
+                    $condition = 'Moderate alkalinity';
+                } elseif ($averageValue > 8.0 && $averageValue <= 8.5) {
+                    $condition = 'Strong alkalinity';
+                } elseif ($averageValue > 8.5 && $averageValue <= 9.5) {
+                    $condition = 'Very strong alkalinity';
+                } elseif ($averageValue > 9.5) {
+                    $condition = 'Extremely strong alkalinity';
                 } else {
                     $condition = 'Unknown';
                 }
+
                 break;
 
             case 'nutrient':

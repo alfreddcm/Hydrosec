@@ -836,100 +836,107 @@
             }
         }
 
-       function updatePhScaleImage(phValue) {
-    const phScale = document.getElementById('ph-scale');
-    const statusText = document.getElementById('ph-status');
-    const phValueElement = document.getElementById('ph-value');
-    const phcon = document.getElementById('ph-con');
+        function updatePhScaleImage(phValue) {
+            const phScale = document.getElementById('ph-scale');
+            const statusText = document.getElementById('ph-status');
+            const phValueElement = document.getElementById('ph-value');
+            const phcon = document.getElementById('ph-con');
 
-    phValueElement.textContent = `${phValue.toFixed(2)}`;
+            phValueElement.textContent = `${phValue.toFixed(2)}`;
 
-    if (phValue >= 0 && phValue <= 14) {
-        phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
-        phScale.style.filter = 'none';
+            if (phValue >= 0 && phValue <= 14) {
+                phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
+                phScale.style.filter = 'none';
 
-        // Update status and condition based on pH value
-        if (phValue >= 4.0 && phValue < 4.5) {
-            statusText.textContent = "Extremely Acidic";
-            statusText.style.color = 'red';
-            phcon.textContent = "Critical";
-            phcon.style.color = 'red';
+                // Update status and condition based on pH value
+                if (phValue < 4.5) {
+                    statusText.textContent = "Extremely Acidic";
+                    statusText.style.color = 'red';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
 
-        } else if (phValue >= 4.5 && phValue < 5.0) {
-            statusText.textContent = "Very Strongly Acidic";
-            statusText.style.color = 'orange';
-            phcon.textContent = "Critical";
-            phcon.style.color = 'red';
+                } else if (phValue >= 4.5 && phValue < 5.0) {
+                    statusText.textContent = "Very Strongly Acidic";
+                    statusText.style.color = 'red';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
 
-        } else if (phValue >= 5.0 && phValue < 5.5) {
-            statusText.textContent = "Strongly Acidic";
-            statusText.style.color = 'orange';
-            phcon.textContent = "Critical";
-            phcon.style.color = 'red';
+                } else if (phValue >= 5.0 && phValue < 5.4) {
+                    statusText.textContent = "Strongly Acidic";
+                    statusText.style.color = 'orange';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
 
-        } else if (phValue >= 5.5 && phValue < 6.0) {
-            statusText.textContent = "Moderately Acidic";
-            statusText.style.color = 'green';
-            phcon.textContent = "Ideal";
-            phcon.style.color = 'black';
+                } else if (phValue >= 5.5 && phValue < 6.0) {
+                    statusText.textContent = "Moderately Acidic";
+                    statusText.style.color = 'green';
+                    phcon.textContent = "Ideal";
+                    phcon.style.color = 'black';
 
-        } else if (phValue >= 6.0 && phValue < 6.5) {
-            statusText.textContent = "Slightly Acidic";
-            statusText.style.color = 'green';
-            phcon.textContent = "Ideal";
-            phcon.style.color = 'black';
+                } else if (phValue >= 6.0 && phValue < 6.5) {
+                    statusText.textContent = "Slightly Acidic";
+                    statusText.style.color = 'green';
+                    phcon.textContent = "Ideal";
+                    phcon.style.color = 'black';
 
-        } else if (phValue >= 6.5 && phValue < 7.0) {
-            statusText.textContent = "Very Slightly Acidic";
-            statusText.style.color = 'orange';
-            phcon.textContent = "Critical";
-            phcon.style.color = 'red';
+                } else if (phValue >= 6.6 && phValue < 7.0) {
+                    statusText.textContent = "Very Slightly Acidic";
+                    statusText.style.color = 'green';
+                    phcon.textContent = "Ideal";
+                    phcon.style.color = 'black';
 
-        } else if (phValue === 7.0) {
-            statusText.textContent = "Neutral";
-            statusText.style.color = 'blue';
-            phcon.textContent = "Ideal";
-            phcon.style.color = 'black';
+                } else if (phValue === 7.0) {
+                    statusText.textContent = "Neutral";
+                    statusText.style.color = 'blue';
+                    phcon.textContent = "Ideal";
+                    phcon.style.color = 'black';
 
-        } else if (phValue > 7.0 && phValue <= 7.5) {
-            statusText.textContent = "Slightly Alkaline";
-            statusText.style.color = 'purple';
-            phcon.textContent = "Critical";
-            phcon.style.color = 'red';
+                } else if (phValue > 7.0 && phValue <= 7.5) {
+                    statusText.textContent = "Slightly Alkaline";
+                    statusText.style.color = 'purple';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
 
-        } else if (phValue > 7.5 && phValue <= 8.0) {
-            statusText.textContent = "Moderately Alkaline";
-            statusText.style.color = 'purple';
-            phcon.textContent = "Critical";
-            phcon.style.color = 'red';
+                } else if (phValue > 7.5 && phValue <= 8.0) {
+                    statusText.textContent = "Moderately Alkaline";
+                    statusText.style.color = 'purple';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
 
-        } else if (phValue > 8.0 && phValue <= 9.0) {
-            statusText.textContent = "Strongly Alkaline";
-            statusText.style.color = 'purple';
-            phcon.textContent = "Critical";
-            phcon.style.color = 'red';
+                } else if (phValue > 8.0 && phValue <= 8.5) {
+                    statusText.textContent = "Strongly Alkaline";
+                    statusText.style.color = 'purple';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
 
-        } else if (phValue > 9.0 && phValue <= 10.0) {
-            statusText.textContent = "Very Strongly Alkaline";
-            statusText.style.color = 'purple';
-            phcon.textContent = "Critical";
-            phcon.style.color = 'red';
+                } else if (phValue > 8.5 && phValue <= 9.5) {
+                    statusText.textContent = "Very Strongly Alkaline";
+                    statusText.style.color = 'purple';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
 
-        } else {
-            statusText.textContent = "Unknown";
-            statusText.style.color = 'gray';
-            phcon.textContent = "Unknown";
-            phcon.style.color = 'gray';
+                } else if (phValue > 9.5) {
+                    statusText.textContent = "Extremely Alkaline";
+                    statusText.style.color = 'purple';
+                    phcon.textContent = "Critical";
+                    phcon.style.color = 'red';
+
+                } else {
+                    statusText.textContent = "Unknown";
+                    statusText.style.color = 'gray';
+                    phcon.textContent = "Unknown";
+                    phcon.style.color = 'gray';
+                }
+
+            } else {
+                phScale.src = `{{ asset('images/ph/7.png') }}`;
+                statusText.textContent = "N/A";
+                statusText.style.color = 'black';
+                phValueElement.style.color = 'black';
+                phScale.style.filter = 'grayscale(100%)';
+            }
+
         }
-
-    } else {
-        phScale.src = `{{ asset('images/ph/7.png') }}`;
-        statusText.textContent = "N/A";
-        statusText.style.color = 'black';
-        phValueElement.style.color = 'black';
-        phScale.style.filter = 'grayscale(100%)';
-    }
-}
 
 
 
