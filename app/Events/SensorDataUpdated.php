@@ -3,10 +3,8 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow; // Import this interface
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class SensorDataUpdated implements ShouldBroadcastNow
 {
@@ -14,29 +12,24 @@ class SensorDataUpdated implements ShouldBroadcastNow
 
     public $sensorData;
     public $towerId;
+ 
 
     public function __construct($sensorData, $towerId)
     {
         $this->sensorData = $sensorData;
         $this->towerId = $towerId;
 
-        $cachedData = Cache::get('cachetower.' . $towerId, []);
+      //  Cache::put('cachetower.' .  $towerId, $sensorData, 3600);
 
-        $cachedData[] = [
-            'timestamp' => now(),
-            'data' => $sensorData,
-        ];
-
-        Log::channel('custom')->info('Data sent to cache', ['tower_id' => $towerId]);
-
-        Cache::put('cachetower.' . $towerId, $cachedData, 1440);
     }
 
+    // Define the broadcast channel
     public function broadcastOn()
     {
         return new Channel('tower.' . $this->towerId);
     }
 
+    // Define the event name
     public function broadcastAs()
     {
         return 'SensorDataUpdated';

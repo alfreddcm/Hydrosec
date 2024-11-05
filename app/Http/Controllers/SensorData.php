@@ -7,7 +7,6 @@ use App\Mail\Alert;
 use App\Models\IntrusionDetection;
 use App\Models\Owner;
 use App\Models\Pump;
-use App\Models\Sensor;
 use App\Models\Tower;
 use App\Models\Towerlog;
 use Carbon\Carbon;
@@ -224,25 +223,24 @@ class SensorData extends Controller
                                         $tempCondition = $this->getCondition((float) $temp, 'temp');
                                         $volumeCondition = $this->getCondition((float) $nut, 'nutrient');
 
-                                       $triggerConditions = [
-    'phCondition' => [
-        'Extreme acidity', // for pH < 4.5
-        'Very strong acidity', // for 4.5 ≤ pH < 5.0
-        'Strong acidity', // for 5.0 ≤ pH < 5.5
-        //'Medium acidity', // for 5.5 ≤ pH < 6.0
-        //'Slight acidity', // for 6.0 ≤ pH < 6.5
-        'Very slight acidity', // for 6.5 ≤ pH < 7.0
-        'Neutral', // for pH = 7.0
-        'Slight alkalinity', // for 7.0 < pH ≤ 7.5
-        'Moderate alkalinity', // for 7.5 < pH ≤ 8.0
-        'Strong alkalinity', // for 8.0 < pH ≤ 8.5
-        'Very strong alkalinity', // for 8.5 < pH ≤ 9.5
-        'Extremely strong alkalinity', // for pH > 9.5
-    ],
-    'volumeCondition' => ['25%', '15%', 'critical low'],
-    'tempCondition' => ['Cold', 'Hot'],
-];
-
+                                        $triggerConditions = [
+                                            'phCondition' => [
+                                                'Extreme acidity', // for pH < 4.5
+                                                'Very strong acidity', // for 4.5 ≤ pH < 5.0
+                                                'Strong acidity', // for 5.0 ≤ pH < 5.5
+                                                //'Medium acidity', // for 5.5 ≤ pH < 6.0
+                                                //'Slight acidity', // for 6.0 ≤ pH < 6.5
+                                                'Very slight acidity', // for 6.5 ≤ pH < 7.0
+                                                'Neutral', // for pH = 7.0
+                                                'Slight alkalinity', // for 7.0 < pH ≤ 7.5
+                                                'Moderate alkalinity', // for 7.5 < pH ≤ 8.0
+                                                'Strong alkalinity', // for 8.0 < pH ≤ 8.5
+                                                'Very strong alkalinity', // for 8.5 < pH ≤ 9.5
+                                                'Extremely strong alkalinity', // for pH > 9.5
+                                            ],
+                                            'volumeCondition' => ['25%', '15%', 'critical low'],
+                                            'tempCondition' => ['Cold', 'Hot'],
+                                        ];
 
                                         if (in_array($phCondition, $triggerConditions['phCondition'])) {
                                             $triggerCounts['ph']++;
@@ -484,6 +482,33 @@ class SensorData extends Controller
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
+
+    public function getLastData($id)
+    {
+        try {
+            $cachedData = Cache::get('cachetower.' . $id, []);
+            // Get the last data point if available
+            $lastDataPoint = !empty($cachedData) ? end($cachedData) : null;
+            if ($lastDataPoint) {
+                return response()->json([
+                    'sensorData' => [
+                        'nutrient_level' => $lastDataPoint['data']['nutrient_level'] ?? null,
+                        'ph' => $lastDataPoint['data']['ph'] ?? null,
+                        'light' => $lastDataPoint['data']['light'] ?? null,
+                        'temperature' => $lastDataPoint['data']['temperature'] ?? null,
+                        'timestamp' => \Carbon\Carbon::parse($lastDataPoint['timestamp'])->toDateTimeString(),
+                    ],
+                ]);
+            }
+
+            return response()->json(['message' => 'No data available'], 404);
+
+        } catch (\Exception $e) {
+            Log::channel('custom')->error('Error fetching last data from cache: ' . $e->getMessage());
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
+    }
+
 
     private function getCondition($averageValue, $type)
     {
