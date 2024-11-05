@@ -3,3 +3,4 @@
 
 artisan
 /storage/framework/cache/*
+/storage/logs/*
