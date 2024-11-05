@@ -166,6 +166,19 @@ class SensorData extends Controller
                                     'stat' => $encryptedStatus,
                                 ]);
 
+                                 $sd = [
+                                            'ph' => $pH,
+                                            'temperature' => $temp,
+                                            'nutrient_level' => $nut,
+                                 ];
+                                 
+                                event(new SensorDataUpdated($sd, $tower->id));
+
+                                Log::channel('custom')->info('Successfully broadcasted sensor data', [
+                                    'sensorData' => $sd,
+                                    'towerId' => $tower->id,
+                                ]);
+
                                 return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
 
                             } else {
@@ -206,16 +219,11 @@ class SensorData extends Controller
                                     $alertMessages = [];
 
                                     try {
-                                        // Initialize trigger counts in the cache if they don't exist
-                                        if (!Cache::has('triggerCounts')) {
-                                            Cache::put('triggerCounts', [
-                                                'ph' => 0,
-                                                'temp' => 0,
-                                                'nut' => 0,
-                                            ]);
-                                        }
-
-                                        $triggerCounts = Cache::get('triggerCounts');
+                                        $triggerCounts = [
+                                            'ph' => 0,
+                                            'temp' => 0,
+                                            'nut' => 0,
+                                        ];
 
                                         $alerts = [];
                                         $triggeredConditions = [
@@ -229,20 +237,7 @@ class SensorData extends Controller
                                         $volumeCondition = $this->getCondition((float) $nut, 'nutrient');
 
                                         $triggerConditions = [
-                                            'phCondition' => [
-                                                'Extreme acidity', // for pH < 4.5
-                                                'Very strong acidity', // for 4.5 ≤ pH < 5.0
-                                                'Strong acidity', // for 5.0 ≤ pH < 5.5
-                                                //'Medium acidity', // for 5.5 ≤ pH < 6.0
-                                                //'Slight acidity', // for 6.0 ≤ pH < 6.5
-                                                'Very slight acidity', // for 6.5 ≤ pH < 7.0
-                                                'Neutral', // for pH = 7.0
-                                                'Slight alkalinity', // for 7.0 < pH ≤ 7.5
-                                                'Moderate alkalinity', // for 7.5 < pH ≤ 8.0
-                                                'Strong alkalinity', // for 8.0 < pH ≤ 8.5
-                                                'Very strong alkalinity', // for 8.5 < pH ≤ 9.5
-                                                'Extremely strong alkalinity', // for pH > 9.5
-                                            ],
+                                            'phCondition' => ['Acidic', 'Neutral', 'Alkaline'],
                                             'volumeCondition' => ['25%', '15%', 'critical low'],
                                             'tempCondition' => ['Cold', 'Hot'],
                                         ];
@@ -262,9 +257,6 @@ class SensorData extends Controller
                                             $triggeredConditions['nut'][] = "Nutrient Solution Volume: {$nut} - $volumeCondition";
                                         }
 
-                                        // Save updated trigger counts back to the cache
-                                        Cache::put('triggerCounts', $triggerCounts);
-
                                         Log::channel('custom')->info('Sensor data condition check:', [
                                             'pH' => $phCondition,
                                             'Temperature' => $tempCondition,
@@ -280,28 +272,17 @@ class SensorData extends Controller
                                         $alertMessages = [];
                                         $triggeredData = [];
 
-                                        if ($triggerCounts['ph'] >= 3) {
+                                        if ($triggerCounts['ph']) {
                                             $triggeredData['ph'] = $pH;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
-                                            $triggerCounts['ph'] = 0;
-                                            Cache::put('triggerCounts', $triggerCounts);
-
                                         }
-
-                                        if ($triggerCounts['temp'] >= 3) {
+                                        if ($triggerCounts['temp']) {
                                             $triggeredData['temp'] = $temp;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
-                                            $triggerCounts['temp'] = 0;
-                                            Cache::put('triggerCounts', $triggerCounts);
-
                                         }
-
-                                        if ($triggerCounts['nut'] >= 3) {
+                                        if ($triggerCounts['nut']) {
                                             $triggeredData['nutlevel'] = $nut;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
-                                            $triggerCounts['nut'] = 0;
-                                            Cache::put('triggerCounts', $triggerCounts);
-
                                         }
 
                                         if (!empty($alertMessages)) {
@@ -314,6 +295,13 @@ class SensorData extends Controller
                                             ];
 
                                             $sensorDataJson = json_encode($triggeredData);
+
+                                            // Sensor::create([
+                                            //     'towerid' => $tower->id,
+                                            //     'towercode' => $decrypted_towercode,
+                                            //     'sensordata' => $sensorDataJson,
+                                            //     'status' => '1',
+                                            // ]);
 
                                             Log::channel('custom')->info('Sending alert email with conditions:', ['conditions' => implode(", ", $alertMessages)]);
                                             $statusType = 'critical_condition';
@@ -468,13 +456,16 @@ class SensorData extends Controller
     public function getdata($id, $column)
     {
         try {
-
             $cachedData = Cache::get('cachetower.' . $id, []);
 
-            $decryptedData = [];
+            $oneHourAgo = \Carbon\Carbon::now()->subHour();
 
+            $decryptedData = [];
             foreach ($cachedData as $dataPoint) {
-                if (isset($dataPoint['data'][$column])) {
+                if (
+                    isset($dataPoint['timestamp'], $dataPoint['data'][$column]) &&
+                    \Carbon\Carbon::parse($dataPoint['timestamp'])->greaterThanOrEqualTo($oneHourAgo)
+                ) {
                     $decryptedData[] = [
                         'type' => $column,
                         'value' => (float) $dataPoint['data'][$column],
@@ -482,12 +473,10 @@ class SensorData extends Controller
                     ];
                 }
             }
-// Check if we have any relevant data
             if (empty($decryptedData)) {
-                return response()->json(['message' => 'No data available for the specified column'], 404);
+                return response()->json(['message' => 'No data available for the specified column within the last hour'], 404);
             }
             return response()->json(['sensorData' => $decryptedData]);
-
         } catch (\Exception $e) {
             Log::channel('custom')->error('Error fetching sensor data from cache: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error'], 500);
@@ -498,10 +487,8 @@ class SensorData extends Controller
     {
         try {
             $cachedData = Cache::get('cachetower.' . $id, []);
-
             // Get the last data point if available
             $lastDataPoint = !empty($cachedData) ? end($cachedData) : null;
-
             if ($lastDataPoint) {
                 return response()->json([
                     'sensorData' => [
@@ -528,34 +515,17 @@ class SensorData extends Controller
 
         switch ($type) {
             case 'pH':
-                if ($averageValue < 4.5) {
-                    $condition = 'Extreme acidity';
-                } elseif ($averageValue >= 4.5 && $averageValue < 5.0) {
-                    $condition = 'Very strong acidity';
-                } elseif ($averageValue >= 5.0 && $averageValue < 5.5) {
-                    $condition = 'Strong acidity';
+                if ($averageValue < 5.6) {
+                    $condition = 'Acidic';
                 } elseif ($averageValue >= 5.5 && $averageValue < 6.0) {
-                    $condition = 'Medium acidity';
-                } elseif ($averageValue >= 6.0 && $averageValue < 6.5) {
-                    $condition = 'Slight acidity';
-                } elseif ($averageValue >= 6.5 && $averageValue < 7.0) {
-                    $condition = 'Very slight acidity';
+                    $condition = 'Good';
                 } elseif ($averageValue == 7.0) {
                     $condition = 'Neutral';
-                } elseif ($averageValue > 7.0 && $averageValue <= 7.5) {
-                    $condition = 'Slight alkalinity';
-                } elseif ($averageValue > 7.5 && $averageValue <= 8.0) {
-                    $condition = 'Moderate alkalinity';
-                } elseif ($averageValue > 8.0 && $averageValue <= 8.5) {
-                    $condition = 'Strong alkalinity';
-                } elseif ($averageValue > 8.5 && $averageValue <= 9.5) {
-                    $condition = 'Very strong alkalinity';
-                } elseif ($averageValue > 9.5) {
-                    $condition = 'Extremely strong alkalinity';
+                } elseif ($averageValue > 7.0) {
+                    $condition = 'Alkaline';
                 } else {
                     $condition = 'Unknown';
                 }
-
                 break;
 
             case 'nutrient':
@@ -601,7 +571,7 @@ class SensorData extends Controller
                     $decryptedTowerName = Crypt::decryptString($tower->name);
 
                     // Define cooldown period in minutes
-                    $emailCooldown = 30;
+                    $emailCooldown = 1;
 
                     // Check last email sent timestamp based on status type
                     switch ($statusType) {

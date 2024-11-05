@@ -26,6 +26,8 @@ class SensorDataUpdated implements ShouldBroadcastNow
             'data' => $sensorData,
         ];
 
+        Log::channel('custom')->info('Data sent to cache', ['tower_id' => $towerId]);
+
         Cache::put('cachetower.' . $towerId, $cachedData, 1440);
     }
 

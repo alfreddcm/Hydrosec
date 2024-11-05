@@ -75,7 +75,7 @@ class IfOff extends Command
                                 'activity' => $activityLog,
                             ]);
 
-                            Log::channel('custom')->info('Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => $body]);
+                            Log::channel('custom')->info($email .'Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => $body]);
                         }
                     } else {
                         $this->error("Owner not found or email not available for Tower ID {$tower->id}.");
