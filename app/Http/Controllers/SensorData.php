@@ -7,6 +7,7 @@ use App\Mail\Alert;
 use App\Models\IntrusionDetection;
 use App\Models\Owner;
 use App\Models\Pump;
+use App\Models\Sensor;
 use App\Models\Tower;
 use App\Models\Towerlog;
 use Carbon\Carbon;
@@ -55,14 +56,14 @@ class SensorData extends Controller
                     }
                 }
             } else {
-                //\ Log::channel('custom')->info("No pump data found for tower ID: {$id}");
+                //\Log::info("No pump data found for tower ID: {$id}");
             }
 
-            // \ Log::channel('custom')->info('Pumping events processed successfully');
+            // \Log::info('Pumping events processed successfully');
             return response()->json($events);
 
         } catch (\Exception $e) {
-            // \ Log::channel('custom')->error('Failed to fetch pump data for tower ID: ' . $id . '. Error: ' . $e->getMessage());
+            // \Log::error('Failed to fetch pump data for tower ID: ' . $id . '. Error: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to fetch pump data'], 500);
         }
     }
@@ -97,7 +98,7 @@ class SensorData extends Controller
         }
 
         try {
-            Log::channel('custom')->info('Request received:', $request->all());
+            Log::info('Request received:', $request->all());
 
             $validatedData = $request->validate([
                 'sensorData' => 'required',
@@ -110,12 +111,12 @@ class SensorData extends Controller
             $decrypted_mac = $keyss[1];
             $decrypted_towercode = $keyss[2];
 
-            Log::channel('custom')->info('Validated data:', $validatedData);
-            Log::channel('custom')->info('keys:', ['key' => $keys]);
+            Log::info('Validated data:', $validatedData);
+            Log::info('keys:', ['key' => $keys]);
 
             $data = $validatedData['sensorData'];
 
-            Log::channel('custom')->info('Data:', ['data' => $data]);
+            Log::info('Data:', ['data' => $data]);
 
             $eplo = explode(',', $data);
 
@@ -126,7 +127,7 @@ class SensorData extends Controller
 
             $towers = Tower::all(['id', 'name', 'towercode']);
 
-            Log::channel('custom')->info('from tower:', [
+            Log::info('from tower:', [
                 'phValue' => $pH,
                 'temp' => $temp,
                 'waterLevel' => $nut,
@@ -148,12 +149,12 @@ class SensorData extends Controller
                     if ($ipmac && !is_null($ipmac->ipAdd)) {
                         $ip = Crypt::decryptString($ipmac->ipAdd);
                         $mac = Crypt::decryptString($ipmac->macAdd);
-                        Log::channel('custom')->info('Decrypted IP and MAC addresses:', ['ipAddress' => $ip, 'macAddress' => $mac]);
+                        Log::info('Decrypted IP and MAC addresses:', ['ipAddress' => $ip, 'macAddress' => $mac]);
 
                         if ($ip == $decrypted_ip && $mac == $decrypted_mac) {
                             $statuss = Crypt::decryptString($ipmac->status);
                             $modee = Crypt::decryptString($ipmac->mode);
-                            Log::channel('custom')->info('Successfully decc', [
+                            Log::info('Successfully decc', [
                                 'mode' => $modee,
                                 'stat' => $statuss,
                             ]);
@@ -161,22 +162,9 @@ class SensorData extends Controller
                             if ($statuss != '1') {
                                 $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                 $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
-                                Log::channel('custom')->info('Successfully enc sensor data', [
+                                Log::info('Successfully enc sensor data', [
                                     'mode' => $encryptedMode,
                                     'stat' => $encryptedStatus,
-                                ]);
-
-                                 $sd = [
-                                            'ph' => $pH,
-                                            'temperature' => $temp,
-                                            'nutrient_level' => $nut,
-                                 ];
-                                 
-                                event(new SensorDataUpdated($sd, $tower->id));
-
-                                Log::channel('custom')->info('Successfully broadcasted sensor data', [
-                                    'sensorData' => $sd,
-                                    'towerId' => $tower->id,
                                 ]);
 
                                 return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus]]);
@@ -208,7 +196,7 @@ class SensorData extends Controller
 
                                     $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                     $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
-                                    Log::channel('custom')->info('Successfully enc sensor data', [
+                                    Log::info('Successfully enc sensor data', [
                                         'mode' => $encryptedMode,
                                         'stat' => $encryptedStatus,
                                     ]);
@@ -236,11 +224,25 @@ class SensorData extends Controller
                                         $tempCondition = $this->getCondition((float) $temp, 'temp');
                                         $volumeCondition = $this->getCondition((float) $nut, 'nutrient');
 
-                                        $triggerConditions = [
-                                            'phCondition' => ['Acidic', 'Neutral', 'Alkaline'],
-                                            'volumeCondition' => ['25%', '15%', 'critical low'],
-                                            'tempCondition' => ['Cold', 'Hot'],
-                                        ];
+                                       $triggerConditions = [
+    'phCondition' => [
+        'Extreme acidity', // for pH < 4.5
+        'Very strong acidity', // for 4.5 ≤ pH < 5.0
+        'Strong acidity', // for 5.0 ≤ pH < 5.5
+        //'Medium acidity', // for 5.5 ≤ pH < 6.0
+        //'Slight acidity', // for 6.0 ≤ pH < 6.5
+        'Very slight acidity', // for 6.5 ≤ pH < 7.0
+        'Neutral', // for pH = 7.0
+        'Slight alkalinity', // for 7.0 < pH ≤ 7.5
+        'Moderate alkalinity', // for 7.5 < pH ≤ 8.0
+        'Strong alkalinity', // for 8.0 < pH ≤ 8.5
+        'Very strong alkalinity', // for 8.5 < pH ≤ 9.5
+        'Extremely strong alkalinity', // for pH > 9.5
+    ],
+    'volumeCondition' => ['25%', '15%', 'critical low'],
+    'tempCondition' => ['Cold', 'Hot'],
+];
+
 
                                         if (in_array($phCondition, $triggerConditions['phCondition'])) {
                                             $triggerCounts['ph']++;
@@ -257,13 +259,13 @@ class SensorData extends Controller
                                             $triggeredConditions['nut'][] = "Nutrient Solution Volume: {$nut} - $volumeCondition";
                                         }
 
-                                        Log::channel('custom')->info('Sensor data condition check:', [
+                                        Log::info('Sensor data condition check:', [
                                             'pH' => $phCondition,
                                             'Temperature' => $tempCondition,
                                             'Nutrient Solution Volume' => $volumeCondition,
                                         ]);
 
-                                        Log::channel('custom')->info('Trigger counts:', [
+                                        Log::info('Trigger counts:', [
                                             'pH Triggers' => $triggerCounts['ph'],
                                             'Temperature Triggers' => $triggerCounts['temp'],
                                             'Nutrient Solution Volume Triggers' => $triggerCounts['nut'],
@@ -303,7 +305,7 @@ class SensorData extends Controller
                                             //     'status' => '1',
                                             // ]);
 
-                                            Log::channel('custom')->info('Sending alert email with conditions:', ['conditions' => implode(", ", $alertMessages)]);
+                                            Log::info('Sending alert email with conditions:', ['conditions' => implode(", ", $alertMessages)]);
                                             $statusType = 'critical_condition';
 
                                             $this->sendAlertEmail($details, $tower->id, $statusType);
@@ -316,11 +318,11 @@ class SensorData extends Controller
                                             'light' => $light,
                                         ];
 
-                                        Log::channel('custom')->info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
+                                        Log::info('Broadcasting sensor data', ['sensorData' => $sd, 'towerId' => $tower->id]);
 
                                         event(new SensorDataUpdated($sd, $tower->id));
 
-                                        Log::channel('custom')->info('Successfully broadcasted sensor data', [
+                                        Log::info('Successfully broadcasted sensor data', [
                                             'sensorData' => $sd,
                                             'towerId' => $tower->id,
                                         ]);
@@ -328,7 +330,7 @@ class SensorData extends Controller
                                         $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                         $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
 
-                                        Log::channel('custom')->info('Successfully enc sensor data', [
+                                        Log::info('Successfully enc sensor data', [
                                             'mode' => $encryptedMode,
                                             'stat' => $encryptedStatus,
                                         ]);
@@ -336,11 +338,11 @@ class SensorData extends Controller
                                         return response()->json(['modestat' => ['mode' => $encryptedMode, 'status' => $encryptedStatus, 'success' => 'success']]);
 
                                     } catch (\Exception $e) {
-                                        Log::channel('custom')->error('Error storing data:', ['error' => $e->getMessage()]);
+                                        Log::error('Error storing data:', ['error' => $e->getMessage()]);
 
                                         $encryptedMode = $this->encrypt_data($modee, $key_str, $iv_str, $method);
                                         $encryptedStatus = $this->encrypt_data($statuss, $key_str, $iv_str, $method);
-                                        Log::channel('custom')->info('Successfully enc sensor data', [
+                                        Log::info('Successfully enc sensor data', [
                                             'mode' => $encryptedMode,
                                             'stat' => $encryptedStatus,
                                         ]);
@@ -370,7 +372,7 @@ class SensorData extends Controller
                         $ipmac->macAdd = Crypt::encryptString($decrypted_mac);
                         $ipmac->save();
 
-                        Log::channel('custom')->info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
+                        Log::info('Updated Tower IP and MAC addresses:', ['id' => $tower->id]);
                         return response()->json(['success' => 'Tower IP and MAC updated'], 201);
 
                     }
@@ -428,10 +430,10 @@ class SensorData extends Controller
 
                     try {
                         Mail::to($adminEmail)->send(new Alert($details));
-                        Log::channel('custom')->info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
+                        Log::info('Intrusion alert email sent to admin', ['adminEmail' => $adminEmail, 'failedAttempts' => $failedAttempts]);
 
                     } catch (\Exception $e) {
-                        Log::channel('custom')->error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
+                        Log::error('Failed to send intrusion alert email', ['error' => $e->getMessage(), 'adminEmail' => $adminEmail]);
 
                     } finally {
                         if (Cache::has($failedAttemptsKey)) {
@@ -456,16 +458,13 @@ class SensorData extends Controller
     public function getdata($id, $column)
     {
         try {
+            // Retrieve data from cache
             $cachedData = Cache::get('cachetower.' . $id, []);
 
-            $oneHourAgo = \Carbon\Carbon::now()->subHour();
-
+            // Filter and format the data for the requested column
             $decryptedData = [];
             foreach ($cachedData as $dataPoint) {
-                if (
-                    isset($dataPoint['timestamp'], $dataPoint['data'][$column]) &&
-                    \Carbon\Carbon::parse($dataPoint['timestamp'])->greaterThanOrEqualTo($oneHourAgo)
-                ) {
+                if (isset($dataPoint['data'][$column])) {
                     $decryptedData[] = [
                         'type' => $column,
                         'value' => (float) $dataPoint['data'][$column],
@@ -473,38 +472,15 @@ class SensorData extends Controller
                     ];
                 }
             }
+
+            // Check if we have any relevant data
             if (empty($decryptedData)) {
-                return response()->json(['message' => 'No data available for the specified column within the last hour'], 404);
+                return response()->json(['message' => 'No data available for the specified column'], 404);
             }
             return response()->json(['sensorData' => $decryptedData]);
-        } catch (\Exception $e) {
-            Log::channel('custom')->error('Error fetching sensor data from cache: ' . $e->getMessage());
-            return response()->json(['error' => 'Internal Server Error'], 500);
-        }
-    }
-
-    public function getLastData($id)
-    {
-        try {
-            $cachedData = Cache::get('cachetower.' . $id, []);
-            // Get the last data point if available
-            $lastDataPoint = !empty($cachedData) ? end($cachedData) : null;
-            if ($lastDataPoint) {
-                return response()->json([
-                    'sensorData' => [
-                        'nutrient_level' => $lastDataPoint['data']['nutrient_level'] ?? null,
-                        'ph' => $lastDataPoint['data']['ph'] ?? null,
-                        'light' => $lastDataPoint['data']['light'] ?? null,
-                        'temperature' => $lastDataPoint['data']['temperature'] ?? null,
-                        'timestamp' => \Carbon\Carbon::parse($lastDataPoint['timestamp'])->toDateTimeString(),
-                    ],
-                ]);
-            }
-
-            return response()->json(['message' => 'No data available'], 404);
 
         } catch (\Exception $e) {
-            Log::channel('custom')->error('Error fetching last data from cache: ' . $e->getMessage());
+            Log::error('Error fetching sensor data from cache: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
@@ -515,17 +491,34 @@ class SensorData extends Controller
 
         switch ($type) {
             case 'pH':
-                if ($averageValue < 5.6) {
-                    $condition = 'Acidic';
+                if ($averageValue < 4.5) {
+                    $condition = 'Extreme acidity';
+                } elseif ($averageValue >= 4.5 && $averageValue < 5.0) {
+                    $condition = 'Very strong acidity';
+                } elseif ($averageValue >= 5.0 && $averageValue < 5.5) {
+                    $condition = 'Strong acidity';
                 } elseif ($averageValue >= 5.5 && $averageValue < 6.0) {
-                    $condition = 'Good';
+                    $condition = 'Medium acidity';
+                } elseif ($averageValue >= 6.0 && $averageValue < 6.5) {
+                    $condition = 'Slight acidity';
+                } elseif ($averageValue >= 6.5 && $averageValue < 7.0) {
+                    $condition = 'Very slight acidity';
                 } elseif ($averageValue == 7.0) {
                     $condition = 'Neutral';
-                } elseif ($averageValue > 7.0) {
-                    $condition = 'Alkaline';
+                } elseif ($averageValue > 7.0 && $averageValue <= 7.5) {
+                    $condition = 'Slight alkalinity';
+                } elseif ($averageValue > 7.5 && $averageValue <= 8.0) {
+                    $condition = 'Moderate alkalinity';
+                } elseif ($averageValue > 8.0 && $averageValue <= 8.5) {
+                    $condition = 'Strong alkalinity';
+                } elseif ($averageValue > 8.5 && $averageValue <= 9.5) {
+                    $condition = 'Very strong alkalinity';
+                } elseif ($averageValue > 9.5) {
+                    $condition = 'Extremely strong alkalinity';
                 } else {
                     $condition = 'Unknown';
                 }
+
                 break;
 
             case 'nutrient':
@@ -595,7 +588,7 @@ class SensorData extends Controller
 
                     if ($lastEmailSentAt && $lastEmailSentAt->diffInMinutes($now) < $emailCooldown) {
                         $remainingTime = $emailCooldown - $lastEmailSentAt->diffInMinutes($now);
-                        Log::channel('custom')->info('Skipping email for ' . $statusType . ', cooldown remaining: ' . $remainingTime . ' minutes', ['tower_id' => $towerId]);
+                        Log::info('Skipping email for ' . $statusType . ', cooldown remaining: ' . $remainingTime . ' minutes', ['tower_id' => $towerId]);
                         return;
                     }
 
@@ -604,10 +597,10 @@ class SensorData extends Controller
                     try {
                         Mail::to($email)->send(new Alert($details));
                         $mailStatus = 'Sent';
-                        Log::channel('custom')->info('Alert email sent to', ['email' => $email, 'tower_id' => $towerId]);
+                        Log::info('Alert email sent to', ['email' => $email, 'tower_id' => $towerId]);
                     } catch (\Exception $e) {
                         $mailStatus = 'Failed';
-                        Log::channel('custom')->error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
+                        Log::error('Failed to send alert email', ['email' => $email, 'tower_id' => $towerId, 'error' => $e->getMessage()]);
                     } finally {
 
                         Towerlog::create([
@@ -617,7 +610,7 @@ class SensorData extends Controller
                             ),
                         ]);
 
-                        Log::channel('custom')->info('Alert logged in tbl_Towerlog', ['tower_id' => $towerId, 'activity' => json_encode($details['body'])]);
+                        Log::info('Alert logged in tbl_Towerlog', ['tower_id' => $towerId, 'activity' => json_encode($details['body'])]);
 
                         // Update the last email sent timestamp based on status type
                         switch ($statusType) {
@@ -651,7 +644,7 @@ class SensorData extends Controller
             $decoded_msg = base64_decode($decrypted_data);
             return $decoded_msg;
         } catch (\Exception $e) {
-            Log::channel('custom')->error('Decryption error: ' . $e->getMessage());
+            Log::error('Decryption error: ' . $e->getMessage());
             return null;
         }
     }
@@ -672,7 +665,7 @@ class SensorData extends Controller
 
             return $result;
         } catch (\Exception $e) {
-            Log::channel('custom')->error('Encryption error: ' . $e->getMessage());
+            Log::error('Encryption error: ' . $e->getMessage());
             return null;
         }
     }

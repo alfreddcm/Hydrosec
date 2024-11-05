@@ -6,6 +6,7 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class SensorDataUpdated implements ShouldBroadcastNow
 {
@@ -22,7 +23,7 @@ class SensorDataUpdated implements ShouldBroadcastNow
         $cachedData = Cache::get('cachetower.' . $towerId, []);
 
         $cachedData[] = [
-            'timestamp' => now(),      
+            'timestamp' => now(),
             'data' => $sensorData,
         ];
 
@@ -31,13 +32,11 @@ class SensorDataUpdated implements ShouldBroadcastNow
         Cache::put('cachetower.' . $towerId, $cachedData, 1440);
     }
 
-    // Define the broadcast channel
     public function broadcastOn()
     {
         return new Channel('tower.' . $this->towerId);
     }
 
-    // Define the event name
     public function broadcastAs()
     {
         return 'SensorDataUpdated';
