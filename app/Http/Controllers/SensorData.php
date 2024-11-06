@@ -463,7 +463,22 @@ class SensorData extends Controller
         }
     }
 
-//ph,temp,nut
+//daily
+
+    public function dailyData($towerId)
+    {
+        $data = Sensor::where('towerid', $towerId)
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('AVG(JSON_EXTRACT(sensordata, "$.temp")) as avg_temp'),
+                DB::raw('AVG(JSON_EXTRACT(sensordata, "$.ph")) as avg_ph'),
+                DB::raw('AVG(JSON_EXTRACT(sensordata, "$.nut")) as avg_nut')
+            )
+            ->groupBy('date')
+            ->get();
+
+        return response()->json($data);
+    }
 
 //ph,temp,nut
     public function getdata($id, $column)

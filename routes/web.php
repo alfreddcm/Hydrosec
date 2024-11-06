@@ -98,6 +98,8 @@ Route::middleware('auth:owner')->group(function () {
     Route::post('/tower/restart', [Towercon::class, 'restartCycle'])->name('tower.restart');
     Route::post('/tower/en', [Towercon::class, 'en'])->name('tower.en');
 
+    Route::get('/sensor-daily-data/{towerId}', [SensorData::class, 'dailyData']);
+
 });
 
 Route::middleware('auth:worker')->group(function () {
@@ -106,7 +108,7 @@ Route::middleware('auth:worker')->group(function () {
 
     Route::get('/Worker/sensor-data/{id}', [SensorData::class, 'getLatestSensorData'])->name('getsensor');
     Route::get('/Worker/get-data/{towerId}/{column}', [SensorData::class, 'getdata'])->name('getsensor');
-    Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);   
+    Route::get('/Worker/pump-data/{id}', [SensorData::class, 'getPump']);
     Route::get('/Worker/modestat/{id}', [Towercon::class, 'modestat'])->name('modestat');
 
 });

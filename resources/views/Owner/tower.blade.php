@@ -463,6 +463,37 @@
             </div>
         </center>
 
+        <div class="container my-5">
+    <h2 class="text-center mb-4">Daily Data</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Temperature</h5>
+                    <div id="temperatureChart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">pH Level</h5>
+                    <div id="phChart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Nutrient Level</h5>
+                    <div id="nutrientChart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     </div>
 
     <!-- Modal -->
@@ -491,6 +522,84 @@
         window.onload = function() {
             last();
         };
+
+          $(document).ready(function () {
+        const towerId = 1; 
+        $.ajax({
+            url: `/sensor-daily-data/${towerId}`,
+            method: 'GET',
+            success: function (response) {
+                const dates = response.map(data => data.date);
+                const avgTemps = response.map(data => parseFloat(data.avg_temp));
+                const avgPhs = response.map(data => parseFloat(data.avg_ph));
+                const avgNuts = response.map(data => parseFloat(data.avg_nut));
+
+                Highcharts.chart('temperatureChart', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Average Temperature'
+                    },
+                    xAxis: {
+                        categories: dates,
+                        title: { text: 'Date' }
+                    },
+                    yAxis: {
+                        title: { text: 'Temperature (°C)' }
+                    },
+                    series: [{
+                        name: 'Temperature',
+                        data: avgTemps,
+                        color: '#FF6384'
+                    }]
+                });
+
+                Highcharts.chart('phChart', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Average pH Level'
+                    },
+                    xAxis: {
+                        categories: dates,
+                        title: { text: 'Date' }
+                    },
+                    yAxis: {
+                        title: { text: 'pH Level' }
+                    },
+                    series: [{
+                        name: 'pH Level',
+                        data: avgPhs,
+                        color: '#36A2EB'
+                    }]
+                });
+
+                Highcharts.chart('nutrientChart', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Average Nutrient Level'
+                    },
+                    xAxis: {
+                        categories: dates,
+                        title: { text: 'Date' }
+                    },
+                    yAxis: {
+                        title: { text: 'Nutrient Level' }
+                    },
+                    series: [{
+                        name: 'Nutrient Level',
+                        data: avgNuts,
+                        color: '#4BC0C0'
+                    }]
+                });
+            }
+        });
+    });
+
         document.getElementById('startCycleForm').addEventListener('submit', function(event) {
             const days = document.getElementById('days');
             const plant = document.getElementById('plantSelect');
