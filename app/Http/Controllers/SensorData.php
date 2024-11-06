@@ -283,18 +283,23 @@ class SensorData extends Controller
                                         if ($triggerCounts['ph'] >= 3) {
                                             $triggeredData['ph'] = $pH;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
+                                            $triggerCounts['ph'] = 0; // Reset pH trigger count to zero
+
                                             Cache::put('triggerCounts', $triggerCounts);
                                         }
 
                                         if ($triggerCounts['temp'] >= 3) {
                                             $triggeredData['temp'] = $temp;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
+                                            $triggerCounts['temp'] = 0;
+
                                             Cache::put('triggerCounts', $triggerCounts);
                                         }
 
                                         if ($triggerCounts['nut'] >= 3) {
                                             $triggeredData['nutlevel'] = $nut;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
+                                            $triggerCounts['nut'] = 0;
                                             Cache::put('triggerCounts', $triggerCounts);
                                         }
 
