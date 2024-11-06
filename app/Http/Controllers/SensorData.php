@@ -9,7 +9,7 @@ use App\Models\Owner;
 use App\Models\Pump;
 use App\Models\Tower;
 use App\Models\Towerlog;
-use App\Models\Sensor;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
