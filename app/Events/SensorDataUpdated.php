@@ -5,8 +5,8 @@ namespace App\Events;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class SensorDataUpdated implements ShouldBroadcastNow
 {
@@ -20,16 +20,29 @@ class SensorDataUpdated implements ShouldBroadcastNow
         $this->sensorData = $sensorData;
         $this->towerId = $towerId;
 
-        $cachedData = Cache::get('cachetower.' . $towerId, []);
+        $directoryPath = 'tower_data';
+        $filePath = "{$directoryPath}/tower_{$towerId}.json";
 
-        $cachedData[] = [
+        if (!Storage::exists($directoryPath)) {
+            Storage::makeDirectory($directoryPath);
+        }
+
+        // Retrieve existing data from the JSON file
+        $existingData = [];
+        if (Storage::exists($filePath)) {
+            $existingData = json_decode(Storage::get($filePath), true) ?: [];
+        }
+
+        // Append the new data entry
+        $existingData[] = [
             'timestamp' => now(),
             'data' => $sensorData,
         ];
 
-        Log::channel('custom')->info('Data sent to cache', ['tower_id' => $towerId]);
+        // Save the updated data back to the file in JSON format
+        Storage::put($filePath, json_encode($existingData));
 
-        Cache::put('cachetower.' . $towerId, $cachedData, 1440);
+        Log::channel('custom')->info('Data saved to JSON file', ['tower_id' => $towerId]);
     }
 
     public function broadcastOn()

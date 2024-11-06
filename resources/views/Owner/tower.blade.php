@@ -464,36 +464,35 @@
         </center>
 
         <div class="container my-5">
-    <h2 class="text-center mb-4">Daily Data</h2>
-    <div class="row justify-content-center">
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Temperature</h5>
-                    <canvas id="temperatureChart" width="400" height="200"></canvas>
+            <h2 class="text-center mb-4">Daily Data</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Temperature</h5>
+                            <canvas id="temperatureChart" width="400" height="200"></canvas>
 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">pH Level</h5>
+                            <canvas id="phChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Nutrient Level</h5>
+                            <canvas id="nutrientChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">pH Level</h5>
-<canvas id="phChart" width="400" height="200"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Nutrient Level</h5>
-<canvas id="nutrientChart" width="400" height="200"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
     </div>
 
@@ -524,104 +523,126 @@
             last();
         };
 
-     $(document).ready(function () {
-    const towerId = 1; 
-    $.ajax({
-        url: `/sensor-daily-data/${towerId}`,
-        method: 'GET',
-        success: function (response) {
-            const options = { month: 'short', weekday: 'short', day: 'numeric' };
-            
-            // Format dates to "Nov Mon - 4/24"
-            const dates = response.map(data => {
-                const dateObj = new Date(data.date);
-                return dateObj.toLocaleDateString('en-US', options).replace(',', ' -');
-            });
-            
-            const avgTemps = response.map(data => parseFloat(data.avg_temp));
-            const avgPhs = response.map(data => parseFloat(data.avg_ph));
-            const avgNuts = response.map(data => parseFloat(data.avg_nut));
+        $(document).ready(function() {
+            const towerId = 1;
+            $.ajax({
+                url: `/sensor-daily-data/${towerId}`,
+                method: 'GET',
+                success: function(response) {
+                    const options = {
+                        month: 'short',
+                        weekday: 'short',
+                        day: 'numeric'
+                    };
 
-            // Temperature Chart
-            const tempCtx = document.getElementById('temperatureChart').getContext('2d');
-            new Chart(tempCtx, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Average Temperature (°C)',
-                        data: avgTemps,
-                        borderColor: '#FF6384',
-                        fill: false,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: { display: true, text: 'Date' }
+                    // Format dates to "Nov Mon - 4/24"
+                    const dates = response.map(data => {
+                        const dateObj = new Date(data.date);
+                        return dateObj.toLocaleDateString('en-US', options).replace(',', ' -');
+                    });
+
+                    const avgTemps = response.map(data => parseFloat(data.avg_temp));
+                    const avgPhs = response.map(data => parseFloat(data.avg_ph));
+                    const avgNuts = response.map(data => parseFloat(data.avg_nut));
+
+                    // Temperature Chart
+                    const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+                    new Chart(tempCtx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,
+                            datasets: [{
+                                label: 'Average Temperature (°C)',
+                                data: avgTemps,
+                                borderColor: '#FF6384',
+                                fill: false,
+                                tension: 0.1
+                            }]
                         },
-                        y: {
-                            title: { display: true, text: 'Temperature (°C)' }
+                        options: {
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Temperature (°C)'
+                                    }
+                                }
+                            }
                         }
-                    }
+                    });
+
+                    // pH Chart
+                    const phCtx = document.getElementById('phChart').getContext('2d');
+                    new Chart(phCtx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,
+                            datasets: [{
+                                label: 'Average pH Level',
+                                data: avgPhs,
+                                borderColor: '#36A2EB',
+                                fill: false,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'pH Level'
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    // Nutrient Chart
+                    const nutCtx = document.getElementById('nutrientChart').getContext('2d');
+                    new Chart(nutCtx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,
+                            datasets: [{
+                                label: 'Average Nutrient Level',
+                                data: avgNuts,
+                                borderColor: '#4BC0C0',
+                                fill: false,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Nutrient Level'
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
             });
-
-            // pH Chart
-            const phCtx = document.getElementById('phChart').getContext('2d');
-            new Chart(phCtx, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Average pH Level',
-                        data: avgPhs,
-                        borderColor: '#36A2EB',
-                        fill: false,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: { display: true, text: 'Date' }
-                        },
-                        y: {
-                            title: { display: true, text: 'pH Level' }
-                        }
-                    }
-                }
-            });
-
-            // Nutrient Chart
-            const nutCtx = document.getElementById('nutrientChart').getContext('2d');
-            new Chart(nutCtx, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Average Nutrient Level',
-                        data: avgNuts,
-                        borderColor: '#4BC0C0',
-                        fill: false,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: { display: true, text: 'Date' }
-                        },
-                        y: {
-                            title: { display: true, text: 'Nutrient Level' }
-                        }
-                    }
-                }
-            });
-        }
-    });
-});
+        });
 
         document.getElementById('startCycleForm').addEventListener('submit', function(event) {
             const days = document.getElementById('days');
@@ -783,9 +804,19 @@
                             return;
                         }
 
-                        const labels = data.map(item => item.timestamp);
+                        const labels = data.map(item => {
+                            const date = new Date(item.timestamp);
+                            let hours = date.getHours();
+                            const minutes = date.getMinutes().toString().padStart(2,
+                                '0');
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12 || 12;
+                            return `${hours}:${minutes} ${ampm}`;
+                        });
+
                         const values = data.map(item => item.value);
                         const ctx = document.getElementById('tempChart');
+
 
                         if (!ctx) {
                             console.error('Canvas element not found.');

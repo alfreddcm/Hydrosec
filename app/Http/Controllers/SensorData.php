@@ -7,17 +7,19 @@ use App\Mail\Alert;
 use App\Models\IntrusionDetection;
 use App\Models\Owner;
 use App\Models\Pump;
+use App\Models\Sensor;
 use App\Models\Tower;
 use App\Models\Towerlog;
-use Illuminate\Support\Facades\DB;
-use App\Models\Sensor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Storage;
+
 
 class SensorData extends Controller
 {
@@ -282,7 +284,7 @@ class SensorData extends Controller
                                         $alertMessages = [];
                                         $triggeredData = [];
 
-                                        if ($triggerCounts['ph'] >= 3) {
+                                        if ($triggerCounts['ph'] >= 5) {
                                             $triggeredData['ph'] = $pH;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['ph']));
                                             $triggerCounts['ph'] = 0; // Reset pH trigger count to zero
@@ -290,7 +292,7 @@ class SensorData extends Controller
                                             Cache::put('triggerCounts', $triggerCounts);
                                         }
 
-                                        if ($triggerCounts['temp'] >= 3) {
+                                        if ($triggerCounts['temp'] >= 5) {
                                             $triggeredData['temp'] = $temp;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['temp']));
                                             $triggerCounts['temp'] = 0;
@@ -298,7 +300,7 @@ class SensorData extends Controller
                                             Cache::put('triggerCounts', $triggerCounts);
                                         }
 
-                                        if ($triggerCounts['nut'] >= 3) {
+                                        if ($triggerCounts['nut'] >= 5) {
                                             $triggeredData['nutlevel'] = $nut;
                                             $alertMessages = array_merge($alertMessages, array_unique($triggeredConditions['nut']));
                                             $triggerCounts['nut'] = 0;
@@ -486,22 +488,25 @@ class SensorData extends Controller
     public function getdata($id, $column)
     {
         try {
-            // Retrieve data from cache
-            $cachedData = Cache::get('cachetower.' . $id, []);
+            $filePath = "tower_data/tower_{$id}.json";
 
-            // Filter and format the data for the requested column
-            $decryptedData = [];
-            foreach ($cachedData as $dataPoint) {
-                if (isset($dataPoint['data'][$column])) {
-                    $decryptedData[] = [
-                        'type' => $column,
-                        'value' => (float) $dataPoint['data'][$column],
-                        'timestamp' => \Carbon\Carbon::parse($dataPoint['timestamp'])->format('m-d H:i'),
-                    ];
+            if (Storage::exists($filePath)) {
+                $cachedData = json_decode(Storage::get($filePath), true) ?: [];
+
+                $decryptedData = [];
+                foreach ($cachedData as $dataPoint) {
+                    if (isset($dataPoint['data'][$column])) {
+                        $decryptedData[] = [
+                            'type' => $column,
+                            'value' => (float) $dataPoint['data'][$column],
+                            'timestamp' => \Carbon\Carbon::parse($dataPoint['timestamp'])->format('m-d H:i'),
+                        ];
+                    }
                 }
-            }
 
-            // Check if we have any relevant data
+            } else {
+                $decryptedData = [];
+            }
             if (empty($decryptedData)) {
                 return response()->json(['message' => 'No data available for the specified column'], 404);
             }
@@ -516,25 +521,32 @@ class SensorData extends Controller
     public function getLastData($id)
     {
         try {
-            $cachedData = Cache::get('cachetower.' . $id, []);
-            // Get the last data point if available
-            $lastDataPoint = !empty($cachedData) ? end($cachedData) : null;
-            if ($lastDataPoint) {
-                return response()->json([
-                    'sensorData' => [
-                        'nutrient_level' => $lastDataPoint['data']['nutrient_level'] ?? null,
-                        'ph' => $lastDataPoint['data']['ph'] ?? null,
-                        'light' => $lastDataPoint['data']['light'] ?? null,
-                        'temperature' => $lastDataPoint['data']['temperature'] ?? null,
-                        'timestamp' => \Carbon\Carbon::parse($lastDataPoint['timestamp'])->toDateTimeString(),
-                    ],
-                ]);
+            $filePath = "tower_data/tower_{$id}.json";
+
+            if (Storage::exists($filePath)) {
+                $cachedData = json_decode(Storage::get($filePath), true) ?: [];
+
+                $lastDataPoint = !empty($cachedData) ? end($cachedData) : null;
+
+                if ($lastDataPoint) {
+                    return response()->json([
+                        'sensorData' => [
+                            'nutrient_level' => $lastDataPoint['data']['nutrient_level'] ?? null,
+                            'ph' => $lastDataPoint['data']['ph'] ?? null,
+                            'light' => $lastDataPoint['data']['light'] ?? null,
+                            'temperature' => $lastDataPoint['data']['temperature'] ?? null,
+                            'timestamp' => \Carbon\Carbon::parse($lastDataPoint['timestamp'])->toDateTimeString(),
+                        ],
+                    ]);
+                }
+
+                return response()->json(['message' => 'No data available'], 404);
             }
 
-            return response()->json(['message' => 'No data available'], 404);
+            return response()->json(['message' => 'No data file available for this tower'], 404);
 
         } catch (\Exception $e) {
-            Log::channel('custom')->error('Error fetching last data from cache: ' . $e->getMessage());
+            Log::channel('custom')->error('Error fetching last data from JSON file: ' . $e->getMessage());
             return response()->json(['error' => 'Internal Server Error'], 500);
         }
     }
