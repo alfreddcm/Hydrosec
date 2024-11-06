@@ -470,7 +470,8 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center">Temperature</h5>
-                    <div id="temperatureChart" style="height: 300px;"></div>
+                    <canvas id="temperatureChart" width="400" height="200"></canvas>
+
                 </div>
             </div>
         </div>
@@ -478,7 +479,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center">pH Level</h5>
-                    <div id="phChart" style="height: 300px;"></div>
+<canvas id="phChart" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -486,7 +487,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center">Nutrient Level</h5>
-                    <div id="nutrientChart" style="height: 300px;"></div>
+<canvas id="nutrientChart" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -523,82 +524,104 @@
             last();
         };
 
-          $(document).ready(function () {
-        const towerId = 1; 
-        $.ajax({
-            url: `/sensor-daily-data/${towerId}`,
-            method: 'GET',
-            success: function (response) {
-                const dates = response.map(data => data.date);
-                const avgTemps = response.map(data => parseFloat(data.avg_temp));
-                const avgPhs = response.map(data => parseFloat(data.avg_ph));
-                const avgNuts = response.map(data => parseFloat(data.avg_nut));
+     $(document).ready(function () {
+    const towerId = 1; 
+    $.ajax({
+        url: `/sensor-daily-data/${towerId}`,
+        method: 'GET',
+        success: function (response) {
+            const options = { month: 'short', weekday: 'short', day: 'numeric' };
+            
+            // Format dates to "Nov Mon - 4/24"
+            const dates = response.map(data => {
+                const dateObj = new Date(data.date);
+                return dateObj.toLocaleDateString('en-US', options).replace(',', ' -');
+            });
+            
+            const avgTemps = response.map(data => parseFloat(data.avg_temp));
+            const avgPhs = response.map(data => parseFloat(data.avg_ph));
+            const avgNuts = response.map(data => parseFloat(data.avg_nut));
 
-                Highcharts.chart('temperatureChart', {
-                    chart: {
-                        type: 'line'
-                    },
-                    title: {
-                        text: 'Average Temperature'
-                    },
-                    xAxis: {
-                        categories: dates,
-                        title: { text: 'Date' }
-                    },
-                    yAxis: {
-                        title: { text: 'Temperature (°C)' }
-                    },
-                    series: [{
-                        name: 'Temperature',
+            // Temperature Chart
+            const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+            new Chart(tempCtx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Average Temperature (°C)',
                         data: avgTemps,
-                        color: '#FF6384'
+                        borderColor: '#FF6384',
+                        fill: false,
+                        tension: 0.1
                     }]
-                });
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Date' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Temperature (°C)' }
+                        }
+                    }
+                }
+            });
 
-                Highcharts.chart('phChart', {
-                    chart: {
-                        type: 'line'
-                    },
-                    title: {
-                        text: 'Average pH Level'
-                    },
-                    xAxis: {
-                        categories: dates,
-                        title: { text: 'Date' }
-                    },
-                    yAxis: {
-                        title: { text: 'pH Level' }
-                    },
-                    series: [{
-                        name: 'pH Level',
+            // pH Chart
+            const phCtx = document.getElementById('phChart').getContext('2d');
+            new Chart(phCtx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Average pH Level',
                         data: avgPhs,
-                        color: '#36A2EB'
+                        borderColor: '#36A2EB',
+                        fill: false,
+                        tension: 0.1
                     }]
-                });
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Date' }
+                        },
+                        y: {
+                            title: { display: true, text: 'pH Level' }
+                        }
+                    }
+                }
+            });
 
-                Highcharts.chart('nutrientChart', {
-                    chart: {
-                        type: 'line'
-                    },
-                    title: {
-                        text: 'Average Nutrient Level'
-                    },
-                    xAxis: {
-                        categories: dates,
-                        title: { text: 'Date' }
-                    },
-                    yAxis: {
-                        title: { text: 'Nutrient Level' }
-                    },
-                    series: [{
-                        name: 'Nutrient Level',
+            // Nutrient Chart
+            const nutCtx = document.getElementById('nutrientChart').getContext('2d');
+            new Chart(nutCtx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Average Nutrient Level',
                         data: avgNuts,
-                        color: '#4BC0C0'
+                        borderColor: '#4BC0C0',
+                        fill: false,
+                        tension: 0.1
                     }]
-                });
-            }
-        });
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Date' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Nutrient Level' }
+                        }
+                    }
+                }
+            });
+        }
     });
+});
 
         document.getElementById('startCycleForm').addEventListener('submit', function(event) {
             const days = document.getElementById('days');
