@@ -1,3 +1,107 @@
 [2024-11-04 22:13:23] local.INFO: Tower ID 1 mode updated to 0  
 [2024-11-04 22:13:23] local.INFO: Tower modes updated at 2024-11-04 22:13:23  
 [2024-11-05 01:27:46] local.INFO: System is up  
+[2024-11-06 18:56:26] local.INFO: Request received: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 18:56:26] local.INFO: Validated data: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 18:56:26] local.INFO: keys: {"key":"192.168.4.10,40:91:51:58:61:CB,2024"} 
+[2024-11-06 18:56:26] local.INFO: Data: {"data":"6.41,26.25,13.42,0"} 
+[2024-11-06 18:56:27] local.INFO: from tower: {"phValue":"6.41","temp":"26.25","waterLevel":"13.42","light":"0","ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB","towercode":"2024"} 
+[2024-11-06 18:56:29] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB"} 
+[2024-11-06 18:56:29] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-11-06 18:56:30] local.INFO: Sensor data condition check: {"pH":"Slight acidity","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-11-06 18:56:30] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":2} 
+[2024-11-06 18:56:30] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 18:56:32] local.INFO: Data saved to JSON file {"tower_id":1} 
+[2024-11-06 18:56:37] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 18:56:37] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-11-06 18:58:12] local.INFO: Request received: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 18:58:12] local.INFO: Validated data: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 18:58:12] local.INFO: keys: {"key":"192.168.4.10,40:91:51:58:61:CB,2024"} 
+[2024-11-06 18:58:12] local.INFO: Data: {"data":"6.41,26.25,13.42,0"} 
+[2024-11-06 18:58:12] local.INFO: from tower: {"phValue":"6.41","temp":"26.25","waterLevel":"13.42","light":"0","ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB","towercode":"2024"} 
+[2024-11-06 18:58:14] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB"} 
+[2024-11-06 18:58:14] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-11-06 18:58:15] local.INFO: Sensor data condition check: {"pH":"Slight acidity","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-11-06 18:58:15] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":2} 
+[2024-11-06 18:58:15] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 18:58:15] local.INFO: Data saved to JSON file {"tower_id":1} 
+[2024-11-06 18:58:21] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 18:58:21] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-11-06 18:59:55] local.INFO: Request received: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 18:59:55] local.INFO: Validated data: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 18:59:55] local.INFO: keys: {"key":"192.168.4.10,40:91:51:58:61:CB,2024"} 
+[2024-11-06 18:59:55] local.INFO: Data: {"data":"6.41,26.25,13.42,0"} 
+[2024-11-06 18:59:56] local.INFO: from tower: {"phValue":"6.41","temp":"26.25","waterLevel":"13.42","light":"0","ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB","towercode":"2024"} 
+[2024-11-06 18:59:58] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB"} 
+[2024-11-06 18:59:58] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-11-06 18:59:59] local.INFO: Sensor data condition check: {"pH":"Slight acidity","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-11-06 18:59:59] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":2} 
+[2024-11-06 18:59:59] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 18:59:59] local.INFO: Data saved to JSON file {"tower_id":1} 
+[2024-11-06 19:00:00] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:00:00] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-11-06 19:01:19] local.INFO: Request received: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:01:19] local.INFO: Validated data: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:01:19] local.INFO: keys: {"key":"192.168.4.10,40:91:51:58:61:CB,2024"} 
+[2024-11-06 19:01:19] local.INFO: Data: {"data":"6.41,26.25,13.42,0"} 
+[2024-11-06 19:01:20] local.INFO: from tower: {"phValue":"6.41","temp":"26.25","waterLevel":"13.42","light":"0","ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB","towercode":"2024"} 
+[2024-11-06 19:01:21] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB"} 
+[2024-11-06 19:01:21] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-11-06 19:01:22] local.INFO: Sensor data condition check: {"pH":"Slight acidity","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-11-06 19:01:22] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":2} 
+[2024-11-06 19:01:22] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:01:22] local.INFO: Data saved to JSON file {"tower_id":1} 
+[2024-11-06 19:01:31] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:01:31] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-11-06 19:06:09] local.INFO: Request received: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:06:09] local.INFO: Validated data: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:06:09] local.INFO: keys: {"key":"192.168.4.10,40:91:51:58:61:CB,2024"} 
+[2024-11-06 19:06:09] local.INFO: Data: {"data":"6.41,26.25,13.42,0"} 
+[2024-11-06 19:06:10] local.INFO: from tower: {"phValue":"6.41","temp":"26.25","waterLevel":"13.42","light":"0","ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB","towercode":"2024"} 
+[2024-11-06 19:06:12] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB"} 
+[2024-11-06 19:06:12] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-11-06 19:06:14] local.INFO: Sensor data condition check: {"pH":"Slight acidity","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-11-06 19:06:14] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":2} 
+[2024-11-06 19:06:14] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:06:14] local.INFO: Data saved to JSON file {"tower_id":1} 
+[2024-11-06 19:06:16] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:06:16] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-11-06 19:07:34] local.INFO: Request received: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:07:34] local.INFO: Validated data: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:07:34] local.INFO: keys: {"key":"192.168.4.10,40:91:51:58:61:CB,2024"} 
+[2024-11-06 19:07:34] local.INFO: Data: {"data":"6.41,26.25,13.42,0"} 
+[2024-11-06 19:07:35] local.INFO: from tower: {"phValue":"6.41","temp":"26.25","waterLevel":"13.42","light":"0","ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB","towercode":"2024"} 
+[2024-11-06 19:07:37] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB"} 
+[2024-11-06 19:07:37] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-11-06 19:07:39] local.INFO: Sensor data condition check: {"pH":"Slight acidity","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-11-06 19:07:39] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":2} 
+[2024-11-06 19:07:39] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:07:39] local.INFO: Data saved to JSON file {"tower_id":1} 
+[2024-11-06 19:07:43] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:07:43] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-11-06 19:09:28] local.INFO: Request received: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:09:28] local.INFO: Validated data: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:09:28] local.INFO: keys: {"key":"192.168.4.10,40:91:51:58:61:CB,2024"} 
+[2024-11-06 19:09:28] local.INFO: Data: {"data":"6.41,26.25,13.42,0"} 
+[2024-11-06 19:09:28] local.INFO: from tower: {"phValue":"6.41","temp":"26.25","waterLevel":"13.42","light":"0","ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB","towercode":"2024"} 
+[2024-11-06 19:09:29] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB"} 
+[2024-11-06 19:09:29] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-11-06 19:09:30] local.INFO: Sensor data condition check: {"pH":"Slight acidity","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-11-06 19:09:30] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":2} 
+[2024-11-06 19:09:30] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:09:30] local.INFO: Data saved to JSON file {"tower_id":1} 
+[2024-11-06 19:09:33] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:09:33] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 
+[2024-11-06 19:52:44] local.INFO: Request received: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:52:45] local.INFO: Validated data: {"sensorData":"6.41,26.25,13.42,0","Credentials":"0WKpqdiTj9r/ZoCYOP0UtNeirohxSFp9f/M19wglWWwSc4cYftSEHnNQuqzOnaCI"} 
+[2024-11-06 19:52:45] local.INFO: keys: {"key":"192.168.4.10,40:91:51:58:61:CB,2024"} 
+[2024-11-06 19:52:45] local.INFO: Data: {"data":"6.41,26.25,13.42,0"} 
+[2024-11-06 19:52:45] local.INFO: from tower: {"phValue":"6.41","temp":"26.25","waterLevel":"13.42","light":"0","ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB","towercode":"2024"} 
+[2024-11-06 19:52:46] local.INFO: Decrypted IP and MAC addresses: {"ipAddress":"192.168.4.10","macAddress":"40:91:51:58:61:CB"} 
+[2024-11-06 19:52:46] local.INFO: Successfully decc {"mode":"2","stat":"1"} 
+[2024-11-06 19:52:47] local.INFO: Sensor data condition check: {"pH":"Slight acidity","Temperature":"Good","Nutrient Solution Volume":"Good"} 
+[2024-11-06 19:52:47] local.INFO: Trigger counts: {"pH Triggers":1,"Temperature Triggers":0,"Nutrient Solution Volume Triggers":2} 
+[2024-11-06 19:52:47] local.INFO: Broadcasting sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:52:47] local.INFO: Data saved to JSON file {"tower_id":1} 
+[2024-11-06 19:52:51] local.INFO: Successfully broadcasted sensor data {"sensorData":{"ph":"6.41","temperature":"26.25","nutrient_level":"13.42","light":"0"},"towerId":1} 
+[2024-11-06 19:52:51] local.INFO: Successfully enc sensor data {"mode":"RJHUc/JyweWn3AV07922Fw==","stat":"cg4sXbCJGjeg4+kMmwZ6JQ=="} 

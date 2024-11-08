@@ -43,8 +43,7 @@ class pumpreminder extends Command
         $emailCooldown = 5;
         $towers = Tower::select('id', 'status', 'name', 'OwnerID', 'last_pumping_email_sent_at')->get();
         foreach ($towers as $data) {
-            if (Crypt::decryptString($data->status) == '1' && (Crypt::decryptString($data->mode) == '1' || Crypt::decryptString($data->mode) == '2')
-            ) {
+            if (Crypt::decryptString($data->status) != '0') {
                 $towerId = $data->id;
                 Log::channel('custom')->info('Processing tower', ['tower_id' => $towerId]);
 

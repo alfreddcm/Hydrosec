@@ -22,11 +22,15 @@ class AverageDailySensorData extends Command
 
     public function handle()
     {
-        if (Carbon::now()->format('H:i') !== '23:59') {
-            Log::channel('custom')->info('Command skipped, not 11:59 PM.');
+        $currentHour = Carbon::now()->format('H');
+        $currentTimestamp = Carbon::now()->toDateTimeString();
+
+        if ($currentHour != '23') {
+            Log::channel('custom')->info("[$currentTimestamp] Command skipped, not 11 PM.");
             return;
         }
 
+        // Proceed with processing
         $towers = Tower::all();
 
         foreach ($towers as $tower) {
@@ -35,7 +39,7 @@ class AverageDailySensorData extends Command
 
             // Check if the file exists
             if (!Storage::exists($filePath)) {
-                Log::channel('custom')->info("No data file found for tower ID: {$towerId}");
+                Log::channel('custom')->info("[$currentTimestamp] No data file found for tower ID: {$towerId}");
                 continue;
             }
 
@@ -43,7 +47,7 @@ class AverageDailySensorData extends Command
             $cachedData = json_decode(Storage::get($filePath), true) ?: [];
 
             if (empty($cachedData)) {
-                Log::channel('custom')->info("No data found in file for tower ID: {$towerId}");
+                Log::channel('custom')->info("[$currentTimestamp] No data found in file for tower ID: {$towerId}");
                 continue;
             }
 
@@ -60,7 +64,7 @@ class AverageDailySensorData extends Command
             }
 
             if ($count === 0) {
-                Log::channel('custom')->warning("No valid data points found in file for tower ID: {$towerId}");
+                Log::channel('custom')->warning("[$currentTimestamp] No valid data points found in file for tower ID: {$towerId}");
                 continue;
             }
 
@@ -82,18 +86,19 @@ class AverageDailySensorData extends Command
                     'status' => '1',
                 ]);
                 $this->info("Averaged sensor data saved for tower ID {$towerId}");
-                Log::channel('custom')->info("Averaged sensor data saved for tower ID {$towerId}");
+                Log::channel('custom')->info("[$currentTimestamp] Averaged sensor data saved for tower ID {$towerId}");
 
                 // Delete the JSON file after saving to the database
                 Storage::delete($filePath);
-                Log::channel('custom')->info("Deleted data file for tower ID: {$towerId}");
+                Log::channel('custom')->info("[$currentTimestamp] Deleted data file for tower ID: {$towerId}");
 
             } catch (\Exception $e) {
-                Log::channel('custom')->error("Failed to save sensor data for tower ID {$towerId}: " . $e->getMessage());
+                Log::channel('custom')->error("[$currentTimestamp] Failed to save sensor data for tower ID {$towerId}: " . $e->getMessage());
             }
         }
 
-        Log::channel('custom')->info('Daily sensor data averages calculated and saved at ' . Carbon::now());
+        Log::channel('custom')->info("[$currentTimestamp] Daily sensor data averages calculated and saved.");
         $this->info('Daily sensor data averages calculated and saved.');
     }
+
 }

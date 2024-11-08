@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Queue\SerializesModels;
@@ -17,6 +18,9 @@ class SensorDataUpdated implements ShouldBroadcastNow
 
     public function __construct($sensorData, $towerId)
     {
+        // Set the timezone to Asia/Manila globally
+        date_default_timezone_set('Asia/Manila');
+
         $this->sensorData = $sensorData;
         $this->towerId = $towerId;
 
@@ -33,9 +37,12 @@ class SensorDataUpdated implements ShouldBroadcastNow
             $existingData = json_decode(Storage::get($filePath), true) ?: [];
         }
 
+        // Use Carbon to get the current time in Asia/Manila timezone
+        $now = Carbon::now('Asia/Manila')->toIso8601String();
+
         // Append the new data entry
         $existingData[] = [
-            'timestamp' => now(),
+            'timestamp' => $now,
             'data' => $sensorData,
         ];
 

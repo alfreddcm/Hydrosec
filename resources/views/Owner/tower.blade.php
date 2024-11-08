@@ -519,6 +519,14 @@
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <script>
+         function updateOnlineStatus(isOnline) {
+                const statusIndicator = $('#online-status');
+                const color = isOnline ? 'green' : 'red';
+                statusIndicator.html(
+                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
+                );
+            }
+
         window.onload = function() {
             last();
         };
@@ -686,7 +694,7 @@
                         datetime.textContent = new Date(sensorData.timestamp).toLocaleString(
                             'en-US', options);
 
-                        updateOnlineStatus(true);
+                        updateOnlineStatus(false);
 
                     } else {
                         console.log('No data available');
@@ -761,14 +769,7 @@
             }
 
 
-            function updateOnlineStatus(isOnline) {
-                const statusIndicator = $('#online-status');
-                const color = isOnline ? 'green' : 'red';
-                statusIndicator.html(
-                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
-                );
-            }
-
+           
             $('#tempmodal').on('shown.bs.modal', function(event) {
                 let button = event.relatedTarget;
                 if (!button) {
@@ -1005,7 +1006,7 @@
             const phValueElement = document.getElementById('ph-value');
             const phcon = document.getElementById('ph-con');
 
-            phValueElement.textContent = `${phValue.toFixed(2)}`;
+            phValueElement.textContent = `${phValue.toFixed(1)}`;
 
             if (phValue >= 0 && phValue <= 14) {
                 phScale.src = `{{ asset('images/ph/${Math.floor(phValue)}.png') }}`;
@@ -1036,13 +1037,13 @@
                     phcon.textContent = "Ideal";
                     phcon.style.color = 'black';
 
-                } else if (phValue >= 6.0 && phValue < 6.5) {
+                } else if (phValue >= 6.0 && phValue < 6.6) { // Updated to 6.0 to 6.6
                     statusText.textContent = "Slightly Acidic";
                     statusText.style.color = 'green';
                     phcon.textContent = "Ideal";
                     phcon.style.color = 'black';
 
-                } else if (phValue >= 6.6 && phValue < 7.0) {
+                } else if (phValue >= 6.6 && phValue < 7.0) { // Updated to 6.6 to 7.0
                     statusText.textContent = "Very Slightly Acidic";
                     statusText.style.color = 'green';
                     phcon.textContent = "Ideal";
@@ -1054,13 +1055,13 @@
                     phcon.textContent = "Neutral";
                     phcon.style.color = 'black';
 
-                } else if (phValue > 7.0 && phValue <= 7.5) {
+                } else if (phValue > 7.0 && phValue < 7.5) {
                     statusText.textContent = "Slightly Alkaline";
                     statusText.style.color = 'purple';
                     phcon.textContent = "Critical";
                     phcon.style.color = 'red';
 
-                } else if (phValue > 7.5 && phValue <= 8.0) {
+                } else if (phValue > 7.5 && phValue < 8.0) {
                     statusText.textContent = "Moderately Alkaline";
                     statusText.style.color = 'purple';
                     phcon.textContent = "Critical";
@@ -1098,6 +1099,7 @@
                 phValueElement.style.color = 'black';
                 phScale.style.filter = 'grayscale(100%)';
             }
+
 
         }
 

@@ -8,10 +8,10 @@ use App\Models\Tower;
 use App\Models\Towerlog;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class IfOff extends Command
 {
@@ -29,15 +29,24 @@ class IfOff extends Command
         foreach ($towers as $tower) {
             if (Crypt::decryptString($tower->status) == '1') {
                 $towerId = $tower->id;
-                $cachedData = Cache::get('cachetower.' . $towerId, []);
 
-                // Check if the cache has recent data (within the past hour)
-                if (empty($cachedData) || Carbon::parse($cachedData[0]['timestamp'])->diffInHours($now) > 1) {
+                // Define the file path for cached data
+                $filePath = "tower_data/tower_{$towerId}.json";
+
+                // Retrieve cached data from JSON file if it exists
+                if (\Storage::exists($filePath)) {
+                    $cachedData = json_decode(Storage::get($filePath), true) ?: [];
+                } else {
+                    $cachedData = [];
+                }
+
+                // Check if the file has recent data (within the past 2 hours)
+                if (empty($cachedData) || Carbon::parse($cachedData[0]['timestamp'])->diffInHours($now) > 2) {
                     // Check if cooldown period has elapsed
                     if ($tower->last_email_sensor_off) {
                         $lastEmailTime = Carbon::parse($tower->last_email_sensor_off);
                         if ($lastEmailTime->diffInMinutes($now) < $this->emailCooldown) {
-                            $this->info('Skipping email for Tower ID ' . $tower->id . ', cooldown period not elapsed.');
+                            $this->info('Skipping email for Tower ID ' . $towerId . ', cooldown period not elapsed.');
                             continue;
                         }
                     }
@@ -51,7 +60,7 @@ class IfOff extends Command
                         $body = "The Tower '" . $decryptedTowerName . "' did not receive sensor data at " . $now->toDateTimeString() . ". Please check the system.";
 
                         $details = [
-                            'title' => 'Physical set up is down.',
+                            'title' => 'Physical setup is down.',
                             'body' => $body,
                         ];
 
@@ -75,16 +84,16 @@ class IfOff extends Command
                                 'activity' => $activityLog,
                             ]);
 
-                            Log::channel('custom')->info($email .'Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => $body]);
+                            Log::channel('custom')->info($email . ' Alert logged in tbl_towerlogs', ['tower_id' => $towerId, 'activity' => $body]);
                         }
                     } else {
                         $this->error("Owner not found or email not available for Tower ID {$tower->id}.");
                     }
-                }else{
+                } else {
                     Log::channel('custom')->info("System is up");
-
                 }
             }
         }
     }
+
 }

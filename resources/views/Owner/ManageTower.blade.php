@@ -1,6 +1,6 @@
 @extends('Owner/sidebar')
 <link href="{{ asset('css/owner/managetower.css') }}" rel="stylesheet">
-@section('title', 'Manage Tower')
+@section('title', 'Tower')
 @section('content')
     @php
         use Illuminate\Support\Facades\Auth;
