@@ -216,7 +216,7 @@
 
                                     <div class="card-body justify-content-center g-4">
                                         <div class="icon ">
-                                            <i class="bi bi-thermometer-half">
+                                            <i class="">
                                                 <img id="thermometer" src="{{ asset('images/Temp/normal.png') }}"
                                                     alt="Thermometer">
                                             </i>
