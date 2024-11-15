@@ -519,13 +519,13 @@
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <script>
-         function updateOnlineStatus(isOnline) {
-                const statusIndicator = $('#online-status');
-                const color = isOnline ? 'green' : 'red';
-                statusIndicator.html(
-                    `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
-                );
-            }
+        function updateOnlineStatus(isOnline) {
+            const statusIndicator = $('#online-status');
+            const color = isOnline ? 'green' : 'red';
+            statusIndicator.html(
+                `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${color};"></div>`
+            );
+        }
 
         window.onload = function() {
             last();
@@ -769,7 +769,7 @@
             }
 
 
-           
+
             $('#tempmodal').on('shown.bs.modal', function(event) {
                 let button = event.relatedTarget;
                 if (!button) {
@@ -934,7 +934,6 @@
             const volumeValueElement = document.getElementById('nutrient-value');
             const volcon = document.getElementById('nutrient-con');
 
-
             if (isNaN(nutrientVolume) || nutrientVolume === null) {
                 nutrientImage.src = '{{ asset('images/Water/10.png') }}';
                 statusText.textContent = "N/A";
@@ -947,58 +946,53 @@
                 nutrientImage.style.filter = 'none';
                 volumeValueElement.textContent = `${nutrientVolume.toFixed(2)} L`;
 
-                if (nutrientVolume >= 20) {
+                const percentage = (nutrientVolume / 20) * 100;
+                statusText.textContent = `${Math.round(percentage)}%`;
+
+                if (percentage >= 100) {
                     nutrientImage.src = '{{ asset('images/Water/100.png') }}';
-                    statusText.textContent = "Full";
                     statusText.style.color = 'blue';
                     volcon.textContent = 'Good';
                     volcon.style.color = '';
-                } else if (nutrientVolume >= 17) {
+                } else if (percentage >= 85) {
                     nutrientImage.src = '{{ asset('images/Water/80.png') }}';
-                    statusText.textContent = "85%";
                     statusText.style.color = 'blue';
                     volcon.textContent = 'Good';
                     volcon.style.color = '';
-                } else if (nutrientVolume >= 15) {
+                } else if (percentage >= 75) {
                     nutrientImage.src = '{{ asset('images/Water/70.png') }}';
-                    statusText.textContent = "75%";
                     statusText.style.color = 'blue';
                     volcon.textContent = 'Good';
                     volcon.style.color = '';
-                } else if (nutrientVolume >= 12) {
+                } else if (percentage >= 60) {
                     nutrientImage.src = '{{ asset('images/Water/60.png') }}';
-                    statusText.textContent = "60%";
                     statusText.style.color = 'blue';
                     volcon.textContent = 'Good';
                     volcon.style.color = '';
-                } else if (nutrientVolume >= 10) {
+                } else if (percentage >= 50) {
                     nutrientImage.src = '{{ asset('images/Water/50.png') }}';
-                    statusText.textContent = "50%";
                     statusText.style.color = 'blue';
                     volcon.textContent = 'Good';
                     volcon.style.color = '';
-                } else if (nutrientVolume >= 7) {
+                } else if (percentage >= 35) {
                     nutrientImage.src = '{{ asset('images/Water/30.png') }}';
-                    statusText.textContent = "35%";
                     statusText.style.color = 'orange';
                     volcon.textContent = 'Good';
                     volcon.style.color = '';
-                } else if (nutrientVolume >= 5) {
+                } else if (percentage >= 25) {
                     nutrientImage.src = '{{ asset('images/Water/20.png') }}';
-                    statusText.textContent = "25%";
                     statusText.style.color = 'orange';
                     volcon.textContent = 'Critical';
                     volcon.style.color = 'red';
                 } else {
                     nutrientImage.src = '{{ asset('images/Water/10.png') }}';
-                    statusText.textContent = "Low";
                     statusText.style.color = 'green';
                     volcon.textContent = 'Critical';
                     volcon.style.color = 'red';
                 }
-
             }
         }
+
 
         function updatePhScaleImage(phValue) {
             const phScale = document.getElementById('ph-scale');
