@@ -769,7 +769,6 @@
             }
 
 
-
             $('#tempmodal').on('shown.bs.modal', function(event) {
                 let button = event.relatedTarget;
                 if (!button) {
@@ -1096,8 +1095,6 @@
 
 
         }
-
-
 
         function updateThermometerImage(temperature) {
             const thermometer = document.getElementById('thermometer');
